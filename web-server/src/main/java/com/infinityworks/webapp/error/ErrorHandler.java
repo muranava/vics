@@ -1,0 +1,36 @@
+package com.infinityworks.webapp.error;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.http.ResponseEntity;
+
+import javax.validation.ValidationException;
+
+import static org.springframework.http.HttpStatus.BAD_REQUEST;
+import static org.springframework.http.HttpStatus.INTERNAL_SERVER_ERROR;
+
+/**
+ * An application wide error handler.
+ */
+public final class ErrorHandler {
+    private static final Logger log = LoggerFactory.getLogger(ErrorHandler.class);
+
+    /**
+     * Handles application errors and generates an error response
+     *
+     * @param exception the error to map to a response
+     */
+    public ResponseEntity<?> mapToResponseEntity(Exception exception) {
+
+        if (exception instanceof ValidationException) {
+            return ResponseEntity.status(BAD_REQUEST).body(createError(exception));
+        }
+
+        log.error("Error is not mapped", exception);
+        return ResponseEntity.status(INTERNAL_SERVER_ERROR).body("Server error");
+    }
+
+    private static ErrorEntity createError(Exception exception) {
+        return new ErrorEntity(exception.getClass().getSimpleName(), exception.getMessage());
+    }
+}
