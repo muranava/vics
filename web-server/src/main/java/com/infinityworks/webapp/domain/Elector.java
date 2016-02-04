@@ -1,5 +1,7 @@
 package com.infinityworks.webapp.domain;
 
+import com.infinityworks.webapp.converter.GeneratesErn;
+
 import javax.persistence.Entity;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
@@ -8,7 +10,7 @@ import java.util.Date;
 
 @Entity
 @Table(name = "electors")
-public class Elector extends BaseEntity {
+public class Elector extends BaseEntity implements GeneratesErn {
 
     private String wardCode;
     private String pollingDistrict;

@@ -38,12 +38,14 @@ CREATE TABLE electors_enriched (
   first_name       TEXT,
   last_name        TEXT,
   initial          TEXT,
-  house            TEXT,
-  street           TEXT,
   dob              DATE,
   flag             TEXT,
   modified         TIMESTAMP,
-  created          TIMESTAMP DEFAULT now()
+  created          TIMESTAMP DEFAULT now(),
+  house            TEXT,
+  street           TEXT,
+  post_code        TEXT,
+  upid             TEXT
 );
 
 -- Trigger to update the modified date on update

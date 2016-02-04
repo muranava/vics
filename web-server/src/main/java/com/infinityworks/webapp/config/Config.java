@@ -19,7 +19,6 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 import javax.sql.DataSource;
 import javax.validation.Validation;
-import javax.validation.Validator;
 import javax.validation.ValidatorFactory;
 
 @Configuration
@@ -49,7 +48,6 @@ public class Config {
     public ObjectMapper objectMapper() {
         return new ObjectMapper()
                 .registerModules(new JavaTimeModule(), new Jdk8Module())
-                .configure(SerializationFeature.WRAP_ROOT_VALUE, false)
                 .configure(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, false);
     }
 
@@ -57,10 +55,5 @@ public class Config {
     public RequestValidator requestValidator(ObjectMapper mapper) {
         ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
         return new RequestValidator(factory.getValidator(), mapper);
-    }
-
-    @Bean(name = "primitivesValidator")
-    public Validator getValidator() {
-        return Validation.buildDefaultValidatorFactory().getValidator();
     }
 }

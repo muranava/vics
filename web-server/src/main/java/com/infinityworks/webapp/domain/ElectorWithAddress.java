@@ -1,5 +1,7 @@
 package com.infinityworks.webapp.domain;
 
+import com.infinityworks.webapp.converter.GeneratesErn;
+
 import javax.persistence.*;
 import java.util.Date;
 
@@ -8,7 +10,7 @@ import java.util.Date;
  */
 @Entity
 @Table(name = "electors_enriched")
-public class ElectorWithAddress extends BaseEntity {
+public class ElectorWithAddress extends BaseEntity implements GeneratesErn {
 
     @Column(nullable = false)
     private String wardCode;
@@ -37,6 +39,8 @@ public class ElectorWithAddress extends BaseEntity {
 
     private String house;
     private String street;
+    private String upid;
+    private String postCode;
 
     public String getWardCode() {
         return wardCode;
@@ -140,5 +144,29 @@ public class ElectorWithAddress extends BaseEntity {
 
     public String getStreet() {
         return street;
+    }
+
+    public void setHouse(String house) {
+        this.house = house;
+    }
+
+    public void setStreet(String street) {
+        this.street = street;
+    }
+
+    public String getUpid() {
+        return upid;
+    }
+
+    public void setUpid(String upid) {
+        this.upid = upid;
+    }
+
+    public String getPostCode() {
+        return postCode;
+    }
+
+    public void setPostCode(String postCode) {
+        this.postCode = postCode;
     }
 }
