@@ -8,7 +8,7 @@ angular
     .service('electorTable', function () {
         var api = {},
             img = new Image();
-        img.src = 'images/logo.jpg';
+        img.src = 'images/logo.png';
 
         var theme = 'grid',
             columnStyles = {
