@@ -4,6 +4,6 @@
  */
 angular
     .module('canvass')
-    .controller('parentCtrl', ['wardService', function (wardService) {
+    .controller('parentCtrl', function (wardService) {
 
-    }]);
+    });

@@ -3,7 +3,7 @@
  */
 angular
     .module('canvass')
-    .directive('healthComponent', ['healthService', function(healthService) {
+    .directive('healthComponent', function(healthService) {
         return {
             restrict: 'EA',
             templateUrl: 'views/health-component.html',
@@ -15,4 +15,4 @@ angular
                     });
             }
         };
-    }]);
+    });

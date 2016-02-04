@@ -3,8 +3,7 @@
  */
 angular
     .module('canvass')
-    .controller('canvassGeneratorCtrl', ['$scope', 'wardService', 'apiUrl', 'constituencies', 'electorService', 'electorTable',
-        function ($scope, wardService, apiUrl, constituencies, electorService, electorTable) {
+    .controller('canvassGeneratorCtrl', function ($scope, wardService, apiUrl, constituencies, electorService, electorTable) {
 
             $scope.constituencies = constituencies;
             $scope.wards = [];
@@ -114,4 +113,4 @@ angular
 
                 doc.save('merged.pdf');
             }
-        }]);
+        });
