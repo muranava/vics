@@ -1,62 +1,141 @@
 <!doctype html>
-<html>
+<html lang="en" class="no-js" ng-app="canvass">
   <head>
     <meta charset="utf-8">
-    <title></title>
+    <title>Canvass Dashboard</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
     <meta name="description" content="">
-    <meta name="viewport" content="width=device-width">
+    <meta name="author" content="">
     <!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
     <!-- build:css(.) styles/vendor.css -->
     <!-- bower:css -->
-    <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.css" />
     <!-- endbower -->
     <!-- endbuild -->
     <!-- build:css(.tmp) styles/main.css -->
+    <link href='http://fonts.googleapis.com/css?family=Roboto:300italic,400italic,300,400,500,700,900' rel='stylesheet'
+          type='text/css'/>
+    <link rel="stylesheet" href="styles/template/bootstrap.css"/>
+    <link rel="stylesheet" href="styles/template/materialadmin.css"/>
+    <link rel="stylesheet" href="styles/template/font-awesome.min.css?1422529194"/>
+    <link rel="stylesheet" href="styles/template/material-design-iconic-font.min.css"/>
     <link rel="stylesheet" href="styles/main.css">
     <!-- endbuild -->
   </head>
-  <body ng-app="canvassCliApp">
+  <body class="menubar-hoverable header-fixed menubar-pin ">
     <!--[if lte IE 8]>
       <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
     <![endif]-->
 
-    <!-- Add your site or application content here -->
-    <div class="header">
-      <div class="navbar navbar-default" role="navigation">
-        <div class="container">
-          <div class="navbar-header">
+    <header id="header">
+      <div class="headerbar">
+        <div class="headerbar-left">
+          <ul class="header-nav header-nav-options">
+            <li class="header-nav-brand">
+              <div class="brand-holder">
+                <a href="#/">
+                  <span class="text-lg text-bold text-primary"><img src="images/logo.jpg" alt=""></span>
+                  <span class="logo-text">Canvass Dashboard</span>
+                </a>
+              </div>
+            </li>
+          </ul>
+        </div>
 
-            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#js-navbar-collapse">
-              <span class="sr-only">Toggle navigation</span>
-              <span class="icon-bar"></span>
-              <span class="icon-bar"></span>
-              <span class="icon-bar"></span>
-            </button>
+        <div class="headerbar-right">
+          <ul class="header-nav header-nav-options">
+            <li>
+              <form class="navbar-search" role="search">
+                <div class="form-group">
+                  <input type="text" class="form-control" name="headerSearch"
+                         placeholder="Enter your keyword">
+                </div>
+                <button type="submit" class="btn btn-icon-toggle ink-reaction"><i class="fa fa-search"></i>
+                </button>
+              </form>
+            </li>
+          </ul>
+          <ul class="header-nav header-nav-profile">
+            <li class="dropdown">
+              <a href="javascript:void(0);" class="dropdown-toggle ink-reaction" data-toggle="dropdown">
+								<span class="profile-info">
+									Daniel Johnson
+									<small>Administrator</small>
+								</span>
+              </a>
+              <ul class="dropdown-menu animation-dock">
+                <li class="dropdown-header">Config</li>
+                <li><a href="../..">My profile</a></li>
+                <li class="divider"></li>
+                <li><a href="../.."><i class="fa fa-fw fa-power-off text-danger"></i>
+                  Logout</a></li>
+              </ul>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </header>
 
-            <a class="navbar-brand" href="#/">canvassCli</a>
+    <div id="base">
+      <div class="offcanvas"></div>
+
+      <div id="content">
+        <div ng-view></div>
+      </div>
+
+      <div id="menubar" class="menubar-inverse ">
+        <div class="menubar-fixed-panel">
+          <div>
+            <a class="btn btn-icon-toggle btn-default menubar-toggle" data-toggle="menubar"
+               href="javascript:void(0);">
+              <i class="fa fa-bars"></i>
+            </a>
           </div>
+          <div class="expanded">
+            <a href="../../html/dashboards/dashboard.html">
+              <span class="text-lg text-bold text-primary ">Canvass&nbsp;Dashboard</span>
+            </a>
+          </div>
+        </div>
+        <div class="menubar-scroll-panel">
 
-          <div class="collapse navbar-collapse" id="js-navbar-collapse">
+          <ul id="main-menu" class="gui-controls">
+            <li>
+              <a href="#/">
+                <div class="gui-icon"><i class="md md-home"></i></div>
+                <span class="title">Dashboard</span>
+              </a>
+            </li>
+            <li>
+              <a href="#/canvass">
+                <div class="gui-icon"><i class="md md-assignment"></i></div>
+                <span class="title">Canvass Cards</span>
+              </a>
+            </li>
+            <li>
+              <a href="#/admin">
+                <div class="gui-icon"><i class="md md-security"></i></div>
+                <span class="title">Admin</span>
+              </a>
+            </li>
+          </ul>
 
-            <ul class="nav navbar-nav">
-              <li class="active"><a href="#/">Home</a></li>
-              <li><a ng-href="#/about">About</a></li>
-              <li><a ng-href="#/">Contact</a></li>
-            </ul>
+          <div class="menubar-foot-panel">
+            <small class="no-linebreak hidden-folded">
+              <span class="opacity-75">Copyright &copy; 2016</span> <strong>Vote Leave</strong>
+            </small>
           </div>
         </div>
       </div>
+
     </div>
 
-    <div class="container">
-    <div ng-view=""></div>
-    </div>
-
-    <div class="footer">
-      <div class="container">
-        <p><span class="glyphicon glyphicon-heart"></span> from the Yeoman team</p>
-      </div>
-    </div>
+    <!-- libs -->
+    <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+    <script type="text/javascript" src="scripts/xlibs/html5shiv.js?1403934957"></script>
+    <script type="text/javascript" src="scripts/xlibs/respond.min.js?1403934956"></script>
+    <![endif]-->
 
 
     <!-- Google Analytics: change UA-XXXXX-X to be your site's ID -->
@@ -72,22 +151,33 @@
 
     <!-- build:js(.) scripts/vendor.js -->
     <!-- bower:js -->
-    <script src="bower_components/jquery/dist/jquery.js"></script>
     <script src="bower_components/angular/angular.js"></script>
-    <script src="bower_components/bootstrap/dist/js/bootstrap.js"></script>
     <script src="bower_components/angular-animate/angular-animate.js"></script>
     <script src="bower_components/angular-cookies/angular-cookies.js"></script>
     <script src="bower_components/angular-resource/angular-resource.js"></script>
     <script src="bower_components/angular-route/angular-route.js"></script>
     <script src="bower_components/angular-sanitize/angular-sanitize.js"></script>
     <script src="bower_components/angular-touch/angular-touch.js"></script>
+    <script src="bower_components/angular-bootstrap/ui-bootstrap-tpls.js"></script>
+    <script src="bower_components/lodash/lodash.js"></script>
     <!-- endbower -->
     <!-- endbuild -->
 
         <!-- build:js({.tmp,app}) scripts/scripts.js -->
-        <script src="scripts/app.js"></script>
-        <script src="scripts/controllers/main.js"></script>
-        <script src="scripts/controllers/about.js"></script>
+    <script src="scripts/xlibs/jspdf.min.js"></script>
+    <script src="scripts/xlibs/jspdf.plugin.autotable.js"></script>
+
+    <script src="scripts/app.js"></script>
+    <script src="scripts/controller/parent.js"></script>
+    <script src="scripts/controller/canvassGeneratorCtrl.js"></script>
+    <script src="scripts/service/wardService.js"></script>
+    <script src="scripts/service/healthService.js"></script>
+    <script src="scripts/directive/healthComponent.js"></script>
+    <script src="scripts/service/constituencies.js"></script>
+    <script src="scripts/service/electorService.js"></script>
+    <script src="scripts/filter/numericConversions.js"></script>
+    <script src="scripts/filter/textConversions.js"></script>
+    <script src="scripts/service/electorTable.js"></script>
         <!-- endbuild -->
 </body>
 </html>
