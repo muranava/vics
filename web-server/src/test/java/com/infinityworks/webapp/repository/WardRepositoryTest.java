@@ -32,7 +32,7 @@ public class WardRepositoryTest extends RepositoryTest {
 
     @Test
     public void findsTheWardsByConstituencyName() throws Exception {
-        List<Ward> all = wardRepository.findByConstituencyName("Dagenham and Rainham".toUpperCase());
+        List<Ward> all = wardRepository.findByConstituencyNameIgnoreCase("Dagenham and Rainham".toUpperCase());
 
         assertThat(all, hasSize(2));
 
@@ -54,7 +54,7 @@ public class WardRepositoryTest extends RepositoryTest {
 
     @Test
     public void findByConstituencyNameReturnsEmptyListIfNotFound() throws Exception {
-        List<Ward> all = wardRepository.findByConstituencyName("I dont exist");
+        List<Ward> all = wardRepository.findByConstituencyNameIgnoreCase("I dont exist");
 
         assertThat(all, hasSize(0));
     }

@@ -24,7 +24,7 @@ class ElectoralWardService implements WardService {
     }
 
     public Try<List<Ward>> findByConstituencyName(String name) {
-        return Try.of(() -> wardRepository.findByConstituencyName(name.toUpperCase()));
+        return Try.of(() -> wardRepository.findByConstituencyNameIgnoreCase(name.toUpperCase()));
     }
 
     public Try<List<Ward>> findByConstituencyNameAndWardNames(String constituencyName, List<String> wardNames) {

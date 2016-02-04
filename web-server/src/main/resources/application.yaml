@@ -1,26 +1,26 @@
 server:
-  context-path: /canvass
+  context-path: /api/canvass
   port: 8090
 
 spring:
-  jpa:
-    hibernate:
-      ddl-auto: validate
-    database-platform: org.hibernate.dialect.PostgreSQLDialect
   datasource:
-    driver: org.postgresql.Driver
     url: jdbc:postgresql://localhost:5432/canvass
     username: postgres
     password: postgres
+    driver: org.postgresql.Driver
     pool-name: HikariPool
     min-idle: 3
     pool-prepared-statements: true
     max-open-prepared-statements: 250
     maximumPoolSize: 10
+  jpa:
+    hibernate:
+      ddl-auto: validate
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
 
 logging:
   level:
     com.zaxxer.hikari.HikariConfig: ERROR
     com.infinityworks.webapp: ERROR
-    org.hibernate.SQL: ERROR
-    org.hibernate.type: ERROR
+    org.hibernate.SQL: DEBUG
+    org.hibernate.type: DEBUG

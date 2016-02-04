@@ -9,4 +9,5 @@ import java.util.List;
 
 public interface PrintService {
     Try<List<ElectorResponse>> printElectors(PrintElectorsRequest request);
+    Try<List<ElectorResponse>> printEnrichedElectors(PrintElectorsRequest request);
 }

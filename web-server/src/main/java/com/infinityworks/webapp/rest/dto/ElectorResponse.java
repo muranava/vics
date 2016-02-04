@@ -2,6 +2,7 @@ package com.infinityworks.webapp.rest.dto;
 
 import com.infinityworks.webapp.domain.Address;
 import com.infinityworks.webapp.domain.Elector;
+import com.infinityworks.webapp.domain.ElectorWithAddress;
 
 public class ElectorResponse {
     private final String wardCode;
@@ -12,9 +13,10 @@ public class ElectorResponse {
     private final String firstName;
     private final String lastName;
     private final String initial;
-    private final String address;
+    private final String house;
+    private final String street;
 
-    private ElectorResponse(String wardCode, String pollingDistrict, String electorId, String electorSuffix, String title, String firstName, String lastName, String initial, String address) {
+    public ElectorResponse(String wardCode, String pollingDistrict, String electorId, String electorSuffix, String title, String firstName, String lastName, String initial, String house, String street) {
         this.wardCode = wardCode;
         this.pollingDistrict = pollingDistrict;
         this.electorId = electorId;
@@ -23,7 +25,8 @@ public class ElectorResponse {
         this.firstName = firstName;
         this.lastName = lastName;
         this.initial = initial;
-        this.address = address;
+        this.house = house;
+        this.street = street;
     }
 
     public String getWardCode() {
@@ -58,8 +61,12 @@ public class ElectorResponse {
         return initial;
     }
 
-    public String getAddress() {
-        return address;
+    public String getHouse() {
+        return house;
+    }
+
+    public String getStreet() {
+        return street;
     }
 
     public static ElectorResponse of(Elector elector, Address address) {
@@ -72,6 +79,7 @@ public class ElectorResponse {
                 elector.getFirstName(),
                 elector.getLastName(),
                 elector.getInitial(),
-                address.getHouse()); // FIXME add address street
+                address.getHouse(),
+                address.getStreet());
     }
 }

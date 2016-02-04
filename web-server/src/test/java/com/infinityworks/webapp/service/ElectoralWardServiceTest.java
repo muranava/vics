@@ -29,7 +29,7 @@ public class ElectoralWardServiceTest {
 
     @Test
     public void returnsFailureIfRepositoryThrows() throws Exception {
-        given(wardRepository.findByConstituencyName("Coventry South".toUpperCase()))
+        given(wardRepository.findByConstituencyNameIgnoreCase("Coventry South".toUpperCase()))
                 .willThrow(new ConstraintViolationException("nope", null, null));
 
         Try<List<Ward>> result = underTest.findByConstituencyName("Coventry South");
@@ -39,7 +39,7 @@ public class ElectoralWardServiceTest {
 
     @Test
     public void returnsTheWards() throws Exception {
-        given(wardRepository.findByConstituencyName("Coventry South".toUpperCase()))
+        given(wardRepository.findByConstituencyNameIgnoreCase("Coventry South".toUpperCase()))
                 .willReturn(asList(
                         ward().withWardName("Willenhall").build(),
                         ward().withWardName("Binley").build()));

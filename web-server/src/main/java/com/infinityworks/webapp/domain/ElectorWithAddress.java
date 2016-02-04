@@ -1,18 +1,24 @@
 package com.infinityworks.webapp.domain;
 
-import javax.persistence.Entity;
-import javax.persistence.Table;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
+import javax.persistence.*;
 import java.util.Date;
 
+/**
+ * Temporary table to hold electors with addresses
+ */
 @Entity
-@Table(name = "electors")
-public class Elector extends BaseEntity {
+@Table(name = "electors_enriched")
+public class ElectorWithAddress extends BaseEntity {
 
+    @Column(nullable = false)
     private String wardCode;
+
+    @Column(nullable = false)
     private String pollingDistrict;
+
+    @Column(nullable = false)
     private String electorId;
+
     private String electorSuffix;
     private String title;
     private String firstName;
@@ -29,24 +35,8 @@ public class Elector extends BaseEntity {
     @Temporal(TemporalType.TIMESTAMP)
     private Date created;
 
-    public Elector() {
-        // required by hibernate
-    }
-
-    public Elector(String wardCode, String pollingDistrict, String electorId, String electorSuffix, String title, String firstName, String lastName, String flag, String initial, Date dob, Date modified, Date created) {
-        this.wardCode = wardCode;
-        this.pollingDistrict = pollingDistrict;
-        this.electorId = electorId;
-        this.electorSuffix = electorSuffix;
-        this.title = title;
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.flag = flag;
-        this.initial = initial;
-        this.dob = dob;
-        this.modified = modified;
-        this.created = created;
-    }
+    private String house;
+    private String street;
 
     public String getWardCode() {
         return wardCode;
@@ -142,5 +132,13 @@ public class Elector extends BaseEntity {
 
     public void setCreated(Date created) {
         this.created = created;
+    }
+
+    public String getHouse() {
+        return house;
+    }
+
+    public String getStreet() {
+        return street;
     }
 }

@@ -49,4 +49,12 @@ public class ElectorController {
                 .flatMap(printService::printElectors)
                 .fold(errorHandler::mapToResponseEntity, ResponseEntity::ok);
     }
+
+    @RequestMapping(value = "/print/enriched")
+    public ResponseEntity<?> printEnrichedElectors(@RequestBody PrintElectorsRequest printRequest) {
+        return requestValidator
+                .validate(printRequest)
+                .flatMap(printService::printEnrichedElectors)
+                .fold(errorHandler::mapToResponseEntity, ResponseEntity::ok);
+    }
 }

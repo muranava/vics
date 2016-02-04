@@ -1,5 +1,6 @@
 DROP TABLE IF EXISTS wards;
 DROP TABLE IF EXISTS electors;
+DROP TABLE IF EXISTS electors_enriched;
 
 CREATE TABLE wards (
   id                UUID PRIMARY KEY NOT NULL,
@@ -14,11 +15,31 @@ CREATE TABLE electors (
   ward_code        TEXT NOT NULL,
   polling_district TEXT NOT NULL,
   elector_id       TEXT NOT NULL,
-  elector_suffix   TEXT NOT NULL,
+  elector_suffix   TEXT,
+  ern              TEXT NOT NULL,
   title            TEXT,
   first_name       TEXT,
   last_name        TEXT,
   initial          TEXT,
+  dob              DATE,
+  flag             TEXT,
+  modified         TIMESTAMP,
+  created          TIMESTAMP DEFAULT now()
+);
+
+CREATE TABLE electors_enriched (
+  id               UUID NOT NULL PRIMARY KEY,
+  ward_code        TEXT NOT NULL,
+  polling_district TEXT NOT NULL,
+  elector_id       TEXT NOT NULL,
+  elector_suffix   TEXT,
+  ern              TEXT NOT NULL,
+  title            TEXT,
+  first_name       TEXT,
+  last_name        TEXT,
+  initial          TEXT,
+  house            TEXT,
+  street           TEXT,
   dob              DATE,
   flag             TEXT,
   modified         TIMESTAMP,

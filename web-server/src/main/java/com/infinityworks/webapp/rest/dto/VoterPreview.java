@@ -9,17 +9,11 @@ import java.util.List;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 public final class VoterPreview {
-    private final Integer totalRoads;
     private final List<Ward> wards;
 
     @JsonCreator
-    public VoterPreview(@JsonProperty("totalRoads") Integer totalRoads, @JsonProperty("wards") List<Ward> wards) {
-        this.totalRoads = totalRoads;
+    public VoterPreview(@JsonProperty("wards") List<Ward> wards) {
         this.wards = wards;
-    }
-
-    public Integer getTotalRoads() {
-        return totalRoads;
     }
 
     public List<Ward> getWards() {

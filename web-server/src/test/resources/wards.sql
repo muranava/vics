@@ -2,7 +2,7 @@ DELETE FROM public.wards;
 
 INSERT INTO public.wards (id, constituency_code, constituency_name, ward_code, ward_name) VALUES
   ('4b27659c-d610-425b-9ad0-036d367d00a6', 'E14000639', 'Cities of London and Westminster', 'E05009288', 'Aldersgate'),
-  ('756cc5c5-7446-4531-8706-4f2d7ec10ad5', 'E14000639', 'Cities of London and Westminster', 'E05009289', 'Aldgate'),
+  ('756cc5c5-7446-4531-8706-4f2d7ec10ad5', 'E14000639', 'Cities of London and Westminster', 'E09', 'Aldgate'),
   ('5d8c523a-1613-4208-be4d-860ad7fb1dd8', 'E14000639', 'Cities of London and Westminster', 'E05009290', 'Bassishaw'),
   ('6449c012-52da-42e0-99c7-5d634049b537', 'E14000639', 'Cities of London and Westminster', 'E05009291', 'Billingsgate'),
   ('5efe78c2-56d5-453c-aaab-67d1f8787617', 'E14000639', 'Cities of London and Westminster', 'E05009292', 'Bishopsgate'),

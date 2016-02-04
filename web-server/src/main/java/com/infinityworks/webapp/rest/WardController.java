@@ -7,6 +7,7 @@ import com.infinityworks.webapp.service.WardService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import static org.springframework.web.bind.annotation.RequestMethod.GET;
@@ -29,7 +30,7 @@ public class WardController {
     }
 
     @RequestMapping(method = GET)
-    public ResponseEntity<?> wardNamesByConstituencyName(String constituency) {
+    public ResponseEntity<?> wardNamesByConstituencyName(@RequestParam(required = true) String constituency) {
         return requestValidator
                 .validate(ConstituencyName.of(constituency))
                 .flatMap(constituencyName -> wardService.findByConstituencyName(constituencyName.getName()))

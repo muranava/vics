@@ -34,7 +34,7 @@ class ElectorPreviewService implements PreviewService {
             wards = electoralWardService.findByConstituencyNameAndWardNames(request.getConstituencyName(), request.getWardNames());
         }
 
-        return wards.map(w -> new VoterPreview(42, w));
+        return wards.map(VoterPreview::new);
     }
 
     private boolean shouldRequestAllWards(ElectorPreviewRequest electorRequest) {

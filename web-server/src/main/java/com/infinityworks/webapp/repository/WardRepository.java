@@ -11,11 +11,7 @@ import java.util.UUID;
 
 @Repository
 public interface WardRepository extends JpaRepository<Ward, UUID> {
-    @Query(nativeQuery = true, value =
-            "SELECT * FROM wards AS w " +
-                    "WHERE UPPER(w.constituency_name) = :constituencyName " +
-                    "ORDER BY w.ward_name ASC")
-    List<Ward> findByConstituencyName(@Param("constituencyName") String constituencyName);
+    List<Ward> findByConstituencyNameIgnoreCase(String constituencyName);
 
     @Query(nativeQuery = true, value =
             "SELECT * FROM wards AS w " +
