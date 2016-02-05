@@ -18,6 +18,9 @@ spring:
       ddl-auto: validate
     database-platform: org.hibernate.dialect.PostgreSQLDialect
 
+canvass:
+  pafApiBaseUrl: http://localhost:9002
+
 logging:
   level:
     com.zaxxer.hikari.HikariConfig: ERROR

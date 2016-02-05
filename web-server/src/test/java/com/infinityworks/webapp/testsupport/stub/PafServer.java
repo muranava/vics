@@ -16,15 +16,14 @@ import static com.google.common.net.HttpHeaders.CONTENT_TYPE;
 /**
  * Wiremock server so the PAF api can be stubbed in tests
  */
-public class PafApi {
-    private static final int PAF_SERVER_PORT = 9006;
-    private final WireMockServer pafMockServer =
-            new WireMockServer(wireMockConfig().port(PAF_SERVER_PORT));
+public class PafServer {
+    private static final int PAF_SERVER_PORT = 9002;
+    private final WireMockServer pafMockServer = new WireMockServer(wireMockConfig().port(PAF_SERVER_PORT));
 
     private WireMock wireMock;
     private final String pafExampleResponse;
 
-    public PafApi() {
+    public PafServer() {
         try {
             pafExampleResponse = Resources.toString(getResource("json/paf-example.json"), UTF_8);
         } catch (IOException e) {
@@ -42,8 +41,8 @@ public class PafApi {
     }
 
     public void willReturnPafForWard(String wardCode) {
-        wireMock.register(get(urlPathMatching("/paf"))
-                .withQueryParam("ward", equalTo(wardCode))
+        String urlPath = String.format("/paf/ward/%s", wardCode);
+        wireMock.register(get(urlPathMatching(urlPath))
                 .willReturn(aResponse()
                         .withStatus(200)
                         .withHeader(CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)

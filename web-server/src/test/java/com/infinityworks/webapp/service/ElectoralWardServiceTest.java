@@ -1,18 +1,23 @@
 package com.infinityworks.webapp.service;
 
 import com.infinityworks.webapp.common.Try;
+import com.infinityworks.webapp.common.lang.StringExtras;
 import com.infinityworks.webapp.domain.Ward;
 import com.infinityworks.webapp.repository.WardRepository;
+import com.infinityworks.webapp.rest.dto.ElectorsByWardAndConstituencyRequest;
+import com.infinityworks.webapp.rest.dto.VoterPreview;
 import org.hibernate.exception.ConstraintViolationException;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.util.Collections;
 import java.util.List;
 
+import static com.infinityworks.webapp.common.lang.StringExtras.toUpperCase;
 import static com.infinityworks.webapp.testsupport.builder.WardBuilder.ward;
 import static java.util.Arrays.asList;
-import static org.hamcrest.Matchers.instanceOf;
-import static org.hamcrest.Matchers.is;
+import static java.util.Collections.singletonList;
+import static org.hamcrest.Matchers.*;
 import static org.junit.Assert.assertThat;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.mock;
@@ -49,5 +54,29 @@ public class ElectoralWardServiceTest {
         assertThat(result.isSuccess(), is(true));
         assertThat(result.get().get(0).getWardName(), is("Willenhall"));
         assertThat(result.get().get(1).getWardName(), is("Binley"));
+    }
+
+    @Test
+    public void returnsAllWardsIfNoWardsSpecified() throws Exception {
+        ElectorsByWardAndConstituencyRequest request = new ElectorsByWardAndConstituencyRequest(null, "Coventry South");
+
+        given(wardRepository.findByConstituencyNameIgnoreCase(request.getConstituencyName().toUpperCase()))
+                .willReturn(singletonList(ward().withConstituencyName("Spon End").build()));
+
+        Try<VoterPreview> result = underTest.findElectorsByWard(request);
+
+        assertThat(result.get().getWards(), hasItem(ward().withConstituencyName("Spon End").build()));
+    }
+
+    @Test
+    public void returnsSpecificWardsIfWardsSpecified() throws Exception {
+        ElectorsByWardAndConstituencyRequest request = new ElectorsByWardAndConstituencyRequest(singletonList("Spon End"), "Coventry South");
+
+        given(wardRepository.findByConstituencyNameAndWardNames(request.getConstituencyName().toUpperCase(), toUpperCase(request.getWardNames())))
+                .willReturn(singletonList(ward().withConstituencyName("Spon End").build()));
+
+        Try<List<Ward>> result = underTest.findByConstituencyNameAndWardNames(request.getConstituencyName(), request.getWardNames());
+
+        assertThat(result.get(), hasItem(ward().withConstituencyName("Spon End").build()));
     }
 }

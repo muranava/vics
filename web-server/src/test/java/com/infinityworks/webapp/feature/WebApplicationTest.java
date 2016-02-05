@@ -2,7 +2,7 @@ package com.infinityworks.webapp.feature;
 
 
 import com.infinityworks.webapp.Application;
-import com.infinityworks.webapp.testsupport.stub.PafApi;
+import com.infinityworks.webapp.testsupport.stub.PafServer;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.runner.RunWith;
@@ -21,7 +21,7 @@ import static org.springframework.test.web.servlet.setup.MockMvcBuilders.webAppC
 @SpringApplicationConfiguration(classes = {Application.class, RepositoryConfiguration.class})
 public abstract class WebApplicationTest {
     protected MockMvc mockMvc;
-    protected final PafApi pafApi = new PafApi();
+    protected final PafServer pafApiStub = new PafServer();
 
     @Autowired
     protected WebApplicationContext context;
@@ -29,11 +29,11 @@ public abstract class WebApplicationTest {
     @Before
     public void setup() {
         mockMvc = webAppContextSetup(context).build();
-        pafApi.start();
+        pafApiStub.start();
     }
 
     @After
     public void tearDown() {
-        pafApi.stop();
+        pafApiStub.stop();
     }
 }

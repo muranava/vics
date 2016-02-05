@@ -2,7 +2,7 @@ package com.infinityworks.webapp.feature.electors;
 
 import com.infinityworks.webapp.domain.Ward;
 import com.infinityworks.webapp.feature.WebApplicationTest;
-import com.infinityworks.webapp.rest.dto.ElectorPreviewRequest;
+import com.infinityworks.webapp.rest.dto.ElectorsByWardAndConstituencyRequest;
 import com.infinityworks.webapp.rest.dto.VoterPreview;
 import org.junit.Test;
 import org.slf4j.Logger;
@@ -33,7 +33,7 @@ public class ElectorsTest extends WebApplicationTest {
     @Test
     public void returnsThePreviewForTheGivenWardsAndConstituency() throws Exception {
         String endpoint = "/elector/preview";
-        ElectorPreviewRequest request = new ElectorPreviewRequest(asList("Upwood and The Raveleys", "Warboys and Bury"), "North West Cambridgeshire");
+        ElectorsByWardAndConstituencyRequest request = new ElectorsByWardAndConstituencyRequest(asList("Upwood and The Raveleys", "Warboys and Bury"), "North West Cambridgeshire");
         String content = objectMapper.writeValueAsString(request);
 
         log.info(content);
@@ -67,7 +67,7 @@ public class ElectorsTest extends WebApplicationTest {
     @Test
     public void returnsEmptyWardsListForTheGivenWardsAndConstituencyIfNotFound() throws Exception {
         String endpoint = "/elector/preview";
-        ElectorPreviewRequest request = new ElectorPreviewRequest(asList("I dont exist", "me neither"), "North West Cambridgeshire");
+        ElectorsByWardAndConstituencyRequest request = new ElectorsByWardAndConstituencyRequest(asList("I dont exist", "me neither"), "North West Cambridgeshire");
         String content = objectMapper.writeValueAsString(request);
 
         log.info(content);

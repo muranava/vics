@@ -1,7 +1,7 @@
 package com.infinityworks.webapp.feature.electors;
 
 import com.infinityworks.webapp.feature.WebApplicationTest;
-import com.infinityworks.webapp.rest.dto.ElectorPreviewRequest;
+import com.infinityworks.webapp.rest.dto.ElectorsByWardAndConstituencyRequest;
 import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -38,7 +38,7 @@ public class ElectorsFaliureScenariosTest extends WebApplicationTest {
     @Test
     public void returnsBadRequestIfConstituencyNameIsEmpty() throws Exception {
         String endpoint = "/elector/preview";
-        ElectorPreviewRequest request = new ElectorPreviewRequest(singletonList("ABC"), "");
+        ElectorsByWardAndConstituencyRequest request = new ElectorsByWardAndConstituencyRequest(singletonList("ABC"), "");
         String requestBody = objectMapper.writeValueAsString(request);
 
         log.info(requestBody);
@@ -55,7 +55,7 @@ public class ElectorsFaliureScenariosTest extends WebApplicationTest {
     @Test
     public void returnsBadRequestIfConstituencyNameIsNotDefined() throws Exception {
         String endpoint = "/elector/preview";
-        ElectorPreviewRequest request = new ElectorPreviewRequest(singletonList("ABC"), null);
+        ElectorsByWardAndConstituencyRequest request = new ElectorsByWardAndConstituencyRequest(singletonList("ABC"), null);
         String content = objectMapper.writeValueAsString(request);
 
         log.info(content);
@@ -72,7 +72,7 @@ public class ElectorsFaliureScenariosTest extends WebApplicationTest {
     @Test
     public void returnsBadRequestIfWardsListContainsNullElement() throws Exception {
         String endpoint = "/elector/preview";
-        ElectorPreviewRequest request = new ElectorPreviewRequest(asList("ABC", null), "constName");
+        ElectorsByWardAndConstituencyRequest request = new ElectorsByWardAndConstituencyRequest(asList("ABC", null), "constName");
         String content = objectMapper.writeValueAsString(request);
 
         log.info(content);

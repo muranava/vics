@@ -1,6 +1,6 @@
 package com.infinityworks.webapp.rest.validation;
 
-import com.infinityworks.webapp.rest.dto.ElectorPreviewRequest;
+import com.infinityworks.webapp.rest.dto.ElectorsByWardAndConstituencyRequest;
 import org.junit.Test;
 
 import javax.validation.ConstraintValidatorContext;
@@ -11,7 +11,7 @@ import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.assertThat;
 import static org.mockito.Mockito.mock;
 
-public class ValidElectorPreviewRequestValidatorTest {
+public class ValidElectorsByWardAndConstituencyRequestValidatorTest {
     private final ValidElectorRequestValidator underTest = new ValidElectorRequestValidator();
     private final ConstraintValidatorContext ctx = mock(ConstraintValidatorContext.class);
 
@@ -22,7 +22,7 @@ public class ValidElectorPreviewRequestValidatorTest {
 
     @Test
     public void returnFalseIfConstituencyNameIsNull() throws Exception {
-        ElectorPreviewRequest request = new ElectorPreviewRequest(null, null);
+        ElectorsByWardAndConstituencyRequest request = new ElectorsByWardAndConstituencyRequest(null, null);
 
         boolean valid = underTest.isValid(request, ctx);
 
@@ -31,7 +31,7 @@ public class ValidElectorPreviewRequestValidatorTest {
 
     @Test
     public void returnFalseIfConstituencyNameIsEmpty() throws Exception {
-        ElectorPreviewRequest request = new ElectorPreviewRequest(asList("Coventry South", "Coventry North"), "");
+        ElectorsByWardAndConstituencyRequest request = new ElectorsByWardAndConstituencyRequest(asList("Coventry South", "Coventry North"), "");
 
         boolean valid = underTest.isValid(request, ctx);
 
@@ -40,7 +40,7 @@ public class ValidElectorPreviewRequestValidatorTest {
 
     @Test
     public void returnTrueIfAllPresent() throws Exception {
-        ElectorPreviewRequest request = new ElectorPreviewRequest(asList("Tile Hill", "Canley"), "Coventry North");
+        ElectorsByWardAndConstituencyRequest request = new ElectorsByWardAndConstituencyRequest(asList("Tile Hill", "Canley"), "Coventry North");
 
         boolean valid = underTest.isValid(request, ctx);
 
@@ -49,7 +49,7 @@ public class ValidElectorPreviewRequestValidatorTest {
 
     @Test
     public void returnTrueIfWardEmptyAndConstituencyPresent() throws Exception {
-        ElectorPreviewRequest request = new ElectorPreviewRequest(emptyList(), "Coventry North");
+        ElectorsByWardAndConstituencyRequest request = new ElectorsByWardAndConstituencyRequest(emptyList(), "Coventry North");
 
         boolean valid = underTest.isValid(request, ctx);
 
@@ -58,7 +58,7 @@ public class ValidElectorPreviewRequestValidatorTest {
 
     @Test
     public void returnFalseIfWardListContainsNullElement() throws Exception {
-        ElectorPreviewRequest request = new ElectorPreviewRequest(asList("A", null, "B"), "Coventry North");
+        ElectorsByWardAndConstituencyRequest request = new ElectorsByWardAndConstituencyRequest(asList("A", null, "B"), "Coventry North");
 
         boolean valid = underTest.isValid(request, ctx);
 

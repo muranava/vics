@@ -7,14 +7,14 @@ import com.infinityworks.webapp.domain.Address;
 import com.infinityworks.webapp.repository.ElectorRepository;
 import com.infinityworks.webapp.repository.EnrichedElectorRepository;
 import com.infinityworks.webapp.rest.dto.ElectorResponse;
-import com.infinityworks.webapp.rest.dto.PrintElectorsRequest;
+import com.infinityworks.webapp.rest.dto.ElectorsByWardsRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
-class ElectorPrintService implements PrintService {
+class ElectorService implements PrintService {
 
     private final ElectorRepository electorRepository;
     private final EnrichedElectorRepository enrichedElectorRepository;
@@ -22,10 +22,10 @@ class ElectorPrintService implements PrintService {
     private final ElectorConverter electorConverter;
 
     @Autowired
-    public ElectorPrintService(ElectorRepository electorRepository,
-                               EnrichedElectorRepository enrichedElectorRepository,
-                               ElectorWithAddressConverter electorWithAddressConverter,
-                               ElectorConverter electorConverter) {
+    public ElectorService(ElectorRepository electorRepository,
+                          EnrichedElectorRepository enrichedElectorRepository,
+                          ElectorWithAddressConverter electorWithAddressConverter,
+                          ElectorConverter electorConverter) {
         this.electorRepository = electorRepository;
         this.enrichedElectorRepository = enrichedElectorRepository;
         this.electorWithAddressConverter = electorWithAddressConverter;
@@ -33,14 +33,14 @@ class ElectorPrintService implements PrintService {
     }
 
     @Override
-    public Try<List<ElectorResponse>> findPafEnrichedElectors(PrintElectorsRequest request) {
+    public Try<List<ElectorResponse>> findPafEnrichedElectors(ElectorsByWardsRequest request) {
         return Try.of(() ->
                 electorRepository.findByWardCodeIn(request.getWardCodes()))
                 .map(electors -> electorConverter.apply(electors, new Address("32a", "Something"))); // FIXME add data from PAF
     }
 
     @Override
-    public Try<List<ElectorResponse>> findLocalElectors(PrintElectorsRequest request) {
+    public Try<List<ElectorResponse>> findLocalElectors(ElectorsByWardsRequest request) {
         return Try.of(() ->
                 enrichedElectorRepository.findByWardCodeInOrderByWardCodeAscStreetAscHouseAsc(request.getWardCodes()))
                 .map(electorWithAddressConverter::apply);

@@ -5,11 +5,11 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.util.List;
 
-public class PrintElectorsRequest {
+public class ElectorsByWardsRequest {
     private final List<String> wardCodes;
 
     @JsonCreator
-    public PrintElectorsRequest(@JsonProperty("wardCodes") List<String> wardCodes) {
+    public ElectorsByWardsRequest(@JsonProperty("wardCodes") List<String> wardCodes) {
         this.wardCodes = wardCodes;
     }
 
