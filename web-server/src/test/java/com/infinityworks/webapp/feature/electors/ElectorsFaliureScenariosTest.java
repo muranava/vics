@@ -26,7 +26,7 @@ public class ElectorsFaliureScenariosTest extends WebApplicationTest {
 
     @Test
     public void returnsBadRequestIfTheBodyIsEmpty() throws Exception {
-        String endpoint = "/elector/preview";
+        String endpoint = "/elector";
 
         ResultActions result = mockMvc.perform(post(endpoint)
                 .accept(APPLICATION_JSON))
@@ -37,7 +37,7 @@ public class ElectorsFaliureScenariosTest extends WebApplicationTest {
 
     @Test
     public void returnsBadRequestIfConstituencyNameIsEmpty() throws Exception {
-        String endpoint = "/elector/preview";
+        String endpoint = "/elector";
         ElectorsByWardAndConstituencyRequest request = new ElectorsByWardAndConstituencyRequest(singletonList("ABC"), "");
         String requestBody = objectMapper.writeValueAsString(request);
 
@@ -54,7 +54,7 @@ public class ElectorsFaliureScenariosTest extends WebApplicationTest {
 
     @Test
     public void returnsBadRequestIfConstituencyNameIsNotDefined() throws Exception {
-        String endpoint = "/elector/preview";
+        String endpoint = "/elector";
         ElectorsByWardAndConstituencyRequest request = new ElectorsByWardAndConstituencyRequest(singletonList("ABC"), null);
         String content = objectMapper.writeValueAsString(request);
 
@@ -71,7 +71,7 @@ public class ElectorsFaliureScenariosTest extends WebApplicationTest {
 
     @Test
     public void returnsBadRequestIfWardsListContainsNullElement() throws Exception {
-        String endpoint = "/elector/preview";
+        String endpoint = "/elector";
         ElectorsByWardAndConstituencyRequest request = new ElectorsByWardAndConstituencyRequest(asList("ABC", null), "constName");
         String content = objectMapper.writeValueAsString(request);
 

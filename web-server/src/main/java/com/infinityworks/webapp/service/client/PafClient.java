@@ -4,8 +4,10 @@ import com.infinityworks.webapp.common.Try;
 import com.infinityworks.webapp.config.CanvassConfig;
 import com.infinityworks.webapp.error.PafApiFailure;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.http.*;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 
@@ -13,6 +15,7 @@ import java.util.List;
 
 import static java.util.Arrays.asList;
 import static org.springframework.http.HttpMethod.GET;
+import static org.springframework.http.HttpStatus.OK;
 
 @Component
 public class PafClient {
@@ -42,7 +45,7 @@ public class PafClient {
     public Try<List<PafRecord>> findByWard(String wardCode) {
         String url = String.format(canvassConfig.getPafApiBaseUrl() + ELECTORS_BY_WARD_ENDPOINT, wardCode);
         ResponseEntity<PafRecord[]> pafResponse = restTemplate.exchange(url, GET, httpEntity, PafRecord[].class);
-        if (pafResponse.getStatusCode() == HttpStatus.OK) {
+        if (pafResponse.getStatusCode() == OK) {
             List<PafRecord> records = asList(pafResponse.getBody());
             return Try.success(records);
         } else {

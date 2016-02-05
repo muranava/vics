@@ -3,7 +3,6 @@ package com.infinityworks.webapp.feature.electors;
 import com.infinityworks.webapp.domain.Ward;
 import com.infinityworks.webapp.feature.WebApplicationTest;
 import com.infinityworks.webapp.rest.dto.ElectorsByWardAndConstituencyRequest;
-import com.infinityworks.webapp.rest.dto.VoterPreview;
 import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -11,6 +10,8 @@ import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.context.jdbc.SqlGroup;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.ResultActions;
+
+import java.util.List;
 
 import static com.infinityworks.webapp.common.Json.objectMapper;
 import static com.infinityworks.webapp.testsupport.builder.WardBuilder.ward;
@@ -25,14 +26,14 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @SqlGroup({
         @Sql(executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD,
-                scripts = {"classpath:drop-create.sql", "classpath:wards.sql", "classpath:electors.sql"})
+                scripts = {"classpath:drop-create.sql", "classpath:wards.sql", "classpath:electors-with-addresses.sql"})
 })
 public class ElectorsTest extends WebApplicationTest {
     private final Logger log = LoggerFactory.getLogger(ElectorsTest.class);
 
     @Test
     public void returnsThePreviewForTheGivenWardsAndConstituency() throws Exception {
-        String endpoint = "/elector/preview";
+        String endpoint = "/elector/local";
         ElectorsByWardAndConstituencyRequest request = new ElectorsByWardAndConstituencyRequest(asList("Upwood and The Raveleys", "Warboys and Bury"), "North West Cambridgeshire");
         String content = objectMapper.writeValueAsString(request);
 
@@ -45,7 +46,7 @@ public class ElectorsTest extends WebApplicationTest {
                 .andDo(print());
 
         MvcResult mvcResult = result.andExpect(status().isOk()).andReturn();
-        VoterPreview preview = objectMapper.readValue(mvcResult.getResponse().getContentAsString(), VoterPreview.class);
+        List<Ward> wards = asList(objectMapper.readValue(mvcResult.getResponse().getContentAsString(), Ward[].class));
 
         Ward upwood = ward().withWardName("Upwood and The Raveleys")
                 .withWardCode("E05008584")
@@ -59,14 +60,14 @@ public class ElectorsTest extends WebApplicationTest {
                 .withConstituencyCode("E14000855")
                 .build();
 
-        assertThat(preview.getWards(), hasSize(2));
-        assertThat(preview.getWards(), hasItem(upwood));
-        assertThat(preview.getWards(), hasItem(warboys));
+        assertThat(wards, hasSize(2));
+        assertThat(wards, hasItem(upwood));
+        assertThat(wards, hasItem(warboys));
     }
 
     @Test
     public void returnsEmptyWardsListForTheGivenWardsAndConstituencyIfNotFound() throws Exception {
-        String endpoint = "/elector/preview";
+        String endpoint = "/elector/local";
         ElectorsByWardAndConstituencyRequest request = new ElectorsByWardAndConstituencyRequest(asList("I dont exist", "me neither"), "North West Cambridgeshire");
         String content = objectMapper.writeValueAsString(request);
 
@@ -79,8 +80,8 @@ public class ElectorsTest extends WebApplicationTest {
                 .andDo(print());
 
         MvcResult mvcResult = result.andExpect(status().isOk()).andReturn();
-        VoterPreview preview = objectMapper.readValue(mvcResult.getResponse().getContentAsString(), VoterPreview.class);
+        List<Ward> wards = asList(objectMapper.readValue(mvcResult.getResponse().getContentAsString(), Ward[].class));
 
-        assertThat(preview.getWards(), hasSize(0));
+        assertThat(wards, hasSize(0));
     }
 }

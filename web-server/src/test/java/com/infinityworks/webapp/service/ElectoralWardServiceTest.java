@@ -1,16 +1,13 @@
 package com.infinityworks.webapp.service;
 
 import com.infinityworks.webapp.common.Try;
-import com.infinityworks.webapp.common.lang.StringExtras;
 import com.infinityworks.webapp.domain.Ward;
 import com.infinityworks.webapp.repository.WardRepository;
 import com.infinityworks.webapp.rest.dto.ElectorsByWardAndConstituencyRequest;
-import com.infinityworks.webapp.rest.dto.VoterPreview;
 import org.hibernate.exception.ConstraintViolationException;
 import org.junit.Before;
 import org.junit.Test;
 
-import java.util.Collections;
 import java.util.List;
 
 import static com.infinityworks.webapp.common.lang.StringExtras.toUpperCase;
@@ -54,18 +51,6 @@ public class ElectoralWardServiceTest {
         assertThat(result.isSuccess(), is(true));
         assertThat(result.get().get(0).getWardName(), is("Willenhall"));
         assertThat(result.get().get(1).getWardName(), is("Binley"));
-    }
-
-    @Test
-    public void returnsAllWardsIfNoWardsSpecified() throws Exception {
-        ElectorsByWardAndConstituencyRequest request = new ElectorsByWardAndConstituencyRequest(null, "Coventry South");
-
-        given(wardRepository.findByConstituencyNameIgnoreCase(request.getConstituencyName().toUpperCase()))
-                .willReturn(singletonList(ward().withConstituencyName("Spon End").build()));
-
-        Try<VoterPreview> result = underTest.findElectorsByWard(request);
-
-        assertThat(result.get().getWards(), hasItem(ward().withConstituencyName("Spon End").build()));
     }
 
     @Test

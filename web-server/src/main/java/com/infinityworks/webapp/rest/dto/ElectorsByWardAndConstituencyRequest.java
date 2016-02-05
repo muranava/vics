@@ -1,13 +1,10 @@
 package com.infinityworks.webapp.rest.dto;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.infinityworks.webapp.rest.validation.ValidElectorRequest;
 
 import java.util.List;
-
-import static com.infinityworks.webapp.common.lang.ListExtras.isNullOrEmpty;
 
 /**
  * Represents a request to get all voter details in the given wards
@@ -31,10 +28,5 @@ public final class ElectorsByWardAndConstituencyRequest {
 
     public String getConstituencyName() {
         return constituencyName;
-    }
-
-    @JsonIgnore
-    public boolean shouldSearchAllWards() {
-        return isNullOrEmpty(wardNames);
     }
 }

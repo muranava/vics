@@ -8,7 +8,6 @@ import org.junit.Before;
 import org.junit.Test;
 import org.springframework.web.client.RestTemplate;
 
-import java.awt.*;
 import java.util.List;
 
 import static org.hamcrest.MatcherAssert.assertThat;

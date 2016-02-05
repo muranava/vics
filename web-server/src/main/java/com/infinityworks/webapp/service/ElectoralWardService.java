@@ -1,18 +1,14 @@
 package com.infinityworks.webapp.service;
 
 import com.infinityworks.webapp.common.Try;
-import com.infinityworks.webapp.common.lang.StringExtras;
 import com.infinityworks.webapp.domain.Ward;
 import com.infinityworks.webapp.repository.WardRepository;
-import com.infinityworks.webapp.rest.dto.ElectorsByWardAndConstituencyRequest;
-import com.infinityworks.webapp.rest.dto.VoterPreview;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 import static com.infinityworks.webapp.common.lang.StringExtras.toUpperCase;
-import static java.util.stream.Collectors.toList;
 
 /**
  * Services to supply electoral wards and constituencies (static data)
@@ -25,17 +21,6 @@ class ElectoralWardService implements WardService {
     @Autowired
     public ElectoralWardService(WardRepository wardRepository) {
         this.wardRepository = wardRepository;
-    }
-
-    @Override
-    public Try<VoterPreview> findElectorsByWard(ElectorsByWardAndConstituencyRequest request) {
-        Try<List<Ward>> wards;
-        if (request.shouldSearchAllWards()) {
-            wards = findByConstituencyName(request.getConstituencyName().toUpperCase());
-        } else {
-            wards = findByConstituencyNameAndWardNames(request.getConstituencyName().toUpperCase(), request.getWardNames());
-        }
-        return wards.map(VoterPreview::new);
     }
 
     @Override
