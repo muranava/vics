@@ -24,7 +24,6 @@ public class HealthCheckTest extends WebApplicationTest {
                 .andDo(print());
 
         response.andExpect(status().isOk())
-                .andExpect(jsonPath("status", is("UP")))
-                .andExpect(jsonPath("diskSpace.free", is(greaterThan(0L))));
+                .andExpect(jsonPath("status", is("UP")));
     }
 }
