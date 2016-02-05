@@ -42,19 +42,19 @@ public class ElectorController {
                 .fold(errorHandler::mapToResponseEntity, ResponseEntity::ok);
     }
 
-    @RequestMapping(value = "/print")
-    public ResponseEntity<?> printElectors(@RequestBody PrintElectorsRequest printRequest) {
+    @RequestMapping(method = POST)
+    public ResponseEntity<?> printElectorsWithPafAddresses(@RequestBody PrintElectorsRequest printRequest) {
         return requestValidator
                 .validate(printRequest)
-                .flatMap(printService::printElectors)
+                .flatMap(printService::findPafEnrichedElectors)
                 .fold(errorHandler::mapToResponseEntity, ResponseEntity::ok);
     }
 
-    @RequestMapping(value = "/print/enriched")
-    public ResponseEntity<?> printEnrichedElectors(@RequestBody PrintElectorsRequest printRequest) {
+    @RequestMapping(value = "/local", method = POST)
+    public ResponseEntity<?> printElectorsLocal(@RequestBody PrintElectorsRequest printRequest) {
         return requestValidator
                 .validate(printRequest)
-                .flatMap(printService::printEnrichedElectors)
+                .flatMap(printService::findLocalElectors)
                 .fold(errorHandler::mapToResponseEntity, ResponseEntity::ok);
     }
 }

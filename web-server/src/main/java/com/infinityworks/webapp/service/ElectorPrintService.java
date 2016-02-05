@@ -33,14 +33,14 @@ class ElectorPrintService implements PrintService {
     }
 
     @Override
-    public Try<List<ElectorResponse>> printElectors(PrintElectorsRequest request) {
+    public Try<List<ElectorResponse>> findPafEnrichedElectors(PrintElectorsRequest request) {
         return Try.of(() ->
                 electorRepository.findByWardCodeIn(request.getWardCodes()))
                 .map(electors -> electorConverter.apply(electors, new Address("32a", "Something"))); // FIXME add data from PAF
     }
 
     @Override
-    public Try<List<ElectorResponse>> printEnrichedElectors(PrintElectorsRequest request) {
+    public Try<List<ElectorResponse>> findLocalElectors(PrintElectorsRequest request) {
         return Try.of(() ->
                 enrichedElectorRepository.findByWardCodeInOrderByWardCodeAscStreetAscHouseAsc(request.getWardCodes()))
                 .map(electorWithAddressConverter::apply);

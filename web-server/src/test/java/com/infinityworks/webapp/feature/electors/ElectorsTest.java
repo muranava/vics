@@ -1,6 +1,7 @@
-package com.infinityworks.webapp.feature;
+package com.infinityworks.webapp.feature.electors;
 
 import com.infinityworks.webapp.domain.Ward;
+import com.infinityworks.webapp.feature.WebApplicationTest;
 import com.infinityworks.webapp.rest.dto.ElectorPreviewRequest;
 import com.infinityworks.webapp.rest.dto.VoterPreview;
 import org.junit.Test;
@@ -14,7 +15,6 @@ import org.springframework.test.web.servlet.ResultActions;
 import static com.infinityworks.webapp.common.Json.objectMapper;
 import static com.infinityworks.webapp.testsupport.builder.WardBuilder.ward;
 import static java.util.Arrays.asList;
-import static java.util.Collections.singletonList;
 import static org.hamcrest.Matchers.hasItem;
 import static org.hamcrest.collection.IsCollectionWithSize.hasSize;
 import static org.junit.Assert.assertThat;
@@ -29,68 +29,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 })
 public class ElectorsTest extends WebApplicationTest {
     private final Logger log = LoggerFactory.getLogger(ElectorsTest.class);
-
-    @Test
-    public void returnsBadRequestIfTheBodyIsEmpty() throws Exception {
-        String endpoint = "/elector/preview";
-
-        ResultActions result = mockMvc.perform(post(endpoint)
-                .accept(APPLICATION_JSON))
-                .andDo(print());
-
-        result.andExpect(status().isBadRequest());
-    }
-
-    @Test
-    public void returnsBadRequestIfConstituencyNameIsEmpty() throws Exception {
-        String endpoint = "/elector/preview";
-        ElectorPreviewRequest request = new ElectorPreviewRequest(singletonList("ABC"), "");
-        String requestBody = objectMapper.writeValueAsString(request);
-
-        log.info(requestBody);
-
-        ResultActions result = mockMvc.perform(post(endpoint)
-                .content(requestBody)
-                .contentType(APPLICATION_JSON)
-                .accept(APPLICATION_JSON))
-                .andDo(print());
-
-        result.andExpect(status().isBadRequest());
-    }
-
-    @Test
-    public void returnsBadRequestIfConstituencyNameIsNotDefined() throws Exception {
-        String endpoint = "/elector/preview";
-        ElectorPreviewRequest request = new ElectorPreviewRequest(singletonList("ABC"), null);
-        String content = objectMapper.writeValueAsString(request);
-
-        log.info(content);
-
-        ResultActions result = mockMvc.perform(post(endpoint)
-                .content(content)
-                .contentType(APPLICATION_JSON)
-                .accept(APPLICATION_JSON))
-                .andDo(print());
-
-        result.andExpect(status().isBadRequest());
-    }
-
-    @Test
-    public void returnsBadRequestIfWardsListContainsNullElement() throws Exception {
-        String endpoint = "/elector/preview";
-        ElectorPreviewRequest request = new ElectorPreviewRequest(asList("ABC", null), "constName");
-        String content = objectMapper.writeValueAsString(request);
-
-        log.info(content);
-
-        ResultActions result = mockMvc.perform(post(endpoint)
-                .content(content)
-                .contentType(APPLICATION_JSON)
-                .accept(APPLICATION_JSON))
-                .andDo(print());
-
-        result.andExpect(status().isBadRequest());
-    }
 
     @Test
     public void returnsThePreviewForTheGivenWardsAndConstituency() throws Exception {

@@ -22,8 +22,8 @@ angular
          * @param {String[]} wardCodes
          * @return {Object[]}
          */
-        api.retrieveElectorsByWards = function(wardCodes) {
-            return $http.post(apiUrl + '/elector/print', {
+        api.retrievePafElectorsByWards = function(wardCodes) {
+            return $http.post(apiUrl + '/elector', {
                 wardCodes: wardCodes
             });
         };
@@ -33,8 +33,8 @@ angular
          * @param {String[]} wardCodes
          * @return {Object[]}
          */
-        api.retrieveEnrichedElectorsByWards = function(wardCodes) {
-            return $http.post(apiUrl + '/elector/print/enriched', {
+        api.retrieveLocalElectorsByWards = function(wardCodes) {
+            return $http.post(apiUrl + '/elector/local', {
                 wardCodes: wardCodes
             });
         };

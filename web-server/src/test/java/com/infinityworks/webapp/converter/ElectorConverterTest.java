@@ -41,7 +41,5 @@ public class ElectorConverterTest {
         assertThat(amyMapped.getStreet(), is("Malibu Drive"));
         assertThat(amyMapped.getWardCode(), is("WC"));
         assertThat(amyMapped.getTitle(), is("Ms"));
-
-
     }
 }

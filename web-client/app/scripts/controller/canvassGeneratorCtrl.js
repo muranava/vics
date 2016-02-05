@@ -67,7 +67,7 @@ angular
                     return ward.wardCode;
                 });
 
-                electorService.retrieveEnrichedElectorsByWards(wardCodes)
+                electorService.retrieveLocalElectorsByWards(wardCodes)
                     .success(function (electors) {
                         if (!_.isEmpty(electors)) {
                             createPdf(electors);
