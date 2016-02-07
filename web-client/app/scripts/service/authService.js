@@ -1,26 +1,43 @@
+/**
+ * Service to perform authentication operations
+ */
 angular
   .module('canvass')
-  .factory("authService", function ($http, $q, $window, apiUrl) {
-    var userInfo;
+  .service("authService", function ($http, $q, $window, apiUrl, $rootScope) {
+    var api = {};
 
-    function login() {
-      var deferred = $q.defer();
-
-      $http({
-        url: apiUrl + '/user/login/test',
-        method: 'GET',
+    api.login = function (username, password) {
+      return $http({
+        url: apiUrl + '/user/login',
+        method: 'POST',
+        headers: {
+          'Authorization': generateAuthHeader(username, password)
+        },
         withCredentials: true,
         xsrfCookieName: 'SESSION'
-      }).then(function (result) {
-        deferred.resolve(userInfo);
-      }, function (error) {
-        deferred.reject(error);
-      });
+      })
+    };
 
-      return deferred.promise;
+    api.test = function () {
+      return $http({
+        url: apiUrl + '/user/login/test',
+        method: 'GET',
+        withCredentials: true
+      });
+    };
+
+    function generateAuthHeader(username, password) {
+      var base64 = btoa(username + ":" + password);
+      return "Basic " + base64;
     }
 
-    return {
-      login: login
+    api.logout = function () {
+      return $http({
+        url: apiUrl + '/user/logout',
+        method: 'POST',
+        withCredentials: true
+      });
     };
+
+    return api;
   });

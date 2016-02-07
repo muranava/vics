@@ -1,0 +1,47 @@
+<section>
+  <div class="section-header">
+    <ol class="breadcrumb">
+      <li class="active">Login</li>
+    </ol>
+  </div>
+  <div class="section-body contain-lg">
+
+    <div class="row">
+      <div class="col-sm-6">
+        <br/>
+        <br/><br/>
+        <form class="form" accept-charset="utf-8" ng-submit="login()">
+          <div class="form-group">
+            <input type="text" class="form-control" id="username" ng-model="credentials.username">
+            <label for="username">Username</label>
+          </div>
+          <div class="form-group">
+            <input type="password" class="form-control" id="password" name="password" ng-model="credentials.password">
+            <label for="password">Password</label>
+            <p class="help-block"><a href="#">Forgotten?</a></p>
+          </div>
+          <br/>
+          <div class="row">
+            <div class="col-xs-6 text-left">
+              <div class="checkbox checkbox-inline checkbox-styled">
+                <label>
+                  <input type="checkbox"> <span>Remember me</span>
+                </label>
+              </div>
+            </div><!--end .col -->
+            <div class="col-xs-6 text-right">
+              <button class="btn btn-primary btn-raised" type="submit">Login</button>
+            </div><!--end .col -->
+          </div><!--end .row -->
+        </form>
+      </div><!--end .col -->
+      <div class="col-sm-5 col-sm-offset-1 text-center">
+        <br><br>
+        <h3 class="text-light">
+          No account yet?
+        </h3>
+        <a class="btn btn-block btn-raised btn-primary" href="#" ng-click="logout()">Sign up here</a>
+      </div><!--end .col -->
+    </div><!--end .row -->
+  </div><!--end .card-body -->
+</section>

@@ -11,7 +11,11 @@ angular
          * @returns {Promise<Object>} the health status
          */
         api.retrieveOwnHealthStatus = function() {
-            return $http.get(apiUrl + '/health');
+          return $http({
+            method: 'GET',
+            url: apiUrl + '/health',
+            withCredentials: true
+          });
         };
 
         return api;

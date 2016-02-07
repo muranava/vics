@@ -8,8 +8,8 @@ import javax.persistence.*;
 @Entity
 @Table(name = "users")
 public class User extends BaseEntity {
-    @Column(name = "email", nullable = false, unique = true)
-    private String email;
+    @Column(name = "username", nullable = false, unique = true)
+    private String username;
 
     @Column(name = "password_hash", nullable = false)
     private String passwordHash;
@@ -18,12 +18,12 @@ public class User extends BaseEntity {
     @Enumerated(EnumType.STRING)
     private Role role;
 
-    public String getEmail() {
-        return email;
+    public String getUsername() {
+        return username;
     }
 
-    public void setEmail(String email) {
-        this.email = email;
+    public void setUsername(String username) {
+        this.username = username;
     }
 
     public String getPasswordHash() {
@@ -47,20 +47,20 @@ public class User extends BaseEntity {
         if (this == o) return true;
         if (!(o instanceof User)) return false;
         User user = (User) o;
-        return Objects.equal(email, user.email) &&
+        return Objects.equal(username, user.username) &&
                 Objects.equal(passwordHash, user.passwordHash) &&
                 role == user.role;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hashCode(email, passwordHash, role);
+        return Objects.hashCode(username, passwordHash, role);
     }
 
     @Override
     public String toString() {
         return MoreObjects.toStringHelper(this)
-                .add("email", email)
+                .add("username", username)
                 .add("passwordHash", passwordHash)
                 .add("role", role)
                 .toString();

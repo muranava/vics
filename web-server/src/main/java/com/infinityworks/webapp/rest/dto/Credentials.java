@@ -3,14 +3,14 @@ package com.infinityworks.webapp.rest.dto;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-public class LoginRequest {
+public class Credentials {
     private final String username;
     private final String password;
 
     @JsonCreator
-    public LoginRequest(@JsonProperty("password") String password, @JsonProperty("username") String username) {
-        this.password = password;
+    public Credentials(@JsonProperty("username") String username, @JsonProperty("password") String password) {
         this.username = username;
+        this.password = password;
     }
 
     public String getUsername() {

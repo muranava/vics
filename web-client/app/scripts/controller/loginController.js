@@ -1,44 +1,32 @@
 angular
   .module('canvass')
-  .controller('loginController', function ($scope, $http, $location, apiUrl) {
+  .controller('loginController', function ($scope, $http, $location, apiUrl, authService) {
 
+    $scope.failedLogin = false;
     $scope.credentials = {};
 
     $scope.login = function () {
-      $http({
-        url: apiUrl + '/user/login',
-        method: 'POST',
-        headers: {
-          'Authorization': undefined
-        },
-        withCredentials: true,
-        xsrfCookieName: 'SESSION'
-      })
+      $scope.failedLogin = false;
+      authService.login($scope.credentials.username, $scope.credentials.password)
         .success(function (response) {
-          console.log(response)
           $http({
             url: apiUrl + '/user/login/test',
             method: 'GET',
             withCredentials: true
           })
             .success(function (d) {
-              console.log(d)
-            })
+              $location.path('/dashboard');
+            });
         })
         .error(function (err) {
-          console.error(err);
+          $scope.failedLogin = true;
         });
     };
 
     $scope.logout = function () {
-      $http({
-        url: apiUrl + '/user/logout',
-        method: 'POST',
-        withCredentials: true,
-        xsrfCookieName: 'SESSION'
-      })
+        authService.logout()
         .success(function (response) {
-          console.log(response)
+          console.log(response);
           $http({
             url: apiUrl + '/user/login/test',
             method: 'GET',

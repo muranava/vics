@@ -1,4 +1,4 @@
-package com.infinityworks.webapp.config;
+package com.infinityworks.webapp.security;
 
 import com.infinityworks.webapp.service.JpaUserDetailsService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,7 +29,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        http.csrf().disable()
+        http
+            .csrf().disable()
             .sessionManagement()
                 .maximumSessions(1)
                 .maxSessionsPreventsLogin(true)
