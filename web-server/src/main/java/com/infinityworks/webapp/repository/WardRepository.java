@@ -13,6 +13,9 @@ import java.util.UUID;
 public interface WardRepository extends JpaRepository<Ward, UUID> {
     List<Ward> findByConstituencyNameIgnoreCase(String constituencyName);
 
+    @Query(nativeQuery = true, value = "SELECT DISTINCT(w.constituency_name) FROM wards AS w")
+    List<String> findAllConstituencyNames();
+
     @Query(nativeQuery = true, value =
             "SELECT * FROM wards AS w " +
                     "WHERE UPPER(w.constituency_name) = :constituencyName " +

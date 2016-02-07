@@ -1,6 +1,7 @@
 package com.infinityworks.webapp.feature.electors;
 
 import com.infinityworks.webapp.feature.WebApplicationTest;
+import org.junit.Ignore;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.context.jdbc.SqlGroup;
 
@@ -8,6 +9,7 @@ import org.springframework.test.context.jdbc.SqlGroup;
         @Sql(executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD,
                 scripts = {"classpath:drop-create.sql", "classpath:wards.sql", "classpath:electors-with-addresses.sql"})
 })
+@Ignore
 public class ElectorsTest extends WebApplicationTest {
 
 }

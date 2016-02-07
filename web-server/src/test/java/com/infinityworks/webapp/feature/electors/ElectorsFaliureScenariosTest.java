@@ -13,6 +13,7 @@ import static com.infinityworks.webapp.common.Json.objectMapper;
 import static java.util.Arrays.asList;
 import static java.util.Collections.singletonList;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
+import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -29,6 +30,8 @@ public class ElectorsFaliureScenariosTest extends WebApplicationTest {
         String endpoint = "/elector";
 
         ResultActions result = mockMvc.perform(post(endpoint)
+                .with(authenticatedUser())
+                .with(csrf())
                 .accept(APPLICATION_JSON))
                 .andDo(print());
 
@@ -44,6 +47,8 @@ public class ElectorsFaliureScenariosTest extends WebApplicationTest {
         log.info(requestBody);
 
         ResultActions result = mockMvc.perform(post(endpoint)
+                .with(authenticatedUser())
+                .with(csrf())
                 .content(requestBody)
                 .contentType(APPLICATION_JSON)
                 .accept(APPLICATION_JSON))
@@ -61,6 +66,8 @@ public class ElectorsFaliureScenariosTest extends WebApplicationTest {
         log.info(content);
 
         ResultActions result = mockMvc.perform(post(endpoint)
+                .with(authenticatedUser())
+                .with(csrf())
                 .content(content)
                 .contentType(APPLICATION_JSON)
                 .accept(APPLICATION_JSON))
@@ -78,6 +85,8 @@ public class ElectorsFaliureScenariosTest extends WebApplicationTest {
         log.info(content);
 
         ResultActions result = mockMvc.perform(post(endpoint)
+                .with(authenticatedUser())
+                .with(csrf())
                 .content(content)
                 .contentType(APPLICATION_JSON)
                 .accept(APPLICATION_JSON))

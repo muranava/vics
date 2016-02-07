@@ -10,7 +10,7 @@
     <packaging>pom</packaging>
 
     <modules>
-        <module>data</module>
+        <module>tools</module>
         <module>web-server</module>
     </modules>
 
@@ -27,16 +27,15 @@
         <hibernate-validator.version>5.2.2.Final</hibernate-validator.version>
         <hikaricp.version>2.4.3</hikaricp.version>
         <javax-persistence-api.version>1.0.2</javax-persistence-api.version>
-        <javas-lang.version>2.0.0-RC3</javas-lang.version>
         <jackson.version>2.6.3</jackson.version>
         <postgresql.version>9.3-1100-jdbc41</postgresql.version>
         <spring-boot.version>1.3.2.RELEASE</spring-boot.version>
+        <spring-security-test.version>4.0.3.RELEASE</spring-security-test.version>
         <wiremock.version>1.57</wiremock.version>
 
         <commons-csv.version>1.2</commons-csv.version>
         <json-path.version>2.1.0</json-path.version>
 
-        <maven-liquibase-plugin.version>3.0.5</maven-liquibase-plugin.version>
         <maven-compiler-plugin.version>3.3</maven-compiler-plugin.version>
         <maven-source-plugin.version>2.4</maven-source-plugin.version>
         <maven-dependency-plugin.version>2.10</maven-dependency-plugin.version>
@@ -120,7 +119,7 @@
             <dependency>
                 <groupId>org.springframework.security</groupId>
                 <artifactId>spring-security-test</artifactId>
-                <version>4.0.3.RELEASE</version>
+                <version>${spring-security-test.version}</version>
             </dependency>
             <dependency>
                 <groupId>org.springframework.boot</groupId>

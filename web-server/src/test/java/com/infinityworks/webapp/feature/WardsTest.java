@@ -23,6 +23,7 @@ import static org.hamcrest.collection.IsCollectionWithSize.hasSize;
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertThat;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
+import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
@@ -44,6 +45,7 @@ public class WardsTest extends WebApplicationTest {
         log.info(content);
 
         ResultActions result = mockMvc.perform(post(endpoint)
+                .with(authenticatedUser()).with(csrf().asHeader())
                 .content(content)
                 .contentType(APPLICATION_JSON)
                 .accept(APPLICATION_JSON))
@@ -78,6 +80,7 @@ public class WardsTest extends WebApplicationTest {
         log.info(content);
 
         ResultActions result = mockMvc.perform(post(endpoint)
+                .with(authenticatedUser()).with(csrf().asHeader())
                 .content(content)
                 .contentType(APPLICATION_JSON)
                 .accept(APPLICATION_JSON))
@@ -95,6 +98,7 @@ public class WardsTest extends WebApplicationTest {
         String endpoint = format("/ward?constituency=%s", name);
 
         ResultActions response = mockMvc.perform(get(endpoint)
+                .with(authenticatedUser())
                 .accept(MediaType.APPLICATION_JSON))
                 .andDo(print());
 
@@ -114,6 +118,7 @@ public class WardsTest extends WebApplicationTest {
         String endpoint = format("/ward?constituency=%s", name);
 
         ResultActions response = mockMvc.perform(get(endpoint)
+                .with(authenticatedUser())
                 .accept(MediaType.APPLICATION_JSON))
                 .andDo(print());
 
@@ -129,6 +134,7 @@ public class WardsTest extends WebApplicationTest {
         String endpoint = "/ward";
 
         ResultActions response = mockMvc.perform(get(endpoint)
+                .with(authenticatedUser())
                 .accept(MediaType.APPLICATION_JSON))
                 .andDo(print());
 
@@ -140,6 +146,7 @@ public class WardsTest extends WebApplicationTest {
         String endpoint = "/ward?constituency=A";
 
         ResultActions response = mockMvc.perform(get(endpoint)
+                .with(authenticatedUser())
                 .accept(MediaType.APPLICATION_JSON))
                 .andDo(print());
 
@@ -151,6 +158,7 @@ public class WardsTest extends WebApplicationTest {
         String endpoint = "/ward?constituency=" + new String(new char[70]).replace("\0", "*");
 
         ResultActions response = mockMvc.perform(get(endpoint)
+                .with(authenticatedUser())
                 .accept(MediaType.APPLICATION_JSON))
                 .andDo(print());
 

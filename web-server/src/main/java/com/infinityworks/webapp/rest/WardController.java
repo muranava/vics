@@ -34,6 +34,13 @@ public class WardController {
     }
 
     @PreAuthorize("isAuthenticated()")
+    @RequestMapping(method = GET, value = "/constituency")
+    public ResponseEntity<?> allConstituencies() {
+        return wardService.findAllConstituencyNames()
+                .fold(errorHandler::mapToResponseEntity, ResponseEntity::ok);
+    }
+
+    @PreAuthorize("isAuthenticated()")
     @RequestMapping(method = GET)
     public ResponseEntity<?> wardsByConstituencyName(@RequestParam(required = true) String constituency) {
         return requestValidator

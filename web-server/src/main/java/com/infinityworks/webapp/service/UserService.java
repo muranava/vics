@@ -26,11 +26,11 @@ public class UserService {
     }
 
     public Optional<User> getUserByEmail(String email) {
-        return userRepository.findOneByEmail(email);
+        return userRepository.findOneByUsername(email);
     }
 
     public Collection<User> getAllUsers() {
-        return userRepository.findAll(new Sort("email"));
+        return userRepository.findAll(new Sort("username"));
     }
 
     public User create(CreateUserRequest request) {

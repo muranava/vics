@@ -30,4 +30,8 @@ public class WardService {
     public Try<List<Ward>> findByConstituencyNameAndWardNames(String constituencyName, List<String> wardNames) {
         return Try.of(() -> wardRepository.findByConstituencyNameAndWardNames(constituencyName.toUpperCase(), toUpperCase(wardNames)));
     }
+
+    public Try<List<String>> findAllConstituencyNames() {
+        return Try.of(wardRepository::findAllConstituencyNames);
+    }
 }
