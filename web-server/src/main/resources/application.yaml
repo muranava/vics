@@ -3,6 +3,10 @@ server:
   port: 8090
 
 spring:
+  redis:
+    host: localhost
+    password: secret
+    port: 6379
   datasource:
     url: jdbc:postgresql://localhost:5432/canvass
     username: postgres
@@ -23,6 +27,7 @@ canvass:
 
 logging:
   level:
+    org.springframework.security: DEBUG
     com.zaxxer.hikari.HikariConfig: ERROR
     com.infinityworks.webapp: ERROR
     org.hibernate.SQL: DEBUG

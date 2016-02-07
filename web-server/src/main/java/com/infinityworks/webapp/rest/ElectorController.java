@@ -3,7 +3,7 @@ package com.infinityworks.webapp.rest;
 import com.infinityworks.webapp.common.RequestValidator;
 import com.infinityworks.webapp.error.ErrorHandler;
 import com.infinityworks.webapp.rest.dto.ElectorsByWardsRequest;
-import com.infinityworks.webapp.service.PrintService;
+import com.infinityworks.webapp.service.ElectorService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -17,12 +17,12 @@ import static org.springframework.web.bind.annotation.RequestMethod.POST;
 public class ElectorController {
 
     private final RequestValidator requestValidator;
-    private final PrintService printService;
+    private final ElectorService printService;
     private final ErrorHandler errorHandler;
 
     @Autowired
     public ElectorController(RequestValidator requestValidator,
-                             PrintService printService,
+                             ElectorService printService,
                              ErrorHandler errorHandler) {
         this.requestValidator = requestValidator;
         this.printService = printService;

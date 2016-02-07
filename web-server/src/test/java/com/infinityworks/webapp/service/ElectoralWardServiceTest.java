@@ -21,12 +21,12 @@ import static org.mockito.Mockito.mock;
 
 public class ElectoralWardServiceTest {
     private WardRepository wardRepository;
-    private ElectoralWardService underTest;
+    private WardService underTest;
 
     @Before
     public void setUp() throws Exception {
         wardRepository = mock(WardRepository.class);
-        underTest = new ElectoralWardService(wardRepository);
+        underTest = new WardService(wardRepository);
     }
 
     @Test

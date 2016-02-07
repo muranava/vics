@@ -11,7 +11,7 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
-class ElectorService implements PrintService {
+public class ElectorService {
 
     private final EnrichedElectorRepository enrichedElectorRepository;
     private final ElectorWithAddressConverter electorWithAddressConverter;
@@ -23,12 +23,10 @@ class ElectorService implements PrintService {
         this.electorWithAddressConverter = electorWithAddressConverter;
     }
 
-    @Override
     public Try<List<ElectorResponse>> findPafEnrichedElectors(ElectorsByWardsRequest request) {
         throw new UnsupportedOperationException("NYI");
     }
 
-    @Override
     public Try<List<ElectorResponse>> findLocalElectors(ElectorsByWardsRequest request) {
         return Try.of(() ->
                 enrichedElectorRepository.findByWardCodeInOrderByWardCodeAscStreetAscHouseAsc(request.getWardCodes()))

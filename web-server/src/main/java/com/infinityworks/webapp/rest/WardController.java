@@ -7,6 +7,7 @@ import com.infinityworks.webapp.rest.dto.ElectorsByWardAndConstituencyRequest;
 import com.infinityworks.webapp.service.WardService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -32,6 +33,7 @@ public class WardController {
         this.requestValidator = requestValidator;
     }
 
+    @PreAuthorize("isAuthenticated()")
     @RequestMapping(method = GET)
     public ResponseEntity<?> wardsByConstituencyName(@RequestParam(required = true) String constituency) {
         return requestValidator
@@ -40,6 +42,7 @@ public class WardController {
                 .fold(errorHandler::mapToResponseEntity, ResponseEntity::ok);
     }
 
+    @PreAuthorize("isAuthenticated()")
     @RequestMapping(method = POST)
     public ResponseEntity<?> wardsByWardNamesAndConstituencyName(@RequestBody ElectorsByWardAndConstituencyRequest electorRequest) {
         return requestValidator

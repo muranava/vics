@@ -9,7 +9,7 @@ import org.springframework.stereotype.Service;
 import java.util.Random;
 
 @Service
-public class PafAddressService implements AddressService {
+public class PafAddressService {
 
     private final PafClient pafClient;
 
@@ -18,7 +18,6 @@ public class PafAddressService implements AddressService {
         this.pafClient = pafClient;
     }
 
-    @Override
     public Try<Address> findAddress() {
         Random r = new Random();
         return Try.of(() -> new Address(String.valueOf(r.nextInt()), null));

@@ -63,7 +63,7 @@ public class Config {
     }
 
     @Bean
-    public PropertySourcesPlaceholderConfigurer configurer() {
+    public static PropertySourcesPlaceholderConfigurer configurer() {
         return new PropertySourcesPlaceholderConfigurer();
     }
 
