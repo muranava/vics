@@ -44,10 +44,11 @@ angular
      * Searches for wards within the selected constituency
      */
     $scope.onSearchWards = function () {
-      electorService.previewVotersByWards($scope.constituencySearchModel, [$scope.wardSearchModel])
-        .success(function (preview) {
-          if (!_.isEmpty(preview.wards)) {
-            buildPreviewPanel(preview);
+      var selectedWard = _.find($scope.wards, {wardName: $scope.wardSearchModel});
+      electorService.previewVotersByWards($scope.constituencySearchModel, [selectedWard.wardCode])
+        .success(function (electors) {
+          if (!_.isEmpty(electors)) {
+            buildPreviewPanel(electors);
           } else {
             // TODO handle did not find wards
           }
@@ -57,19 +58,17 @@ angular
     /**
      * Shows the selected wards and constituency in the preview panel
      */
-    function buildPreviewPanel(preview) {
-      var wards = preview.wards;
+    function buildPreviewPanel(wards) {
       $scope.printSummaryCardModel.enabled = true;
-      $scope.printSummaryCardModel.wards = preview.wards;
       var firstItem = _.head(wards);
-      $scope.printSummaryCardModel.constituency = firstItem.constituencyCode + ' - ' + firstItem.constituencyName;
+      $scope.printSummaryCardModel.constituency = firstItem.constituencyCode;
     }
 
     /**
      * Prints the electors in the selected wards and constituency
      */
     $scope.onPrintElectors = function () {
-      var wardCodes = _.map($scope.printSummaryCardModel.wards, function (ward) {
+      var wardCodes = _.map($scope.wards, function (ward) {
         return ward.wardCode;
       });
 
@@ -92,21 +91,15 @@ angular
         return e.street;
       });
 
-      var wardNames = _.map($scope.printSummaryCardModel.wards, function (ward) {
-        return ward.wardName;
-      });
-
-      var doc = new jsPDF('l', 'pt'),
-        wardName = wardNames.join(',');
+      var doc = new jsPDF('l', 'pt');
 
       var currentPage = 1,
         totalPages = Object.keys(electorsGroupByStreet).length;
       _.forOwn(electorsGroupByStreet, function (electorsInStreet, street) {
         doc = electorTable.renderPdfTable({
           electors: electorsInStreet,
-          wardName: wardName,
-          wardCode: $scope.printSummaryCardModel.wards[0].wardCode,
-          constituencyName: $scope.printSummaryCardModel.constituency,
+          wardName: 'Aldgate',
+          constituencyName: 'Cities of London and Westminster',
           street: street,
           currentPage: currentPage,
           totalPages: totalPages
