@@ -1,16 +1,19 @@
 package com.infinityworks.webapp.service;
 
+import com.infinityworks.webapp.common.Try;
 import com.infinityworks.webapp.domain.User;
 import com.infinityworks.webapp.repository.UserRepository;
 import com.infinityworks.webapp.rest.dto.CreateUserRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Collection;
+import java.util.Objects;
 import java.util.Optional;
-import java.util.UUID;
 
 @Service
 public class UserService {
@@ -21,23 +24,25 @@ public class UserService {
         this.userRepository = userRepository;
     }
 
-    public Optional<User> getUserById(UUID id) {
-        return Optional.ofNullable(userRepository.findOne(id));
-    }
-
-    public Optional<User> getUserByEmail(String email) {
+    public Optional<User> getByEmail(String email) {
         return userRepository.findOneByUsername(email);
     }
 
-    public Collection<User> getAllUsers() {
-        return userRepository.findAll(new Sort("username"));
+    public Try<Collection<User>> getAll() {
+        return Try.of(() -> userRepository.findAll(new Sort("username")));
     }
 
-    public User create(CreateUserRequest request) {
+    @Transactional
+    public Try<User> create(CreateUserRequest request) {
+        if (!Objects.equals(request.getPassword(), request.getPasswordRepeated())) {
+            return Try.failure(new BadCredentialsException("Passwords do not match"));
+        }
+
         User user = new User();
         user.setUsername(request.getEmail());
-        user.setPasswordHash(new BCryptPasswordEncoder().encode(request.getPassword()));
+        user.setPasswordHash(BCrypt.hashpw(request.getPassword(), BCrypt.gensalt()));
         user.setRole(request.getRole());
-        return userRepository.save(user);
+        User newUser = userRepository.save(user);
+        return Try.success(newUser);
     }
 }

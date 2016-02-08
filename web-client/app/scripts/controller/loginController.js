@@ -8,36 +8,15 @@ angular
     $scope.login = function () {
       $scope.failedLogin = false;
       authService.login($scope.credentials.username, $scope.credentials.password)
-        .success(function (response) {
-          $http({
-            url: apiUrl + '/user/login/test',
-            method: 'GET',
-            withCredentials: true
-          })
-            .success(function (d) {
-              $location.path('/dashboard');
-            });
+        .success(function () {
+          $location.path('/dashboard');
         })
-        .error(function (err) {
+        .error(function () {
           $scope.failedLogin = true;
         });
     };
 
     $scope.logout = function () {
-        authService.logout()
-        .success(function (response) {
-          console.log(response);
-          $http({
-            url: apiUrl + '/user/login/test',
-            method: 'GET',
-            withCredentials: true
-          })
-            .success(function (d) {
-              console.log(d)
-            })
-        })
-        .error(function (err) {
-          console.error(err);
-        });
+      authService.logout();
     };
   });

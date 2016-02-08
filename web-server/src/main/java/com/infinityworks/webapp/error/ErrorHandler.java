@@ -3,13 +3,12 @@ package com.infinityworks.webapp.error;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.authentication.BadCredentialsException;
 
 import javax.validation.ValidationException;
 
-import static org.springframework.http.HttpStatus.BAD_REQUEST;
-import static org.springframework.http.HttpStatus.INTERNAL_SERVER_ERROR;
-import static org.springframework.http.HttpStatus.UNAUTHORIZED;
+import static org.springframework.http.HttpStatus.*;
 
 /**
  * An application wide error handler.
@@ -35,6 +34,11 @@ public final class ErrorHandler {
         if (exception instanceof BadCredentialsException) {
             ErrorEntity errorEntity = new ErrorEntity(LoginFailure.class.getSimpleName(), "Bad credentials");
             return ResponseEntity.status(UNAUTHORIZED).body(errorEntity);
+        }
+
+        if (exception instanceof AccessDeniedException) {
+            ErrorEntity errorEntity = new ErrorEntity(exception.getClass().getSimpleName(), "Access denied");
+            return ResponseEntity.status(FORBIDDEN).body(errorEntity);
         }
 
         log.error("Error is not mapped", exception);

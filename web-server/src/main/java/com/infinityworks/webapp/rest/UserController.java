@@ -1,17 +1,21 @@
 package com.infinityworks.webapp.rest;
 
 import com.infinityworks.webapp.common.Try;
+import com.infinityworks.webapp.domain.CurrentUser;
+import com.infinityworks.webapp.domain.Role;
 import com.infinityworks.webapp.domain.User;
 import com.infinityworks.webapp.error.ErrorHandler;
 import com.infinityworks.webapp.rest.dto.AuthenticationToken;
 import com.infinityworks.webapp.rest.dto.CreateUserRequest;
 import com.infinityworks.webapp.security.SecurityUtils;
 import com.infinityworks.webapp.service.UserService;
-import org.apache.http.auth.AUTH;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.AccessDeniedException;
+import org.springframework.security.access.AuthorizationServiceException;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -27,6 +31,7 @@ import java.security.Principal;
 import java.util.List;
 
 import static java.util.stream.Collectors.toList;
+import static org.springframework.web.bind.annotation.RequestMethod.*;
 
 @RestController
 @RequestMapping("/user")
@@ -49,7 +54,7 @@ public class UserController {
     }
 
     // TODO rework and test
-    @RequestMapping(value = "/login", method = RequestMethod.POST)
+    @RequestMapping(value = "/login", method = POST)
     public ResponseEntity<?> authenticate(@RequestHeader("Authorization") String authorization, HttpServletRequest request) {
         return SecurityUtils.credentialsFromAuthHeader(authorization).flatMap(credentials -> {
             UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(credentials.getUsername(), credentials.getPassword());
@@ -68,23 +73,41 @@ public class UserController {
         }).fold(errorHandler::mapToResponseEntity, ResponseEntity::ok);
     }
 
-    @RequestMapping(value = "/logout", method = RequestMethod.POST)
+    @RequestMapping(value = "/logout", method = POST)
     public void logout() {
         SecurityContextHolder.clearContext();
     }
 
-    // FIXME check we don't leak details to UI
     @PreAuthorize("isAuthenticated()")
-    @RequestMapping(value = "/login/test", method = {RequestMethod.GET})
-    public Principal test(HttpServletRequest request) {
-        return request.getUserPrincipal();
+    @RequestMapping(value = "/login/test", method = GET)
+    public ResponseEntity<?> test(Principal userPrincipal, @RequestParam(value = "role", required = true) String role) {
+        return Role.of(role).flatMap(r -> {
+            Object principal = ((UsernamePasswordAuthenticationToken) userPrincipal).getPrincipal();
+            CurrentUser user = (CurrentUser) principal;
+            if (Role.hasPermission(user.getRole(), r)) {
+                return Try.success(user);
+            } else {
+                return Try.failure(new AccessDeniedException("Forbidden"));
+            }
+        }).fold(errorHandler::mapToResponseEntity, ResponseEntity::ok);
     }
 
     @PreAuthorize("hasAuthority('ADMIN')")
-    @RequestMapping(method = RequestMethod.POST)
-    public User createUser(@RequestBody CreateUserRequest createUserRequest) {
-        User user = userService.create(createUserRequest);
-        log.info("Created user: " + user);
-        return user;
+    @RequestMapping(method = POST)
+    public ResponseEntity<?> createUser(@RequestBody CreateUserRequest createUserRequest) {
+        Try<User> user = userService.create(createUserRequest);
+        return user.fold(
+                errorHandler::mapToResponseEntity,
+                newUser -> {
+                    log.debug("Created user: " + newUser);
+                    return ResponseEntity.status(HttpStatus.CREATED).body(newUser);
+                });
+    }
+
+    @PreAuthorize("hasAuthority('ADMIN')")
+    @RequestMapping(method = GET)
+    public ResponseEntity<?> allUsers() {
+        return userService.getAll()
+                .fold(errorHandler::mapToResponseEntity, ResponseEntity::ok);
     }
 }

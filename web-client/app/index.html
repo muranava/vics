@@ -10,6 +10,7 @@
     <!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
     <!-- build:css(.) styles/vendor.css -->
     <!-- bower:css -->
+    <link rel="stylesheet" href="bower_components/normalize-css/normalize.css" />
     <!-- endbower -->
     <!-- endbuild -->
     <!-- build:css(.tmp) styles/main.css -->
@@ -27,7 +28,7 @@
       <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
     <![endif]-->
 
-    <header id="header">
+    <header id="header" ng-show="currentUser">
       <div class="headerbar">
         <div class="headerbar-left">
           <ul class="header-nav header-nav-options">
@@ -55,11 +56,11 @@
               </form>
             </li>
           </ul>
-          <ul class="header-nav header-nav-profile" ng-show="currentUser">
+          <ul class="header-nav header-nav-profile">
             <li class="dropdown">
               <a href="javascript:void(0);" class="dropdown-toggle ink-reaction" data-toggle="dropdown">
 								<span class="profile-info">
-									{{currentUser.name}}
+									{{currentUser.username}}
 									<small>{{currentUser | userRoleLabel}}</small>
 								</span>
               </a>
@@ -106,12 +107,12 @@
                 <span class="title">Canvass Cards</span>
               </a>
             </li>
-            <!--li>
-              <a href="#/admin">
-                <div class="gui-icon"><i class="md md-security"></i></div>
-                <span class="title">Admin</span>
+            <li ng-show="currentUser.authorities[0].authority === 'ADMIN'">
+              <a href="#/users">
+                <div class="gui-icon"><i class="md md-account-circle"></i></div>
+                <span class="title">Users</span>
               </a>
-            </li-->
+            </li>
           </ul>
 
           <div class="menubar-foot-panel">
@@ -176,6 +177,8 @@
     <script src="scripts/filter/textConversions.js"></script>
     <script src="scripts/service/electorTable.js"></script>
     <script src="scripts/controller/loginController.js"></script>
+    <script src="scripts/controller/adminUserController.js"></script>
+    <script src="scripts/service/userService.js"></script>
     <script src="scripts/service/authService.js"></script>
         <!-- endbuild -->
 </body>

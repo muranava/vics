@@ -9,7 +9,7 @@ angular
         return '';
       }
       return ward.wardCode + ' - ' + ward.wardName;
-    }
+    };
   })
   .filter('userRoleLabel', function () {
     return function(user) {

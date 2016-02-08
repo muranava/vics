@@ -23,6 +23,7 @@ import org.springframework.http.client.ClientHttpRequestFactory;
 import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
 import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
+import org.springframework.transaction.annotation.EnableTransactionManagement;
 import org.springframework.web.client.RestTemplate;
 
 import javax.sql.DataSource;
@@ -34,6 +35,7 @@ import java.util.List;
 @EnableAutoConfiguration
 @EntityScan(basePackages = {"com.infinityworks.webapp.domain"})
 @EnableJpaRepositories(basePackages = {"com.infinityworks.webapp.repository"})
+@EnableTransactionManagement
 public class Config {
     private static final int DEFAULT_MAX_TOTAL_CONNECTIONS = 100;
 

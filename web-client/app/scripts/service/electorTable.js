@@ -166,7 +166,7 @@ angular
                     rowHeight: 23
                 },
                 margin: margin,
-                beforePageContent: function (pageData) {
+                beforePageContent: function () {
                     drawLogoHeader(doc, data);
                     drawLegend(doc);
                 },
@@ -245,9 +245,7 @@ angular
                 electorId = elector.electorId,
                 electorSuffix = elector.electorSuffix;
             var mandatoryFields = wardCode + '/' + electorId;
-            return electorSuffix
-                ? mandatoryFields + '/' + electorSuffix
-                : mandatoryFields;
+            return electorSuffix ? mandatoryFields + '/' + electorSuffix : mandatoryFields;
         }
 
         /**

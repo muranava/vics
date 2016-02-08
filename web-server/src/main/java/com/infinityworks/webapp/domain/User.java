@@ -1,5 +1,7 @@
 package com.infinityworks.webapp.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.google.common.base.MoreObjects;
 import com.google.common.base.Objects;
 
@@ -26,6 +28,7 @@ public class User extends BaseEntity {
         this.username = username;
     }
 
+    @JsonIgnore
     public String getPasswordHash() {
         return passwordHash;
     }

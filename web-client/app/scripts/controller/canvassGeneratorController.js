@@ -1,11 +1,12 @@
+
 /**
  * Controller for the main canvass generator
  */
 angular
   .module('canvass')
-  .controller('canvassGeneratorController', function ($scope, wardService, apiUrl, constituencies, electorService, electorTable, $rootScope) {
+  .controller('canvassGeneratorController', function ($scope, wardService, apiUrl, constituencies, electorService, electorTable) {
+    "use strict";
 
-    $scope.constituencies = constituencies;
     $scope.wards = [];
     $scope.constituencySearchModel = '';
     $scope.wardSearchModel = '';
@@ -15,6 +16,11 @@ angular
       wards: [],
       enabled: false
     };
+
+    constituencies.findAllConstituencies()
+      .success(function(response) {
+        $scope.constituencies = response;
+      });
 
     /**
      * Triggered when the the user matches a constituency (in the typeahead).
@@ -111,6 +117,6 @@ angular
         currentPage += 1;
       });
 
-      doc.save('merged.pdf');
+      doc.save('wards.pdf');
     }
   });

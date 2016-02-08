@@ -3,7 +3,7 @@
  */
 angular
   .module('canvass')
-  .service("authService", function ($http, $q, $window, apiUrl, $rootScope) {
+  .service("authService", function ($http, $q, $window, apiUrl) {
     var api = {};
 
     api.login = function (username, password) {
@@ -15,12 +15,13 @@ angular
         },
         withCredentials: true,
         xsrfCookieName: 'SESSION'
-      })
+      });
     };
 
-    api.test = function () {
+    api.test = function (role) {
+      role = role || 'ADMIN';
       return $http({
-        url: apiUrl + '/user/login/test',
+        url: apiUrl + '/user/login/test?role=' + role,
         method: 'GET',
         withCredentials: true
       });

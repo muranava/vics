@@ -25,21 +25,12 @@ spring:
 canvass:
   pafApiBaseUrl: http://localhost:9002
 
+logging.level.: INFO
+
 logging:
   level:
     org.springframework.security: DEBUG
     com.zaxxer.hikari.HikariConfig: ERROR
     com.infinityworks.webapp: ERROR
-    org.hibernate.SQL: DEBUG
-    org.hibernate.type: DEBUG
-
-management:
-  security:
-    role: ADMIN
-security:
-  user:
-    name: 51066656
-    password: a24804071352
-
-endpoints:
-  sensitive: false
+    org.hibernate.SQL: ERROR
+    org.hibernate.type: ERROR
