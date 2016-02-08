@@ -18,9 +18,9 @@ angular
         name: {columnWidth: 145},
         telephone: {columnWidth: 90},
         likelihood: {columnWidth: 60, fillColor: [225, 225, 225]},
-        iss1: {columnWidth: 50},
-        iss2: {columnWidth: 50},
-        iss3: {columnWidth: 50},
+        iss1: {columnWidth: 45},
+        iss2: {columnWidth: 60},
+        iss3: {columnWidth: 45},
         support: {columnWidth: 60, fillColor: [225, 225, 225]},
         hasPv: {columnWidth: 27},
         wantsPv: {columnWidth: 27},
@@ -45,14 +45,14 @@ angular
         house: 'House #',
         name: 'Name',
         tel: 'Tel No.',
-        likelihood: 'Voting\nLikelihood',
-        iss1: 'Issue1',
-        iss2: 'Issue2',
-        iss3: 'Issue3',
+        likelihood: 'Likelihood\nto Vote',
+        iss1: 'Cost',
+        iss2: 'Sovereignty',
+        iss3: 'Border',
         intention: 'Voting\nIntention',
         hasPV: 'Has PV',
         wantsPV: 'Wants PV',
-        lift: 'Lift',
+        lift: 'Needs Lift',
         poster: 'Poster',
         dead: 'Dead',
         rollNum: 'Roll #'
@@ -203,11 +203,23 @@ angular
           doc.text(disclaimerText, data.settings.margin.right, doc.internal.pageSize.height - 30);
 
           doc.setFontSize(10);
-          doc.text(columnLabels.dead, deadPos.x + slantTextConf.x + 3, deadPos.y + slantTextConf.y, null, slantTextConf.angle);
-          doc.text(columnLabels.poster, posterPos.x + slantTextConf.x + 3, posterPos.y + slantTextConf.y, null, slantTextConf.angle);
-          doc.text(columnLabels.lift, liftPos.x + slantTextConf.x + 4, liftPos.y + slantTextConf.y - 4, null, slantTextConf.angle);
-          doc.text(columnLabels.wantsPV, wantsPVPos.x + slantTextConf.x, wantsPVPos.y + slantTextConf.y + 8, null, slantTextConf.angle);
-          doc.text(columnLabels.hasPV, hasPVPos.x + slantTextConf.x + 2, hasPVPos.y + slantTextConf.y + 6, null, slantTextConf.angle);
+          doc.text(columnLabels.dead, deadPos.x + slantTextConf.x + 3, deadPos.y + slantTextConf.y + 4, null, slantTextConf.angle);
+          doc.text(columnLabels.poster, posterPos.x + slantTextConf.x + 3, posterPos.y + slantTextConf.y + 8, null, slantTextConf.angle);
+          doc.text(columnLabels.lift, liftPos.x + slantTextConf.x, liftPos.y + slantTextConf.y + 16, null, slantTextConf.angle);
+          doc.text(columnLabels.wantsPV, wantsPVPos.x + slantTextConf.x, wantsPVPos.y + slantTextConf.y + 16, null, slantTextConf.angle);
+          doc.text(columnLabels.hasPV, hasPVPos.x + slantTextConf.x + 2, hasPVPos.y + slantTextConf.y + 10, null, slantTextConf.angle);
+
+          doc.text('Important Issues', 435, 117);
+
+          var likelihoodColumn = _.find(data.table.columns, function(column) {
+            return column.dataKey === 'likelihood';
+          });
+          var intentionColumn = _.find(data.table.columns, function(column) {
+            return column.dataKey === 'support';
+          });
+          doc.setDrawColor(0);
+          doc.rect(likelihoodColumn.x, margin.top, likelihoodColumn.width, data.table.height + data.table.rows.length);
+          doc.rect(intentionColumn.x, margin.top, intentionColumn.width, data.table.height + data.table.rows.length);
         },
         drawRow: function (row, data) {
           doc.setFontSize(10);
