@@ -1,6 +1,8 @@
 DROP TABLE IF EXISTS wards;
 DROP TABLE IF EXISTS electors;
 DROP TABLE IF EXISTS electors_enriched;
+DROP TABLE IF EXISTS users_privileges;
+DROP TABLE IF EXISTS privileges;
 DROP TABLE IF EXISTS users;
 
 CREATE TABLE wards (
@@ -52,10 +54,23 @@ CREATE TABLE electors_enriched (
 
 CREATE TABLE users
 (
-  id UUID PRIMARY KEY NOT NULL,
+  id UUID PRIMARY KEY,
   username TEXT NOT NULL UNIQUE,
   password_hash TEXT NOT NULL,
   role TEXT NOT NULL
+);
+
+CREATE TABLE privileges
+(
+  id UUID NOT NULL PRIMARY KEY,
+  permission TEXT -- TODO add constraint check on enum values
+);
+
+CREATE TABLE users_privileges
+(
+  id UUID PRIMARY KEY,
+  users_id UUID REFERENCES users(id) NOT NULL,
+  privileges_id UUID REFERENCES privileges(id) NOT NULL
 );
 
 -- Trigger to update the modified date on update
