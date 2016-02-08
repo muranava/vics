@@ -5,6 +5,7 @@ import com.infinityworks.webapp.domain.Ward;
 import com.infinityworks.webapp.repository.WardRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
