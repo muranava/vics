@@ -2,6 +2,8 @@ DROP TABLE IF EXISTS wards;
 DROP TABLE IF EXISTS electors;
 DROP TABLE IF EXISTS electors_enriched;
 DROP TABLE IF EXISTS users_privileges;
+DROP TABLE IF EXISTS users_constituencies;
+DROP TABLE IF EXISTS users_wards;
 DROP TABLE IF EXISTS privileges;
 DROP TABLE IF EXISTS users;
 
@@ -54,23 +56,35 @@ CREATE TABLE electors_enriched (
 
 CREATE TABLE users
 (
-  id UUID PRIMARY KEY,
-  username TEXT NOT NULL UNIQUE,
+  id            UUID PRIMARY KEY,
+  username      TEXT NOT NULL UNIQUE,
   password_hash TEXT NOT NULL,
-  role TEXT NOT NULL
+  role          TEXT NOT NULL
 );
 
 CREATE TABLE privileges
 (
-  id UUID NOT NULL PRIMARY KEY,
-  permission TEXT -- TODO add constraint check on enum values
+  id         UUID NOT NULL PRIMARY KEY,
+  permission TEXT CHECK (permission IN ('READ_VOTER', 'EDIT_VOTER'))
 );
 
 CREATE TABLE users_privileges
 (
-  id UUID PRIMARY KEY,
-  users_id UUID REFERENCES users(id) NOT NULL,
-  privileges_id UUID REFERENCES privileges(id) NOT NULL
+  id            UUID PRIMARY KEY,
+  users_id      UUID REFERENCES users (id)      NOT NULL,
+  privileges_id UUID REFERENCES privileges (id) NOT NULL
+);
+
+CREATE TABLE users_wards (
+  id              UUID PRIMARY KEY,
+  users_id        UUID REFERENCES users (id)        NOT NULL,
+  wards_ward_code TEXT                              NOT NULL
+);
+
+CREATE TABLE users_constituencies (
+  id                      UUID PRIMARY KEY,
+  users_id                UUID REFERENCES users (id)                NOT NULL,
+  wards_constituency_code TEXT                                      NOT NULL
 );
 
 -- Trigger to update the modified date on update

@@ -34,7 +34,7 @@ public class UserRepositoryTest extends RepositoryTest {
 
     @Test
     public void returnsASpecificUserAndTheirRolesAndPermissions() throws Exception {
-        User user = userRepository.findOneByUsername("user").get();
+        User user = userRepository.findOneByUsername("barking").get();
 
         List<Privilege> privileges = user.getPermissions();
         assertThat(privileges, hasItem(new Privilege(EDIT_VOTER)));
