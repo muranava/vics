@@ -18,7 +18,11 @@ import static org.junit.Assert.assertThat;
 
 @SqlGroup({
         @Sql(executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD,
-                scripts = {"classpath:drop-create.sql", "classpath:users.sql"})
+                scripts = {
+                        "classpath:drop-create.sql",
+                        "classpath:constituencies.sql",
+                        "classpath:wards.sql",
+                        "classpath:users.sql"})
 })
 public class UserRepositoryTest extends RepositoryTest {
 
@@ -34,7 +38,7 @@ public class UserRepositoryTest extends RepositoryTest {
 
     @Test
     public void returnsASpecificUserAndTheirRolesAndPermissions() throws Exception {
-        User user = userRepository.findOneByUsername("barking").get();
+        User user = userRepository.findOneByUsername("covs").get();
 
         List<Privilege> privileges = user.getPermissions();
         assertThat(privileges, hasItem(new Privilege(EDIT_VOTER)));

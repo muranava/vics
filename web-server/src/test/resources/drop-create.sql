@@ -16,49 +16,10 @@ CREATE TABLE constituencies
 );
 
 CREATE TABLE wards (
-  id           UUID PRIMARY KEY NOT NULL,
-  constituency UUID REFERENCES constituencies(id),
-  name    TEXT             NOT NULL,
-  code    TEXT             NOT NULL
-);
-
-CREATE TABLE electors (
-  id               UUID NOT NULL PRIMARY KEY,
-  ward_code        TEXT NOT NULL,
-  polling_district TEXT NOT NULL,
-  elector_id       TEXT NOT NULL,
-  elector_suffix   TEXT,
-  ern              TEXT NOT NULL,
-  title            TEXT,
-  first_name       TEXT,
-  last_name        TEXT,
-  initial          TEXT,
-  dob              DATE,
-  flag             TEXT,
-  modified         TIMESTAMP,
-  created          TIMESTAMP DEFAULT now()
-);
-
--- temporary table that is used to populate pdfs for testing
-CREATE TABLE electors_enriched (
-  id               UUID NOT NULL PRIMARY KEY,
-  ward_code        TEXT NOT NULL,
-  polling_district TEXT NOT NULL,
-  elector_id       TEXT NOT NULL,
-  elector_suffix   TEXT,
-  ern              TEXT NOT NULL,
-  title            TEXT,
-  first_name       TEXT,
-  last_name        TEXT,
-  initial          TEXT,
-  dob              DATE,
-  flag             TEXT,
-  modified         TIMESTAMP,
-  created          TIMESTAMP DEFAULT now(),
-  house            TEXT,
-  street           TEXT,
-  post_code        TEXT,
-  upid             TEXT
+  id              UUID PRIMARY KEY NOT NULL,
+  constituency_id UUID REFERENCES constituencies (id),
+  name            TEXT             NOT NULL,
+  code            TEXT             NOT NULL
 );
 
 CREATE TABLE users
@@ -88,11 +49,11 @@ CREATE TABLE users_wards (
   wards_id UUID REFERENCES wards (id)           NOT NULL
 );
 
--- CREATE TABLE users_constituencies (
---   id                UUID PRIMARY KEY,
---   users_id          UUID REFERENCES users (id)                      NOT NULL,
---   constituencies_id UUID REFERENCES constituencies (id)             NOT NULL
--- );
+CREATE TABLE users_constituencies (
+  id                UUID PRIMARY KEY,
+  users_id          UUID REFERENCES users (id)                      NOT NULL,
+  constituencies_id UUID REFERENCES constituencies (id)             NOT NULL
+);
 
 -- Trigger to update the modified date on update
 -- CREATE OR REPLACE FUNCTION update_modified_column()

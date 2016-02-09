@@ -41,6 +41,10 @@ public final class ErrorHandler {
             return ResponseEntity.status(FORBIDDEN).body(errorEntity);
         }
 
+        if (exception instanceof NotFoundFailure) {
+            return ResponseEntity.status(NOT_FOUND).body(createError(exception));
+        }
+
         log.error("Error is not mapped", exception);
         return ResponseEntity.status(INTERNAL_SERVER_ERROR).body("Server error");
     }

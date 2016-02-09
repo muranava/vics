@@ -1,22 +1,24 @@
 package com.infinityworks.webapp.testsupport.builder;
 
-import com.infinityworks.webapp.domain.Ward;
+import com.infinityworks.webapp.domain.*;
 
 public class WardBuilder {
     private String wardName;
     private String wardCode;
-    private String constituencyName;
-    private String constituencyCode;
+    private Constituency constituency;
 
     public static WardBuilder ward() {
         return new WardBuilder().withDefaults();
     }
 
     public WardBuilder withDefaults() {
-        withWardName("Binley")
-                .withWardCode("COV-BNLY-1")
-                .withConstituencyCode("COV-1987")
-                .withConstituencyName("Coventry South");
+        Constituency c = new ConstituencyBuilder().build();
+        c.setCode("E14000651");
+        c.setName("Coventry South");
+
+        withWardName("Earlsdon")
+                .withWardCode("E05001221")
+                .withConstituency(c);
         return this;
     }
 
@@ -30,22 +32,16 @@ public class WardBuilder {
         return this;
     }
 
-    public WardBuilder withConstituencyName(String val) {
-        constituencyName = val;
-        return this;
-    }
-
-    public WardBuilder withConstituencyCode(String val) {
-        constituencyCode = val;
+    public WardBuilder withConstituency(Constituency val) {
+        constituency = val;
         return this;
     }
 
     public Ward build() {
         Ward ward = new Ward();
-        ward.setWardName(wardName);
-        ward.setWardCode(wardCode);
-//        ward.setConstituencyName(constituencyName);
-//        ward.setConstituencyCode(constituencyCode);
+        ward.setName(wardName);
+        ward.setCode(wardCode);
+        ward.setConstituency(constituency);
         return ward;
     }
 

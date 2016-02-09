@@ -1,5 +1,6 @@
 package com.infinityworks.webapp.repository;
 
+import com.infinityworks.webapp.domain.Constituency;
 import com.infinityworks.webapp.domain.Ward;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -7,21 +8,25 @@ import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.context.jdbc.SqlGroup;
 
 import java.util.List;
+import java.util.UUID;
 
 import static com.infinityworks.webapp.testsupport.builder.WardBuilder.ward;
-import static org.hamcrest.Matchers.greaterThan;
-import static org.hamcrest.Matchers.hasItem;
-import static org.hamcrest.Matchers.hasSize;
+import static org.hamcrest.Matchers.*;
 import static org.junit.Assert.assertThat;
 
 @SqlGroup({
         @Sql(executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD,
-                scripts = {"classpath:drop-create.sql", "classpath:wards.sql"})
+                scripts = {"classpath:drop-create.sql",
+                        "classpath:constituencies.sql",
+                        "classpath:wards.sql"})
 })
 public class WardRepositoryTest extends RepositoryTest {
 
     @Autowired
     private WardRepository wardRepository;
+
+    @Autowired
+    private ConstituencyRepository constituencyRepository;
 
     @Test
     public void returnsTheWards() throws Exception {
@@ -31,31 +36,34 @@ public class WardRepositoryTest extends RepositoryTest {
     }
 
     @Test
-    public void findsTheWardsByConstituencyName() throws Exception {
-        List<Ward> all = wardRepository.findByConstituencyNameIgnoreCase("Dagenham and Rainham".toUpperCase());
+    public void returnsWardByConstituencyCodeAndWardNames() throws Exception {
+        Constituency constituency = constituencyRepository.findOne(UUID.fromString("0d338b99-3d15-44f7-904f-3ebc18a7ab4a"));
+        List<Ward> wards = wardRepository.findByConstituencyAndNameLike(
+                constituency, "Earlsd");
 
-        assertThat(all, hasSize(2));
+        assertThat(wards, hasSize(1));
 
-        Ward eastbrook = ward().withWardName("Eastbrook")
-                .withWardCode("E05000030")
-                .withConstituencyName("Dagenham and Rainham")
-                .withConstituencyCode("E14000657")
+        Ward earlsdon = ward()
+                .withWardName("Earlsdon")
+                .withWardCode("E05001221")
                 .build();
 
-        Ward chadwell = ward().withWardName("Eastbrook")
-                .withWardCode("E05000030")
-                .withConstituencyName("Dagenham and Rainham")
-                .withConstituencyCode("E14000657")
-                .build();
-
-        assertThat(all, hasItem(eastbrook));
-        assertThat(all, hasItem(chadwell));
+        assertThat(wards, hasItem(earlsdon));
     }
 
     @Test
-    public void findByConstituencyNameReturnsEmptyListIfNotFound() throws Exception {
-        List<Ward> all = wardRepository.findByConstituencyNameIgnoreCase("I dont exist");
+    public void returnsWardsByConstituency() throws Exception {
+        Constituency constituency = constituencyRepository.findOne(
+                UUID.fromString("0d338b99-3d15-44f7-904f-3ebc18a7ab4a"));
+        List<Ward> wards = wardRepository.findByConstituencyOrderByNameAsc(constituency);
 
-        assertThat(all, hasSize(0));
+        assertThat(wards, hasSize(6));
+
+        Ward earlsdon = ward()
+                .withWardName("Earlsdon")
+                .withWardCode("E05001221")
+                .build();
+
+        assertThat(wards, hasItem(earlsdon));
     }
 }
