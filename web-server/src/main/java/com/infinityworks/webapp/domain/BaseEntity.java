@@ -17,6 +17,10 @@ public class BaseEntity implements Serializable {
     @Type(type = "pg-uuid")
     private UUID id;
 
+    public void initNew() {
+        this.id = UUID.randomUUID();
+    }
+
     public UUID getId() {
         return id;
     }

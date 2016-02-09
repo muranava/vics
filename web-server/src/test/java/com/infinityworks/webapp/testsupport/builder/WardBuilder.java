@@ -44,8 +44,8 @@ public class WardBuilder {
         Ward ward = new Ward();
         ward.setWardName(wardName);
         ward.setWardCode(wardCode);
-        ward.setConstituencyName(constituencyName);
-        ward.setConstituencyCode(constituencyCode);
+//        ward.setConstituencyName(constituencyName);
+//        ward.setConstituencyCode(constituencyCode);
         return ward;
     }
 

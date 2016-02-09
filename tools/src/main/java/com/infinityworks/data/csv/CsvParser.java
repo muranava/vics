@@ -14,18 +14,16 @@ import static java.util.stream.Collectors.toList;
 import static java.util.stream.StreamSupport.stream;
 
 public class CsvParser {
-    private final String[] headers;
     private final String filePath;
 
-    public CsvParser(String[] headers, String filePath) {
-        this.headers = headers;
+    public CsvParser(String filePath) {
         this.filePath = filePath;
     }
 
     public <T> List<T> parseContent(Function<CSVRecord, T> rowInterpreter) throws IOException {
         ClassPathResource is = new ClassPathResource(filePath);
         Reader in = new InputStreamReader(is.getInputStream());
-        Iterable<CSVRecord> records = CSVFormat.DEFAULT.withHeader(headers).parse(in);
+        Iterable<CSVRecord> records = CSVFormat.DEFAULT.parse(in);
 
         return stream(records.spliterator(), false)
                 .skip(1)

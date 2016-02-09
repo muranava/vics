@@ -1,22 +1,28 @@
 package com.infinityworks.data;
 
-import com.infinityworks.webapp.domain.Ward;
 import com.ninja_squad.dbsetup.operation.Insert;
 import com.ninja_squad.dbsetup.operation.Operation;
 
 import java.util.List;
 
 import static com.ninja_squad.dbsetup.Operations.insertInto;
-import static java.util.UUID.randomUUID;
 
 public interface DatabaseOperation {
 
     static Operation insertWards(List<Ward> wards) {
         Insert.Builder columns = insertInto("wards")
-                .columns("id", "ward_code", "ward_name", "constituency_code", "constituency_name");
+                .columns("id", "name", "code", "constituency");
 
-        wards.stream().forEach(w -> columns.values(
-                        randomUUID(), w.getWardCode(), w.getWardName(), w.getConstituencyCode(), w.getConstituencyName()));
+        wards.stream().forEach(w -> columns.values(w.getId(), w.getWardName(), w.getWardCode(), w.getConstituency()));
+
+        return columns.build();
+    }
+
+    static Operation insertConstituencies(List<Constituency> constituency) {
+        Insert.Builder columns = insertInto("constituencies")
+                .columns("id", "name", "code");
+
+        constituency.stream().forEach(w -> columns.values(w.getId(), w.getName(), w.getCode()));
 
         return columns.build();
     }

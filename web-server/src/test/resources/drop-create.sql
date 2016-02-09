@@ -1,4 +1,3 @@
-DROP TABLE IF EXISTS wards;
 DROP TABLE IF EXISTS electors;
 DROP TABLE IF EXISTS electors_enriched;
 DROP TABLE IF EXISTS users_privileges;
@@ -6,13 +5,21 @@ DROP TABLE IF EXISTS users_constituencies;
 DROP TABLE IF EXISTS users_wards;
 DROP TABLE IF EXISTS privileges;
 DROP TABLE IF EXISTS users;
+DROP TABLE IF EXISTS wards;
+DROP TABLE IF EXISTS constituencies;
+
+CREATE TABLE constituencies
+(
+  id   UUID PRIMARY KEY,
+  name TEXT NOT NULL UNIQUE,
+  code TEXT NOT NULL UNIQUE
+);
 
 CREATE TABLE wards (
-  id                UUID PRIMARY KEY NOT NULL,
-  constituency_name TEXT             NOT NULL,
-  constituency_code TEXT             NOT NULL,
-  ward_name         TEXT             NOT NULL,
-  ward_code         TEXT             NOT NULL
+  id           UUID PRIMARY KEY NOT NULL,
+  constituency UUID REFERENCES constituencies(id),
+  name    TEXT             NOT NULL,
+  code    TEXT             NOT NULL
 );
 
 CREATE TABLE electors (
@@ -76,16 +83,16 @@ CREATE TABLE users_privileges
 );
 
 CREATE TABLE users_wards (
-  id              UUID PRIMARY KEY,
-  users_id        UUID REFERENCES users (id)        NOT NULL,
-  wards_ward_code TEXT                              NOT NULL
+  id       UUID PRIMARY KEY,
+  users_id UUID REFERENCES users (id)           NOT NULL,
+  wards_id UUID REFERENCES wards (id)           NOT NULL
 );
 
-CREATE TABLE users_constituencies (
-  id                      UUID PRIMARY KEY,
-  users_id                UUID REFERENCES users (id)                NOT NULL,
-  wards_constituency_code TEXT                                      NOT NULL
-);
+-- CREATE TABLE users_constituencies (
+--   id                UUID PRIMARY KEY,
+--   users_id          UUID REFERENCES users (id)                      NOT NULL,
+--   constituencies_id UUID REFERENCES constituencies (id)             NOT NULL
+-- );
 
 -- Trigger to update the modified date on update
 -- CREATE OR REPLACE FUNCTION update_modified_column()
