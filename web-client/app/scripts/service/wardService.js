@@ -8,17 +8,25 @@ angular
 
     /**
      * Finds the wards within constituency
-     * @param {String} name the constituency name
+     * @param {String} id the constituency id
      */
-    api.findWardsWithinConstituency = function (name) {
+    api.findWardsWithinConstituency = function (id) {
+      return $http({
+        method: 'GET',
+        url: apiUrl + '/constituency/' + id + '/ward',
+        withCredentials: true
+      });
+    };
+
+    /**
+     * Finds all wards (the server will restrict the result set to
+     * the wards the current user has access to)
+     */
+    api.findAll = function() {
       return $http({
         method: 'GET',
         url: apiUrl + '/ward',
-        params: {
-          constituency: name
-        },
-        withCredentials: true,
-        cache: true
+        withCredentials: true
       });
     };
 

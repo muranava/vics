@@ -5,11 +5,17 @@ import com.google.common.base.MoreObjects;
 import com.google.common.base.Objects;
 
 import javax.persistence.*;
-import java.util.List;
+import java.util.Set;
 
+/**
+ * Note: modifying this class will invalidate all current user sessions,
+ * since spring session serializes this entity by default.
+ * To change this behaviour we would need to override the spring session methods
+ * that persist the session to Redis
+ */
 @Entity
 @Table(name = "users")
-public class User extends BaseEntity {
+public class User extends BaseEntity implements Permissible {
     @Column(name = "username", nullable = false, unique = true)
     private String username;
 
@@ -25,7 +31,36 @@ public class User extends BaseEntity {
             name = "users_privileges",
             joinColumns = @JoinColumn(name = "users_id", referencedColumnName = "id"),
             inverseJoinColumns = @JoinColumn(name = "privileges_id", referencedColumnName = "id"))
-    private List<Privilege> permissions;
+    private Set<Privilege> permissions;
+
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(
+            name = "users_constituencies",
+            joinColumns = @JoinColumn(name = "users_id", referencedColumnName = "id"),
+            inverseJoinColumns = @JoinColumn(name = "constituencies_id", referencedColumnName = "id"))
+    private Set<Constituency> constituencies;
+
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(
+            name = "users_wards",
+            joinColumns = @JoinColumn(name = "users_id", referencedColumnName = "id"),
+            inverseJoinColumns = @JoinColumn(name = "wards_id", referencedColumnName = "id"))
+    private Set<Ward> wards;
+
+    @Override
+    public boolean isAdmin() {
+        return role == Role.ADMIN;
+    }
+
+    @Override
+    public boolean hasWardPermission(Ward ward) {
+        return wards.contains(ward) || constituencies.contains(ward.getConstituency());
+    }
+
+    @Override
+    public boolean hasConstituencyPermission(Constituency constituency) {
+        return constituencies.contains(constituency);
+    }
 
     public String getUsername() {
         return username;
@@ -52,12 +87,28 @@ public class User extends BaseEntity {
         this.role = role;
     }
 
-    public List<Privilege> getPermissions() {
+    public Set<Privilege> getPermissions() {
         return permissions;
     }
 
-    public void setPermissions(List<Privilege> permissions) {
+    public void setPermissions(Set<Privilege> permissions) {
         this.permissions = permissions;
+    }
+
+    public Set<Constituency> getConstituencies() {
+        return constituencies;
+    }
+
+    public void setConstituencies(Set<Constituency> constituencies) {
+        this.constituencies = constituencies;
+    }
+
+    public Set<Ward> getWards() {
+        return wards;
+    }
+
+    public void setWards(Set<Ward> wards) {
+        this.wards = wards;
     }
 
     @Override

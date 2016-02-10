@@ -11,5 +11,13 @@ angular
       });
     };
 
+    api.retrieveCurrentUser = function() {
+      return $http({
+        url: apiUrl + '/user/current',
+        method: 'GET',
+        withCredentials: true
+      });
+    };
+
     return api;
   });

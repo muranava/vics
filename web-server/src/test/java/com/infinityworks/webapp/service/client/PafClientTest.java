@@ -37,7 +37,7 @@ public class PafClientTest {
     public void returnsThePafRecordsForTheGivenWard() throws Exception {
         pafApiStub.willReturnPafForWard("E0095");
 
-        Try<List<PafRecord>> electors = pafClient.findByWard("E0095");
+        Try<List<PafRecord>> electors = pafClient.findElectorsByWard("E0095");
 
         assertThat(electors.isSuccess(), is(true));
         assertThat(electors.get().size(), is(46));

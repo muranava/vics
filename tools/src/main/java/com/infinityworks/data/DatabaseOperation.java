@@ -11,7 +11,7 @@ public interface DatabaseOperation {
 
     static Operation insertWards(List<Ward> wards) {
         Insert.Builder columns = insertInto("wards")
-                .columns("id", "name", "code", "constituency");
+                .columns("id", "name", "code", "constituency_id");
 
         wards.stream().forEach(w -> columns.values(w.getId(), w.getWardName(), w.getWardCode(), w.getConstituency()));
 

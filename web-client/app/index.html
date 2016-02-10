@@ -66,7 +66,7 @@
               </a>
               <ul class="dropdown-menu animation-dock">
                 <li class="dropdown-header">Config</li>
-                <li><a href="../..">My profile</a></li>
+                <li><a href="#/profile">My profile</a></li>
                 <li class="divider"></li>
                 <li><a href="../.." ng-click="logout()"><i class="fa fa-fw fa-power-off text-danger"></i>
                   Logout</a></li>
@@ -111,6 +111,12 @@
               <a href="#/users">
                 <div class="gui-icon"><i class="md md-account-circle"></i></div>
                 <span class="title">Users</span>
+              </a>
+            </li>
+            <li ng-show="currentUser.authorities[0].authority === 'USER'">
+              <a href="#/profile">
+                <div class="gui-icon"><i class="md md-face-unlock"></i></div>
+                <span class="title">Profile</span>
               </a>
             </li>
           </ul>
@@ -171,13 +177,13 @@
     <script src="scripts/service/wardService.js"></script>
     <script src="scripts/service/healthService.js"></script>
     <script src="scripts/directive/healthComponent.js"></script>
-    <script src="scripts/service/constituencies.js"></script>
     <script src="scripts/service/electorService.js"></script>
     <script src="scripts/filter/numericConversions.js"></script>
     <script src="scripts/filter/textConversions.js"></script>
     <script src="scripts/service/electorTable.js"></script>
     <script src="scripts/controller/loginController.js"></script>
     <script src="scripts/controller/adminUserController.js"></script>
+    <script src="scripts/controller/profileController.js"></script>
     <script src="scripts/service/userService.js"></script>
     <script src="scripts/service/authService.js"></script>
         <!-- endbuild -->

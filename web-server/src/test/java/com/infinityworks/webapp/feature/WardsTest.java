@@ -13,9 +13,7 @@ import org.springframework.test.web.servlet.ResultActions;
 import java.util.List;
 
 import static com.infinityworks.webapp.common.Json.objectMapper;
-import static java.lang.String.format;
 import static java.util.Arrays.asList;
-import static java.util.Collections.emptyList;
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertThat;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -33,7 +31,7 @@ public class WardsTest extends WebApplicationTest {
 
     @Test
     public void returnsTheWards() throws Exception {
-        String endpoint = "/ward/constituency/911a68a5-5689-418d-b63d-b21545345f03";
+        String endpoint = "/constituency/911a68a5-5689-418d-b63d-b21545345f03/ward";
 
         ResultActions response = mockMvc.perform(get(endpoint)
                 .with(authenticatedUser())
@@ -51,28 +49,24 @@ public class WardsTest extends WebApplicationTest {
     @Test
     public void returns404IfConstituencyNotFound() throws Exception {
         String idontExist = "922268a5-5689-418d-b63d-b21545345f01";
-        String endpoint = "/ward/constituency/" + idontExist;
+        String endpoint = "/constituency/" + idontExist + "/ward";
 
-        ResultActions response = mockMvc.perform(get(endpoint)
+        mockMvc.perform(get(endpoint)
                 .with(authenticatedUser())
                 .accept(MediaType.APPLICATION_JSON))
-                .andDo(print());
-
-        MvcResult result = response.andExpect(status().isNotFound()).andReturn();
-
-        assertThat(result.getResponse().getStatus(), is(404));
+                .andDo(print())
+                .andExpect(status().isNotFound());
     }
 
     @Test
     public void returns404IfInvalidUUID() throws Exception {
         String invalidUUID = "968a5-5689-418d-b63d-b21545345f01";
-        String endpoint = "/ward/constituency/" + invalidUUID;
+        String endpoint = "/constituency/" + invalidUUID + "/ward";
 
-        ResultActions response = mockMvc.perform(get(endpoint)
+        mockMvc.perform(get(endpoint)
                 .with(authenticatedUser())
                 .accept(MediaType.APPLICATION_JSON))
-                .andDo(print());
-
-        response.andExpect(status().isNotFound());
+                .andDo(print())
+                .andExpect(status().isNotFound());
     }
 }

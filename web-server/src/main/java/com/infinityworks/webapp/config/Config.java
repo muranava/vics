@@ -5,7 +5,7 @@ import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.datatype.jdk8.Jdk8Module;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.infinityworks.webapp.common.RequestValidator;
-import com.infinityworks.webapp.error.ErrorHandler;
+import com.infinityworks.webapp.error.RestErrorHandler;
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
 import org.apache.http.client.HttpClient;
@@ -53,8 +53,8 @@ public class Config {
     }
 
     @Bean
-    public ErrorHandler errorHandler() {
-        return new ErrorHandler();
+    public RestErrorHandler errorHandler() {
+        return new RestErrorHandler();
     }
 
     @Bean

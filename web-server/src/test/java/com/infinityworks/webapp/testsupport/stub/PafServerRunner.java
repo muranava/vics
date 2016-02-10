@@ -9,7 +9,7 @@ public class PafServerRunner {
     static Runnable pathServer = () -> {
         PafServer pafApiStub = new PafServer();
         pafApiStub.start();
-        pafApiStub.willReturnPafForWard("E09");
+        pafApiStub.willReturnPafForWard("E05001228");
     };
 
     public static void main(String... args) {

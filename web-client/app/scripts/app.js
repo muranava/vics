@@ -25,12 +25,15 @@ angular
       {route: '/dashboard', role: 'USER'},
       {route: '/canvass', role: 'USER'},
       {route: '/admin', role: 'ADMIN'},
+      {route: '/profile', role: 'USER'},
       {route: '/users', role: 'ADMIN'}
     ];
 
     /**
      * Reusable auth check function, that will check if a user is logged in before a route
-     * can be accessed.
+     * can be accessed. This check will use a web service to validate that a user has a certain
+     * role before displaying the page.  Any future api authentication is also checked on the
+     * server using session tokens.
      */
     var userAuth = function ($q, authService, $location, $rootScope) {
       var deferred = $q.defer(),
@@ -47,7 +50,7 @@ angular
           if ($location.path() === '/dashboard') {
             $location.path('/login');
           } else {
-            $location.path('/dashboard')
+            $location.path('/dashboard');
           }
 
         });
@@ -81,6 +84,13 @@ angular
       .when('/users', {
         templateUrl: 'views/users.html',
         controller: 'adminUserController',
+        resolve: {
+          auth: userAuth
+        }
+      })
+      .when('/profile', {
+        templateUrl: 'views/profile.html',
+        controller: 'profileController',
         resolve: {
           auth: userAuth
         }

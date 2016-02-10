@@ -42,7 +42,7 @@ public class PafClient {
      * @param wardCode the ward code to retrieve records for
      * @return the PAF records associated with the given ward
      */
-    public Try<List<PafRecord>> findByWard(String wardCode) {
+    public Try<List<PafRecord>> findElectorsByWard(String wardCode) {
         String url = String.format(canvassConfig.getPafApiBaseUrl() + ELECTORS_BY_WARD_ENDPOINT, wardCode);
         ResponseEntity<PafRecord[]> pafResponse = restTemplate.exchange(url, GET, httpEntity, PafRecord[].class);
         if (pafResponse.getStatusCode() == OK) {

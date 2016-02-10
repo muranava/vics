@@ -8,6 +8,7 @@ import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.context.jdbc.SqlGroup;
 
 import java.util.List;
+import java.util.Set;
 
 import static com.infinityworks.webapp.domain.Permission.EDIT_VOTER;
 import static com.infinityworks.webapp.domain.Permission.READ_VOTER;
@@ -40,7 +41,7 @@ public class UserRepositoryTest extends RepositoryTest {
     public void returnsASpecificUserAndTheirRolesAndPermissions() throws Exception {
         User user = userRepository.findOneByUsername("covs").get();
 
-        List<Privilege> privileges = user.getPermissions();
+        Set<Privilege> privileges = user.getPermissions();
         assertThat(privileges, hasItem(new Privilege(EDIT_VOTER)));
         assertThat(privileges, hasItem(new Privilege(READ_VOTER)));
     }

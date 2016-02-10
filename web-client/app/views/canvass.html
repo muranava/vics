@@ -27,11 +27,11 @@
           <div class="card-body">
 
             <input type="text"
+                   ng-readonly="readOnlyConstituency"
                    id="constituencyInputID"
                    ng-model="constituencySearchModel"
                    placeholder="Type a constituency name"
-                   typeahead="c for c in constituencies | filter:$viewValue | limitTo:8"
-                   typeahead-on-select="onSelectConstituency()"
+                   typeahead="c.name for c in constituencies | filter:$viewValue | limitTo:8"
                    typeahead-loading="false"
                    class="form-control">
           </div>
@@ -50,12 +50,16 @@
             </div>
           </div>
           <div class="card-body">
+            <div ng-if="wardNotSelectedError" class="alert alert-callout alert-danger" role="alert">
+              <strong>Error!</strong> Please choose a valid Ward
+            </div>
             <input type="text"
                    id="wardInputID"
+                   ng-readonly="readOnlyWard"
                    ng-disabled="allWards"
                    ng-model="wardSearchModel"
                    placeholder="Type a ward name (leave empty for all wards)"
-                   typeahead="w.wardName for w in wards | filter:$viewValue | limitTo:8"
+                   typeahead="w.name for w in wards | filter:$viewValue | limitTo:8"
                    class="form-control">
           </div>
         </div>
@@ -65,7 +69,7 @@
       <div class="col-md-12">
         <div class="card">
           <div class="card-head">
-            <header>3. Preview and Print</header>
+            <header>3. Print</header>
             <div class="tools">
               <div class="btn-group">
                 <a class="btn btn-icon-toggle btn-refresh"><i class="fa fa-question"></i></a>
@@ -73,20 +77,10 @@
             </div>
           </div>
           <div class="card-body">
-            <div ng-show="printSummaryCardModel.enabled">
-              <div class="form-group">
-                <label>Constituency</label>
-                <p class="form-control-static">{{printSummaryCardModel.constituency}}</p>
-              </div>
-              <div class="form-group">
-                <label>Wards</label>
-                <p ng-repeat="ward in printSummaryCardModel.wards" class="form-control-static">{{ward | wardFormat}}</p>
-              </div>
-            </div>
+
           </div>
           <div class="card-actionbar">
             <div class="card-actionbar-row">
-              <a class="btn btn-flat ink-reaction" ng-click="onSearchWards()">Preview</a>
               <a class="btn btn-flat ink-reaction" ng-click="onPrintElectors()">Print</a>
             </div>
           </div>

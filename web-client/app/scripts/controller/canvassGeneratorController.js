@@ -4,82 +4,48 @@
  */
 angular
   .module('canvass')
-  .controller('canvassGeneratorController', function ($scope, wardService, apiUrl, constituencies, electorService, electorTable) {
-    "use strict";
+  .controller('canvassGeneratorController', function ($scope, wardService, apiUrl, electorService, electorTable) {
 
     $scope.wards = [];
     $scope.constituencySearchModel = '';
     $scope.wardSearchModel = '';
 
-    $scope.printSummaryCardModel = {
-      constituency: '',
-      wards: [],
-      enabled: false
-    };
-
-    constituencies.findAllConstituencies()
+    wardService.findAll()
       .success(function(response) {
-        $scope.constituencies = response;
+        $scope.wards = response.wards;
+        $scope.constituencies = _.uniqBy(_.map($scope.wards, function(ward) {
+          return ward.constituency;
+        }), 'name');
+        prepareDefaultFormInputs();
       });
 
-    /**
-     * Triggered when the the user matches a constituency (in the typeahead).
-     * The action is to reload the wards to keep the control ward/const data in sync.
-     */
-    $scope.onSelectConstituency = function () {
-      reloadWards();
-    };
-
-    function reloadWards() {
-      wardService.findWardsWithinConstituency($scope.constituencySearchModel)
-        .success(function (response) {
-          $scope.wards = response;
-        })
-        .error(function (error) {
-          console.error(error);
-        });
-    }
-
-    /**
-     * Searches for wards within the selected constituency
-     */
-    $scope.onSearchWards = function () {
-      var selectedWard = _.find($scope.wards, {wardName: $scope.wardSearchModel});
-      electorService.previewVotersByWards($scope.constituencySearchModel, [selectedWard.wardCode])
-        .success(function (electors) {
-          if (!_.isEmpty(electors)) {
-            buildPreviewPanel(electors);
-          } else {
-            // TODO handle did not find wards
-          }
-        });
-    };
-
-    /**
-     * Shows the selected wards and constituency in the preview panel
-     */
-    function buildPreviewPanel(wards) {
-      $scope.printSummaryCardModel.enabled = true;
-      var firstItem = _.head(wards);
-      $scope.printSummaryCardModel.constituency = firstItem.constituencyCode;
+    function prepareDefaultFormInputs() {
+      if ($scope.constituencies.length === 1) {
+        $scope.constituencySearchModel = _.head($scope.constituencies).name;
+        $scope.readOnlyConstituency = true;
+      }
+      if ($scope.wards.length === 1) {
+        $scope.wardSearchModel = _.head($scope.wards).name;
+        $scope.readOnlyWard = true;
+      }
     }
 
     /**
      * Prints the electors in the selected wards and constituency
      */
     $scope.onPrintElectors = function () {
-      var wardCodes = _.map($scope.wards, function (ward) {
-        return ward.wardCode;
-      });
-
-      electorService.retrieveLocalElectorsByWards(wardCodes)
-        .success(function (electors) {
-          if (!_.isEmpty(electors)) {
-            createPdf(electors);
-          } else {
-            // TODO handle no results
-          }
-        });
+      $scope.wardNotSelectedError = false;
+      var selectedWard = _.find($scope.wards, {name: $scope.wardSearchModel});
+      if (selectedWard) {
+        electorService.retrieveLocalElectorsByWards(selectedWard.code)
+          .success(function (electors) {
+            if (!_.isEmpty(electors)) {
+              createPdf(electors);
+            }
+          });
+      } else {
+        $scope.wardNotSelectedError = true;
+      }
     };
 
     /**

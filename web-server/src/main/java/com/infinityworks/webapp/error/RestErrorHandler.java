@@ -13,8 +13,9 @@ import static org.springframework.http.HttpStatus.*;
 /**
  * An application wide error handler.
  */
-public final class ErrorHandler {
-    private static final Logger log = LoggerFactory.getLogger(ErrorHandler.class);
+public final class RestErrorHandler {
+    private static final Logger log = LoggerFactory.getLogger(RestErrorHandler.class);
+    private static final String VAGUE_ERROR_RESPONSE = "Something failed. Contact you system administrator";
 
     /**
      * Handles application errors and generates an error response
@@ -45,8 +46,13 @@ public final class ErrorHandler {
             return ResponseEntity.status(NOT_FOUND).body(createError(exception));
         }
 
+        if (exception instanceof UserSessionFailure) {
+            log.error("User session failure", exception);
+            return ResponseEntity.status(INTERNAL_SERVER_ERROR).body(VAGUE_ERROR_RESPONSE);
+        }
+
         log.error("Error is not mapped", exception);
-        return ResponseEntity.status(INTERNAL_SERVER_ERROR).body("Server error");
+        return ResponseEntity.status(INTERNAL_SERVER_ERROR).body(VAGUE_ERROR_RESPONSE);
     }
 
     private static ErrorEntity createError(Exception exception) {

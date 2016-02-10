@@ -4,7 +4,7 @@ import com.infinityworks.webapp.common.Try;
 import com.infinityworks.webapp.domain.CurrentUser;
 import com.infinityworks.webapp.domain.Role;
 import com.infinityworks.webapp.domain.User;
-import com.infinityworks.webapp.error.ErrorHandler;
+import com.infinityworks.webapp.error.RestErrorHandler;
 import com.infinityworks.webapp.rest.dto.AuthenticationToken;
 import com.infinityworks.webapp.rest.dto.CreateUserRequest;
 import com.infinityworks.webapp.security.SecurityUtils;
@@ -15,7 +15,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.AccessDeniedException;
-import org.springframework.security.access.AuthorizationServiceException;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -38,13 +37,13 @@ import static org.springframework.web.bind.annotation.RequestMethod.*;
 public class UserController {
     private final Logger log = LoggerFactory.getLogger(UserController.class);
     private final UserService userService;
-    private final ErrorHandler errorHandler;
+    private final RestErrorHandler errorHandler;
     private final UserDetailsService userDetailsService;
     private final AuthenticationManager authenticationManager;
 
     @Autowired
     public UserController(UserService userService,
-                          ErrorHandler errorHandler,
+                          RestErrorHandler errorHandler,
                           UserDetailsService userDetailsService,
                           AuthenticationManager authenticationManager) {
         this.userService = userService;
@@ -90,6 +89,13 @@ public class UserController {
                 return Try.failure(new AccessDeniedException("Forbidden"));
             }
         }).fold(errorHandler::mapToResponseEntity, ResponseEntity::ok);
+    }
+
+    @PreAuthorize("isAuthenticated()")
+    @RequestMapping(value = "/current", method = GET)
+    public ResponseEntity<?> currentUser(Principal userPrincipal) {
+        return userService.extractUserFromPrincipal(userPrincipal)
+                .fold(errorHandler::mapToResponseEntity, ResponseEntity::ok);
     }
 
     @PreAuthorize("hasAuthority('ADMIN')")
