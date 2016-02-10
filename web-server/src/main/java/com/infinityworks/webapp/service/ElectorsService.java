@@ -1,7 +1,9 @@
 package com.infinityworks.webapp.service;
 
 import com.infinityworks.webapp.common.Try;
+import com.infinityworks.webapp.domain.User;
 import com.infinityworks.webapp.domain.Ward;
+import com.infinityworks.webapp.error.NotAuthorizedFailure;
 import com.infinityworks.webapp.error.NotFoundFailure;
 import com.infinityworks.webapp.service.client.PafClient;
 import com.infinityworks.webapp.service.client.PafRecord;
@@ -29,18 +31,23 @@ public class ElectorsService {
         this.wardService = wardService;
     }
 
-    public Try<List<PafRecord>> findElectorsByWard(String wardCode) {
-        log.debug("Finding electors by ward {}", wardCode);
+    public Try<List<PafRecord>> findElectorsByWard(String wardCode, User user) {
+        log.debug("Finding electors by ward={} for user={}", wardCode, user);
 
-        Optional<Ward> wards = wardService.findByCode(wardCode).stream().findFirst();
-        if (!wards.isPresent()) {
-            log.warn("Ward {} not found", wardCode);
-            return Try.failure(new NotFoundFailure("No wards with code " + wardCode));
+        Optional<Ward> ward = wardService.findByCode(wardCode).stream().findFirst();
+        if (!ward.isPresent()) {
+            log.warn("wardCode={} not found", wardCode);
+            return Try.failure(new NotFoundFailure("No wards with wardCode=" + wardCode));
         }
 
-        Try<List<PafRecord>> electorsByWard = pafClient.findElectorsByWard(wards.get().getCode());
+        if (!user.hasWardPermission(ward.get())) {
+            String msg = String.format("User=%s tried to find electors by ward but is not authorized", user);
+            return Try.failure(new NotAuthorizedFailure(msg));
+        }
+
+        Try<List<PafRecord>> electorsByWard = pafClient.findElectorsByWard(ward.get().getCode());
         electorsByWard.accept(
-                failure -> log.error("Failed to retrieve electors for wardCode {}", wardCode),
+                failure -> log.error("Failed to retrieve electors for wardCode={}", wardCode),
                 electors -> log.debug("Retrieved {} electors from PAF", electors.size()));
 
         return electorsByWard;

@@ -39,7 +39,7 @@ public class UserService {
     public Try<User> extractUserFromPrincipal(Principal principal) {
         if (principal instanceof UsernamePasswordAuthenticationToken) {
             Object sessionPrincipal = ((UsernamePasswordAuthenticationToken) principal).getPrincipal();
-            if (sessionPrincipal instanceof CurrentUser) {
+            if (sessionPrincipal instanceof org.springframework.security.core.userdetails.User) {
                 CurrentUser currentUser = (CurrentUser) sessionPrincipal;
                 return Try.success(currentUser.getUser());
             }

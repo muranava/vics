@@ -22,6 +22,9 @@ public class User extends BaseEntity implements Permissible {
     @Column(name = "password_hash", nullable = false)
     private String passwordHash;
 
+    @Column(nullable = false)
+    private Boolean writeAccess;
+
     @Column(name = "role", nullable = false)
     @Enumerated(EnumType.STRING)
     private Role role;
@@ -54,12 +57,12 @@ public class User extends BaseEntity implements Permissible {
 
     @Override
     public boolean hasWardPermission(Ward ward) {
-        return wards.contains(ward) || constituencies.contains(ward.getConstituency());
+        return isAdmin() || wards.contains(ward) || constituencies.contains(ward.getConstituency());
     }
 
     @Override
     public boolean hasConstituencyPermission(Constituency constituency) {
-        return constituencies.contains(constituency);
+        return isAdmin() || constituencies.contains(constituency);
     }
 
     public String getUsername() {
@@ -111,6 +114,14 @@ public class User extends BaseEntity implements Permissible {
         this.wards = wards;
     }
 
+    public Boolean getWriteAccess() {
+        return writeAccess;
+    }
+
+    public void setWriteAccess(Boolean writeAccess) {
+        this.writeAccess = writeAccess;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -129,6 +140,7 @@ public class User extends BaseEntity implements Permissible {
     @Override
     public String toString() {
         return MoreObjects.toStringHelper(this)
+                .add("id", getId())
                 .add("username", username)
                 .add("role", role)
                 .add("permissions", permissions)

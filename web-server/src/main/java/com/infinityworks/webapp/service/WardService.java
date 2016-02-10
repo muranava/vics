@@ -32,10 +32,6 @@ public class WardService {
         return wardRepository.findByCodeOrderByNameAsc(code);
     }
 
-    public List<Ward> findAll() {
-        return wardRepository.findAll();
-    }
-
     public Try<List<Ward>> findByConstituency(UUID id) {
         Optional<Constituency> constituency = Optional.ofNullable(constituencyRepository.findOne(id));
         if (constituency.isPresent()) {

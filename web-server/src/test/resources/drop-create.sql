@@ -27,6 +27,7 @@ CREATE TABLE users
   id            UUID PRIMARY KEY,
   username      TEXT NOT NULL UNIQUE,
   password_hash TEXT NOT NULL,
+  write_access  TEXT NOT NULL DEFAULT FALSE,
   role          TEXT NOT NULL
 );
 

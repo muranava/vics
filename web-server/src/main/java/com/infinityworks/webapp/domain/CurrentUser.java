@@ -23,5 +23,4 @@ public class CurrentUser extends org.springframework.security.core.userdetails.U
     public Role getRole() {
         return user.getRole();
     }
-
 }

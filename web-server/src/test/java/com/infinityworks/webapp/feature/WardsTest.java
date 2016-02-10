@@ -1,49 +1,92 @@
 package com.infinityworks.webapp.feature;
 
-import com.infinityworks.webapp.domain.Ward;
+import com.infinityworks.webapp.common.Try;
+import com.infinityworks.webapp.error.RestErrorHandler;
+import com.infinityworks.webapp.repository.WardRepository;
+import com.infinityworks.webapp.rest.WardController;
+import com.infinityworks.webapp.rest.dto.UserRestrictedElectoralData;
+import com.infinityworks.webapp.service.UserService;
+import com.infinityworks.webapp.service.WardService;
+import org.junit.Before;
 import org.junit.Test;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.context.jdbc.SqlGroup;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.ResultActions;
+import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
-import java.util.List;
+import java.security.Principal;
 
 import static com.infinityworks.webapp.common.Json.objectMapper;
-import static java.util.Arrays.asList;
+import static org.hamcrest.Matchers.equalTo;
+import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertThat;
+import static org.mockito.Matchers.any;
+import static org.mockito.Matchers.anyString;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @SqlGroup({
         @Sql(executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD,
-                scripts = {"classpath:drop-create.sql",  "classpath:constituencies.sql", "classpath:wards.sql"})
+                scripts = {
+                        "classpath:drop-create.sql",
+                        "classpath:constituencies.sql",
+                        "classpath:wards.sql",
+                        "classpath:users.sql"})
 })
 public class WardsTest extends WebApplicationTest {
-    private final Logger log = LoggerFactory.getLogger(WardsTest.class);
+    protected UserService userService;
 
-    // TODO add test for ward name search
+    @Before
+    public void setup() {
+        userService = mock(UserService.class);
+        when(userService.getByEmail(anyString())).thenCallRealMethod();
+        WardService wardService = getBean(WardService.class);
+        WardController wardController = new WardController(userService, wardService, new RestErrorHandler());
+
+        mockMvc = MockMvcBuilders
+                .standaloneSetup(wardController)
+                .build();
+        pafApiStub.start();
+    }
 
     @Test
-    public void returnsTheWards() throws Exception {
-        String endpoint = "/constituency/911a68a5-5689-418d-b63d-b21545345f03/ward";
+    public void returnsAllTheWardsForAdmin() throws Exception {
+        String endpoint = "/ward";
+        when(userService.extractUserFromPrincipal(any(Principal.class)))
+                .thenReturn(Try.success(admin()));
+
+        int totalWards = (int) getBean(WardRepository.class).count();
 
         ResultActions response = mockMvc.perform(get(endpoint)
-                .with(authenticatedUser())
                 .accept(MediaType.APPLICATION_JSON))
                 .andDo(print());
 
         MvcResult result = response.andExpect(status().isOk()).andReturn();
-        List<Ward> wards = asList(objectMapper.readValue(result.getResponse().getContentAsString(), Ward[].class));
+        UserRestrictedElectoralData wards = objectMapper.readValue(result.getResponse().getContentAsString(), UserRestrictedElectoralData.class);
 
-        assertThat(wards.get(0).getName(), is("Bablake"));
+        assertThat(wards.getWards(), hasSize(equalTo(totalWards)));
+    }
 
-        wards.forEach(ward -> assertThat(ward.getConstituency().getName(), is("Coventry North West")));
+    @Test
+    public void returnsTheRestrictedWardsForCovs() throws Exception {
+        String endpoint = "/ward";
+        when(userService.extractUserFromPrincipal(any(Principal.class)))
+                .thenReturn(Try.success(covs()));
+
+        ResultActions response = mockMvc.perform(get(endpoint)
+                .accept(MediaType.APPLICATION_JSON))
+                .andDo(print());
+
+        MvcResult result = response.andExpect(status().isOk()).andReturn();
+        UserRestrictedElectoralData wards = objectMapper.readValue(result.getResponse().getContentAsString(), UserRestrictedElectoralData.class);
+
+        assertThat(wards.getWards().size(), is(6));
     }
 
     @Test
@@ -52,7 +95,6 @@ public class WardsTest extends WebApplicationTest {
         String endpoint = "/constituency/" + idontExist + "/ward";
 
         mockMvc.perform(get(endpoint)
-                .with(authenticatedUser())
                 .accept(MediaType.APPLICATION_JSON))
                 .andDo(print())
                 .andExpect(status().isNotFound());
@@ -64,7 +106,6 @@ public class WardsTest extends WebApplicationTest {
         String endpoint = "/constituency/" + invalidUUID + "/ward";
 
         mockMvc.perform(get(endpoint)
-                .with(authenticatedUser())
                 .accept(MediaType.APPLICATION_JSON))
                 .andDo(print())
                 .andExpect(status().isNotFound());
