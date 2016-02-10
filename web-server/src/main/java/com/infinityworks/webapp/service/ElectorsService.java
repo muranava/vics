@@ -45,7 +45,7 @@ public class ElectorsService {
             return Try.failure(new NotAuthorizedFailure(msg));
         }
 
-        Try<List<PafRecord>> electorsByWard = pafClient.findElectorsByWard(ward.get().getCode());
+        Try<List<PafRecord>> electorsByWard = null; // TODO
         electorsByWard.accept(
                 failure -> log.error("Failed to retrieve electors for wardCode={}", wardCode),
                 electors -> log.debug("Retrieved {} electors from PAF", electors.size()));

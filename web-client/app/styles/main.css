@@ -21,3 +21,8 @@ input:-webkit-autofill {
   background-color: #fff !important;
 }
 
+.multi-select {
+  width: 100% !important;
+
+}
+

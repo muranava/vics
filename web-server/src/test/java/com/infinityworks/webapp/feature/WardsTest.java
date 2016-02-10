@@ -5,8 +5,10 @@ import com.infinityworks.webapp.error.RestErrorHandler;
 import com.infinityworks.webapp.repository.WardRepository;
 import com.infinityworks.webapp.rest.WardController;
 import com.infinityworks.webapp.rest.dto.UserRestrictedElectoralData;
+import com.infinityworks.webapp.service.AddressService;
 import com.infinityworks.webapp.service.UserService;
 import com.infinityworks.webapp.service.WardService;
+import com.infinityworks.webapp.service.client.Street;
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.http.MediaType;
@@ -17,8 +19,10 @@ import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 import java.security.Principal;
+import java.util.List;
 
 import static com.infinityworks.webapp.common.Json.objectMapper;
+import static java.util.Arrays.asList;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.core.Is.is;
@@ -47,7 +51,8 @@ public class WardsTest extends WebApplicationTest {
         userService = mock(UserService.class);
         when(userService.getByEmail(anyString())).thenCallRealMethod();
         WardService wardService = getBean(WardService.class);
-        WardController wardController = new WardController(userService, wardService, new RestErrorHandler());
+        AddressService addressService = getBean(AddressService.class);
+        WardController wardController = new WardController(userService, wardService, new RestErrorHandler(), addressService);
 
         mockMvc = MockMvcBuilders
                 .standaloneSetup(wardController)
@@ -87,6 +92,25 @@ public class WardsTest extends WebApplicationTest {
         UserRestrictedElectoralData wards = objectMapper.readValue(result.getResponse().getContentAsString(), UserRestrictedElectoralData.class);
 
         assertThat(wards.getWards().size(), is(6));
+    }
+
+    @Test
+    public void returnsStreetsByWard() throws Exception {
+        String wardCode = "E05001221";
+        String endpoint = "/ward/" + wardCode + "/street";
+        when(userService.extractUserFromPrincipal(any(Principal.class)))
+                .thenReturn(Try.success(admin()));
+        pafApiStub.willReturnStreetsByWard(wardCode);
+
+        ResultActions resultActions = mockMvc.perform(get(endpoint)
+                .accept(MediaType.APPLICATION_JSON))
+                .andDo(print())
+                .andExpect(status().isOk());
+
+        MvcResult result = resultActions.andExpect(status().isOk()).andReturn();
+
+        List<Street> streets = asList(objectMapper.readValue(result.getResponse().getContentAsString(), Street[].class));
+        assertThat(streets.size(), is(6));
     }
 
     @Test

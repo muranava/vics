@@ -23,7 +23,7 @@ public class PafClientTest {
 
     @Before
     public void setUp() throws Exception {
-        when(canvassConfig.getPafApiBaseUrl()).thenReturn("http://localhost:9002");
+        when(canvassConfig.getPafApiBaseUrl()).thenReturn("http://localhost:9002/v1");
         pafClient = new PafClient(new RestTemplate(), canvassConfig);
         pafApiStub.start();
     }
@@ -34,15 +34,12 @@ public class PafClientTest {
     }
 
     @Test
-    public void returnsThePafRecordsForTheGivenWard() throws Exception {
-        pafApiStub.willReturnPafForWard("E0095");
+    public void returnsTheStreetsByWardCode() throws Exception {
+        pafApiStub.willReturnStreetsByWard("E05001221");
 
-        Try<List<PafRecord>> electors = pafClient.findElectorsByWard("E0095");
+        Try<List<Street>> streets = pafClient.findStreetsByWardCode("E05001221");
 
-        assertThat(electors.isSuccess(), is(true));
-        assertThat(electors.get().size(), is(46));
-
-        PafRecord pafRecord = electors.get().get(0);
-        assertThat(pafRecord.getUdprn(), is(50793466));
+        assertThat(streets.get().isEmpty(), is(false));
+        streets.get().stream().forEach(street -> assertThat(street.getPostTown(), is("Coventry")));
     }
 }
