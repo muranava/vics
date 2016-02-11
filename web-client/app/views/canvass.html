@@ -25,7 +25,9 @@
             </div>
           </div>
           <div class="card-body">
-
+            <div ng-if="constituencyNotSelectedError" class="alert alert-callout alert-danger" role="alert">
+              <strong>Error!</strong> Please choose a valid Constituency
+            </div>
             <input type="text"
                    ng-readonly="readOnlyConstituency"
                    id="constituencyInputID"
@@ -58,31 +60,88 @@
                    ng-readonly="readOnlyWard"
                    ng-disabled="allWards"
                    ng-model="wardSearchModel"
-                   placeholder="Type a ward name (leave empty for all wards)"
+                   placeholder="Type a ward name"
                    typeahead="w.name for w in wards | filter:$viewValue | limitTo:8"
                    class="form-control">
+          </div>
+          <div class="card-actionbar">
+            <div class="card-actionbar-row">
+              <a class="btn ink-reaction btn-default" ng-click="onSearchWard()">Search</a>
+            </div>
           </div>
         </div>
       </div>
     </div>
-    <div class="row">
+    <div class="row" ng-show="streets.length">
       <div class="col-md-12">
         <div class="card">
           <div class="card-head">
-            <header>3. Print</header>
-            <div class="tools">
-              <div class="btn-group">
-                <a class="btn btn-icon-toggle btn-refresh"><i class="fa fa-question"></i></a>
-              </div>
-            </div>
+            <header>3. Print Canvass Cards</header>
           </div>
-          <div class="card-body">
+          <div class="card-body tab-content style-default-bright">
+            <!-- BEGIN TILE ACTIONS -->
+            <div class="row">
+              <div class="col-lg-12">
+                <h4>Actions</h4>
+              </div><!--end .col -->
+              <div class="col-lg-12">
+                <article class="margin-bottom-xxl">
+                  <p>
+                    You can print canvass cards for all streets in the following ward and constituency combination.
+                  </p>
+                </article>
+              </div><!--end .col -->
+            </div>
+            <div class="row">
+              <div class="col-lg-12">
+                <div class="card">
+                  <div class="card-body no-padding">
+                    <ul class="list">
+                      <li class="tile">
+                        <a class="tile-content ink-reaction">
+                          <div class="tile-text">
+                            {{selectedConstituency.name}} ({{selectedConstituency.code}})
+                            <small>Constituency</small>
+                          </div>
+                        </a>
+                      </li>
+                      <li class="tile">
+                        <a class="tile-content ink-reaction">
+                          <div class="tile-text">
+                            {{selectedWard.name}} ({{selectedWard.code}})
+                            <small>Ward</small>
+                          </div>
+                        </a>
+                      </li>
+                    </ul>
+                  </div><!--end .card-body -->
+                </div><!--end .card -->
+                <br>
+                <em class="text-caption">{{numStreetsSelected}} of {{streets.length}} streets selected</em>
+                <div class="card">
+                  <div class="card-actionbar">
+                    <div class="card-actionbar-row">
+                      <a class="btn ink-reaction btn-default pull-left" ng-click="onPrintSelected()" ng-disabled="numStreetsSelected === 0">Print Selected</a>
+                      <a class="btn ink-reaction btn-default pull-left button-group-spacing" ng-click="onPrintElectors()">Print All</a>
+                    </div>
+                  </div>
+                  <div class="card-body no-padding">
+                    <ul class="list" data-sortable="true">
+                      <li class="tile" ng-repeat="s in streets">
+                        <div class="checkbox checkbox-styled tile-text">
+                          <label>
+                            <input ng-change="getNumStreetsSelected()" type="checkbox" ng-model="s.selected">
+														<span>
+															{{s.mainStreet}}
+														</span>
+                          </label>
+                        </div>
+                    </ul>
+                  </div><!--end .card-body -->
+                </div><!--end .card -->
+              </div><!--end .col -->
+            </div><!--end .row -->
 
-          </div>
-          <div class="card-actionbar">
-            <div class="card-actionbar-row">
-              <a class="btn btn-flat ink-reaction" ng-click="onPrintElectors()">Print</a>
-            </div>
           </div>
         </div>
       </div>

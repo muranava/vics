@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.security.Principal;
 
-import static org.springframework.web.bind.annotation.RequestMethod.GET;
+import static org.springframework.web.bind.annotation.RequestMethod.*;
 
 /**
  * Resource to provide information about wards and constituencies

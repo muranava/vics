@@ -1,26 +1,38 @@
 [
   {
     "main_street": "Kirby Road",
-    "post_town": "Coventry"
+    "post_town": "Coventry",
+    "dependent_locality": "Northern Quarter",
+    "dependent_street": ""
   },
   {
     "main_street": "Abbot Road",
-    "post_town": "Coventry"
+    "post_town": "Coventry",
+    "dependent_locality": "Southern Quarter",
+    "dependent_street": ""
   },
   {
     "main_street": "West Road",
-    "post_town": "Coventry"
+    "post_town": "Coventry",
+    "dependent_locality": "Southern Quarter",
+    "dependent_street": ""
   },
   {
     "main_street": "Dover Street",
-    "post_town": "Coventry"
+    "post_town": "Coventry",
+    "dependent_locality": "Eastern Quarter",
+    "dependent_street": ""
   },
   {
     "main_street": "Stanley Crescent",
-    "post_town": "Coventry"
+    "post_town": "Coventry",
+    "dependent_locality": "I am a teapot",
+    "dependent_street": "Dover Street"
   },
   {
     "main_street": "Amber Avenue",
-    "post_town": "Coventry"
+    "post_town": "Coventry",
+    "dependent_locality": "Northern Quarter",
+    "dependent_street": ""
   }
 ]

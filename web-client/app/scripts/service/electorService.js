@@ -16,5 +16,19 @@ angular
       });
     };
 
+    /**
+     * Retrieves the households and electors in the given streets
+     */
+    api.retrieveElectorsByStreets = function(data) {
+      return $http({
+        url: apiUrl + '/elector/street',
+        method: 'POST',
+        withCredentials: true,
+        data: {
+          streets: data
+        }
+      });
+    };
+
     return api;
   });

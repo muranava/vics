@@ -23,6 +23,8 @@ input:-webkit-autofill {
 
 .multi-select {
   width: 100% !important;
-
 }
 
+.button-group-spacing {
+  margin-left: 10px;
+}

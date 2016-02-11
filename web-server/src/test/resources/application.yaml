@@ -23,6 +23,8 @@ canvass:
 
 logging:
   level:
+    org.springframework.security: DEBUG
     com.zaxxer.hikari.HikariConfig: ERROR
-    com.infinityworks.webapp: ERROR
-    org.springframework: ERROR
+    com.infinityworks.webapp: TRACE
+    org.hibernate.SQL: ERROR
+    org.hibernate.type: ERROR

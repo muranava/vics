@@ -8,6 +8,14 @@ import javax.persistence.*;
 import java.util.Set;
 
 /**
+ * Main user domain model. From a security aspect, there are 3 orthogonal concepts bound to
+ * a user:
+ * 1) Role (Admin, User) - which determines whether a user has elevated privileges or not,
+ * e.g. if a user is ADMIN then they will get all privileges
+ * 2) Privileges - determines what a user can DO, e.g. read/write access
+ * 3) Application restrictions - determines what type of data the user can access, e.g.
+ * which wards, which constituencies
+ *
  * Note: modifying this class will invalidate all current user sessions,
  * since spring session serializes this entity by default.
  * To change this behaviour we would need to override the spring session methods
@@ -128,8 +136,8 @@ public class User extends BaseEntity implements Permissible {
         if (!(o instanceof User)) return false;
         User user = (User) o;
         return Objects.equal(username, user.username) &&
-               Objects.equal(passwordHash, user.passwordHash) &&
-               role == user.role;
+                Objects.equal(passwordHash, user.passwordHash) &&
+                role == user.role;
     }
 
     @Override

@@ -4,11 +4,11 @@ import com.infinityworks.webapp.common.Try;
 import com.infinityworks.webapp.error.RestErrorHandler;
 import com.infinityworks.webapp.repository.WardRepository;
 import com.infinityworks.webapp.rest.WardController;
+import com.infinityworks.webapp.rest.dto.Street;
 import com.infinityworks.webapp.rest.dto.UserRestrictedElectoralData;
 import com.infinityworks.webapp.service.AddressService;
 import com.infinityworks.webapp.service.UserService;
 import com.infinityworks.webapp.service.WardService;
-import com.infinityworks.webapp.service.client.Street;
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.http.MediaType;
@@ -98,9 +98,9 @@ public class WardsTest extends WebApplicationTest {
     public void returnsStreetsByWard() throws Exception {
         String wardCode = "E05001221";
         String endpoint = "/ward/" + wardCode + "/street";
+        pafApiStub.willReturnStreetsByWard(wardCode);
         when(userService.extractUserFromPrincipal(any(Principal.class)))
                 .thenReturn(Try.success(admin()));
-        pafApiStub.willReturnStreetsByWard(wardCode);
 
         ResultActions resultActions = mockMvc.perform(get(endpoint)
                 .accept(MediaType.APPLICATION_JSON))

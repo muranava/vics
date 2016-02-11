@@ -8,10 +8,10 @@ import java.util.concurrent.Executors;
  */
 public class PafServerRunner {
     static Runnable pathServer = () -> {
-        PafServer pafApiStub = new PafServer();
+        PafServerStub pafApiStub = new PafServerStub();
         pafApiStub.start();
         try {
-            pafApiStub.willReturnStreetsByWard("E05001228");
+            pafApiStub.willReturnStreetsByWard("E05001221");
         } catch (IOException e) {
             throw new IllegalStateException("Could not start PAF mock server");
         }

@@ -5,7 +5,7 @@ import com.infinityworks.webapp.config.Config;
 import com.infinityworks.webapp.domain.User;
 import com.infinityworks.webapp.security.SecurityConfig;
 import com.infinityworks.webapp.service.UserService;
-import com.infinityworks.webapp.testsupport.stub.PafServer;
+import com.infinityworks.webapp.testsupport.stub.PafServerStub;
 import org.junit.After;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,7 +28,7 @@ import javax.servlet.Filter;
 })
 public abstract class WebApplicationTest {
     protected MockMvc mockMvc;
-    protected final PafServer pafApiStub = new PafServer();
+    protected final PafServerStub pafApiStub = new PafServerStub();
 
     @Autowired
     protected WebApplicationContext applicationContext;

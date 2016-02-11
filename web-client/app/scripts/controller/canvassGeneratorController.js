@@ -9,6 +9,7 @@ angular
     $scope.wards = [];
     $scope.constituencySearchModel = '';
     $scope.wardSearchModel = '';
+    $scope.numStreetsSelected = 0;
 
     wardService.findAll()
       .success(function(response) {
@@ -46,6 +47,46 @@ angular
       } else {
         $scope.wardNotSelectedError = true;
       }
+    };
+
+    $scope.onSearchWard = function() {
+      $scope.wardNotSelectedError = false;
+      $scope.constituencyNotSelectedError = false;
+      $scope.selectedWard = _.find($scope.wards, {name: $scope.wardSearchModel});
+      $scope.selectedConstituency = _.find($scope.constituencies, {name: $scope.constituencySearchModel});
+      if (!$scope.selectedConstituency) {
+        $scope.constituencyNotSelectedError = true;
+      } else {
+        if ($scope.selectedWard) {
+          wardService.findStreetsByWard($scope.selectedWard.code)
+            .success(function (streets) {
+              $scope.streets = streets;
+            })
+            .error(function(err) {
+              console.error(err);
+            })
+        } else {
+          $scope.wardNotSelectedError = true;
+        }
+      }
+    };
+
+    $scope.getNumStreetsSelected = function() {
+      if ($scope.streets && $scope.streets.length) {
+        $scope.numStreetsSelected = _.size(_.filter($scope.streets, function (s) {
+          return s.selected;
+        }));
+      }
+    };
+
+    $scope.onPrintSelected = function() {
+      var selected = _.filter($scope.streets, function (s) {
+        return s.selected;
+      });
+      electorService.retrieveElectorsByStreets(selected)
+        .success(function(response) {
+          console.log(response);
+        });
     };
 
     /**

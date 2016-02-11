@@ -15,7 +15,7 @@ import static org.springframework.http.HttpStatus.*;
  */
 public final class RestErrorHandler {
     private static final Logger log = LoggerFactory.getLogger(RestErrorHandler.class);
-    private static final String VAGUE_ERROR_RESPONSE = "Something failed. Contact you system administrator";
+    private static final String VAGUE_ERROR_RESPONSE = "Something failed. Contact your system administrator";
 
     /**
      * Handles application errors and generates an error response
@@ -48,7 +48,13 @@ public final class RestErrorHandler {
 
         if (exception instanceof UserSessionFailure) {
             log.error("User session failure", exception);
-            return ResponseEntity.status(INTERNAL_SERVER_ERROR).body(VAGUE_ERROR_RESPONSE);
+            ErrorEntity errorEntity = new ErrorEntity(LoginFailure.class.getSimpleName(), VAGUE_ERROR_RESPONSE);
+            return ResponseEntity.status(INTERNAL_SERVER_ERROR).body(errorEntity);
+        }
+
+        if (exception instanceof PafApiFailure) {
+            ErrorEntity errorEntity = new ErrorEntity(PafApiFailure.class.getSimpleName(), VAGUE_ERROR_RESPONSE);
+            return ResponseEntity.status(INTERNAL_SERVER_ERROR).body(errorEntity);
         }
 
         log.error("Error is not mapped", exception);

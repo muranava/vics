@@ -18,6 +18,14 @@ angular
       });
     };
 
+    api.findStreetsByWard = function(wardCode) {
+      return $http({
+        method: 'GET',
+        url: apiUrl + '/ward/' + wardCode + '/street',
+        withCredentials: true
+      });
+    };
+
     /**
      * Finds all wards (the server will restrict the result set to
      * the wards the current user has access to)
