@@ -16,7 +16,8 @@ angular
     'ngRoute',
     'ngSanitize',
     'ngTouch',
-    'ui.bootstrap'
+    'ui.bootstrap',
+    'angular-loading-bar'
   ])
   .constant('apiUrl', 'http://localhost:8090/api/canvass')
   .config(function ($routeProvider) {

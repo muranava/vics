@@ -13,7 +13,7 @@
       <div class="col-lg-8">
         <article class="lead">
           <p>
-            Some text to go here to explain what this is all about... ???
+            Print canvass cards for your Wards
           </p>
         </article>
       </div>
@@ -48,7 +48,7 @@
     </div>
     <div class="row">
       <div class="col-md-12">
-        <div class="card">
+        <div class="card" ng-show="selectedConstituency" ng-class="{'card-disabled': loadingWards === true}">
           <div class="card-head">
             <header>2. Choose ward(s)</header>
             <div class="tools">
@@ -78,7 +78,7 @@
         </div>
       </div>
     </div>
-    <div class="row" ng-show="streets.length">
+    <div class="row" ng-show="selectedWard">
       <div class="col-md-12">
         <div class="card">
           <div class="card-head">

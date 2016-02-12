@@ -28,3 +28,27 @@ input:-webkit-autofill {
 .button-group-spacing {
   margin-left: 10px;
 }
+
+.spinbox {
+  position: relative;
+  top: -12px;
+}
+
+/* Spinner overrides */
+#loading-bar .bar {
+  background: #C5443B;
+}
+
+/* Fancy blur effect */
+#loading-bar .peg {
+  -moz-box-shadow: #c63e32 1px 0 6px 1px;
+  -ms-box-shadow: #C5443B 1px 0 6px 1px;
+  -webkit-box-shadow: #C5443B 1px 0 6px 1px;
+  box-shadow: #C5443B 1px 0 6px 1px;
+}
+
+#loading-bar-spinner .spinner-icon {
+  display:none;
+  border-top-color:  #C5443B;
+  border-left-color: #C5443B;
+}

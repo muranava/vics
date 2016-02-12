@@ -4,7 +4,7 @@
  */
 angular
   .module('canvass')
-  .controller('canvassGeneratorController', function ($scope, wardService, constituencyService, apiUrl, electorService, electorTable) {
+  .controller('canvassGeneratorController', function ($scope, wardService, constituencyService, apiUrl, electorService, electorTable, $filter) {
 
     $scope.wards = [];
     $scope.constituencySearchModel = '';
@@ -12,6 +12,7 @@ angular
     $scope.numStreetsSelected = 0;
     $scope.errorLoadingData = false;
 
+    $scope.loadingConstituencies = true;
     constituencyService.retrieveByUser()
       .success(function(response) {
         $scope.constituencies = response.constituencies;
@@ -34,10 +35,10 @@ angular
     function reloadWardsByConstituency() {
       $scope.errorLoadingData = false;
       wardService.findWardsWithinConstituency($scope.selectedConstituency.id)
-        .success(function(response) {
+        .success(function (response) {
           $scope.wards = response.wards;
         })
-        .error(function() {
+        .error(function () {
           $scope.errorLoadingData = true;
         });
     }
@@ -105,7 +106,7 @@ angular
         })
         .error(function() {
           $scope.errorLoadingData = true;
-        })
+        });
     };
 
     /**
@@ -116,13 +117,13 @@ angular
       var doc = new jsPDF('l', 'pt');
 
       var currentPage = 1;
-      _.forOwn(electors, function (electorsInStreet, street) {
+      _.forOwn(electors, function (electorsInStreet) {
         doc = electorTable.renderPdfTable({
           electors: electorsInStreet,
           wardName: $scope.selectedWard.name,
           wardCode: $scope.selectedWard.code,
           constituencyName: $scope.selectedConstituency.name,
-          street: street,
+          street: $filter('streetSingleLineFilter')(_.head(electorsInStreet.properties)),
           currentPage: currentPage
         }, doc);
         doc.addPage();

@@ -14,7 +14,7 @@ angular
 
     var theme = 'grid',
       columnStyles = {
-        house: {columnWidth: 80},
+        house: {columnWidth: 70},
         name: {columnWidth: 145},
         telephone: {columnWidth: 90},
         likelihood: {columnWidth: 60, fillColor: [225, 225, 225]},
@@ -27,12 +27,12 @@ angular
         lift: {columnWidth: 27},
         poster: {columnWidth: 27},
         deceased: {columnWidth: 27},
-        rollNum: {columnWidth: 80}
+        rollNum: {columnWidth: 90, fontSize: 10}
       },
       headerStyles = {
         fillColor: [250, 250, 250],
         textColor: 0,
-        fontSize: 11,
+        fontSize: 10,
         rowHeight: 40
       },
       docProperties = {
@@ -80,7 +80,7 @@ angular
      */
     function electorToTableData(wardCode, property, elector) {
       return {
-        house: property.buildingNumber,
+        house: _.isEmpty(property.buildingNumber) ? "Not defined" : property.buildingNumber,
         name: elector.lastName + ', ' + elector.firstName,
         telephone: randPhone(), // FIXME get from PAF
         likelihood: '', // empty
@@ -164,7 +164,8 @@ angular
         columnStyles: columnStyles,
         headerStyles: headerStyles,
         styles: {
-          rowHeight: 23
+          rowHeight: 20,
+          fontSize: 11
         },
         margin: margin,
         beforePageContent: function () {
@@ -201,12 +202,12 @@ angular
           doc.setFontSize(9);
           doc.text(disclaimerText, data.settings.margin.right, doc.internal.pageSize.height - 30);
 
-          doc.setFontSize(10);
-          doc.text(columnLabels.dead, deadPos.x + slantTextConf.x + 3, deadPos.y + slantTextConf.y + 4, null, slantTextConf.angle);
-          doc.text(columnLabels.poster, posterPos.x + slantTextConf.x + 3, posterPos.y + slantTextConf.y + 8, null, slantTextConf.angle);
-          doc.text(columnLabels.lift, liftPos.x + slantTextConf.x, liftPos.y + slantTextConf.y + 16, null, slantTextConf.angle);
-          doc.text(columnLabels.wantsPV, wantsPVPos.x + slantTextConf.x, wantsPVPos.y + slantTextConf.y + 16, null, slantTextConf.angle);
-          doc.text(columnLabels.hasPV, hasPVPos.x + slantTextConf.x + 2, hasPVPos.y + slantTextConf.y + 10, null, slantTextConf.angle);
+          doc.setFontSize(9);
+          doc.text(columnLabels.dead, deadPos.x + slantTextConf.x + 3, deadPos.y + slantTextConf.y, null, slantTextConf.angle);
+          doc.text(columnLabels.poster, posterPos.x + slantTextConf.x + 3, posterPos.y + slantTextConf.y + 3, null, slantTextConf.angle);
+          doc.text(columnLabels.lift, liftPos.x + slantTextConf.x, liftPos.y + slantTextConf.y + 10, null, slantTextConf.angle);
+          doc.text(columnLabels.wantsPV, wantsPVPos.x + slantTextConf.x, wantsPVPos.y + slantTextConf.y + 11, null, slantTextConf.angle);
+          doc.text(columnLabels.hasPV, hasPVPos.x + slantTextConf.x + 2, hasPVPos.y + slantTextConf.y + 8, null, slantTextConf.angle);
 
           doc.text('Important Issues', 435, 117);
 
@@ -217,12 +218,12 @@ angular
             return column.dataKey === 'support';
           });
           doc.setDrawColor(0);
-          doc.rect(likelihoodColumn.x, margin.top, likelihoodColumn.width, data.table.height + data.table.rows.length);
-          doc.rect(intentionColumn.x, margin.top, intentionColumn.width, data.table.height + data.table.rows.length);
+          //doc.rect(likelihoodColumn.x, margin.top, likelihoodColumn.width, data.table.height + data.table.rows.length);
+          //doc.rect(intentionColumn.x, margin.top, intentionColumn.width, data.table.height + data.table.rows.length);
         },
         drawRow: function (row, data) {
           doc.setFontSize(10);
-          currHouse = row.cells.house && row.cells.house.raw.house;
+          currHouse = row.cells.house && row.cells.house.raw;
 
           if (currHouse && (prevHouse !== currHouse)) {
             doc.rect(data.settings.margin.left, row.y, data.table.width + 18, 20, 'F');
@@ -232,7 +233,7 @@ angular
         },
         createdCell: function (cell, data) {
           if (data.column.dataKey === 'house') {
-            cell.text = data.row.cells.house.raw.house;
+            cell.text = data.row.cells.house.raw;
           }
         }
       };
@@ -258,7 +259,7 @@ angular
      * @returns {String} the formatted elector Id
      */
     function buildElectorId(wardCode, elector) {
-      var electorId = elector.electorId,
+      var electorId = 'AAD',//; elector.electorId,
           electorSuffix = elector.electorSuffix;
       var mandatoryFields = wardCode + '/' + electorId;
       return electorSuffix ? mandatoryFields + '/' + electorSuffix : mandatoryFields;
