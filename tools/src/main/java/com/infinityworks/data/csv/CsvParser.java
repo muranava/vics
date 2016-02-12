@@ -26,7 +26,6 @@ public class CsvParser {
         Iterable<CSVRecord> records = CSVFormat.DEFAULT.parse(in);
 
         return stream(records.spliterator(), false)
-                .skip(1)
                 .map(rowInterpreter::apply)
                 .collect(toList());
     }

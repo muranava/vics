@@ -34,7 +34,8 @@
                    ng-model="constituencySearchModel"
                    placeholder="Type a constituency name"
                    typeahead="c.name for c in constituencies | filter:$viewValue | limitTo:8"
-                   typeahead-loading="false"
+                   typeahead-on-select="onSelectConstituency()"
+                   typeahead-loading="true"
                    class="form-control">
           </div>
         </div>
@@ -66,7 +67,7 @@
           </div>
           <div class="card-actionbar">
             <div class="card-actionbar-row">
-              <a class="btn ink-reaction btn-default" ng-click="onSearchWard()">Search</a>
+              <a class="btn ink-reaction btn-default" ng-click="onSearch()">Search</a>
             </div>
           </div>
         </div>
@@ -132,7 +133,7 @@
                           <label>
                             <input ng-change="getNumStreetsSelected()" type="checkbox" ng-model="s.selected">
 														<span>
-															{{s.mainStreet}}
+															{{s | streetSingleLineFilter}}
 														</span>
                           </label>
                         </div>

@@ -5,7 +5,7 @@ import com.infinityworks.webapp.error.RestErrorHandler;
 import com.infinityworks.webapp.repository.WardRepository;
 import com.infinityworks.webapp.rest.WardController;
 import com.infinityworks.webapp.rest.dto.Street;
-import com.infinityworks.webapp.rest.dto.UserRestrictedElectoralData;
+import com.infinityworks.webapp.rest.dto.UserRestrictedWards;
 import com.infinityworks.webapp.service.AddressService;
 import com.infinityworks.webapp.service.UserService;
 import com.infinityworks.webapp.service.WardService;
@@ -73,7 +73,7 @@ public class WardsTest extends WebApplicationTest {
                 .andDo(print());
 
         MvcResult result = response.andExpect(status().isOk()).andReturn();
-        UserRestrictedElectoralData wards = objectMapper.readValue(result.getResponse().getContentAsString(), UserRestrictedElectoralData.class);
+        UserRestrictedWards wards = objectMapper.readValue(result.getResponse().getContentAsString(), UserRestrictedWards.class);
 
         assertThat(wards.getWards(), hasSize(equalTo(totalWards)));
     }
@@ -89,7 +89,7 @@ public class WardsTest extends WebApplicationTest {
                 .andDo(print());
 
         MvcResult result = response.andExpect(status().isOk()).andReturn();
-        UserRestrictedElectoralData wards = objectMapper.readValue(result.getResponse().getContentAsString(), UserRestrictedElectoralData.class);
+        UserRestrictedWards wards = objectMapper.readValue(result.getResponse().getContentAsString(), UserRestrictedWards.class);
 
         assertThat(wards.getWards().size(), is(6));
     }

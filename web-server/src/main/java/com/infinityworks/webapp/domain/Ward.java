@@ -44,12 +44,11 @@ public class Ward extends BaseEntity {
         if (!(o instanceof Ward)) return false;
         Ward ward = (Ward) o;
         return Objects.equal(code, ward.code) &&
-                Objects.equal(name, ward.name) &&
-                Objects.equal(constituency.getCode(), ward.constituency.getCode());
+               Objects.equal(name, ward.name);
     }
 
     @Override
     public final int hashCode() {
-        return Objects.hashCode(code, name, constituency.getCode());
+        return Objects.hashCode(code, name);
     }
 }

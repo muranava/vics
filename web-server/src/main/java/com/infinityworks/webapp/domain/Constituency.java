@@ -1,15 +1,19 @@
 package com.infinityworks.webapp.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.google.common.base.Objects;
 
-import javax.persistence.Entity;
-import javax.persistence.Table;
+import javax.persistence.*;
+import java.util.Set;
 
 @Entity
 @Table(name = "constituencies")
 public class Constituency extends BaseEntity {
     private String code;
     private String name;
+
+    @OneToMany(mappedBy = "constituency", fetch = FetchType.EAGER)
+    private Set<Ward> wards;
 
     public Constituency() {
         // required by hibernate
@@ -34,6 +38,15 @@ public class Constituency extends BaseEntity {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    @JsonIgnore
+    public Set<Ward> getWards() {
+        return wards;
+    }
+
+    public void setWards(Set<Ward> wards) {
+        this.wards = wards;
     }
 
     @Override

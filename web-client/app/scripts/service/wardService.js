@@ -13,7 +13,7 @@ angular
     api.findWardsWithinConstituency = function (id) {
       return $http({
         method: 'GET',
-        url: apiUrl + '/constituency/' + id + '/ward',
+        url: apiUrl + '/ward/constituency/' + id,
         withCredentials: true
       });
     };

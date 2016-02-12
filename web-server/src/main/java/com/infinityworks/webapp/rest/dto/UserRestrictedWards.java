@@ -5,18 +5,18 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.infinityworks.webapp.domain.Ward;
 
-import java.util.Set;
+import java.util.List;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class UserRestrictedElectoralData {
-    private Set<Ward> wards;
+public class UserRestrictedWards {
+    private List<Ward> wards;
 
     @JsonCreator
-    public UserRestrictedElectoralData(@JsonProperty("wards") Set<Ward> wards) {
+    public UserRestrictedWards(@JsonProperty("wards") List<Ward> wards) {
         this.wards = wards;
     }
 
-    public Set<Ward> getWards() {
+    public List<Ward> getWards() {
         return wards;
     }
 }

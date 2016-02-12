@@ -8,6 +8,7 @@ import com.infinityworks.webapp.rest.dto.TownStreets;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
@@ -19,8 +20,10 @@ import org.springframework.web.client.RestTemplate;
 import java.util.List;
 
 import static java.util.Arrays.asList;
+import static org.springframework.http.HttpHeaders.ACCEPT;
 import static org.springframework.http.HttpMethod.*;
 import static org.springframework.http.HttpStatus.OK;
+import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
 @Component
 public class PafClient {
@@ -35,13 +38,12 @@ public class PafClient {
     private final HttpEntity httpEntity;
 
     @Autowired
-    public PafClient(RestTemplate restTemplate, CanvassConfig canvassConfig) {
+    public PafClient(RestTemplate restTemplate, CanvassConfig canvassConfig, @Qualifier("pafAuthHeader") HttpHeaders headers) {
         this.restTemplate = restTemplate;
         STREETS_BY_WARD_ENDPOINT = canvassConfig.getPafApiBaseUrl() + "/wards/%s/streets";
         ELECTORS_BY_STREET_ENDPOINT = canvassConfig.getPafApiBaseUrl() + "/wards/%s/streets";
 
-        HttpHeaders headers = new HttpHeaders();
-        headers.set(HttpHeaders.ACCEPT, MediaType.APPLICATION_JSON_VALUE);
+        headers.set(ACCEPT, APPLICATION_JSON_VALUE);
         this.httpEntity = new HttpEntity(headers);
     }
 

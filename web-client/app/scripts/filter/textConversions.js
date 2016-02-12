@@ -12,7 +12,7 @@ angular
     };
   })
   .filter('userRoleLabel', function () {
-    return function(user) {
+    return function (user) {
       if (_.isEmpty(user)) {
         return '';
       }
@@ -21,5 +21,26 @@ angular
       } else {
         return '';
       }
+    };
+  })
+  .filter('streetSingleLineFilter', function () {
+    function toTitleCase(str) {
+      return str.replace(/\w\S*/g, function (txt) {
+        return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();
+      });
+    }
+
+    return function (address) {
+      if (_.isEmpty(address)) {
+        return '';
+      }
+      var parts = [address.dependentStreet, address.mainStreet, address.dependentLocality, toTitleCase(address.postTown.toLowerCase())];
+      return _
+        .chain(parts)
+        .filter(function (part) {
+          return !_.isEmpty(part);
+        })
+        .join(', ')
+        .value();
     };
   });

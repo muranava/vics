@@ -1,5 +1,6 @@
 package com.infinityworks.data;
 
+import com.google.common.base.Objects;
 import com.infinityworks.webapp.domain.BaseEntity;
 
 import java.util.UUID;
@@ -34,6 +35,20 @@ public class Constituency extends BaseEntity {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Constituency)) return false;
+        Constituency that = (Constituency) o;
+        return Objects.equal(code, that.code) &&
+                Objects.equal(name, that.name);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hashCode(code, name);
     }
 }
 

@@ -9,6 +9,7 @@ import com.infinityworks.webapp.testsupport.stub.PafServerStub;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+import org.springframework.http.HttpHeaders;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.List;
@@ -30,7 +31,7 @@ public class PafClientTest {
     @Before
     public void setUp() throws Exception {
         when(canvassConfig.getPafApiBaseUrl()).thenReturn("http://localhost:9002/v1");
-        pafClient = new PafClient(new RestTemplate(), canvassConfig);
+        pafClient = new PafClient(new RestTemplate(), canvassConfig, new HttpHeaders());
         pafApiStub.start();
     }
 

@@ -4,31 +4,33 @@
  */
 angular
   .module('canvass')
-  .controller('canvassGeneratorController', function ($scope, wardService, apiUrl, electorService, electorTable) {
+  .controller('canvassGeneratorController', function ($scope, wardService, constituencyService, apiUrl, electorService, electorTable) {
 
     $scope.wards = [];
     $scope.constituencySearchModel = '';
     $scope.wardSearchModel = '';
     $scope.numStreetsSelected = 0;
 
-    wardService.findAll()
+    constituencyService.retrieveByUser()
       .success(function(response) {
-        $scope.wards = response.wards;
-        $scope.constituencies = _.uniqBy(_.map($scope.wards, function(ward) {
-          return ward.constituency;
-        }), 'name');
-        prepareDefaultFormInputs();
+        $scope.constituencies = response.constituencies;
       });
 
-    function prepareDefaultFormInputs() {
-      if ($scope.constituencies.length === 1) {
-        $scope.constituencySearchModel = _.head($scope.constituencies).name;
-        $scope.readOnlyConstituency = true;
+    $scope.onSelectConstituency = function() {
+      $scope.wardSearchModel = "";
+      $scope.selectedConstituency = _.find($scope.constituencies, {name: $scope.constituencySearchModel});
+      if (!$scope.selectedConstituency) {
+        $scope.wards = [];
+      } else {
+        reloadWardsByConstituency();
       }
-      if ($scope.wards.length === 1) {
-        $scope.wardSearchModel = _.head($scope.wards).name;
-        $scope.readOnlyWard = true;
-      }
+    };
+
+    function reloadWardsByConstituency() {
+      wardService.findWardsWithinConstituency($scope.selectedConstituency.id)
+        .success(function(response) {
+          $scope.wards = response.wards;
+        })
     }
 
     /**
@@ -49,7 +51,9 @@ angular
       }
     };
 
-    $scope.onSearchWard = function() {
+
+
+    $scope.onSearch = function() {
       $scope.wardNotSelectedError = false;
       $scope.constituencyNotSelectedError = false;
       $scope.selectedWard = _.find($scope.wards, {name: $scope.wardSearchModel});

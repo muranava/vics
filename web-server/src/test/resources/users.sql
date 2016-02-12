@@ -1,4 +1,8 @@
-
+DROP TABLE IF EXISTS users_privileges;
+DROP TABLE IF EXISTS users_constituencies;
+DROP TABLE IF EXISTS users_wards;
+DROP TABLE IF EXISTS privileges;
+DROP TABLE IF EXISTS users;
 -- test users (NOT used in production)
 
 -- passwords are same as username
