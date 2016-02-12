@@ -19,9 +19,9 @@ angular
     /**
      * Retrieves the households and electors in the given streets
      */
-    api.retrieveElectorsByStreets = function(data) {
+    api.retrieveElectorsByStreets = function (wardCode, data) {
       return $http({
-        url: apiUrl + '/elector/street',
+        url: apiUrl + '/elector/ward/' + wardCode + '/street',
         method: 'POST',
         withCredentials: true,
         data: {

@@ -8,6 +8,7 @@ import com.infinityworks.webapp.error.NotFoundFailure;
 import com.infinityworks.webapp.rest.dto.TownStreets;
 import com.infinityworks.webapp.service.client.PafClient;
 import com.infinityworks.webapp.service.client.Property;
+import com.infinityworks.webapp.service.client.VotersByStreet;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,7 +34,7 @@ public class ElectorsService {
         this.wardService = wardService;
     }
 
-    public Try<List<Property>> findElectorsByStreet(TownStreets townStreets, String wardCode, User user) {
+    public Try<List<VotersByStreet>> findElectorsByStreet(TownStreets townStreets, String wardCode, User user) {
         log.debug("Finding electors by streets={} for user={}", townStreets, user);
 
         Optional<Ward> byCode = wardService.findByCode(wardCode).stream().findFirst();

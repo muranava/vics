@@ -10,14 +10,19 @@ angular
     $scope.constituencySearchModel = '';
     $scope.wardSearchModel = '';
     $scope.numStreetsSelected = 0;
+    $scope.errorLoadingData = false;
 
     constituencyService.retrieveByUser()
       .success(function(response) {
         $scope.constituencies = response.constituencies;
+      })
+      .error(function() {
+        $scope.errorLoadingData = true;
       });
 
     $scope.onSelectConstituency = function() {
       $scope.wardSearchModel = "";
+      $scope.errorLoadingData = false;
       $scope.selectedConstituency = _.find($scope.constituencies, {name: $scope.constituencySearchModel});
       if (!$scope.selectedConstituency) {
         $scope.wards = [];
@@ -27,10 +32,14 @@ angular
     };
 
     function reloadWardsByConstituency() {
+      $scope.errorLoadingData = false;
       wardService.findWardsWithinConstituency($scope.selectedConstituency.id)
         .success(function(response) {
           $scope.wards = response.wards;
         })
+        .error(function() {
+          $scope.errorLoadingData = true;
+        });
     }
 
     /**
@@ -54,6 +63,8 @@ angular
 
 
     $scope.onSearch = function() {
+      $scope.errorLoadingData = false;
+      $scope.streets = [];
       $scope.wardNotSelectedError = false;
       $scope.constituencyNotSelectedError = false;
       $scope.selectedWard = _.find($scope.wards, {name: $scope.wardSearchModel});
@@ -67,7 +78,7 @@ angular
               $scope.streets = streets;
             })
             .error(function(err) {
-              console.error(err);
+              $scope.errorLoadingData = true;
             })
         } else {
           $scope.wardNotSelectedError = true;
@@ -84,13 +95,17 @@ angular
     };
 
     $scope.onPrintSelected = function() {
+      $scope.errorLoadingData = false;
       var selected = _.filter($scope.streets, function (s) {
         return s.selected;
       });
-      electorService.retrieveElectorsByStreets(selected)
+      electorService.retrieveElectorsByStreets($scope.selectedWard.code, selected)
         .success(function(response) {
-          console.log(response);
-        });
+          createPdf(response);
+        })
+        .error(function() {
+          $scope.errorLoadingData = true;
+        })
     };
 
     /**
@@ -98,26 +113,19 @@ angular
      * @param {Object[]} electors - the electors in a given ward(s)
      */
     function createPdf(electors) {
-      var electorsGroupByStreet = _.groupBy(electors, function (e) {
-        return e.street;
-      });
-
       var doc = new jsPDF('l', 'pt');
 
-      var currentPage = 1,
-        totalPages = Object.keys(electorsGroupByStreet).length;
-      _.forOwn(electorsGroupByStreet, function (electorsInStreet, street) {
+      var currentPage = 1;
+      _.forOwn(electors, function (electorsInStreet, street) {
         doc = electorTable.renderPdfTable({
           electors: electorsInStreet,
-          wardName: 'Aldgate',
-          constituencyName: 'Cities of London and Westminster',
+          wardName: $scope.selectedWard.name,
+          wardCode: $scope.selectedWard.code,
+          constituencyName: $scope.selectedConstituency.name,
           street: street,
-          currentPage: currentPage,
-          totalPages: totalPages
+          currentPage: currentPage
         }, doc);
-        if (currentPage < totalPages) {
-          doc.addPage();
-        }
+        doc.addPage();
         currentPage += 1;
       });
 

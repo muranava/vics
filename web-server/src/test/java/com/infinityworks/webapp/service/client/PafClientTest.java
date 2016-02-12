@@ -31,7 +31,7 @@ public class PafClientTest {
     @Before
     public void setUp() throws Exception {
         when(canvassConfig.getPafApiBaseUrl()).thenReturn("http://localhost:9002/v1");
-        pafClient = new PafClient(new RestTemplate(), canvassConfig, new HttpHeaders());
+        pafClient = new PafClient(new RestTemplate(), canvassConfig, new StreetConverter());
         pafApiStub.start();
     }
 
@@ -55,10 +55,10 @@ public class PafClientTest {
         pafApiStub.willReturnVotersByWardByTownAndByStreet("E05001221", "Coventry");
         TownStreets townStreets = new TownStreets(asList(kirbyRoad(), abbotRoad()));
 
-        Try<List<Property>> electorsByStreet = pafClient.findElectorsByStreet(townStreets, "E05001221");
+        Try<List<VotersByStreet>> electorsByStreet = pafClient.findElectorsByStreet(townStreets, "E05001221");
 
         assertThat(electorsByStreet.isSuccess(), is(true));
-        List<Property> properties = electorsByStreet.get();
-        assertThat(properties.get(0).getVoters().get(0).getLastName(), is("Deaux"));
+        List<VotersByStreet> properties = electorsByStreet.get();
+        assertThat(properties.get(0).getProperties().get(0).getVoters().get(0).getLastName(), is("Deaux"));
     }
 }

@@ -76,12 +76,11 @@ angular
 
     /**
      * Transforms the elector domain model to the presentation model
-     * @param elector
      * @returns {Object}
      */
-    function electorToTableData(elector) {
+    function electorToTableData(wardCode, property, elector) {
       return {
-        house: {house: elector.house, street: elector.street},
+        house: property.buildingNumber,
         name: elector.lastName + ', ' + elector.firstName,
         telephone: randPhone(), // FIXME get from PAF
         likelihood: '', // empty
@@ -94,7 +93,7 @@ angular
         lift: '',       // empty
         poster: '',     // empty
         deceased: '',   // empty
-        rollNum: buildElectorId(elector)
+        rollNum: buildElectorId(wardCode, elector)
       };
     }
 
@@ -116,17 +115,17 @@ angular
       var tableData = {
         electors: config.electors,
         wardName: config.wardName,
+        wardCode: config.wardCode,
         streetName: config.street,
         constituencyName: config.constituencyName,
         currentPage: config.currentPage
       };
 
-      var rows = _.map(tableData.electors, function (elector) {
-        return electorToTableData(elector);
-      });
-      var sorted = _.sortBy(rows, function (r) {
-        return [r.street, r.house];
-      });
+      var rows = _.flatten(_.map(tableData.electors.properties, function (property) {
+        return _.map(property.voters, function (voter) {
+          return electorToTableData(tableData.wardCode, property, voter);
+        });
+      }));
 
       function drawLegend() {
         var xPosIntentionLegend = 540,
@@ -240,7 +239,7 @@ angular
 
       docProperties.title = tableData.constituencyName;
       doc.setProperties(docProperties);
-      doc.autoTable(columnDataModel, sorted, options);
+      doc.autoTable(columnDataModel, rows, options);
       doc.setFontSize(22);
       return doc;
     };
@@ -258,10 +257,9 @@ angular
      * @param {Object} elector
      * @returns {String} the formatted elector Id
      */
-    function buildElectorId(elector) {
-      var wardCode = elector.wardCode,
-        electorId = elector.electorId,
-        electorSuffix = elector.electorSuffix;
+    function buildElectorId(wardCode, elector) {
+      var electorId = elector.electorId,
+          electorSuffix = elector.electorSuffix;
       var mandatoryFields = wardCode + '/' + electorId;
       return electorSuffix ? mandatoryFields + '/' + electorSuffix : mandatoryFields;
     }

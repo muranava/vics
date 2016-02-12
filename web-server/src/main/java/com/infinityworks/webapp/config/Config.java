@@ -98,13 +98,6 @@ public class Config {
         return restTemplate;
     }
 
-    @Bean(name = "pafAuthHeader")
-    public HttpHeaders pafAuthHeaders() {
-        HttpHeaders headers = new HttpHeaders();
-        headers.set("X-Authorization", pafApiToken);
-        return headers;
-    }
-
     @Bean
     public HttpClient httpClient() {
         PoolingHttpClientConnectionManager connectionManager = new PoolingHttpClientConnectionManager();
