@@ -130,11 +130,14 @@
                   </div><!--end .col -->
                 </div>
                 <em class="text-caption">{{numStreetsSelected}} of {{streets.length}} streets selected</em>
+                <div class="alert alert-callout alert-danger" role="alert">
+                  <strong>Warning</strong> Printing a large number of streets may take several minutes depending on the speed of your internet connection
+                </div>
                 <div class="card">
                   <div class="card-actionbar">
                     <div class="card-actionbar-row">
                       <a class="btn ink-reaction btn-default pull-left" ng-click="onPrintSelected()" ng-disabled="numStreetsSelected === 0">Print Selected</a>
-                      <a class="btn ink-reaction btn-default pull-left button-group-spacing" ng-click="onPrintElectors()">Print All</a>
+                      <a class="btn ink-reaction btn-default pull-left button-group-spacing" ng-click="onPrintAll()">Print All</a>
                     </div>
                   </div>
                   <div class="card-body no-padding">

@@ -109,6 +109,17 @@ angular
         });
     };
 
+    $scope.onPrintAll = function() {
+      $scope.errorLoadingData = false;
+      electorService.retrieveElectorsByStreets($scope.selectedWard.code, $scope.streets)
+        .success(function(response) {
+          createPdf(response);
+        })
+        .error(function() {
+          $scope.errorLoadingData = true;
+        });
+    };
+
     /**
      * Generates the pdf of the electors
      * @param {Object[]} electors - the electors in a given ward(s)

@@ -7,7 +7,6 @@ import com.infinityworks.webapp.error.NotAuthorizedFailure;
 import com.infinityworks.webapp.error.NotFoundFailure;
 import com.infinityworks.webapp.rest.dto.TownStreets;
 import com.infinityworks.webapp.service.client.PafClient;
-import com.infinityworks.webapp.service.client.Property;
 import com.infinityworks.webapp.service.client.VotersByStreet;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -51,7 +50,7 @@ public class ElectorsService {
         }
 
         Try<List<VotersByStreet>> electorsByStreet = pafClient.findElectorsByStreet(townStreets, wardCode);
-        electorsByStreet.accept(ignored -> {}, electors -> log.debug("Retrieved {} electors", electors.size()));
+        electorsByStreet.accept(ignored -> {}, electors -> log.debug("Retrieved {} streets", electors.size()));
         return electorsByStreet;
     }
 
