@@ -7,7 +7,7 @@ import com.infinityworks.webapp.rest.ElectorsController;
 import com.infinityworks.webapp.rest.dto.TownStreets;
 import com.infinityworks.webapp.service.ElectorsService;
 import com.infinityworks.webapp.service.UserService;
-import com.infinityworks.webapp.service.client.Property;
+import com.infinityworks.webapp.service.client.VotersByStreet;
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.test.context.jdbc.Sql;
@@ -33,6 +33,7 @@ import static org.mockito.Mockito.when;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @SqlGroup({
@@ -44,7 +45,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
                         "classpath:users.sql"})
 })
 public class ElectorsTest extends WebApplicationTest {
-    protected UserService userService;
+    private UserService userService;
 
     @Before
     public void setup() {
@@ -77,12 +78,10 @@ public class ElectorsTest extends WebApplicationTest {
                 .content(objectMapper.writeValueAsString(townStreets)))
                 .andDo(print());
 
-        MvcResult result = response.andExpect(status().isOk()).andReturn();
-        List<Property> wards = asList(objectMapper.readValue(
-                result.getResponse().getContentAsString(),
-                Property[].class));
-
-        assertThat(wards.get(0).getMainStreet(), is("Abbot Road"));
+        response.andExpect(status().isOk())
+                .andExpect(jsonPath("$[0].properties[0].buildingNumber", is("1")))
+                .andExpect(jsonPath("$[0].properties[0].mainStreet", is("Kirby Road")))
+                .andExpect(jsonPath("$[0].properties[0].postTown", is("COVENTRY")));
     }
 
     @Test

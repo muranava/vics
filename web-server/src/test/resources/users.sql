@@ -1,10 +1,3 @@
-DROP TABLE IF EXISTS users_privileges;
-DROP TABLE IF EXISTS users_constituencies;
-DROP TABLE IF EXISTS users_wards;
-DROP TABLE IF EXISTS privileges;
-DROP TABLE IF EXISTS users;
--- test users (NOT used in production)
-
 -- passwords are same as username
 INSERT INTO users (id, username, password_hash, role) VALUES
   ('a54a4e73-943d-41e0-ae05-f6b507ad777e', 'admin', '$2a$10$0qF8dDUyjN8Pc.AkS4twGuG/9siJzjNdIhMCphdY.Su7/XZLmDbW.', 'ADMIN'),

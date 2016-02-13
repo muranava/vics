@@ -44,7 +44,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
                         "classpath:users.sql"})
 })
 public class WardsTest extends WebApplicationTest {
-    protected UserService userService;
+    private UserService userService;
 
     @Before
     public void setup() {

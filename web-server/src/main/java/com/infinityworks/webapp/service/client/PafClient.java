@@ -83,11 +83,10 @@ public class PafClient {
         ResponseEntity<VotersByStreet[]> pafResponse;
         HttpHeaders headers = new HttpHeaders();
         headers.set("X-Authorization", API_TOKEN);
-        List<StreetRequest> streets = street.getStreets().stream().map(streetConverter::apply).collect(toList());
+        List<StreetRequest> streets = street.getStreets().stream().map(streetConverter).collect(toList());
         HttpEntity<List<StreetRequest>> entity = new HttpEntity<>(streets, headers);
 
         try {
-            ResponseEntity<String> s = restTemplate.exchange(url, POST, entity, String.class);
             pafResponse = restTemplate.exchange(url, POST, entity, VotersByStreet[].class);
         } catch (RestClientException e) {
             String msg = String.format(ELECTORS_BY_STREET_ERROR_MESSAGE, street, "");

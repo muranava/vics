@@ -20,6 +20,8 @@ spring:
 
 canvass:
   pafApiBaseUrl: http://localhost:9002/v1
+  pafApiToken: token
+
 
 logging:
   level:
