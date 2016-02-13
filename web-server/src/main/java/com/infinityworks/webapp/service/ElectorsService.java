@@ -50,7 +50,9 @@ public class ElectorsService {
             return Try.failure(new NotAuthorizedFailure("Not Authorized"));
         }
 
-        return pafClient.findElectorsByStreet(townStreets, wardCode);
+        Try<List<VotersByStreet>> electorsByStreet = pafClient.findElectorsByStreet(townStreets, wardCode);
+        electorsByStreet.accept(ignored -> {}, electors -> log.debug("Retrieved {} electors", electors.size()));
+        return electorsByStreet;
     }
 
 }
