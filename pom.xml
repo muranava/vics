@@ -12,6 +12,7 @@
     <modules>
         <module>tools</module>
         <module>web-server</module>
+        <module>pdf-gen</module>
     </modules>
 
     <properties>

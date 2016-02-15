@@ -1,5 +1,8 @@
 package com.infinityworks.webapp.service.client;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.google.common.base.Charsets;
+import com.google.common.io.Files;
 import com.infinityworks.webapp.common.Try;
 import com.infinityworks.webapp.config.CanvassConfig;
 import com.infinityworks.webapp.error.PafApiFailure;
@@ -10,20 +13,20 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.HttpClientErrorException;
-import org.springframework.web.client.HttpServerErrorException;
 import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import static java.util.Arrays.asList;
 import static java.util.stream.Collectors.toList;
-import static org.springframework.http.HttpMethod.*;
+import static org.springframework.http.HttpMethod.GET;
+import static org.springframework.http.HttpMethod.POST;
 import static org.springframework.http.HttpStatus.OK;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
 
@@ -80,10 +83,20 @@ public class PafClient {
     public Try<List<VotersByStreet>> findElectorsByStreet(TownStreets street, String wardCode) {
         String url = String.format(ELECTORS_BY_STREET_ENDPOINT, wardCode);
 
+
         ResponseEntity<VotersByStreet[]> pafResponse;
         HttpHeaders headers = new HttpHeaders();
         headers.set("X-Authorization", API_TOKEN);
         List<StreetRequest> streets = street.getStreets().stream().map(streetConverter).collect(toList());
+
+        try {
+            String s = new ObjectMapper().writeValueAsString(streets);
+            File file = new File("electors_request.json");
+            Files.write(s, file, Charsets.UTF_8);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
         HttpEntity<List<StreetRequest>> entity = new HttpEntity<>(streets, headers);
 
         try {

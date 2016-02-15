@@ -19,7 +19,7 @@ angular
     'ui.bootstrap',
     'angular-loading-bar'
   ])
-  .constant('apiUrl', 'http://192.168.1.76:8080/api/canvass')
+  .constant('apiUrl', 'http://localhost:8080/api/canvass')
   .config(function ($routeProvider) {
 
     var authByRoute = [
@@ -27,6 +27,7 @@ angular
       {route: '/canvass', role: 'USER'},
       {route: '/admin', role: 'ADMIN'},
       {route: '/profile', role: 'USER'},
+      {route: '/dataentry', role: 'USER'},
       {route: '/users', role: 'ADMIN'}
     ];
 
@@ -85,6 +86,13 @@ angular
       .when('/users', {
         templateUrl: 'views/users.html',
         controller: 'adminUserController',
+        resolve: {
+          auth: userAuth
+        }
+      })
+      .when('/dataentry', {
+        templateUrl: 'views/dataentry.html',
+        controller: 'dataEntryController',
         resolve: {
           auth: userAuth
         }

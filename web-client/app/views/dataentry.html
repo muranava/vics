@@ -1,0 +1,126 @@
+<section>
+  <div class="section-header">
+    <ol class="breadcrumb">
+      <li class="active">Record Vote</li>
+    </ol>
+  </div>
+  <div class="section-body contain-lg">
+    <div class="row">
+      <div class="col-lg-6 col-sm-6">
+        <div class="card">
+          <div class="card-head card-head-xs style-primary">
+            <header>Enter the Electoral Roll Number</header>
+          </div><!--end .card-head -->
+          <div class="card-body">
+            <form ng-submit="onVote()">
+              <div class="form-group">
+                <div class="input-group">
+                  <div class="input-group-content">
+                    <input type="text" placeholder="Polling district" class="form-control" ng-model="pollingDistrict">
+                  </div>
+                  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                  <div class="input-group-content">
+                    <input type="text" placeholder="Roll #" class="form-control" ng-model="rollNum">
+                  </div>
+                  <div class="input-group-btn">
+                    <button type="submit" class="btn btn-default" tabindex="-1">Submit</button>
+                  </div>
+                </div><!--end .input-group -->
+              </div><!--end .form-group -->
+            </form>
+            <br>
+            <table class="table no-margin table-hover">
+              <thead>
+              <tr>
+                <th>Polling district</th>
+                <th>Roll #</th>
+                <th>First Name</th>
+                <th>Last Name</th>
+                <th>Result</th>
+              </tr>
+              </thead>
+              <tbody>
+              <tr ng-repeat="log in logs.elements.slice().reverse()"
+                  ng-class="{danger: log.result === 0, success: log.result === 1}">
+                <td>{{log.pd}}</td>
+                <td>{{log.rollNum}}</td>
+                <td>{{log.firstName}}</td>
+                <td>{{log.lastName}}</td>
+                <td ng-show="log.result === 1">SUCCESS</td>
+                <td ng-show="log.result === 0">FAILED</td>
+                <td ng-show="log.result === -1">-</td>
+              </tr>
+              </tbody>
+            </table>
+
+          </div><!--end .card-body -->
+        </div><!--end .card -->
+      </div><!--end .col -->
+      <div class="col-lg-6 col-sm-6">
+        <div class="card">
+          <div class="card-head card-head-xs style-primary">
+            <header>Search by Name and Address</header>
+          </div><!--end .card-head -->
+          <div class="card-body">
+            <form ng-submit="onSearch()">
+              <div class="form-group">
+                <div class="input-group">
+                  <div class="input-group-content">
+                    <input type="text" placeholder="First name" class="form-control" ng-model="firstNameSearch">
+                  </div>
+                  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                  <div class="input-group-content">
+                    <input type="text" placeholder="Last name" class="form-control" ng-model="lastNameSearch">
+                  </div>
+                </div>
+
+                <div class="input-group">
+                  <div class="input-group-content">
+                    <input type="text" placeholder="Address" class="form-control" ng-model="addressSearch">
+                  </div>
+                  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                  <div class="input-group-content">
+                    <input type="text" placeholder="Post Code" class="form-control" ng-model="postCodeSearch">
+                  </div>
+                </div>
+
+                <br>
+                <div class="input-group">
+                  <div class="input-group-btn">
+                    <button type="submit" class="btn btn-default" tabindex="-1">Search</button>
+                  </div>
+                </div>
+
+              </div>
+
+            </form>
+            <br>
+            <table class="table no-margin table-hover" ng-show="searchResults.length">
+              <thead>
+              <tr>
+                <th>Roll #</th>
+                <th>First Name</th>
+                <th>Last Name</th>
+                <th>Address</th>
+                <th>Post Code</th>
+                <th></th>
+              </tr>
+              </thead>
+              <tbody>
+              <tr ng-repeat="result in searchResults">
+                <td>{{result.rollNum}}</td>
+                <td>{{result.firstName}}</td>
+                <td>{{result.lastName}}</td>
+                <td>{{result.address}}</td>
+                <td>{{result.postCode}}</td>
+                <td><button type="submit" class="btn btn-sm btn-default" tabindex="-1" ng-click="onSearchVoted(result)">Voted</button></td>
+              </tr>
+              </tbody>
+            </table>
+
+          </div><!--end .card-body -->
+        </div><!--end .card -->
+      </div><!--end .col -->
+    </div>
+  </div>
+</section>
