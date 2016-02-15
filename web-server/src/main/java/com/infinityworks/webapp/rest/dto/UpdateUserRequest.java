@@ -19,7 +19,7 @@ public class UpdateUserRequest {
     private final String password;
     private final String repeatPassword;
     @NotNull
-    private final Boolean writeAccess;
+    private final boolean writeAccess;
 
     @JsonCreator
     public UpdateUserRequest(@JsonProperty("firstName") String firstName,
@@ -27,7 +27,7 @@ public class UpdateUserRequest {
                              @JsonProperty("username") String username,
                              @JsonProperty("password") String password,
                              @JsonProperty("repeatPassword") String repeatPassword,
-                             @JsonProperty("writeAccess") Boolean writeAccess) {
+                             @JsonProperty("writeAccess") boolean writeAccess) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.username = username;
@@ -56,7 +56,7 @@ public class UpdateUserRequest {
         return repeatPassword;
     }
 
-    public Boolean getWriteAccess() {
+    public boolean getWriteAccess() {
         return writeAccess;
     }
 }

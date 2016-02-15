@@ -29,7 +29,7 @@ public class CreateUserRequest {
     @NotNull
     private final List<UUID> constituencyIDs;
     @NotNull
-    private final Boolean writeAccess;
+    private final boolean writeAccess;
 
     @JsonCreator
     public CreateUserRequest(@JsonProperty("username") String username,
@@ -40,7 +40,7 @@ public class CreateUserRequest {
                              @JsonProperty("role") Role role,
                              @JsonProperty("wardIDs") List<UUID> wardIDs,
                              @JsonProperty("constituencyIDs") List<UUID> constituencyIDs,
-                             @JsonProperty("writeAccess") Boolean writeAccess) {
+                             @JsonProperty("writeAccess") boolean writeAccess) {
         this.username = username;
         this.password = password;
         this.firstName = firstName;
@@ -76,7 +76,7 @@ public class CreateUserRequest {
         return constituencyIDs;
     }
 
-    public Boolean getWriteAccess() {
+    public boolean getWriteAccess() {
         return writeAccess;
     }
 
