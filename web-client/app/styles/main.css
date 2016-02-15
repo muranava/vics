@@ -51,3 +51,10 @@ input:-webkit-autofill {
   border-top-color:  #C5443B;
   border-left-color: #C5443B;
 }
+
+.countdown {
+  width: 800px;
+  height: 500px;
+  margin: auto;
+  margin-top: 250px;
+}

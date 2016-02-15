@@ -14,14 +14,14 @@ angular
 
     $scope.loadingConstituencies = true;
     constituencyService.retrieveByUser()
-      .success(function(response) {
+      .success(function (response) {
         $scope.constituencies = response.constituencies;
       })
-      .error(function() {
+      .error(function () {
         $scope.errorLoadingData = true;
       });
 
-    $scope.onSelectConstituency = function() {
+    $scope.onSelectConstituency = function () {
       $scope.wardSearchModel = "";
       $scope.errorLoadingData = false;
       $scope.selectedConstituency = _.find($scope.constituencies, {name: $scope.constituencySearchModel});
@@ -62,8 +62,7 @@ angular
     };
 
 
-
-    $scope.onSearch = function() {
+    $scope.onSearch = function () {
       $scope.errorLoadingData = false;
       $scope.streets = [];
       $scope.wardNotSelectedError = false;
@@ -78,16 +77,16 @@ angular
             .success(function (streets) {
               $scope.streets = streets;
             })
-            .error(function(err) {
+            .error(function () {
               $scope.errorLoadingData = true;
-            })
+            });
         } else {
           $scope.wardNotSelectedError = true;
         }
       }
     };
 
-    $scope.getNumStreetsSelected = function() {
+    $scope.getNumStreetsSelected = function () {
       if ($scope.streets && $scope.streets.length) {
         $scope.numStreetsSelected = _.size(_.filter($scope.streets, function (s) {
           return s.selected;
@@ -95,27 +94,27 @@ angular
       }
     };
 
-    $scope.onPrintSelected = function() {
+    $scope.onPrintSelected = function () {
       $scope.errorLoadingData = false;
       var selected = _.filter($scope.streets, function (s) {
         return s.selected;
       });
       electorService.retrieveElectorsByStreets($scope.selectedWard.code, selected)
-        .success(function(response) {
+        .success(function (response) {
           createPdf(response);
         })
-        .error(function() {
+        .error(function () {
           $scope.errorLoadingData = true;
         });
     };
 
-    $scope.onPrintAll = function() {
+    $scope.onPrintAll = function () {
       $scope.errorLoadingData = false;
       electorService.retrieveElectorsByStreets($scope.selectedWard.code, $scope.streets)
-        .success(function(response) {
+        .success(function (response) {
           createPdf(response);
         })
-        .error(function() {
+        .error(function () {
           $scope.errorLoadingData = true;
         });
     };
@@ -125,7 +124,8 @@ angular
      * @param {Object[]} electors - the electors in a given ward(s)
      */
     function createPdf(electors) {
-      var doc = new jsPDF('l', 'pt');
+      var pdfCompression = true,
+        doc = new jsPDF('l', 'pt', 'a4', pdfCompression);
 
       var currentPage = 1;
       _.forOwn(electors, function (electorsInStreet) {

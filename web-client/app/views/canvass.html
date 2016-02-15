@@ -82,7 +82,7 @@
       <div class="col-md-12">
         <div class="card">
           <div class="card-head">
-            <header>3. Print Canvass Cards</header>
+            <header>3. Download Canvass Cards</header>
           </div>
           <div class="card-body tab-content style-default-bright">
             <!-- BEGIN TILE ACTIONS -->
@@ -126,18 +126,15 @@
                 <!-- BEGIN TILE ACTIONS -->
                 <div class="row">
                   <div class="col-lg-12">
-                    <h4>Select individual streets or print all</h4>
+                    <h4>Select individual streets or download all</h4>
                   </div><!--end .col -->
                 </div>
                 <em class="text-caption">{{numStreetsSelected}} of {{streets.length}} streets selected</em>
-                <div class="alert alert-callout alert-danger" role="alert">
-                  <strong>Warning</strong> Printing a large number of streets may take several minutes depending on the speed of your internet connection
-                </div>
                 <div class="card">
                   <div class="card-actionbar">
                     <div class="card-actionbar-row">
-                      <a class="btn ink-reaction btn-default pull-left" ng-click="onPrintSelected()" ng-disabled="numStreetsSelected === 0">Print Selected</a>
-                      <a class="btn ink-reaction btn-default pull-left button-group-spacing" ng-click="onPrintAll()">Print All</a>
+                      <a class="btn ink-reaction btn-default pull-left" ng-click="onPrintSelected()" ng-disabled="numStreetsSelected === 0">Download Selected</a>
+                      <a class="btn ink-reaction btn-default pull-left button-group-spacing" data-toggle="modal" data-target="#simpleModal">Download All</a>
                     </div>
                   </div>
                   <div class="card-body no-padding">
@@ -163,3 +160,41 @@
     </div>
   </div>
 </section>
+
+<!-- BEGIN SIMPLE MODAL MARKUP -->
+<div class="modal fade" id="simpleModal" tabindex="-1" role="dialog" aria-labelledby="simpleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        <h4 class="modal-title" id="simpleModalLabel">Download Canvass Card</h4>
+      </div>
+      <div class="modal-body">
+        <div class="alert alert-callout alert-danger" role="alert">
+          <strong>Warning</strong> Downloading a large number of streets may take several minutes depending on the speed of your internet connection
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+        <button type="button" class="btn btn-primary" data-dismiss="modal" ng-click="onPrintAll()">Continue</button>
+      </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+<!-- END SIMPLE MODAL MARKUP -->
+
+<!-- BEGIN SIMPLE MODAL MARKUP -->
+<div class="modal fade" id="generatingModal" tabindex="-1" role="dialog" aria-labelledby="simpleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        <h4 class="modal-title" id="generatingModalLabel">Generating Cards...</h4>
+      </div>
+      <div class="modal-body">
+        Generating canvass cards. Please be patient...
+      </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+<!-- END SIMPLE MODAL MARKUP -->

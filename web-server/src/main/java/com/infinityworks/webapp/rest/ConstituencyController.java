@@ -14,7 +14,7 @@ import java.security.Principal;
 import static org.springframework.web.bind.annotation.RequestMethod.GET;
 
 @RestController
-@RequestMapping("constituency")
+@RequestMapping("/constituency")
 public class ConstituencyController {
     private final ConstituencyService constituencyService;
     private final RestErrorHandler errorHandler;

@@ -15,7 +15,8 @@
     "bootstrap": "^3.3.6",
     "normalize-css": "normalize.css#^3.0.3",
     "multiselect": "multi-select#^0.9.12",
-    "angular-loading-bar": "^0.8.0"
+    "angular-loading-bar": "^0.8.0",
+    "angular-flipclock": "^0.4.0"
   },
   "devDependencies": {
     "angular-mocks": "^1.4.0"

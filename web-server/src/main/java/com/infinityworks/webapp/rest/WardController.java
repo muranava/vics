@@ -1,7 +1,5 @@
 package com.infinityworks.webapp.rest;
 
-import com.infinityworks.webapp.common.Try;
-import com.infinityworks.webapp.error.NotFoundFailure;
 import com.infinityworks.webapp.error.RestErrorHandler;
 import com.infinityworks.webapp.service.AddressService;
 import com.infinityworks.webapp.service.UserService;
@@ -16,7 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.security.Principal;
 import java.util.UUID;
 
-import static org.springframework.web.bind.annotation.RequestMethod.*;
+import static org.springframework.web.bind.annotation.RequestMethod.GET;
 
 /**
  * Resource to provide information about wards and constituencies
