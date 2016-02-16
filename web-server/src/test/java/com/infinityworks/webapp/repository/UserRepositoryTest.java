@@ -12,9 +12,7 @@ import java.util.Set;
 
 import static com.infinityworks.webapp.domain.Permission.EDIT_VOTER;
 import static com.infinityworks.webapp.domain.Permission.READ_VOTER;
-import static org.hamcrest.Matchers.greaterThan;
-import static org.hamcrest.Matchers.hasItem;
-import static org.hamcrest.Matchers.hasSize;
+import static org.hamcrest.Matchers.*;
 import static org.junit.Assert.assertThat;
 
 @SqlGroup({

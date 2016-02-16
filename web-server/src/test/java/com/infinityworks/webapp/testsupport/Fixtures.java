@@ -2,9 +2,9 @@ package com.infinityworks.webapp.testsupport;
 
 import com.infinityworks.webapp.domain.Role;
 import com.infinityworks.webapp.domain.User;
-import com.infinityworks.webapp.testsupport.builder.UserBuilder;
 import com.infinityworks.webapp.domain.Ward;
 import com.infinityworks.webapp.rest.dto.Street;
+import com.infinityworks.webapp.testsupport.builder.UserBuilder;
 
 import java.util.HashSet;
 import java.util.Set;

@@ -5,7 +5,7 @@ import com.infinityworks.webapp.rest.dto.Credentials;
 import org.junit.Test;
 
 import static org.hamcrest.Matchers.is;
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertThat;
 
 public class SecurityUtilsTest {
     @Test

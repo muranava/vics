@@ -9,7 +9,7 @@ import static com.infinityworks.webapp.testsupport.matcher.TryFailureMatcher.isF
 import static com.infinityworks.webapp.testsupport.matcher.TrySuccessMatcher.isSuccess;
 import static org.hamcrest.core.IsEqual.equalTo;
 import static org.hamcrest.core.IsInstanceOf.instanceOf;
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertThat;
 
 public class RoleTest {
 

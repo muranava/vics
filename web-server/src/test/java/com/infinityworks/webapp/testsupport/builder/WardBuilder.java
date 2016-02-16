@@ -1,6 +1,7 @@
 package com.infinityworks.webapp.testsupport.builder;
 
-import com.infinityworks.webapp.domain.*;
+import com.infinityworks.webapp.domain.Constituency;
+import com.infinityworks.webapp.domain.Ward;
 
 public class WardBuilder {
     private String wardName;

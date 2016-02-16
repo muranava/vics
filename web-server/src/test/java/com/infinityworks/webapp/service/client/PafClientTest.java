@@ -4,12 +4,10 @@ import com.infinityworks.webapp.common.Try;
 import com.infinityworks.webapp.config.CanvassConfig;
 import com.infinityworks.webapp.rest.dto.Street;
 import com.infinityworks.webapp.rest.dto.TownStreets;
-import com.infinityworks.webapp.testsupport.Fixtures;
 import com.infinityworks.webapp.testsupport.stub.PafServerStub;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-import org.springframework.http.HttpHeaders;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.List;
