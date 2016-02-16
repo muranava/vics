@@ -19,5 +19,22 @@ angular
       });
     };
 
+    api.create = function(user) {
+      return $http({
+        url: apiUrl + '/user',
+        method: 'POST',
+        withCredentials: true,
+        data: user
+      });
+    };
+
+    api.delete = function(userID) {
+      return $http({
+        url: apiUrl + '/user/' + userID,
+        method: 'DELETE',
+        withCredentials: true
+      });
+    };
+
     return api;
   });

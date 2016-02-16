@@ -1,6 +1,6 @@
 angular
   .module('canvass')
-  .controller('dataEntryController', function ($scope, RingBuffer) {
+  .controller('dataEntryController', function ($scope, RingBuffer, plugins) {
     var logSize = 7;
 
     // FIXME remove stub data for demo
@@ -49,4 +49,6 @@ angular
         result: -1
       };
     }
+
+    plugins.initFloatingLabels();
   });

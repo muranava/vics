@@ -18,7 +18,11 @@ public class CreateUserRequest {
     @NotEmpty
     private final String password;
     @NotEmpty
-    private final String passwordRepeated;
+    private final String firstName;
+    @NotEmpty
+    private final String lastName;
+    @NotEmpty
+    private final String repeatPassword;
     @NotNull
     private final Role role;
     @NotNull
@@ -31,14 +35,18 @@ public class CreateUserRequest {
     @JsonCreator
     public CreateUserRequest(@JsonProperty("email") String email,
                              @JsonProperty("password") String password,
-                             @JsonProperty("passwordRepeated") String passwordRepeated,
+                             @JsonProperty("firstName") String firstName,
+                             @JsonProperty("lastName") String lastName,
+                             @JsonProperty("repeatPassword") String repeatPassword,
                              @JsonProperty("role") Role role,
                              @JsonProperty("wardIDs") List<UUID> wardIDs,
                              @JsonProperty("constituencyIDs") List<UUID> constituencyIDs,
                              @JsonProperty("writeAccess") Boolean writeAccess) {
         this.email = email;
         this.password = password;
-        this.passwordRepeated = passwordRepeated;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.repeatPassword = repeatPassword;
         this.role = role;
         this.wardIDs = wardIDs;
         this.constituencyIDs = constituencyIDs;
@@ -53,8 +61,8 @@ public class CreateUserRequest {
         return password;
     }
 
-    public String getPasswordRepeated() {
-        return passwordRepeated;
+    public String getRepeatPassword() {
+        return repeatPassword;
     }
 
     public Role getRole() {
@@ -71,5 +79,13 @@ public class CreateUserRequest {
 
     public Boolean getWriteAccess() {
         return writeAccess;
+    }
+
+    public String getFirstName() {
+        return firstName;
+    }
+
+    public String getLastName() {
+        return lastName;
     }
 }

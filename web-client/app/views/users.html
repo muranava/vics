@@ -1,12 +1,87 @@
 <section>
   <div class="section-body contain-lg">
+    <div class="row">
 
+      <form class="form form-validate floating-label" novalidate="novalidate" ng-submit="onCreateUser(createUserModel)">
+        <div class="card">
+          <div class="card-head">
+            <header>Create a User</header>
+          </div>
+          <div class="card-body">
+            <div class="alert alert-callout alert-danger" role="alert" ng-show="validationErrors.length">
+              <strong>Please correct form values</strong>
+              <p ng-repeat="error in validationErrors">
+                <i class="fa fa-warning"></i> &nbsp;{{error}}
+              </p>
+            </div>
+            <div class="alert alert-callout alert-success" role="alert" ng-show="successfullyCreatedUser">
+              <strong>Success</strong> Created user {{createdUserEmail}}
+            </div>
+            <div class="form-group">
+              <input type="email" ng-model="createUserModel.email" class="form-control" id="minmax2" name="minmax2"
+                     required>
+              <label for="minmax2">Email</label>
+            </div>
+            <div class="form-group">
+              <input type="text" class="form-control" ng-model="createUserModel.firstName" id="fname" name="fname"
+                     required>
+              <label for="fname">First Name</label>
+            </div>
+            <div class="form-group">
+              <input type="text" class="form-control" ng-model="createUserModel.lastName" id="lname" name="lname"
+                     required>
+              <label for="lname">Last Name</label>
+            </div>
+            <div class="form-group">
+              <div class="input-group">
+                <div class="input-group-btn">
+                  <button class="btn btn-default" type="button" ng-click="randomPassword()">Generate</button>
+                </div>
+                <div class="input-group-content">
+                  <input type="text" class="form-control" name="pw1" ng-model="createUserModel.password" id="pw1"
+                         data-rule-min="8" data-rule-max="50" required>
+                  <label for="pw1">Password</label>
+                  <p class="help-block">Between 8 and 50 characters with at least one number and at least one uppercase
+                    character</p>
+                </div>
+              </div>
+            </div>
+            <div class="form-group">
+              <input type="text" class="form-control" ng-model="createUserModel.repeatPassword" id="pw2" name="pw2"
+                     data-rule-min="8" data-rule-max="50" required>
+              <label for="pw2">Repeat Password</label>
+            </div>
+            <div class="form-group">
+              <select id="select1" name="select1" class="form-control" required>
+                <option value="USER">USER</option>
+              </select>
+              <label for="select1">Role</label>
+            </div>
+            <div class="form-group">
+              <div class="checkbox checkbox-styled">
+                <label>
+                  <input type="checkbox" name="terms1" ng-model="createUserModel.writeAccess" required>
+                  <span>Write access</span>
+                </label>
+              </div>
+            </div>
+          </div><!--end .card-body -->
+          <div class="card-actionbar">
+            <div class="card-actionbar-row">
+              <button type="submit" class="btn btn-flat btn-primary ink-reaction">CREATE USER</button>
+            </div>
+          </div>
+        </div><!--end .card -->
+      </form>
+    </div>
     <div class="row">
       <div class="col-lg-12">
-        <h2 class="text-primary">User Accounts</h2>
+        <h2 class="text-primary">Users</h2>
       </div><!--end .col -->
-      <div class="col-lg-7">
-
+      <div class="col-lg-12">
+        <div class="alert alert-callout alert-danger" role="alert" ng-show="deleteUserFailed">
+          <strong>Failed to delete user</strong> check the response or server log for errors.
+        </div>
       </div>
 
       <div class="row">
@@ -23,8 +98,9 @@
                     </div>
                     <div class="tile-text">{{user.username}}</div>
                   </a>
-                  <a class="btn btn-flat ink-reaction">
-                    <i class="fa fa-trash"></i>
+                  <a ng-if="user.role === 'USER'" class="btn btn-flat ink-reaction">
+                    <i class="fa fa-trash" data-toggle="modal" data-target="#simpleModal"
+                       ng-click="preDeleteUser(user)"></i>
                   </a>
                 </li>
 
@@ -36,5 +112,26 @@
       <br><br>
 
     </div>
+
   </div>
 </section>
+
+<!-- CONFIRM DELETE MODAL -->
+<div class="modal fade" id="simpleModal" tabindex="-1" role="dialog" aria-labelledby="simpleModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        <h4 class="modal-title" id="simpleModalLabel">Delete User</h4>
+      </div>
+      <div class="modal-body">
+        <strong>Delete {{userToDelete.username}}. Are you sure?</strong>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+        <button type="button" class="btn btn-primary" data-dismiss="modal" ng-click="onConfirmDeleteUser(userToDelete)">Delete</button>
+      </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->

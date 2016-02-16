@@ -7,6 +7,7 @@ import com.infinityworks.webapp.domain.Role;
 import com.infinityworks.webapp.error.RestErrorHandler;
 import com.infinityworks.webapp.rest.dto.AuthenticationToken;
 import com.infinityworks.webapp.rest.dto.CreateUserRequest;
+import com.infinityworks.webapp.rest.validation.IsUUID;
 import com.infinityworks.webapp.security.SecurityUtils;
 import com.infinityworks.webapp.service.SessionService;
 import com.infinityworks.webapp.service.UserService;
@@ -28,9 +29,11 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.security.Principal;
 import java.util.List;
+import java.util.UUID;
 
 import static java.util.stream.Collectors.toList;
 import static org.springframework.http.HttpStatus.CREATED;
+import static org.springframework.web.bind.annotation.RequestMethod.DELETE;
 import static org.springframework.web.bind.annotation.RequestMethod.GET;
 import static org.springframework.web.bind.annotation.RequestMethod.POST;
 
@@ -58,6 +61,41 @@ public class UserController {
         this.sessionService = sessionService;
         this.authenticationManager = authenticationManager;
         this.requestValidator = requestValidator;
+    }
+
+    @PreAuthorize("isAuthenticated()")
+    @RequestMapping(value = "/current", method = GET)
+    public ResponseEntity<?> currentUser(Principal userPrincipal) {
+        return sessionService.extractUserFromPrincipal(userPrincipal)
+                .fold(errorHandler::mapToResponseEntity, ResponseEntity::ok);
+    }
+
+    @PreAuthorize("hasAuthority('ADMIN')")
+    @RequestMapping(method = DELETE, value = "/{id}")
+    public ResponseEntity<?> delete(@PathVariable("id") @IsUUID String id, Principal principal) {
+        return sessionService.extractUserFromPrincipal(principal)
+                .flatMap(user -> userService.delete(user, UUID.fromString(id)))
+                .fold(errorHandler::mapToResponseEntity, ResponseEntity::ok);
+    }
+
+    @PreAuthorize("hasAuthority('ADMIN')")
+    @RequestMapping(method = POST)
+    public ResponseEntity<?> createUser(@RequestBody(required = true) CreateUserRequest createUserRequest, Principal principal) {
+        return requestValidator.validate(createUserRequest)
+                .flatMap(request -> sessionService.extractUserFromPrincipal(principal))
+                .flatMap(user -> userService.create(user, createUserRequest))
+                .fold(errorHandler::mapToResponseEntity,
+                        newUser -> {
+                            log.debug("Created user={}", newUser);
+                            return ResponseEntity.status(CREATED).body(newUser);
+                        });
+    }
+
+    @PreAuthorize("hasAuthority('ADMIN')")
+    @RequestMapping(method = GET)
+    public ResponseEntity<?> allUsers() {
+        return userService.getAll()
+                .fold(errorHandler::mapToResponseEntity, ResponseEntity::ok);
     }
 
     @RequestMapping(value = "/login", method = POST)
@@ -96,32 +134,5 @@ public class UserController {
                 return Try.failure(new AccessDeniedException("Forbidden"));
             }
         }).fold(errorHandler::mapToResponseEntity, ResponseEntity::ok);
-    }
-
-    @PreAuthorize("isAuthenticated()")
-    @RequestMapping(value = "/current", method = GET)
-    public ResponseEntity<?> currentUser(Principal userPrincipal) {
-        return sessionService.extractUserFromPrincipal(userPrincipal)
-                .fold(errorHandler::mapToResponseEntity, ResponseEntity::ok);
-    }
-
-    @PreAuthorize("hasAuthority('ADMIN')")
-    @RequestMapping(method = POST)
-    public ResponseEntity<?> createUser(@RequestBody(required = true) CreateUserRequest createUserRequest, Principal principal) {
-        return requestValidator.validate(createUserRequest)
-                .flatMap(request -> sessionService.extractUserFromPrincipal(principal))
-                .flatMap(user -> userService.create(user, createUserRequest))
-                .fold(errorHandler::mapToResponseEntity,
-                        newUser -> {
-                            log.debug("Created user={}", newUser);
-                            return ResponseEntity.status(CREATED).body(newUser);
-                        });
-    }
-
-    @PreAuthorize("hasAuthority('ADMIN')")
-    @RequestMapping(method = GET)
-    public ResponseEntity<?> allUsers() {
-        return userService.getAll()
-                .fold(errorHandler::mapToResponseEntity, ResponseEntity::ok);
     }
 }

@@ -12,5 +12,24 @@ angular
       });
     };
 
+    /**
+     * Search constituencies by name (server performs a contains string search ignoring case)
+     * @param {String} name - the ward name to search
+     * @param {Number} limit - number of params to return
+     */
+    api.search = function(name, limit) {
+      var paramsEncoded = $.param({
+        limit: limit,
+        name: name
+      });
+
+      return $http({
+        method: 'GET',
+        url: apiUrl + '/constituency/search?' + paramsEncoded,
+        withCredentials: true
+      });
+    };
+
+
     return api;
   });
