@@ -2,7 +2,7 @@ package com.infinityworks.webapp.rest;
 
 import com.infinityworks.webapp.error.RestErrorHandler;
 import com.infinityworks.webapp.service.AddressService;
-import com.infinityworks.webapp.service.UserService;
+import com.infinityworks.webapp.service.SessionService;
 import com.infinityworks.webapp.service.WardService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -21,13 +21,13 @@ import static org.springframework.web.bind.annotation.RequestMethod.GET;
  */
 @RestController
 public class WardController {
-    private final UserService userService;
+    private final SessionService userService;
     private final WardService wardService;
     private final RestErrorHandler errorHandler;
     private final AddressService addressService;
 
     @Autowired
-    public WardController(UserService userService,
+    public WardController(SessionService userService,
                           WardService wardService,
                           RestErrorHandler errorHandler,
                           AddressService addressService) {
@@ -47,7 +47,8 @@ public class WardController {
 
     @PreAuthorize("isAuthenticated()")
     @RequestMapping(method = GET, value = "/ward/constituency/{constituencyId}")
-    public ResponseEntity<?> wardsByConstituency(Principal principal, @PathVariable("constituencyId") String constituencyId) {
+    public ResponseEntity<?> wardsByConstituency(Principal principal,
+                                                 @PathVariable("constituencyId") String constituencyId) {
         return userService.extractUserFromPrincipal(principal)
                 .flatMap(user -> wardService.findByConstituency(UUID.fromString(constituencyId), user))
                 .fold(errorHandler::mapToResponseEntity, ResponseEntity::ok);
@@ -55,7 +56,8 @@ public class WardController {
 
     @PreAuthorize("isAuthenticated()")
     @RequestMapping(method = GET, value = "/ward/{wardCode}/street")
-    public ResponseEntity<?> streetsByWard(Principal principal, @PathVariable("wardCode") String wardCode) {
+    public ResponseEntity<?> streetsByWard(Principal principal,
+                                           @PathVariable("wardCode") String wardCode) {
         return userService.extractUserFromPrincipal(principal)
                 .flatMap(user -> addressService.getTownStreetsByWardCode(wardCode, user))
                 .fold(errorHandler::mapToResponseEntity, ResponseEntity::ok);

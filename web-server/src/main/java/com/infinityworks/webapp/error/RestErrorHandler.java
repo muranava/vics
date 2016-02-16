@@ -42,6 +42,10 @@ public final class RestErrorHandler {
             return ResponseEntity.status(FORBIDDEN).body(errorEntity);
         }
 
+        if (exception instanceof NotAuthorizedFailure) {
+            return ResponseEntity.status(UNAUTHORIZED).body(createError(exception));
+        }
+
         if (exception instanceof NotFoundFailure) {
             return ResponseEntity.status(NOT_FOUND).body(createError(exception));
         }
@@ -50,6 +54,10 @@ public final class RestErrorHandler {
             log.error("User session failure", exception);
             ErrorEntity errorEntity = new ErrorEntity(LoginFailure.class.getSimpleName(), VAGUE_ERROR_RESPONSE);
             return ResponseEntity.status(INTERNAL_SERVER_ERROR).body(errorEntity);
+        }
+
+        if (exception instanceof BadRequestFailure) {
+            return ResponseEntity.status(BAD_REQUEST).body(createError(exception));
         }
 
         if (exception instanceof PafApiFailure) {

@@ -6,18 +6,15 @@ import com.infinityworks.webapp.error.RestErrorHandler;
 import com.infinityworks.webapp.rest.ElectorsController;
 import com.infinityworks.webapp.rest.dto.TownStreets;
 import com.infinityworks.webapp.service.ElectorsService;
-import com.infinityworks.webapp.service.UserService;
-import com.infinityworks.webapp.service.client.VotersByStreet;
+import com.infinityworks.webapp.service.SessionService;
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.context.jdbc.SqlGroup;
-import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 import java.security.Principal;
-import java.util.List;
 
 import static com.infinityworks.webapp.common.Json.objectMapper;
 import static com.infinityworks.webapp.testsupport.Fixtures.abbotRoad;
@@ -27,7 +24,6 @@ import static java.util.Collections.emptyList;
 import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.assertThat;
 import static org.mockito.Matchers.any;
-import static org.mockito.Matchers.anyString;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
@@ -45,15 +41,14 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
                         "classpath:users.sql"})
 })
 public class ElectorsTest extends WebApplicationTest {
-    private UserService userService;
+    private SessionService sessionService;
 
     @Before
     public void setup() {
-        userService = mock(UserService.class);
-        when(userService.getByEmail(anyString())).thenCallRealMethod();
+        sessionService = mock(SessionService.class);
         ElectorsService electorsService = getBean(ElectorsService.class);
         RequestValidator requestValidator = getBean(RequestValidator.class);
-        ElectorsController wardController = new ElectorsController(electorsService, new RestErrorHandler(), requestValidator, userService);
+        ElectorsController wardController = new ElectorsController(electorsService, new RestErrorHandler(), requestValidator, sessionService);
 
         mockMvc = MockMvcBuilders
                 .standaloneSetup(wardController)
@@ -66,7 +61,7 @@ public class ElectorsTest extends WebApplicationTest {
         String wardCode = "E05001221";
         String town = "Coventry";
         pafApiStub.willReturnVotersByWardByTownAndByStreet(wardCode, town);
-        when(userService.extractUserFromPrincipal(any(Principal.class)))
+        when(sessionService.extractUserFromPrincipal(any(Principal.class)))
                 .thenReturn(Try.success(admin()));
 
         TownStreets townStreets = new TownStreets(asList(kirbyRoad(), abbotRoad()));
@@ -87,7 +82,7 @@ public class ElectorsTest extends WebApplicationTest {
     @Test
     public void returnsBadRequestIfStreetsIsEmpty() throws Exception {
         String wardCode = "E05001221";
-        when(userService.extractUserFromPrincipal(any(Principal.class)))
+        when(sessionService.extractUserFromPrincipal(any(Principal.class)))
                 .thenReturn(Try.success(admin()));
 
         TownStreets townStreets = new TownStreets(emptyList());
@@ -103,7 +98,7 @@ public class ElectorsTest extends WebApplicationTest {
     @Test
     public void returnsBadRequestIfStreetsNull() throws Exception {
         String wardCode = "E05001221";
-        when(userService.extractUserFromPrincipal(any(Principal.class)))
+        when(sessionService.extractUserFromPrincipal(any(Principal.class)))
                 .thenReturn(Try.success(admin()));
 
         TownStreets townStreets = null;

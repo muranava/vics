@@ -19,6 +19,12 @@
             <input type="password" class="form-control" id="password" name="password" ng-model="credentials.password">
             <label for="password">Password</label>
           </div>
+          <div class="alert alert-callout alert-danger" role="alert" ng-show="badCredentials">
+            <strong>Invalid Credentials</strong> Please retry or contact <a href="mailto:forgotpassword@voteleave.uk?Subject=Forgot%20Password" target="_top">forgotpassword@voteleave.uk</a> to renew your password
+          </div>
+          <div class="alert alert-callout alert-danger" role="alert" ng-show="networkError">
+            <strong>Network Error!</strong> Cannot connect to server
+          </div>
           <br/>
           <div class="row">
             <div class="col-xs-6 text-left">

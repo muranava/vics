@@ -7,7 +7,7 @@ import com.infinityworks.webapp.rest.WardController;
 import com.infinityworks.webapp.rest.dto.Street;
 import com.infinityworks.webapp.rest.dto.UserRestrictedWards;
 import com.infinityworks.webapp.service.AddressService;
-import com.infinityworks.webapp.service.UserService;
+import com.infinityworks.webapp.service.SessionService;
 import com.infinityworks.webapp.service.WardService;
 import org.junit.Before;
 import org.junit.Test;
@@ -28,7 +28,6 @@ import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertThat;
 import static org.mockito.Matchers.any;
-import static org.mockito.Matchers.anyString;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -44,15 +43,14 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
                         "classpath:users.sql"})
 })
 public class WardsTest extends WebApplicationTest {
-    private UserService userService;
+    private SessionService sessionService;
 
     @Before
     public void setup() {
-        userService = mock(UserService.class);
-        when(userService.getByEmail(anyString())).thenCallRealMethod();
+        sessionService = mock(SessionService.class);
         WardService wardService = getBean(WardService.class);
         AddressService addressService = getBean(AddressService.class);
-        WardController wardController = new WardController(userService, wardService, new RestErrorHandler(), addressService);
+        WardController wardController = new WardController(sessionService, wardService, new RestErrorHandler(), addressService);
 
         mockMvc = MockMvcBuilders
                 .standaloneSetup(wardController)
@@ -63,7 +61,7 @@ public class WardsTest extends WebApplicationTest {
     @Test
     public void returnsAllTheWardsForAdmin() throws Exception {
         String endpoint = "/ward";
-        when(userService.extractUserFromPrincipal(any(Principal.class)))
+        when(sessionService.extractUserFromPrincipal(any(Principal.class)))
                 .thenReturn(Try.success(admin()));
 
         int totalWards = (int) getBean(WardRepository.class).count();
@@ -81,7 +79,7 @@ public class WardsTest extends WebApplicationTest {
     @Test
     public void returnsTheRestrictedWardsForCovs() throws Exception {
         String endpoint = "/ward";
-        when(userService.extractUserFromPrincipal(any(Principal.class)))
+        when(sessionService.extractUserFromPrincipal(any(Principal.class)))
                 .thenReturn(Try.success(covs()));
 
         ResultActions response = mockMvc.perform(get(endpoint)
@@ -99,7 +97,7 @@ public class WardsTest extends WebApplicationTest {
         String wardCode = "E05001221";
         String endpoint = "/ward/" + wardCode + "/street";
         pafApiStub.willReturnStreetsByWard(wardCode);
-        when(userService.extractUserFromPrincipal(any(Principal.class)))
+        when(sessionService.extractUserFromPrincipal(any(Principal.class)))
                 .thenReturn(Try.success(admin()));
 
         ResultActions resultActions = mockMvc.perform(get(endpoint)

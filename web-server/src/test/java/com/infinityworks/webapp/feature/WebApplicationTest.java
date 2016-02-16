@@ -38,12 +38,12 @@ public abstract class WebApplicationTest {
 
     protected User admin() {
         UserService userService = getBean(UserService.class);
-        return userService.getByEmail("admin").get();
+        return userService.getByEmail("me@admin.uk").get();
     }
 
     protected User covs() {
         UserService userService = getBean(UserService.class);
-        return userService.getByEmail("covs").get();
+        return userService.getByEmail("cov@south.cov").get();
     }
 
     protected <T> T getBean(Class<T> clazz) {

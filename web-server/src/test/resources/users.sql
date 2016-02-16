@@ -1,8 +1,8 @@
 -- passwords are same as username
-INSERT INTO users (id, username, password_hash, role) VALUES
-  ('a54a4e73-943d-41e0-ae05-f6b507ad777e', 'admin', '$2a$10$0qF8dDUyjN8Pc.AkS4twGuG/9siJzjNdIhMCphdY.Su7/XZLmDbW.', 'ADMIN'),
-  ('63f93970-d065-4fbb-8b9c-941e27ea53dc', 'covs', '$2a$10$JDT0Ne/x8dzbk66tI5zN7eHFf9Xn0KiO3.T0RfHwIoujY9VF.SD.u', 'USER'),
-  ('196af608-6d7a-4981-a6a0-ed8999b3b89c', 'earlsdon', '$2a$10$QzFIYoX2Ha8AzDFrztJys.A1.hjDa7dpgpbk.o4pq3xJ3dgjGgqly', 'USER');
+INSERT INTO users (id, first_name, last_name, username, password_hash, role) VALUES
+  ('a54a4e73-943d-41e0-ae05-f6b507ad777e', 'iam', 'sam', 'me@admin.uk', '$2a$10$0qF8dDUyjN8Pc.AkS4twGuG/9siJzjNdIhMCphdY.Su7/XZLmDbW.', 'ADMIN'),
+  ('63f93970-d065-4fbb-8b9c-941e27ea53dc', 'Peter', 'Ndlovu', 'cov@south.cov', '$2a$10$JDT0Ne/x8dzbk66tI5zN7eHFf9Xn0KiO3.T0RfHwIoujY9VF.SD.u', 'USER'),
+  ('196af608-6d7a-4981-a6a0-ed8999b3b89c', 'Dion', 'Dublin', 'earlsdon@cov.uk', '$2a$10$QzFIYoX2Ha8AzDFrztJys.A1.hjDa7dpgpbk.o4pq3xJ3dgjGgqly', 'USER');
 
 INSERT INTO privileges (id, permission) VALUES
   ('3f89506c-fd00-4b1e-aefc-2186d075439d', 'READ_VOTER'),

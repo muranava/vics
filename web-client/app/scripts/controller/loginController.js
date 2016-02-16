@@ -6,13 +6,18 @@ angular
     $scope.credentials = {};
 
     $scope.login = function () {
-      $scope.failedLogin = false;
+      $scope.badCredentials = false;
+      $scope.networkError = false;
       authService.login($scope.credentials.username, $scope.credentials.password)
         .success(function () {
           $location.path('/dashboard');
         })
-        .error(function () {
-          $scope.failedLogin = true;
+        .error(function (err) {
+          if (err && err.type === 'LoginFailure') {
+            $scope.badCredentials = true;
+          } else {
+            $scope.networkError = true;
+          }
         });
     };
 

@@ -1,18 +1,18 @@
 package com.infinityworks.webapp.rest;
 
+import com.infinityworks.webapp.common.RequestValidator;
 import com.infinityworks.webapp.common.Try;
 import com.infinityworks.webapp.domain.CurrentUser;
 import com.infinityworks.webapp.domain.Role;
-import com.infinityworks.webapp.domain.User;
 import com.infinityworks.webapp.error.RestErrorHandler;
 import com.infinityworks.webapp.rest.dto.AuthenticationToken;
 import com.infinityworks.webapp.rest.dto.CreateUserRequest;
 import com.infinityworks.webapp.security.SecurityUtils;
+import com.infinityworks.webapp.service.SessionService;
 import com.infinityworks.webapp.service.UserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -30,29 +30,36 @@ import java.security.Principal;
 import java.util.List;
 
 import static java.util.stream.Collectors.toList;
-import static org.springframework.web.bind.annotation.RequestMethod.*;
+import static org.springframework.http.HttpStatus.CREATED;
+import static org.springframework.web.bind.annotation.RequestMethod.GET;
+import static org.springframework.web.bind.annotation.RequestMethod.POST;
 
 @RestController
 @RequestMapping("/user")
 public class UserController {
     private final Logger log = LoggerFactory.getLogger(UserController.class);
     private final UserService userService;
+    private final SessionService sessionService;
     private final RestErrorHandler errorHandler;
     private final UserDetailsService userDetailsService;
     private final AuthenticationManager authenticationManager;
+    private final RequestValidator requestValidator;
 
     @Autowired
     public UserController(UserService userService,
                           RestErrorHandler errorHandler,
                           UserDetailsService userDetailsService,
-                          AuthenticationManager authenticationManager) {
+                          SessionService sessionService,
+                          AuthenticationManager authenticationManager,
+                          RequestValidator requestValidator) {
         this.userService = userService;
         this.errorHandler = errorHandler;
         this.userDetailsService = userDetailsService;
+        this.sessionService = sessionService;
         this.authenticationManager = authenticationManager;
+        this.requestValidator = requestValidator;
     }
 
-    // TODO rework and test
     @RequestMapping(value = "/login", method = POST)
     public ResponseEntity<?> authenticate(@RequestHeader("Authorization") String authorization, HttpServletRequest request) {
         return SecurityUtils.credentialsFromAuthHeader(authorization).flatMap(credentials -> {
@@ -94,20 +101,21 @@ public class UserController {
     @PreAuthorize("isAuthenticated()")
     @RequestMapping(value = "/current", method = GET)
     public ResponseEntity<?> currentUser(Principal userPrincipal) {
-        return userService.extractUserFromPrincipal(userPrincipal)
+        return sessionService.extractUserFromPrincipal(userPrincipal)
                 .fold(errorHandler::mapToResponseEntity, ResponseEntity::ok);
     }
 
     @PreAuthorize("hasAuthority('ADMIN')")
     @RequestMapping(method = POST)
-    public ResponseEntity<?> createUser(@RequestBody CreateUserRequest createUserRequest) {
-        Try<User> user = userService.create(createUserRequest);
-        return user.fold(
-                errorHandler::mapToResponseEntity,
-                newUser -> {
-                    log.debug("Created user: " + newUser);
-                    return ResponseEntity.status(HttpStatus.CREATED).body(newUser);
-                });
+    public ResponseEntity<?> createUser(@RequestBody(required = true) CreateUserRequest createUserRequest, Principal principal) {
+        return requestValidator.validate(createUserRequest)
+                .flatMap(request -> sessionService.extractUserFromPrincipal(principal))
+                .flatMap(user -> userService.create(user, createUserRequest))
+                .fold(errorHandler::mapToResponseEntity,
+                        newUser -> {
+                            log.debug("Created user={}", newUser);
+                            return ResponseEntity.status(CREATED).body(newUser);
+                        });
     }
 
     @PreAuthorize("hasAuthority('ADMIN')")

@@ -4,7 +4,7 @@ import com.infinityworks.webapp.common.RequestValidator;
 import com.infinityworks.webapp.error.RestErrorHandler;
 import com.infinityworks.webapp.rest.dto.TownStreets;
 import com.infinityworks.webapp.service.ElectorsService;
-import com.infinityworks.webapp.service.UserService;
+import com.infinityworks.webapp.service.SessionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -23,17 +23,17 @@ public class ElectorsController {
     private final ElectorsService electorsService;
     private final RestErrorHandler errorHandler;
     private final RequestValidator requestValidator;
-    private final UserService userService;
+    private final SessionService sessionService;
 
     @Autowired
     public ElectorsController(ElectorsService electorsService,
                               RestErrorHandler errorHandler,
                               RequestValidator requestValidator,
-                              UserService userService) {
+                              SessionService sessionService) {
         this.electorsService = electorsService;
         this.errorHandler = errorHandler;
         this.requestValidator = requestValidator;
-        this.userService = userService;
+        this.sessionService = sessionService;
     }
 
     @RequestMapping(value = "/ward/{wardCode}/street", method = POST)
@@ -41,7 +41,7 @@ public class ElectorsController {
                                                      @PathVariable("wardCode") String wardCode,
                                                      Principal principal) {
         return requestValidator.validate(townStreets)
-                .flatMap(streets -> userService.extractUserFromPrincipal(principal))
+                .flatMap(streets -> sessionService.extractUserFromPrincipal(principal))
                 .flatMap(user -> electorsService.findElectorsByStreet(townStreets, wardCode, user))
                 .fold(errorHandler::mapToResponseEntity, ResponseEntity::ok);
     }

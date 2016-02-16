@@ -2,7 +2,7 @@ package com.infinityworks.webapp.rest;
 
 import com.infinityworks.webapp.error.RestErrorHandler;
 import com.infinityworks.webapp.service.ConstituencyService;
-import com.infinityworks.webapp.service.UserService;
+import com.infinityworks.webapp.service.SessionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -18,12 +18,12 @@ import static org.springframework.web.bind.annotation.RequestMethod.GET;
 public class ConstituencyController {
     private final ConstituencyService constituencyService;
     private final RestErrorHandler errorHandler;
-    private final UserService userService;
+    private final SessionService userService;
 
     @Autowired
     public ConstituencyController(ConstituencyService constituencyService,
                                   RestErrorHandler errorHandler,
-                                  UserService userService) {
+                                  SessionService userService) {
         this.constituencyService = constituencyService;
         this.errorHandler = errorHandler;
         this.userService = userService;
