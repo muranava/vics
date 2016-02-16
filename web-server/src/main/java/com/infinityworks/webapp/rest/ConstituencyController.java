@@ -31,7 +31,7 @@ public class ConstituencyController {
 
     @PreAuthorize("isAuthenticated()")
     @RequestMapping(method = GET)
-    public ResponseEntity<?> constituencies(Principal principal) {
+    public ResponseEntity<?> visibleConstituencies(Principal principal) {
         return userService.extractUserFromPrincipal(principal)
                 .map(constituencyService::getVisibleConstituenciesByUser)
                 .fold(errorHandler::mapToResponseEntity, ResponseEntity::ok);
