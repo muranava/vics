@@ -4,6 +4,7 @@ import com.infinityworks.webapp.common.Try;
 import com.infinityworks.webapp.domain.Constituency;
 import com.infinityworks.webapp.domain.User;
 import com.infinityworks.webapp.domain.Ward;
+import com.infinityworks.webapp.error.NotAuthorizedFailure;
 import com.infinityworks.webapp.error.NotFoundFailure;
 import com.infinityworks.webapp.repository.ConstituencyRepository;
 import com.infinityworks.webapp.repository.WardRepository;
@@ -11,6 +12,7 @@ import com.infinityworks.webapp.rest.dto.UserRestrictedWards;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
@@ -71,6 +73,14 @@ public class WardService {
             Set<Ward> wards = wardRepository.findByConstituencyIn(user.getConstituencies());
             wards.addAll(user.getWards());
             return new UserRestrictedWards(new ArrayList<>(wards));
+        }
+    }
+
+    public Try<List<Ward>> getAllByName(User user, String name, int limit) {
+        if (user.isAdmin()) {
+            return Try.success(wardRepository.findByNameIgnoreCaseContainingOrderByNameAsc(name, new PageRequest(0, limit)));
+        } else {
+            return Try.failure(new NotAuthorizedFailure("Forbidden content"));
         }
     }
 }

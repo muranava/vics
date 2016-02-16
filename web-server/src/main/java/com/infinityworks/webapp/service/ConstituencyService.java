@@ -1,18 +1,25 @@
 package com.infinityworks.webapp.service;
 
+import com.infinityworks.webapp.common.Try;
 import com.infinityworks.webapp.domain.Constituency;
 import com.infinityworks.webapp.domain.User;
 import com.infinityworks.webapp.domain.Ward;
+import com.infinityworks.webapp.error.NotAuthorizedFailure;
 import com.infinityworks.webapp.repository.ConstituencyRepository;
 import com.infinityworks.webapp.rest.dto.UserRestrictedConstituencies;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
+import java.util.UUID;
+import java.util.stream.Collectors;
 
+import static java.util.stream.Collectors.toList;
 import static java.util.stream.Collectors.toSet;
 
 /**
@@ -37,8 +44,8 @@ public class ConstituencyService {
      * @return the constituencies visible to a user (however the user may not have access to all wards
      * in the constituencies)
      */
-    public UserRestrictedConstituencies getVisibleConstituenciesByUser(User user) {
-        log.debug("Finding constituencies for user={}", user);
+    public UserRestrictedConstituencies getVisibleConstituenciesByUserWithWardContext(User user) {
+        log.debug("Finding visible constituencies for user={}", user);
 
         if (user.isAdmin()) {
             return new UserRestrictedConstituencies(new HashSet<>(constituencyRepository.findAll()));
@@ -51,6 +58,17 @@ public class ConstituencyService {
             wardConstituencies.addAll(user.getConstituencies());
             return new UserRestrictedConstituencies(wardConstituencies);
         }
+    }
+
+    public Try<List<Constituency>> constituenciesByName(User user, String name, int limit) {
+        log.debug("Finding constituencies for user={}", user);
+
+        if (!user.isAdmin()) {
+            log.error("Non admin attempted to find all constituencies by name. user={}", user);
+            return Try.failure(new NotAuthorizedFailure("Forbidden content"));
+        }
+        List<Constituency> constituencies = constituencyRepository.findByNameIgnoreCaseContainingOrderByNameAsc(name, new PageRequest(0, limit));
+        return Try.success(constituencies);
     }
 
 }

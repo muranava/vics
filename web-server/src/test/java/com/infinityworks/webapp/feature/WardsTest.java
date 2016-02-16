@@ -32,6 +32,7 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @SqlGroup({
@@ -109,6 +110,38 @@ public class WardsTest extends WebApplicationTest {
 
         List<Street> streets = asList(objectMapper.readValue(result.getResponse().getContentAsString(), Street[].class));
         assertThat(streets.size(), is(6));
+    }
+
+    @Test
+    public void returnsTheWardsByName() throws Exception {
+        String name = "wood";
+        String limit = "2";
+        String endpoint = String.format("/ward/search?limit=%s&name=%s", limit, name);
+
+        when(sessionService.extractUserFromPrincipal(any(Principal.class)))
+                .thenReturn(Try.success(admin()));
+
+        mockMvc.perform(get(endpoint)
+                .accept(MediaType.APPLICATION_JSON))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$[0].name", is("Westwood")))
+                .andExpect(jsonPath("$[1].name", is("Woodlands")));
+    }
+
+    @Test
+    public void returnsFailureIfNotAdminWhenSearchingByName() throws Exception {
+        String name = "wood";
+        String limit = "2";
+        String endpoint = String.format("/ward/search?limit=%s&name=%s", limit, name);
+
+        when(sessionService.extractUserFromPrincipal(any(Principal.class)))
+                .thenReturn(Try.success(covs()));
+
+        mockMvc.perform(get(endpoint)
+                .accept(MediaType.APPLICATION_JSON))
+                .andDo(print())
+                .andExpect(status().isUnauthorized());
     }
 
     @Test

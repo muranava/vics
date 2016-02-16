@@ -37,7 +37,7 @@ public class ConstituencyServiceTest {
         Constituency covWest = constituency().withName("Coventry West").build();
         given(constituencyRepository.findAll()).willReturn(asList(covSouth, covWest));
 
-        UserRestrictedConstituencies constituencies = underTest.getVisibleConstituenciesByUser(admin);
+        UserRestrictedConstituencies constituencies = underTest.getVisibleConstituenciesByUserWithWardContext(admin);
 
         assertThat(constituencies.getConstituencies(), hasItem(covSouth));
         assertThat(constituencies.getConstituencies(), hasItem(covWest));
@@ -56,7 +56,7 @@ public class ConstituencyServiceTest {
                 .withWards(newHashSet(henley))
                 .build();
 
-        UserRestrictedConstituencies constituencies = underTest.getVisibleConstituenciesByUser(user);
+        UserRestrictedConstituencies constituencies = underTest.getVisibleConstituenciesByUserWithWardContext(user);
 
         assertThat(constituencies.getConstituencies(), hasItem(covSouth));
         assertThat(constituencies.getConstituencies(), hasItem(rugby));
