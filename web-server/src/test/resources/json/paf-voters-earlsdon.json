@@ -14,7 +14,7 @@
     "post_town": "Coventry",
     "postcode": "CV1 3NN",
     "premise": "1",
-    "voter": [
+    "voters": [
       {
         "ward_code": "E05001221",
         "polling_district": "AB",
@@ -95,7 +95,7 @@
     "post_town": "Coventry",
     "postcode": "CV1 3EN",
     "premise": "10",
-    "voter": [
+    "voters": [
       {
         "ward_code": "E05001221",
         "polling_district": "AB",
@@ -176,7 +176,7 @@
     "post_town": "Coventry",
     "postcode": "CV1 3EN",
     "premise": "12",
-    "voter": [
+    "voters": [
       {
         "ward_code": "E05001221",
         "polling_district": "AB",
@@ -257,7 +257,7 @@
     "post_town": "Coventry",
     "postcode": "CV1 3EN",
     "premise": "14",
-    "voter": [
+    "voters": [
       {
         "ward_code": "E05001221",
         "polling_district": "AB",
@@ -338,7 +338,7 @@
     "post_town": "Coventry",
     "postcode": "CV1 3EN",
     "premise": "16",
-    "voter": [
+    "voters": [
       {
         "ward_code": "E05001221",
         "polling_district": "AB",
@@ -419,7 +419,7 @@
     "post_town": "Coventry",
     "postcode": "CV1 3EN",
     "premise": "17",
-    "voter": [
+    "voters": [
       {
         "ward_code": "E05001221",
         "polling_district": "AB",
@@ -500,7 +500,7 @@
     "post_town": "Coventry",
     "postcode": "CV1 3EN",
     "premise": "18",
-    "voter": [
+    "voters": [
       {
         "ward_code": "E05001221",
         "polling_district": "AB",
@@ -581,7 +581,7 @@
     "post_town": "Coventry",
     "postcode": "CV1 3EN",
     "premise": "2",
-    "voter": [
+    "voters": [
       {
         "ward_code": "E05001221",
         "polling_district": "AB",
@@ -662,7 +662,7 @@
     "post_town": "Coventry",
     "postcode": "CV1 3EN",
     "premise": "20",
-    "voter": [
+    "voters": [
       {
         "ward_code": "E05001221",
         "polling_district": "AB",
@@ -743,7 +743,7 @@
     "post_town": "Coventry",
     "postcode": "CV1 3EN",
     "premise": "22",
-    "voter": [
+    "voters": [
       {
         "ward_code": "E05001221",
         "polling_district": "AB",
@@ -824,7 +824,7 @@
     "post_town": "Coventry",
     "postcode": "CV1 3EN",
     "premise": "4",
-    "voter": [
+    "voters": [
       {
         "ward_code": "E05001221",
         "polling_district": "AB",
@@ -905,7 +905,7 @@
     "post_town": "Coventry",
     "postcode": "CV1 3EN",
     "premise": "6",
-    "voter": [
+    "voters": [
       {
         "ward_code": "E05001221",
         "polling_district": "AB",
@@ -986,7 +986,7 @@
     "post_town": "Coventry",
     "postcode": "CV1 3EN",
     "premise": "8",
-    "voter": [
+    "voters": [
       {
         "ward_code": "E05001221",
         "polling_district": "AB",
