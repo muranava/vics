@@ -25,9 +25,10 @@ angular
     var authByRoute = [
       {route: '/dashboard', role: 'USER'},
       {route: '/canvass', role: 'USER'},
-      {route: '/admin', role: 'ADMIN'},
       {route: '/profile', role: 'USER'},
       {route: '/dataentry', role: 'USER'},
+      {route: '/admin', role: 'ADMIN'},
+      {route: '/associations', role: 'ADMIN'},
       {route: '/users', role: 'ADMIN'}
     ];
 
@@ -39,7 +40,9 @@ angular
      */
     var userAuth = function ($q, authService, $location, $rootScope) {
       var deferred = $q.defer(),
-        route = _.find(authByRoute, {route: $location.path()});
+        route = _.find(authByRoute, function(route) {
+          return _.startsWith($location.path(), route.route);
+        });
 
       authService.test(route.role)
         .then(function (response) {
@@ -93,6 +96,13 @@ angular
       .when('/dataentry', {
         templateUrl: 'views/dataentry.html',
         controller: 'dataEntryController',
+        resolve: {
+          auth: userAuth
+        }
+      })
+      .when('/associations/:id', {
+        templateUrl: 'views/associations.html',
+        controller: 'associationsController',
         resolve: {
           auth: userAuth
         }

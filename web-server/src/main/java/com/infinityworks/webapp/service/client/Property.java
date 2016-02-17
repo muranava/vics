@@ -21,7 +21,7 @@ public class Property {
                     @JsonProperty("post_town") String postTown,
                     @JsonProperty("dependent_locality") String dependentLocality,
                     @JsonProperty("dependent_street") String dependentStreet,
-                    @JsonProperty("voter") List<Voter> voters) {
+                    @JsonProperty("voters") List<Voter> voters) {
         this.buildingNumber = buildingNumber;
         this.mainStreet = mainStreet;
         this.postTown = postTown;

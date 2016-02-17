@@ -75,7 +75,6 @@ public class PafClient {
     public Try<List<VotersByStreet>> findElectorsByStreet(TownStreets street, String wardCode) {
         String url = String.format(ELECTORS_BY_STREET_ENDPOINT, wardCode);
 
-
         ResponseEntity<VotersByStreet[]> pafResponse;
         HttpHeaders headers = new HttpHeaders();
         headers.set("X-Authorization", API_TOKEN);

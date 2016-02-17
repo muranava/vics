@@ -38,12 +38,14 @@ angular
     };
 
     $scope.onEditUser = function(userID) {
+      clearMessages();
       $scope.editMode = true;
       $scope.editUser = $.extend(true, {}, _.find($scope.users, {id: userID}));
       $scope.editUser.writeAccess = $scope.editUser.writeAccess || false;
     };
 
     $scope.onSaveEdit = function(user) {
+      clearMessages();
       $scope.editErrors = validateCreateUserForm(user, false);
       if (!$scope.editErrors.length) {
         userService

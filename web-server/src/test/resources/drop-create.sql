@@ -41,21 +41,21 @@ CREATE TABLE privileges
 
 CREATE TABLE users_privileges
 (
-  id            UUID PRIMARY KEY,
   users_id      UUID REFERENCES users (id)      NOT NULL,
-  privileges_id UUID REFERENCES privileges (id) NOT NULL
+  privileges_id UUID REFERENCES privileges (id) NOT NULL,
+  PRIMARY KEY (users_id, privileges_id)
 );
 
 CREATE TABLE users_wards (
-  id       UUID PRIMARY KEY,
   users_id UUID REFERENCES users (id)           NOT NULL,
-  wards_id UUID REFERENCES wards (id)           NOT NULL
+  wards_id UUID REFERENCES wards (id)           NOT NULL,
+  PRIMARY KEY (users_id, wards_id)
 );
 
 CREATE TABLE users_constituencies (
-  id                UUID PRIMARY KEY,
   users_id          UUID REFERENCES users (id)                      NOT NULL,
-  constituencies_id UUID REFERENCES constituencies (id)             NOT NULL
+  constituencies_id UUID REFERENCES constituencies (id)             NOT NULL,
+  PRIMARY KEY (users_id, constituencies_id)
 );
 
 -- Trigger to update the modified date on update

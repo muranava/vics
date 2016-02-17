@@ -30,6 +30,21 @@ angular
       });
     };
 
+    api.associateToUser = function(constituencyID, userID) {
+      return $http({
+        method: 'POST',
+        url: apiUrl + '/constituency/' + constituencyID + '/user/' + userID,
+        withCredentials: true
+      });
+    };
+
+    api.removeUserAssociation = function(constituencyID, userID) {
+      return $http({
+        method: 'DELETE',
+        url: apiUrl + '/constituency/' + constituencyID + '/user/' + userID,
+        withCredentials: true
+      });
+    };
 
     return api;
   });

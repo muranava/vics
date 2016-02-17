@@ -56,5 +56,21 @@ angular
       });
     };
 
+    api.associateToUser = function(wardID, userID) {
+      return $http({
+        method: 'POST',
+        url: apiUrl + '/ward/' + wardID + '/user/' + userID,
+        withCredentials: true
+      });
+    };
+
+    api.removeUserAssociation = function(wardID, userID) {
+      return $http({
+        method: 'DELETE',
+        url: apiUrl + '/ward/' + wardID + '/user/' + userID,
+        withCredentials: true
+      });
+    };
+
     return api;
   });

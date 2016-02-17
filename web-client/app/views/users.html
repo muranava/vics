@@ -169,6 +169,10 @@
                     </div>
                     <div class="tile-text">{{user.username}}</div>
                   </a>
+                  <a ng-if="user.role === 'USER'" class="btn btn-flat ink-reaction" ng-href="#/associations/{{user.id}}">
+                    <i class="fa fa-sitemap"></i>
+                  </a>
+                  &nbsp;
                   <a ng-if="user.role === 'USER'" class="btn btn-flat ink-reaction" ng-click="onEditUser(user.id)">
                     <i class="fa fa-edit"></i>
                   </a>
