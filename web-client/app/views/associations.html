@@ -130,7 +130,7 @@
                          placeholder="Type a ward name"
                          id="wardInputID"
                          ng-model="wardSearchModel"
-                         typeahead="w as w.name + ' (' + w.constituency.name + ')' for w in wards | filter:$viewValue | limitTo:50"
+                         typeahead="w as w.name + ' (' + w.code + ') in ' + w.constituency.name for w in wards | filter:$viewValue | limitTo:50"
                          typeahead-on-select="onSelectConstituency()"
                          typeahead-loading="true"
                          class="form-control">
