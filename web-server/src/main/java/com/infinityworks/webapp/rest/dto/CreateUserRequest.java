@@ -14,12 +14,11 @@ public class CreateUserRequest {
 
     @NotEmpty
     @Email
-    private final String email;
+    private final String username;
     @NotEmpty
     private final String password;
     @NotEmpty
     private final String firstName;
-    @NotEmpty
     private final String lastName;
     @NotEmpty
     private final String repeatPassword;
@@ -33,7 +32,7 @@ public class CreateUserRequest {
     private final Boolean writeAccess;
 
     @JsonCreator
-    public CreateUserRequest(@JsonProperty("email") String email,
+    public CreateUserRequest(@JsonProperty("username") String username,
                              @JsonProperty("password") String password,
                              @JsonProperty("firstName") String firstName,
                              @JsonProperty("lastName") String lastName,
@@ -42,7 +41,7 @@ public class CreateUserRequest {
                              @JsonProperty("wardIDs") List<UUID> wardIDs,
                              @JsonProperty("constituencyIDs") List<UUID> constituencyIDs,
                              @JsonProperty("writeAccess") Boolean writeAccess) {
-        this.email = email;
+        this.username = username;
         this.password = password;
         this.firstName = firstName;
         this.lastName = lastName;
@@ -53,8 +52,8 @@ public class CreateUserRequest {
         this.writeAccess = writeAccess;
     }
 
-    public String getEmail() {
-        return email;
+    public String getUsername() {
+        return username;
     }
 
     public String getPassword() {

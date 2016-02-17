@@ -42,8 +42,6 @@ public class ConstituencyService {
      * in the constituencies)
      */
     public UserRestrictedConstituencies getVisibleConstituenciesByUserWithWardContext(User user) {
-        log.debug("Finding visible constituencies for user={}", user);
-
         if (user.isAdmin()) {
             return new UserRestrictedConstituencies(new HashSet<>(constituencyRepository.findAll()));
         } else {
@@ -58,8 +56,6 @@ public class ConstituencyService {
     }
 
     public Try<List<Constituency>> constituenciesByName(User user, String name, int limit) {
-        log.debug("Finding constituencies for user={}", user);
-
         if (!user.isAdmin()) {
             log.error("Non admin attempted to find all constituencies by name. user={}", user);
             return Try.failure(new NotAuthorizedFailure("Forbidden content"));
@@ -67,5 +63,4 @@ public class ConstituencyService {
         List<Constituency> constituencies = constituencyRepository.findByNameIgnoreCaseContainingOrderByNameAsc(name, new PageRequest(0, limit));
         return Try.success(constituencies);
     }
-
 }

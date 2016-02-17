@@ -28,10 +28,27 @@ angular
       });
     };
 
+    api.findByID = function(id) {
+      return $http({
+        url: apiUrl + '/user/' + id,
+        method: 'GET',
+        withCredentials: true
+      });
+    };
+
     api.delete = function(userID) {
       return $http({
         url: apiUrl + '/user/' + userID,
         method: 'DELETE',
+        withCredentials: true
+      });
+    };
+
+    api.update = function(user) {
+      return $http({
+        url: apiUrl + '/user/' + user.id,
+        method: 'PUT',
+        data: user,
         withCredentials: true
       });
     };

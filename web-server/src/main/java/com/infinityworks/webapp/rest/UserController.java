@@ -7,6 +7,7 @@ import com.infinityworks.webapp.domain.Role;
 import com.infinityworks.webapp.error.RestErrorHandler;
 import com.infinityworks.webapp.rest.dto.AuthenticationToken;
 import com.infinityworks.webapp.rest.dto.CreateUserRequest;
+import com.infinityworks.webapp.rest.dto.UpdateUserRequest;
 import com.infinityworks.webapp.rest.validation.IsUUID;
 import com.infinityworks.webapp.security.SecurityUtils;
 import com.infinityworks.webapp.service.SessionService;
@@ -33,9 +34,7 @@ import java.util.UUID;
 
 import static java.util.stream.Collectors.toList;
 import static org.springframework.http.HttpStatus.CREATED;
-import static org.springframework.web.bind.annotation.RequestMethod.DELETE;
-import static org.springframework.web.bind.annotation.RequestMethod.GET;
-import static org.springframework.web.bind.annotation.RequestMethod.POST;
+import static org.springframework.web.bind.annotation.RequestMethod.*;
 
 @RestController
 @RequestMapping("/user")
@@ -79,6 +78,15 @@ public class UserController {
     }
 
     @PreAuthorize("hasAuthority('ADMIN')")
+    @RequestMapping(method = PUT, value = "/{id}")
+    public ResponseEntity<?> update(@PathVariable("id") @IsUUID String id, @RequestBody(required = true) UpdateUserRequest updateRequest, Principal principal) {
+        return requestValidator.validate(updateRequest)
+                .flatMap(request -> sessionService.extractUserFromPrincipal(principal))
+                .flatMap(user -> userService.update(user, UUID.fromString(id), updateRequest))
+                .fold(errorHandler::mapToResponseEntity, ResponseEntity::ok);
+    }
+
+    @PreAuthorize("hasAuthority('ADMIN')")
     @RequestMapping(method = POST)
     public ResponseEntity<?> createUser(@RequestBody(required = true) CreateUserRequest createUserRequest, Principal principal) {
         return requestValidator.validate(createUserRequest)
@@ -95,6 +103,14 @@ public class UserController {
     @RequestMapping(method = GET)
     public ResponseEntity<?> allUsers() {
         return userService.getAll()
+                .fold(errorHandler::mapToResponseEntity, ResponseEntity::ok);
+    }
+
+    @PreAuthorize("hasAuthority('ADMIN')")
+    @RequestMapping(method = GET, value = "/{id}")
+    public ResponseEntity<?> getUser(@PathVariable(value = "id") @IsUUID String id, Principal principal) {
+        return sessionService.extractUserFromPrincipal(principal)
+                .flatMap(user -> userService.getByID(user, UUID.fromString(id)))
                 .fold(errorHandler::mapToResponseEntity, ResponseEntity::ok);
     }
 

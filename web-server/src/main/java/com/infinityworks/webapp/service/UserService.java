@@ -7,6 +7,7 @@ import com.infinityworks.webapp.error.NotAuthorizedFailure;
 import com.infinityworks.webapp.error.NotFoundFailure;
 import com.infinityworks.webapp.repository.UserRepository;
 import com.infinityworks.webapp.rest.dto.CreateUserRequest;
+import com.infinityworks.webapp.rest.dto.UpdateUserRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,6 +39,19 @@ public class UserService {
         return Try.of(() -> userRepository.findAll(new Sort("username")));
     }
 
+    public Try<User> getByID(User user, UUID id) {
+        if (!user.isAdmin()) {
+            log.error("Non admin tried to retrieve user. User={}, userToFind={}", user, id);
+            return Try.failure(new NotAuthorizedFailure("Forbidden"));
+        }
+
+        User foundUser = userRepository.findOne(id);
+        if (foundUser == null) {
+            return Try.failure(new NotFoundFailure("No user with ID " + id));
+        }
+        return Try.success(foundUser);
+    }
+
     @Transactional
     public Try<Void> delete(User user, UUID userToDelete) {
         if (!user.isAdmin()) {
@@ -54,6 +68,37 @@ public class UserService {
     }
 
     @Transactional
+    public Try<User> update(User user, UUID userToUpdate, UpdateUserRequest request) {
+        if (!user.isAdmin()) {
+            log.error("Non admin tried to update a user!. User={}, userToUpdate={}", user, userToUpdate);
+            return Try.failure(new NotAuthorizedFailure("Not authorized"));
+        }
+
+        User foundUser = userRepository.findOne(userToUpdate);
+        if (foundUser == null) {
+            return Try.failure(new NotFoundFailure("No user with ID=" + userToUpdate));
+        }
+
+        Optional<User> userByNewEmail = userRepository.findOneByUsername(request.getUsername());
+        if (userByNewEmail.isPresent() && userByNewEmail.get().getId() != foundUser.getId()) {
+            return Try.failure(new BadRequestFailure("Username already exists"));
+        }
+
+        foundUser.setFirstName(request.getFirstName());
+        foundUser.setLastName(request.getLastName());
+        foundUser.setUsername(request.getUsername());
+        foundUser.setWriteAccess(request.getWriteAccess());
+
+        if (request.getPassword() != null && Objects.equals(request.getPassword(), request.getRepeatPassword())) {
+            foundUser.setPasswordHash(hashPw(request.getPassword()));
+        }
+
+        User updatedUser = userRepository.save(foundUser);
+        log.debug("Updated user={}", updatedUser);
+        return Try.success(updatedUser);
+    }
+
+    @Transactional
     public Try<User> create(User user, CreateUserRequest request) {
         if (!user.isAdmin()) {
             log.error("Non admin tried to create user!. User={}, request={}", user, request);
@@ -64,15 +109,14 @@ public class UserService {
             return Try.failure(new BadRequestFailure("Passwords do not match"));
         }
 
-        Optional<User> oneByUsername = userRepository.findOneByUsername(request.getEmail());
+        Optional<User> oneByUsername = userRepository.findOneByUsername(request.getUsername());
         if (oneByUsername.isPresent()) {
             return Try.failure(new BadRequestFailure("User already exists"));
         }
 
-        // TODO add constituencies / wards
         User newUser = new User();
-        newUser.setUsername(request.getEmail());
-        newUser.setPasswordHash(BCrypt.hashpw(request.getPassword(), BCrypt.gensalt()));
+        newUser.setUsername(request.getUsername());
+        newUser.setPasswordHash(hashPw(request.getPassword()));
         newUser.setRole(request.getRole());
         newUser.setWriteAccess(request.getWriteAccess());
         newUser.setFirstName(request.getFirstName());
@@ -80,5 +124,9 @@ public class UserService {
         newUser.setWriteAccess(request.getWriteAccess());
         User savedUser = userRepository.save(newUser);
         return Try.success(savedUser);
+    }
+
+    private String hashPw(String password) {
+        return BCrypt.hashpw(password, BCrypt.gensalt());
     }
 }

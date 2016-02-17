@@ -3,13 +3,14 @@ angular
   .module('canvass')
   .controller('adminUserController', function (util, $timeout, $scope, userService, plugins) {
 
+    $scope.editMode = false;
     $scope.createdUserEmail = '';
     $scope.createUserModel = initCreateUserModel();
     $scope.validationErrors = [];
 
     function initCreateUserModel() {
       return {
-        email: '',
+        username: '',
         firstName: '',
         lastName: '',
         role: 'USER',
@@ -36,16 +37,46 @@ angular
         });
     };
 
+    $scope.onEditUser = function(userID) {
+      $scope.editMode = true;
+      $scope.editUser = $.extend(true, {}, _.find($scope.users, {id: userID}));
+      $scope.editUser.writeAccess = $scope.editUser.writeAccess || false;
+    };
+
+    $scope.onSaveEdit = function(user) {
+      $scope.editErrors = validateCreateUserForm(user, false);
+      if (!$scope.editErrors.length) {
+        userService
+          .update(user)
+          .success(function () {
+            $scope.editUser = null;
+            $scope.editMode = false;
+            loadUsers();
+          })
+          .error(function (err) {
+            if (err && _.includes(err.message, 'exists')) {
+              $scope.userExistsError = true;
+            }
+          });
+      }
+    };
+
+
+    $scope.onCancelEdit = function() {
+      $scope.editMode = false;
+      $scope.editUser = null;
+    };
+
     $scope.onCreateUser = function (user) {
       clearMessages();
-      $scope.validationErrors = validateCreateUserForm(user);
+      $scope.validationErrors = validateCreateUserForm(user, true);
       if (!$scope.validationErrors.length) {
         userService
           .create(user)
           .success(function () {
             $scope.createUserModel = initCreateUserModel();
             $scope.successfullyCreatedUser = true;
-            $scope.createdUserEmail = user.email;
+            $scope.createdUserEmail = user.username;
             loadUsers();
           })
           .error(function (err) {
@@ -66,26 +97,26 @@ angular
       $scope.userExistsError = false;
     }
 
-    function validateCreateUserForm(user) {
+    function validateCreateUserForm(user, includePasswords) {
       var errors = [];
 
-      if (user.password !== user.repeatPassword) {
+      if (includePasswords && (user.password !== user.repeatPassword)) {
         errors.push('Passwords do not match');
       }
 
-      if (user.password.length < 8) {
+      if (includePasswords && user.password.length < 8) {
         errors.push('Password must be at least 8 characters');
       }
 
-      if (!(/\d/.test(user.password))) {
+      if (includePasswords && !(/\d/.test(user.password))) {
         errors.push('Password must contain a number');
       }
 
-      if (!(/[A-Z]/.test(user.password))) {
+      if (includePasswords && !(/[A-Z]/.test(user.password))) {
         errors.push('Password must contain an uppercase character');
       }
 
-      if (!util.isValidEmail(user.email)) {
+      if (!util.isValidEmail(user.username)) {
         errors.push('Email is not valid')
       }
 
@@ -103,18 +134,11 @@ angular
         });
     }
 
-    $scope.randomPassword = function () {
+    $scope.randomPassword = function (user) {
       var pw = util.generatePassword();
-      $scope.createUserModel.password = pw;
-      $scope.createUserModel.repeatPassword = pw;
-
-      // workaround for triggering floating labels with angular
-      $("#pw1").addClass('dirty');
-      $("#pw2").addClass('dirty');
+      user.password = pw;
+      user.repeatPassword = pw;
     };
 
     loadUsers();
-
-    plugins.initFloatingLabels();
-    plugins.initValidation();
   });
