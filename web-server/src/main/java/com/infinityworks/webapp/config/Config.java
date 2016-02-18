@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.datatype.jdk8.Jdk8Module;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.infinityworks.pdfgen.DocumentBuilder;
+import com.infinityworks.pdfgen.LogoRenderer;
 import com.infinityworks.pdfgen.TableBuilder;
 import com.infinityworks.webapp.common.RequestValidator;
 import com.infinityworks.webapp.error.RestErrorHandler;
@@ -98,8 +99,13 @@ public class Config {
     }
 
     @Bean
-    public DocumentBuilder documentBuilder() {
-        return new DocumentBuilder();
+    public DocumentBuilder documentBuilder(LogoRenderer logoRenderer) {
+        return new DocumentBuilder(logoRenderer);
+    }
+
+    @Bean
+    public LogoRenderer logoRenderer() {
+        return new LogoRenderer();
     }
 
     @Bean

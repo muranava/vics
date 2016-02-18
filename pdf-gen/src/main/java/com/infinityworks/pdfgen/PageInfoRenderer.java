@@ -9,8 +9,8 @@ import java.io.IOException;
 
 import static com.itextpdf.text.Font.FontFamily.HELVETICA;
 
-public class StaticContentRenderer extends PdfPageEventHelper {
-    private static final Logger log = LoggerFactory.getLogger(StaticContentRenderer.class);
+public class PageInfoRenderer extends PdfPageEventHelper {
+    private static final Logger log = LoggerFactory.getLogger(PageInfoRenderer.class);
     private static Font font = new Font(HELVETICA, 9);
     private static final String FOOTER_TEXT =
             "All data is collected in accordance with our privacy policy which can be found at " +
@@ -32,6 +32,12 @@ public class StaticContentRenderer extends PdfPageEventHelper {
             "\n4 Probably Leave" +
             "\n5 Definitely Leave";
 
+    private static final String META_TEMPLATE = "Constituency: %s\nWard: %s\nStreet: %s";
+
+    private String constituencyName = "";
+    private String wardName = "";
+    private String street = "";
+
     @Override
     public void onEndPage(PdfWriter writer, Document document) {
         PdfContentByte cb = writer.getDirectContent();
@@ -39,6 +45,16 @@ public class StaticContentRenderer extends PdfPageEventHelper {
         createLogo(cb);
         createIntentionKey(cb);
         createLikelihoodKey(cb);
+        createPageNumber(cb, document, writer);
+        createMetaSection(cb);
+    }
+
+    private void createPageNumber(PdfContentByte cb, Document document, PdfWriter writer) {
+        String page = String.format("Page %d", writer.getPageNumber());
+        ColumnText.showTextAligned(cb, Element.ALIGN_LEFT,
+                new Phrase(page, font),
+                document.right() - 50,
+                document.bottom() - 15, 0);
     }
 
     private void createFooter(PdfContentByte cb, Document document) {
@@ -50,19 +66,18 @@ public class StaticContentRenderer extends PdfPageEventHelper {
     }
 
     private void createLogo(PdfContentByte cb) {
-        BaseFont bf = null;
         try {
-            bf = BaseFont.createFont(BaseFont.HELVETICA, BaseFont.CP1252, BaseFont.NOT_EMBEDDED);
+            BaseFont bf = BaseFont.createFont(BaseFont.HELVETICA, BaseFont.CP1252, BaseFont.NOT_EMBEDDED);
+            cb.saveState();
+            cb.beginText();
+            cb.moveText(110, 565);
+            cb.setFontAndSize(bf, 18);
+            cb.showText("Vote Leave");
+            cb.endText();
+            cb.restoreState();
         } catch (DocumentException | IOException e) {
             log.error("Failed to render logo text", e);
         }
-        cb.saveState();
-        cb.beginText();
-        cb.moveText(50, 560);
-        cb.setFontAndSize(bf, 18);
-        cb.showText("Vote Leave");
-        cb.endText();
-        cb.restoreState();
     }
 
     private void createLikelihoodKey(PdfContentByte cb) {
@@ -85,5 +100,29 @@ public class StaticContentRenderer extends PdfPageEventHelper {
         } catch (DocumentException e) {
             log.error("Failed to render intention text", e);
         }
+    }
+
+    private void createMetaSection(PdfContentByte cb) {
+        ColumnText ct = new ColumnText(cb);
+        String format = String.format(META_TEMPLATE, constituencyName, wardName, street);
+        ct.setText(new Phrase(format, font));
+        ct.setSimpleColumn(new Rectangle(110, 50, 700, 557));
+        try {
+            ct.go();
+        } catch (DocumentException e) {
+            log.error("Failed to render intention text", e);
+        }
+    }
+
+    public void setConstituencyName(String constituencyName) {
+        this.constituencyName = constituencyName;
+    }
+
+    public void setWardName(String wardName) {
+        this.wardName = wardName;
+    }
+
+    public void setStreet(String street) {
+        this.street = street;
     }
 }
