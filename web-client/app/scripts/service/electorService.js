@@ -30,5 +30,23 @@ angular
       });
     };
 
+    /**
+     * Retrieves the households and electors in the given streets
+     */
+    api.retrievePdfOfElectorsByStreets = function (wardCode, data) {
+      return $http({
+        url: apiUrl + '/elector/ward/' + wardCode + '/street/pdf',
+        method: 'POST',
+        responseType: 'arraybuffer',
+        headers: {
+          accept: 'application/pdf'
+        },
+        withCredentials: true,
+        data: {
+          streets: data
+        }
+      });
+    };
+
     return api;
   });

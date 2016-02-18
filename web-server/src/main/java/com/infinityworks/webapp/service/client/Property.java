@@ -3,11 +3,19 @@ package com.infinityworks.webapp.service.client;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.google.common.base.MoreObjects;
+import com.google.common.base.Objects;
+import com.infinityworks.webapp.converter.GeneratesStreetLabel;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
+import static com.google.common.base.MoreObjects.firstNonNull;
+import static java.util.Collections.emptyList;
+
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class Property {
+public class Property implements GeneratesStreetLabel {
     private final String buildingNumber;
     private final String mainStreet;
     private final String postTown;
@@ -27,17 +35,20 @@ public class Property {
         this.postTown = postTown;
         this.dependentLocality = dependentLocality;
         this.dependentStreet = dependentStreet;
-        this.voters = voters;
+        this.voters = firstNonNull(voters, new ArrayList<>());
     }
 
+    @Override
     public String getPostTown() {
         return postTown;
     }
 
+    @Override
     public String getDependentLocality() {
         return dependentLocality;
     }
 
+    @Override
     public String getDependentStreet() {
         return dependentStreet;
     }
@@ -46,6 +57,7 @@ public class Property {
         return buildingNumber;
     }
 
+    @Override
     public String getMainStreet() {
         return mainStreet;
     }

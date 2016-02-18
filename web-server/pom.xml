@@ -14,6 +14,11 @@
 
     <dependencies>
         <dependency>
+            <groupId>com.infinityworks</groupId>
+            <artifactId>pdf-gen</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <dependency>
             <groupId>com.fasterxml.jackson.datatype</groupId>
             <artifactId>jackson-datatype-jdk8</artifactId>
         </dependency>

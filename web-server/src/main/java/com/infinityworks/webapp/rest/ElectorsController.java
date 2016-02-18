@@ -5,7 +5,9 @@ import com.infinityworks.webapp.error.RestErrorHandler;
 import com.infinityworks.webapp.rest.dto.TownStreets;
 import com.infinityworks.webapp.service.ElectorsService;
 import com.infinityworks.webapp.service.SessionService;
+import com.itextpdf.text.DocumentException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -37,12 +39,25 @@ public class ElectorsController {
     }
 
     @RequestMapping(value = "/ward/{wardCode}/street", method = POST)
-    public ResponseEntity<?> getElectorsByTownStreet(@RequestBody TownStreets townStreets,
-                                                     @PathVariable("wardCode") String wardCode,
-                                                     Principal principal) {
+    public ResponseEntity<?> getElectorsByTownStreet(
+            @RequestBody TownStreets townStreets,
+            @PathVariable("wardCode") String wardCode,
+            Principal principal) {
         return requestValidator.validate(townStreets)
                 .flatMap(streets -> sessionService.extractUserFromPrincipal(principal))
                 .flatMap(user -> electorsService.findElectorsByStreet(townStreets, wardCode, user))
                 .fold(errorHandler::mapToResponseEntity, ResponseEntity::ok);
+    }
+
+    @RequestMapping(value = "/ward/{wardCode}/street/pdf", method = POST, produces = "application/pdf")
+    public ResponseEntity<byte[]> getPdfOfElectorsByTownStreet(
+            @RequestBody TownStreets townStreets,
+            @PathVariable("wardCode") String wardCode,
+            Principal principal) throws DocumentException {
+        return requestValidator.validate(townStreets)
+                .flatMap(streets -> sessionService.extractUserFromPrincipal(principal))
+                .flatMap(user -> electorsService.electorsByStreets(townStreets, wardCode, user))
+                .fold(error -> ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new byte[]{}),
+                      pdfData -> ResponseEntity.ok(pdfData.toByteArray()));
     }
 }

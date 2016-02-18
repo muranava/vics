@@ -95,6 +95,13 @@ public class PafClient {
 
         if (pafResponse.getStatusCode() == HttpStatus.OK) {
             List<VotersByStreet> records = asList(pafResponse.getBody());
+            for (VotersByStreet vbs : records) {
+                for (Property property : vbs.getProperties()) {
+                    property.getVoters().add(new Voter("EAF", "07831441567", "R987BB", "1", "", "Amy", "Langley", "Smith"));
+                    property.getVoters().add(new Voter("EAF", "07831441563", "RE9141", "1", "", "Michael", "Langley", "Smith"));
+                    property.getVoters().add(new Voter("EAF", "07831441563", "E98141", "2", "", "Tim", "Boon", "S"));
+                }
+            }
             return Try.success(records);
         } else {
             String msg = String.format(ELECTORS_BY_STREET_ERROR_MESSAGE, street, " Paf responded with " + pafResponse.getHeaders().toString());

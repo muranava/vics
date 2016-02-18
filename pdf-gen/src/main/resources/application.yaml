@@ -1,0 +1,4 @@
+server:
+  port: 8077
+
+logging.level.: INFO

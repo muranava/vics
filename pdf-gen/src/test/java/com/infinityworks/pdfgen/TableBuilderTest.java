@@ -5,7 +5,7 @@ import org.junit.Test;
 
 import static java.nio.charset.StandardCharsets.UTF_8;
 
-public class CanvassCardGeneratorTest {
+public class TableBuilderTest {
     @Test
     public void generatesThePdf() throws Exception {
         String pafResponse = Resources.toString(Resources.getResource("json/paf-voters-multiple-streets.json"), UTF_8);

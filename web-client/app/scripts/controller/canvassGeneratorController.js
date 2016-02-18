@@ -4,7 +4,7 @@
  */
 angular
   .module('canvass')
-  .controller('canvassGeneratorController', function ($scope, wardService, constituencyService, apiUrl, electorService, electorTable, $filter) {
+  .controller('canvassGeneratorController', function ($window, $scope, wardService, constituencyService, apiUrl, electorService, electorTable, $filter) {
 
     $scope.wards = [];
     $scope.constituencySearchModel = '';
@@ -43,25 +43,6 @@ angular
         });
     }
 
-    /**
-     * Prints the electors in the selected wards and constituency
-     */
-    $scope.onPrintElectors = function () {
-      $scope.wardNotSelectedError = false;
-      var selectedWard = _.find($scope.wards, {name: $scope.wardSearchModel});
-      if (selectedWard) {
-        electorService.retrieveLocalElectorsByWards(selectedWard.code)
-          .success(function (electors) {
-            if (!_.isEmpty(electors)) {
-              createPdf(electors);
-            }
-          });
-      } else {
-        $scope.wardNotSelectedError = true;
-      }
-    };
-
-
     $scope.onSearch = function () {
       $scope.errorLoadingData = false;
       $scope.streets = [];
@@ -99,9 +80,10 @@ angular
       var selected = _.filter($scope.streets, function (s) {
         return s.selected;
       });
-      electorService.retrieveElectorsByStreets($scope.selectedWard.code, selected)
+      electorService.retrievePdfOfElectorsByStreets($scope.selectedWard.code, selected)
         .success(function (response) {
-          createPdf(response);
+          var file = new Blob([response], {type: 'application/pdf'});
+          saveAs(file, 'file-save.pdf');
         })
         .error(function () {
           $scope.errorLoadingData = true;
@@ -110,37 +92,13 @@ angular
 
     $scope.onPrintAll = function () {
       $scope.errorLoadingData = false;
-      electorService.retrieveElectorsByStreets($scope.selectedWard.code, $scope.streets)
+      electorService.retrievePdfOfElectorsByStreets($scope.selectedWard.code, $scope.streets)
         .success(function (response) {
-          createPdf(response);
+          var file = new Blob([response], {type: 'application/pdf'});
+          saveAs(file, 'file-save.pdf');
         })
         .error(function () {
           $scope.errorLoadingData = true;
         });
     };
-
-    /**
-     * Generates the pdf of the electors
-     * @param {Object[]} electors - the electors in a given ward(s)
-     */
-    function createPdf(electors) {
-      var pdfCompression = true,
-        doc = new jsPDF('l', 'pt', 'a4', pdfCompression);
-
-      var currentPage = 1;
-      _.forOwn(electors, function (electorsInStreet) {
-        doc = electorTable.renderPdfTable({
-          electors: electorsInStreet,
-          wardName: $scope.selectedWard.name,
-          wardCode: $scope.selectedWard.code,
-          constituencyName: $scope.selectedConstituency.name,
-          street: $filter('streetSingleLineFilter')(_.head(electorsInStreet.properties)),
-          currentPage: currentPage
-        }, doc);
-        doc.addPage();
-        currentPage += 1;
-      });
-
-      doc.save('wards.pdf');
-    }
   });

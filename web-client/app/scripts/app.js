@@ -19,7 +19,7 @@ angular
     'ui.bootstrap',
     'angular-loading-bar'
   ])
-  .constant('apiUrl', 'http://localhost:8080/api/canvass')
+  .constant('apiUrl', 'http://192.168.1.76:8080/api/canvass')
   .config(function ($routeProvider) {
 
     var authByRoute = [

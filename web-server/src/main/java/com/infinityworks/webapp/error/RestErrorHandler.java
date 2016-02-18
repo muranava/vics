@@ -60,6 +60,10 @@ public final class RestErrorHandler {
             return ResponseEntity.status(BAD_REQUEST).body(createError(exception));
         }
 
+        if (exception instanceof IllegalStateException) {
+            return ResponseEntity.status(INTERNAL_SERVER_ERROR).body("Something failed. Check logs for errors");
+        }
+
         if (exception instanceof PafApiFailure) {
             ErrorEntity errorEntity = new ErrorEntity(PafApiFailure.class.getSimpleName(), VAGUE_ERROR_RESPONSE);
             return ResponseEntity.status(INTERNAL_SERVER_ERROR).body(errorEntity);

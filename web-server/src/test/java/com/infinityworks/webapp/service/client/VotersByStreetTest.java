@@ -10,7 +10,7 @@ import static org.junit.Assert.assertThat;
 public class VotersByStreetTest {
     @Test
     public void canDeserialise() throws Exception {
-        VotersByStreet[] votersByStreet = objectMapper.readValue(Resources.getResource("json/paf-voters-multiple-streets.json"), VotersByStreet[].class);
+        VotersByStreet[] votersByStreet = objectMapper.readValue(Resources.getResource("paf-voters-multiple-streets.json"), VotersByStreet[].class);
 
         Property property = votersByStreet[0].getProperties().get(0);
         assertThat(property.getBuildingNumber(), is("1"));

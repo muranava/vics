@@ -28,7 +28,7 @@ public class PafServerStub {
     private static final Map<String, String> files = new HashMap<>();
     static {
         files.put("E05001221", "json/paf-streets-earlsdon.json");
-        files.put("E05001221,Coventry", "json/paf-voters-multiple-streets.json");
+        files.put("E05001221,Coventry", "paf-voters-multiple-streets.json");
     }
 
     public void start() {

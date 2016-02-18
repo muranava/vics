@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en" class="no-js" ng-app="canvass">
+<html lang="en" class="no-js" ng-app="canvass" class="ng-cloak">
   <head>
     <meta charset="utf-8">
     <title>Canvass Dashboard</title>
@@ -13,7 +13,6 @@
     <link rel="stylesheet" href="bower_components/normalize-css/normalize.css" />
     <link rel="stylesheet" href="bower_components/multiselect/css/multi-select.css" />
     <link rel="stylesheet" href="bower_components/angular-loading-bar/build/loading-bar.css" />
-    <link rel="stylesheet" href="bower_components/FlipClock/compiled/flipclock.css" />
     <!-- endbower -->
     <!-- endbuild -->
     <!-- build:css(.tmp) styles/main.css -->
@@ -55,8 +54,10 @@
 									<small>{{currentUser | userRoleLabel}}</small>
 								</span>
               </a>
+
               <ul class="dropdown-menu animation-dock">
-                <li class="dropdown-header">Config</li>
+                <li><a href="#/canvass">Canvass Cards</a></li>
+                <li><a href="#/dataentry">Data Entry</a></li>
                 <li><a href="#/profile">My profile</a></li>
                 <li class="divider"></li>
                 <li><a href="../.." ng-click="logout()"><i class="fa fa-fw fa-power-off text-danger"></i>
@@ -163,8 +164,6 @@
     <script src="bower_components/bootstrap/dist/js/bootstrap.js"></script>
     <script src="bower_components/multiselect/js/jquery.multi-select.js"></script>
     <script src="bower_components/angular-loading-bar/build/loading-bar.js"></script>
-    <script src="bower_components/FlipClock/compiled/flipclock.js"></script>
-    <script src="bower_components/angular-flipclock/angular-flipclock.js"></script>
     <!-- endbower -->
     <!-- endbuild -->
 

@@ -17,4 +17,11 @@ public class VotersByStreet {
     public List<Property> getProperties() {
         return properties;
     }
+
+    public String getMainStreetName() {
+        return properties.stream()
+                .findFirst()
+                .map(Property::getMainStreet)
+                .orElse("");
+    }
 }
