@@ -23,6 +23,7 @@ angular
 
     $scope.onSelectConstituency = function () {
       $scope.wardSearchModel = "";
+      $scope.wards = [];
       $scope.errorLoadingData = false;
       $scope.selectedConstituency = _.find($scope.constituencies, {name: $scope.constituencySearchModel});
       if (!$scope.selectedConstituency) {

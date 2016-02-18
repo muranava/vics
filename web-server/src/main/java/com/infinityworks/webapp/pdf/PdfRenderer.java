@@ -44,7 +44,7 @@ public class PdfRenderer {
     }
 
     /**
-     * Build a pdf table for each street. Uses a sequential stream to build each street, which is faster than
+     * Build a pdf table for each street. Uses a sequential stream to build each street, which (from benchmarking) is faster than
      * a parallelStream since the number of streets is typically small.
      */
     private List<GeneratedPdfTable> generateTables(List<VotersByStreet> voters, Ward ward, String constituencyName) {
