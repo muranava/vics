@@ -22,7 +22,7 @@ public class PropertyToRowConverter implements BiFunction<String, Property, List
      */
     @Override
     public List<ElectorRow> apply(String wardCode, Property property) {
-        return firstNonNull(property.getVoters(), Collections.<Voter>emptyList()).stream()
+        return property.getVoters().stream()
                 .map(voter -> electorRow()
                         .withHouse(property.getBuildingNumber())
                         .withName(voter.getLastName() + ", " + voter.getFirstName())
@@ -37,6 +37,7 @@ public class PropertyToRowConverter implements BiFunction<String, Property, List
                         .withNeedsLift("")
                         .withPoster("")
                         .withDeceased("")
+                        .withStreet(property.getStreetLabel())
                         .withErn(generateErn(wardCode, voter))
                         .build()).collect(toList());
     }

@@ -12,6 +12,7 @@ import java.util.Collections;
 import java.util.List;
 
 import static com.google.common.base.MoreObjects.firstNonNull;
+import static com.google.common.base.Strings.nullToEmpty;
 import static java.util.Collections.emptyList;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
@@ -30,11 +31,11 @@ public class Property implements GeneratesStreetLabel {
                     @JsonProperty("dependent_locality") String dependentLocality,
                     @JsonProperty("dependent_street") String dependentStreet,
                     @JsonProperty("voters") List<Voter> voters) {
-        this.buildingNumber = buildingNumber;
-        this.mainStreet = mainStreet;
-        this.postTown = postTown;
-        this.dependentLocality = dependentLocality;
-        this.dependentStreet = dependentStreet;
+        this.buildingNumber = nullToEmpty(buildingNumber);
+        this.mainStreet = nullToEmpty(mainStreet);
+        this.postTown = nullToEmpty(postTown);
+        this.dependentLocality = nullToEmpty(dependentLocality);
+        this.dependentStreet = nullToEmpty(dependentStreet);
         this.voters = firstNonNull(voters, new ArrayList<>());
     }
 

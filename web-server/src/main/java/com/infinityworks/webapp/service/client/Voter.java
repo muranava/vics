@@ -4,6 +4,8 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import static com.google.common.base.Strings.nullToEmpty;
+
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class Voter {
     private final String pollingDistrict;
@@ -24,14 +26,14 @@ public class Voter {
                  @JsonProperty("first_name") String firstName,
                  @JsonProperty("initial") String initial,
                  @JsonProperty("last_name") String lastName) {
-        this.pollingDistrict = pollingDistrict;
-        this.telephone = telephone;
-        this.electorId = electorId;
-        this.electorSuffix = electorSuffix;
-        this.title = title;
-        this.firstName = firstName;
-        this.initial = initial;
-        this.lastName = lastName;
+        this.pollingDistrict = nullToEmpty(pollingDistrict);
+        this.telephone = nullToEmpty(telephone);
+        this.electorId = nullToEmpty(electorId);
+        this.electorSuffix = nullToEmpty(electorSuffix);
+        this.title = nullToEmpty(title);
+        this.firstName = nullToEmpty(firstName);
+        this.initial = nullToEmpty(initial);
+        this.lastName = nullToEmpty(lastName);
     }
 
     public String getTelephone() {

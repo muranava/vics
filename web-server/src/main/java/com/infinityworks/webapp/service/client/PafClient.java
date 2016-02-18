@@ -97,6 +97,7 @@ public class PafClient {
             List<VotersByStreet> records = asList(pafResponse.getBody());
             for (VotersByStreet vbs : records) {
                 for (Property property : vbs.getProperties()) {
+                    // FIXME fake data for demo
                     property.getVoters().add(new Voter("EAF", "07831441567", "R987BB", "1", "", "Amy", "Langley", "Smith"));
                     property.getVoters().add(new Voter("EAF", "07831441563", "RE9141", "1", "", "Michael", "Langley", "Smith"));
                     property.getVoters().add(new Voter("EAF", "07831441563", "E98141", "2", "", "Tim", "Boon", "S"));
