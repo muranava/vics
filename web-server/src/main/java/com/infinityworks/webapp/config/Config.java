@@ -4,6 +4,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.datatype.jdk8.Jdk8Module;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+import com.infinityworks.pdfgen.DocumentBuilder;
+import com.infinityworks.pdfgen.TableBuilder;
 import com.infinityworks.webapp.common.RequestValidator;
 import com.infinityworks.webapp.error.RestErrorHandler;
 import com.zaxxer.hikari.HikariConfig;
@@ -88,6 +90,16 @@ public class Config {
                     jsonConverter.setObjectMapper(objectMapper);
                 });
         return restTemplate;
+    }
+
+    @Bean
+    public TableBuilder tableBuilder() {
+        return new TableBuilder();
+    }
+
+    @Bean
+    public DocumentBuilder documentBuilder() {
+        return new DocumentBuilder();
     }
 
     @Bean

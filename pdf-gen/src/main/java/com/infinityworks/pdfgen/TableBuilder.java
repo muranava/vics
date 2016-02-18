@@ -5,13 +5,16 @@ import com.itextpdf.text.pdf.PdfPCell;
 import com.itextpdf.text.pdf.PdfPTable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Component;
 
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.stream.IntStream;
 
 import static com.itextpdf.text.Font.FontFamily.HELVETICA;
 
+@Component
 public class TableBuilder {
     private final Logger log = LoggerFactory.getLogger(TableBuilder.class);
     private static Font dataFont = new Font(HELVETICA, 11);
@@ -19,10 +22,6 @@ public class TableBuilder {
     private static final BaseColor LIGHT_GREY = new BaseColor(215, 215, 215);
     private static final BaseColor LIGHTER_GREY = new BaseColor(235, 235, 235);
     private static final int NUM_COLUMNS = 14;
-    private final String wardName;
-    private final String constituencyName;
-    private final String streetName;
-    private String prevHouse = null;
 
     private static final int[] COLUMN_WIDTHS = {
             40, // house
@@ -40,16 +39,6 @@ public class TableBuilder {
             20, // dead
             85  // ERN
     };
-
-    public TableBuilder(String streetName, String wardName, String constituencyName) {
-        this.streetName = streetName;
-        this.wardName = wardName;
-        this.constituencyName = constituencyName;
-    }
-
-    private void renderMetaInfo(String wardName, String constituencyName, String streetName) {
-
-    }
 
     private PdfPCell createHeaderCell(String content, int rotation) {
         PdfPCell header = new PdfPCell(new Phrase(content, headerFont));
@@ -92,8 +81,10 @@ public class TableBuilder {
         table.addCell(createHeaderCell("Roll #", 0));
     }
 
-    public PdfPTable generateTableRows(List<ElectorRow> rows) {
-        renderMetaInfo(wardName, constituencyName, streetName);
+    public Optional<GeneratedPdfTable> generateTableRows(List<ElectorRow> rows, String mainStreetName, String wardName, String constituencyName) {
+        if (rows.isEmpty()) {
+            return Optional.empty();
+        }
 
         PdfPTable table = new PdfPTable(NUM_COLUMNS);
         table.setWidthPercentage(95);
@@ -106,7 +97,8 @@ public class TableBuilder {
         table.setHeaderRows(1);
         setHeaders(table);
 
-        rows.forEach(row -> {
+        String prevHouse = null;
+        for (ElectorRow row : rows) {
             boolean houseChanges = prevHouse != null && !Objects.equals(prevHouse, row.getHouse());
             prevHouse = row.getHouse();
 
@@ -136,20 +128,20 @@ public class TableBuilder {
             table.addCell(createDataCell(row.getPoster()));
             table.addCell(createDataCell(row.getDeceased()));
             table.addCell(createDataCell(row.getErn()));
-        });
+        }
 
-        return table;
+        return Optional.of(new GeneratedPdfTable(table, mainStreetName, wardName, constituencyName));
     }
 
     private void addChangeRow(PdfPTable table) {
         IntStream.range(0, NUM_COLUMNS)
-                 .forEach(i -> {
+                .forEach(i -> {
 
-                     PdfPCell cell = new PdfPCell();
-                     cell.setFixedHeight(1);
-                     cell.setBackgroundColor(BaseColor.BLACK);
-                     table.addCell(cell);
-                 });
+                    PdfPCell cell = new PdfPCell();
+                    cell.setFixedHeight(1);
+                    cell.setBackgroundColor(BaseColor.BLACK);
+                    table.addCell(cell);
+                });
 
     }
 }
