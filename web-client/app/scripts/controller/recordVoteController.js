@@ -1,6 +1,6 @@
 angular
   .module('canvass')
-  .controller('dataEntryController', function ($scope, RingBuffer, plugins) {
+  .controller('recordVoteController', function ($scope, RingBuffer, plugins) {
     var logSize = 7;
 
     // FIXME remove stub data for demo

@@ -36,15 +36,18 @@ public class PdfRenderer {
     }
 
     public ByteArrayOutputStream createVotersByStreetsPdf(List<VotersByStreet> votersByStreet, Ward ward, Constituency constituency) {
+        log.debug("Generating PDF... ward={} constituency={}", ward.getCode(), constituency.getCode());
         List<PdfPTable> pdfTables = generateTables(votersByStreet, ward, constituency.getName());
+        log.debug("Finished generating PDF... ward={} constituency={}", ward.getCode(), constituency.getCode());
         return buildPages(pdfTables);
     }
 
     /**
-     * build a pdf table for each street in parallel using common thread pool
+     * Build a pdf table for each street. Uses a sequential stream to build each street, which is faster than
+     * a parallelStream since the number of streets is typically small.
      */
     private List<PdfPTable> generateTables(List<VotersByStreet> voters, Ward ward, String constituencyName) {
-        return voters.parallelStream()
+        return voters.stream()
                 .map(street -> {
                     String mainStreetName = street.getMainStreetName();
                     TableBuilder tableBuilder = new TableBuilder(mainStreetName, ward.getName(), constituencyName);

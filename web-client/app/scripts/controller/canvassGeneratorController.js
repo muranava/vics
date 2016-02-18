@@ -83,7 +83,7 @@ angular
       electorService.retrievePdfOfElectorsByStreets($scope.selectedWard.code, selected)
         .success(function (response) {
           var file = new Blob([response], {type: 'application/pdf'});
-          saveAs(file, 'file-save.pdf');
+          saveAs(file, $scope.selectedWard.code + '.pdf');
         })
         .error(function () {
           $scope.errorLoadingData = true;
@@ -95,7 +95,7 @@ angular
       electorService.retrievePdfOfElectorsByStreets($scope.selectedWard.code, $scope.streets)
         .success(function (response) {
           var file = new Blob([response], {type: 'application/pdf'});
-          saveAs(file, 'file-save.pdf');
+          saveAs(file, $scope.selectedWard.code + '.pdf');
         })
         .error(function () {
           $scope.errorLoadingData = true;

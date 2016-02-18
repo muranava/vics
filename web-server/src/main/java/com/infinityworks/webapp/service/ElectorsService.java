@@ -75,7 +75,7 @@ public class ElectorsService {
             return Try.failure(new NotAuthorizedFailure("Not Authorized"));
         }
 
-        return pafClient.findElectorsByStreet(townStreets, wardCode)
+        return  pafClient.findElectorsByStreet(townStreets, wardCode)
                 .map(electors -> pdfRenderer.createVotersByStreetsPdf(
                         electors, byCode.get(), byCode.get().getConstituency()));
     }
