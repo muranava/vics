@@ -100,6 +100,13 @@ angular
           auth: userAuth
         }
       })
+      .when('/canvassinput', {
+        templateUrl: 'views/canvassinput.html',
+        controller: 'canvassInputController',
+        resolve: {
+          auth: userAuth
+        }
+      })
       .when('/associations/:id', {
         templateUrl: 'views/associations.html',
         controller: 'associationsController',

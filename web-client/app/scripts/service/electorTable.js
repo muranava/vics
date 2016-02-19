@@ -211,12 +211,6 @@ angular
 
           doc.text('Important Issues', 435, 117);
 
-          var likelihoodColumn = _.find(data.table.columns, function(column) {
-            return column.dataKey === 'likelihood';
-          });
-          var intentionColumn = _.find(data.table.columns, function(column) {
-            return column.dataKey === 'support';
-          });
           doc.setDrawColor(0);
           //doc.rect(likelihoodColumn.x, margin.top, likelihoodColumn.width, data.table.height + data.table.rows.length);
           //doc.rect(intentionColumn.x, margin.top, intentionColumn.width, data.table.height + data.table.rows.length);

@@ -7,7 +7,7 @@
     <parent>
         <artifactId>webapp</artifactId>
         <groupId>com.infinityworks</groupId>
-        <version>0.0.1-SNAPSHOT</version>
+        <version>0.0.1</version>
     </parent>
 
     <artifactId>web-server</artifactId>
@@ -122,6 +122,30 @@
                     <execution>
                         <goals>
                             <goal>repackage</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+
+            <!-- copy the built jar to the staging area, so it can be deployed later by the assembly plugin -->
+            <plugin>
+                <artifactId>maven-antrun-plugin</artifactId>
+                <version>1.8</version>
+                <executions>
+                    <execution>
+                        <phase>process-resources</phase>
+                        <configuration>
+                            <tasks>
+                                <copy todir="${project.basedir}/../dist">
+                                    <fileset dir="${project.basedir}/">
+                                        <include name="target/${project.artifactId}-${project.version}.jar"/>
+                                    </fileset>
+                                    <flattenmapper/>
+                                </copy>
+                            </tasks>
+                        </configuration>
+                        <goals>
+                            <goal>run</goal>
                         </goals>
                     </execution>
                 </executions>

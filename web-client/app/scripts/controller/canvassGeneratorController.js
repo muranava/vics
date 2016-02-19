@@ -4,7 +4,7 @@
  */
 angular
   .module('canvass')
-  .controller('canvassGeneratorController', function ($window, $scope, wardService, constituencyService, apiUrl, electorService, electorTable, $filter) {
+  .controller('canvassGeneratorController', function ($window, $scope, wardService, constituencyService, apiUrl, electorService) {
 
     $scope.wards = [];
     $scope.constituencySearchModel = '';

@@ -1,3 +1,5 @@
+\connect canvassapp;
+
 INSERT INTO public.wards (id, constituency_id, name, code) VALUES ('504d33a5-6aa8-4381-8e1e-b5926987ec56', 'a54f31a7-67d5-4526-b091-c4d3227bb309', 'Abbey', 'E05000026');
 INSERT INTO public.wards (id, constituency_id, name, code) VALUES ('37ca2b9f-89b8-41ed-8737-95d6b6ae47c2', '10330519-6b56-4890-ba87-fd3964757033', 'Abbey', 'E05000455');
 INSERT INTO public.wards (id, constituency_id, name, code) VALUES ('dcb6add0-6569-4253-adea-0c0ed685c878', '808420c6-face-4857-b588-205ed1de69dd', 'Abbey', 'E05001260');

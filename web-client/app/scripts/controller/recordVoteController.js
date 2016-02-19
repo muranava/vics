@@ -11,7 +11,7 @@ angular
     $scope.pollingDistrict = "";
 
     _.times(logSize, function () {
-      $scope.logs.push(emptyRow())
+      $scope.logs.push(emptyRow());
     });
 
     $scope.onVote = function() {
@@ -37,7 +37,7 @@ angular
         lastName: 'Leigh',
         address: '31 Mole Avenue',
         postCode: 'AB2 9AP'
-      })
+      });
     };
 
     function emptyRow() {

@@ -1,11 +1,10 @@
 
 angular
   .module('canvass')
-  .controller('adminUserController', function (util, $timeout, $scope, userService, plugins) {
+  .controller('adminUserController', function (util, $timeout, $scope, userService) {
 
     $scope.editMode = false;
     $scope.createdUserEmail = '';
-    $scope.createUserModel = initCreateUserModel();
     $scope.validationErrors = [];
 
     function initCreateUserModel() {
@@ -21,6 +20,7 @@ angular
         writeAccess: false
       };
     }
+    $scope.createUserModel = initCreateUserModel();
 
     $scope.onConfirmDeleteUser = function (user) {
       clearMessages();
@@ -119,11 +119,11 @@ angular
       }
 
       if (!util.isValidEmail(user.username)) {
-        errors.push('Email is not valid')
+        errors.push('Email is not valid');
       }
 
       if (_.isEmpty(user.firstName)) {
-        errors.push('First name must not be empty')
+        errors.push('First name must not be empty');
       }
 
       return errors;

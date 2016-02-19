@@ -23,7 +23,7 @@ angular
       constituencyService.search($scope.constituencySearchModel, searchLimit)
         .success(function(response) {
           $scope.constituencies = response;
-        })
+        });
     };
 
     $scope.onWardInputKeypress = function() {
@@ -31,7 +31,7 @@ angular
       wardService.search($scope.wardSearchModel, searchLimit)
         .success(function(response) {
           $scope.wards = response;
-        })
+        });
     };
 
     $scope.onAddConstituency = function() {
@@ -76,7 +76,7 @@ angular
     };
 
     $scope.onDeleteConstituency = function(id) {
-      clearMessages()
+      clearMessages();
       constituencyService.removeUserAssociation(id, $scope.user.id)
         .success(function() {
           loadUser();

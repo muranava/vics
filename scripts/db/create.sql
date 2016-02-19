@@ -1,13 +1,14 @@
 
-DROP TABLE IF EXISTS electors;
-DROP TABLE IF EXISTS electors_enriched;
-DROP TABLE IF EXISTS users_privileges;
-DROP TABLE IF EXISTS users_constituencies;
-DROP TABLE IF EXISTS users_wards;
-DROP TABLE IF EXISTS privileges;
-DROP TABLE IF EXISTS users;
-DROP TABLE IF EXISTS wards;
-DROP TABLE IF EXISTS constituencies;
+DROP DATABASE IF EXISTS canvassapp;
+DROP USER IF EXISTS canvasser;
+
+CREATE USER canvasser PASSWORD 'canvasser';
+
+CREATE DATABASE canvassapp WITH OWNER = canvasser ENCODING = 'UTF8' LC_COLLATE = 'en_US.UTF-8' LC_CTYPE = 'en_US.UTF-8' TABLESPACE = pg_default TEMPLATE template0;
+
+GRANT ALL ON DATABASE canvassapp TO canvasser;
+
+\connect canvassapp;
 
 CREATE TABLE constituencies
 (

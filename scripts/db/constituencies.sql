@@ -1,3 +1,5 @@
+\connect canvassapp;
+
 INSERT INTO public.constituencies (id, name, code) VALUES ('1b93a1f9-dcce-405e-995b-6434a93aec33', 'Cheadle', 'E14000627');
 INSERT INTO public.constituencies (id, name, code) VALUES ('44b197a0-d729-431b-b7af-501b1515a36e', 'Old Bexley and Sidcup', 'E14000869');
 INSERT INTO public.constituencies (id, name, code) VALUES ('33f56041-0138-40e0-82e6-e0f36ef44c6a', 'High Peak', 'E14000748');

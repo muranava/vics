@@ -13,6 +13,8 @@
   "globals": {
     "angular": false,
     "_": false,
-    "jsPDF": false
+    "jsPDF": false,
+    "$": false,
+    "saveAs": false
   }
 }
