@@ -133,12 +133,13 @@
                 <version>1.8</version>
                 <executions>
                     <execution>
-                        <phase>process-resources</phase>
+                        <phase>install</phase>
                         <configuration>
                             <tasks>
                                 <copy todir="${project.basedir}/../dist">
                                     <fileset dir="${project.basedir}/">
-                                        <include name="target/${project.artifactId}-${project.version}.jar"/>
+                                        <include name="target/web-server-*.jar"/>
+                                        <exclude name="target/web-server-*-sources.jar"/>
                                     </fileset>
                                     <flattenmapper/>
                                 </copy>
