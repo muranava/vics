@@ -241,7 +241,7 @@
                         <configuration>
                             <filesets>
                                 <fileset>
-                                    <directory>/dist</directory>
+                                    <directory>${project.basedir}/dist</directory>
                                 </fileset>
                             </filesets>
                         </configuration>
