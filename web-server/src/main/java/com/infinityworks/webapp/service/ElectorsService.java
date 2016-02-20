@@ -9,6 +9,7 @@ import com.infinityworks.webapp.domain.Ward;
 import com.infinityworks.webapp.error.NotAuthorizedFailure;
 import com.infinityworks.webapp.error.NotFoundFailure;
 import com.infinityworks.webapp.pdf.VotersPdfGenerator;
+import com.infinityworks.webapp.rest.dto.ElectorSummary;
 import com.infinityworks.webapp.rest.dto.TownStreets;
 import com.infinityworks.webapp.service.client.PafClient;
 import org.slf4j.Logger;
@@ -41,6 +42,11 @@ public class ElectorsService {
         this.wardService = wardService;
         this.pdfRenderer = pdfRenderer;
         this.documentBuilder = documentBuilder;
+    }
+
+    // FIXME remove canned data
+    public Try<ElectorSummary> electorByErn(String ern) {
+        return Try.success(new ElectorSummary(ern, "Jon", "Smith", "25 Boswell Drive, CV2 2DH"));
     }
 
     /**

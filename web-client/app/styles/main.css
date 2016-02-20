@@ -66,3 +66,8 @@ input:-webkit-autofill {
 .associate-wards-tbl {
   margin-bottom: 1200px;
 }
+
+/* Override link highlight in canvass streets search result view */
+.list .tile > a:hover {
+  color: black !important;
+}

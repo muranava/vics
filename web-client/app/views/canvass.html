@@ -1,5 +1,7 @@
 <section>
   <br>
+
+  <!-- Choose Constituency -->
   <div class="row">
     <div ng-if="errorLoadingData" class="alert alert-callout alert-danger" role="alert">
       <strong>Oh Snap!</strong> Error loading data from server.
@@ -46,6 +48,8 @@
         </div>
       </div>
     </div>
+
+    <!-- Choose Wards -->
     <div class="row">
       <div class="col-md-12">
         <div class="card" ng-show="wards.length" ng-class="{'card-disabled': loadingWards === true}">
@@ -78,6 +82,8 @@
         </div>
       </div>
     </div>
+
+    <!-- Download Cards -->
     <div class="row" ng-show="selectedWard">
       <div class="col-md-12">
         <div class="card" ng-show="wards.length">
@@ -85,7 +91,6 @@
             <header>3. Download Canvass Cards</header>
           </div>
           <div class="card-body tab-content style-default-bright">
-            <!-- BEGIN TILE ACTIONS -->
             <div class="row">
               <div class="col-lg-12">
                 <h4>Selection</h4>
@@ -95,8 +100,8 @@
                       You have selected the following ward and constituency.
                     </p>
                   </article>
-                </div><!--end .col -->
-              </div><!--end .col -->
+                </div>
+              </div>
             </div>
             <div class="row">
               <div class="col-lg-12">
@@ -105,8 +110,8 @@
                     <ul class="list">
                       <li class="tile">
                         <a class="tile-content ink-reaction">
-                          <div class="tile-text">
-                            {{selectedConstituency.name}} ({{selectedConstituency.code}})
+                          <div class="tile-text canvass-search-result">
+                            <div>{{selectedConstituency.name}} ({{selectedConstituency.code}})</div>
                             <small>Constituency</small>
                           </div>
                         </a>
@@ -114,20 +119,19 @@
                       <li class="tile">
                         <a class="tile-content ink-reaction">
                           <div class="tile-text">
-                            {{selectedWard.name}} ({{selectedWard.code}})
+                          <div>{{selectedWard.name}} ({{selectedWard.code}})</div>
                             <small>Ward</small>
                           </div>
                         </a>
                       </li>
                     </ul>
-                  </div><!--end .card-body -->
-                </div><!--end .card -->
+                  </div>
+                </div>
                 <br>
-                <!-- BEGIN TILE ACTIONS -->
                 <div class="row">
                   <div class="col-lg-12">
                     <h4>Select individual streets or download all</h4>
-                  </div><!--end .col -->
+                  </div>
                 </div>
                 <em class="text-caption">{{numStreetsSelected}} of {{streets.length}} streets selected</em>
                 <div class="card">
@@ -149,10 +153,10 @@
                           </label>
                         </div>
                     </ul>
-                  </div><!--end .card-body -->
-                </div><!--end .card -->
-              </div><!--end .col -->
-            </div><!--end .row -->
+                  </div>
+                </div>
+              </div>
+            </div>
 
           </div>
         </div>
@@ -161,7 +165,7 @@
   </div>
 </section>
 
-<!-- BEGIN SIMPLE MODAL MARKUP -->
+<!-- Confirm Save All modal -->
 <div class="modal fade" id="simpleModal" tabindex="-1" role="dialog" aria-labelledby="simpleModalLabel" aria-hidden="true">
   <div class="modal-dialog">
     <div class="modal-content">
@@ -178,23 +182,6 @@
         <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
         <button type="button" class="btn btn-primary" data-dismiss="modal" ng-click="onPrintAll()">Continue</button>
       </div>
-    </div><!-- /.modal-content -->
-  </div><!-- /.modal-dialog -->
-</div><!-- /.modal -->
-<!-- END SIMPLE MODAL MARKUP -->
-
-<!-- BEGIN SIMPLE MODAL MARKUP -->
-<div class="modal fade" id="generatingModal" tabindex="-1" role="dialog" aria-labelledby="simpleModalLabel" aria-hidden="true">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-        <h4 class="modal-title" id="generatingModalLabel">Generating Cards...</h4>
-      </div>
-      <div class="modal-body">
-        Generating canvass cards. Please be patient...
-      </div>
-    </div><!-- /.modal-content -->
-  </div><!-- /.modal-dialog -->
-</div><!-- /.modal -->
-<!-- END SIMPLE MODAL MARKUP -->
+    </div>
+  </div>
+</div>

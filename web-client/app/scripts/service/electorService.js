@@ -30,6 +30,14 @@ angular
       });
     };
 
+    api.retrieveElectorByErn = function(ern) {
+      return $http({
+        url: apiUrl + '/elector/' + ern,
+        method: 'GET',
+        withCredentials: true
+      });
+    };
+
     /**
      * Retrieves the households and electors in the given streets
      */

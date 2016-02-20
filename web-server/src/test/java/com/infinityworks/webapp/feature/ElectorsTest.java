@@ -26,7 +26,6 @@ import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
-import static org.springframework.http.MediaType.APPLICATION_OCTET_STREAM;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -48,7 +47,7 @@ public class ElectorsTest extends WebApplicationTest {
         sessionService = mock(SessionService.class);
         ElectorsService electorsService = getBean(ElectorsService.class);
         RequestValidator requestValidator = getBean(RequestValidator.class);
-        ElectorsController wardController = new ElectorsController(electorsService, requestValidator, sessionService);
+        ElectorsController wardController = new ElectorsController(electorsService, requestValidator, sessionService, new RestErrorHandler());
 
         mockMvc = MockMvcBuilders
                 .standaloneSetup(wardController)
