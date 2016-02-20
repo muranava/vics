@@ -1,4 +1,4 @@
-package com.infinityworks.data;
+package com.infinityworks.tools.dataprep;
 
 public interface DbConfig {
     String getDbUrl();

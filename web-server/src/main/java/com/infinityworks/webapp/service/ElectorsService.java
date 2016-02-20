@@ -1,9 +1,8 @@
 package com.infinityworks.webapp.service;
 
-import com.infinityworks.commondto.VotersByStreet;
+import com.infinityworks.common.lang.Try;
 import com.infinityworks.pdfgen.DocumentBuilder;
 import com.infinityworks.pdfgen.model.GeneratedPdfTable;
-import com.infinityworks.common.lang.Try;
 import com.infinityworks.webapp.domain.Constituency;
 import com.infinityworks.webapp.domain.User;
 import com.infinityworks.webapp.domain.Ward;
@@ -44,27 +43,6 @@ public class ElectorsService {
         this.documentBuilder = documentBuilder;
     }
 
-    public Try<List<VotersByStreet>> findElectorsByStreet(TownStreets townStreets, String wardCode, User user) {
-        log.debug("Finding electors by streets={} for user={}", townStreets, user);
-
-        Optional<Ward> byCode = wardService.findByCode(wardCode).stream().findFirst();
-        if (!byCode.isPresent()) {
-            String msg = String.format("No ward with code=%s", wardCode);
-            log.warn(msg);
-            return Try.failure(new NotFoundFailure(msg));
-        }
-
-        if (!user.hasWardPermission(byCode.get())) {
-            String msg = String.format("User=%s tried to access ward=%s", user, wardCode);
-            log.warn(msg);
-            return Try.failure(new NotAuthorizedFailure("Not Authorized"));
-        }
-
-        Try<List<VotersByStreet>> electorsByStreet = pafClient.findElectorsByStreet(townStreets, wardCode);
-        electorsByStreet.accept(ignored -> {}, electors -> log.debug("Retrieved {} streets", electors.size()));
-        return electorsByStreet;
-    }
-
     /**
      * Generates a PDF with the electors grouped by the given streets.
      *
@@ -101,8 +79,6 @@ public class ElectorsService {
             log.debug("Finished generating PDF... ward={} constituency={}", wardCode, constituency.getCode());
             return pdfContent;
         }
-
-
     }
 
 }

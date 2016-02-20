@@ -1,4 +1,4 @@
-package com.infinityworks.data;
+package com.infinityworks.tools.dataprep;
 
 import com.ninja_squad.dbsetup.DbSetup;
 import com.ninja_squad.dbsetup.Operations;

@@ -1,4 +1,4 @@
-package com.infinityworks.data;
+package com.infinityworks.tools.dataprep;
 
 import com.google.common.base.Objects;
 

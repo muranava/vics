@@ -79,7 +79,7 @@ public class UserController {
 
     @PreAuthorize("hasAuthority('ADMIN')")
     @RequestMapping(method = PUT, value = "/{id}")
-    public ResponseEntity<?> update(@PathVariable("id") @IsUUID String id, @RequestBody(required = true) UpdateUserRequest updateRequest, Principal principal) {
+    public ResponseEntity<?> update(@PathVariable("id") @IsUUID String id, @RequestBody UpdateUserRequest updateRequest, Principal principal) {
         return requestValidator.validate(updateRequest)
                 .flatMap(request -> sessionService.extractUserFromPrincipal(principal))
                 .flatMap(user -> userService.update(user, UUID.fromString(id), updateRequest))
@@ -88,7 +88,7 @@ public class UserController {
 
     @PreAuthorize("hasAuthority('ADMIN')")
     @RequestMapping(method = POST)
-    public ResponseEntity<?> createUser(@RequestBody(required = true) CreateUserRequest createUserRequest, Principal principal) {
+    public ResponseEntity<?> createUser(@RequestBody CreateUserRequest createUserRequest, Principal principal) {
         return requestValidator.validate(createUserRequest)
                 .flatMap(request -> sessionService.extractUserFromPrincipal(principal))
                 .flatMap(user -> userService.create(user, createUserRequest))

@@ -1,4 +1,4 @@
-package com.infinityworks.data;
+package com.infinityworks.tools.dataprep;
 
 import org.apache.commons.csv.CSVRecord;
 

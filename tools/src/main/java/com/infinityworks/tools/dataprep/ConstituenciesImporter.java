@@ -1,6 +1,6 @@
-package com.infinityworks.data;
+package com.infinityworks.tools.dataprep;
 
-import com.infinityworks.data.csv.CsvParser;
+import com.infinityworks.tools.dataprep.csv.CsvParser;
 import com.ninja_squad.dbsetup.operation.Operation;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

@@ -10,7 +10,5 @@ import java.util.UUID;
 
 @Repository
 public interface ConstituencyRepository extends JpaRepository<Constituency, UUID> {
-    Constituency findOneByName(String name);
-
     List<Constituency> findByNameIgnoreCaseContainingOrderByNameAsc(String name, Pageable pageable);
 }

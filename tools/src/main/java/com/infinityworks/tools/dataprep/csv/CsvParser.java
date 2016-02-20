@@ -1,4 +1,4 @@
-package com.infinityworks.data.csv;
+package com.infinityworks.tools.dataprep.csv;
 
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVRecord;
@@ -26,7 +26,7 @@ public class CsvParser {
         Iterable<CSVRecord> records = CSVFormat.DEFAULT.parse(in);
 
         return stream(records.spliterator(), false)
-                .map(rowInterpreter::apply)
+                .map(rowInterpreter)
                 .collect(toList());
     }
 }
