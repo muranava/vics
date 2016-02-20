@@ -1,5 +1,8 @@
 package com.infinityworks.pdfgen;
 
+import com.infinityworks.pdfgen.model.GeneratedPdfTable;
+import com.infinityworks.pdfgen.renderer.LogoRenderer;
+import com.infinityworks.pdfgen.renderer.PageInfoRenderer;
 import com.itextpdf.text.Document;
 import com.itextpdf.text.DocumentException;
 import com.itextpdf.text.PageSize;

@@ -27,7 +27,17 @@
         </dependency>
         <dependency>
             <groupId>com.infinityworks</groupId>
+            <artifactId>common-dto</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.infinityworks</groupId>
             <artifactId>pdf-gen</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.infinityworks</groupId>
+            <artifactId>test-support</artifactId>
             <version>${project.version}</version>
         </dependency>
         <dependency>

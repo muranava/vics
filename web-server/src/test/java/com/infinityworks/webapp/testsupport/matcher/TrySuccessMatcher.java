@@ -1,6 +1,6 @@
 package com.infinityworks.webapp.testsupport.matcher;
 
-import com.infinityworks.webapp.common.Try;
+import com.infinityworks.common.lang.Try;
 import org.hamcrest.Description;
 import org.hamcrest.Matcher;
 import org.hamcrest.TypeSafeMatcher;

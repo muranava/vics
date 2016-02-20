@@ -1,6 +1,8 @@
 package com.infinityworks.webapp.service.client;
 
 import com.google.common.io.Resources;
+import com.infinityworks.commondto.Property;
+import com.infinityworks.commondto.VotersByStreet;
 import org.junit.Test;
 
 import static com.infinityworks.webapp.common.Json.objectMapper;

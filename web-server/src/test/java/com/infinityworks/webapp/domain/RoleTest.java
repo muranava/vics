@@ -1,6 +1,6 @@
 package com.infinityworks.webapp.domain;
 
-import com.infinityworks.webapp.common.Try;
+import com.infinityworks.common.lang.Try;
 import org.junit.Test;
 
 import javax.validation.ValidationException;

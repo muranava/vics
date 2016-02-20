@@ -1,5 +1,7 @@
 package com.infinityworks.pdfgen;
 
+import com.infinityworks.pdfgen.model.ElectorRow;
+import com.infinityworks.pdfgen.model.GeneratedPdfTable;
 import com.itextpdf.text.*;
 import com.itextpdf.text.pdf.PdfPCell;
 import com.itextpdf.text.pdf.PdfPTable;

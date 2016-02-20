@@ -1,17 +1,15 @@
 package com.infinityworks.webapp.pdf;
 
-import com.infinityworks.pdfgen.GeneratedPdfTable;
+import com.infinityworks.commondto.VotersByStreet;
+import com.infinityworks.pdfgen.model.GeneratedPdfTable;
 import com.infinityworks.pdfgen.TableBuilder;
-import com.infinityworks.webapp.converter.PropertyToRowConverter;
-import com.infinityworks.webapp.service.client.VotersByStreet;
+import com.infinityworks.pdfgen.converter.PropertyToRowConverter;
 import org.junit.Test;
 
 import java.util.List;
 
-import static com.infinityworks.webapp.testsupport.builder.ConstituencyBuilder.constituency;
-import static com.infinityworks.webapp.testsupport.builder.PropertyBuilder.property;
-import static com.infinityworks.webapp.testsupport.builder.VoterBuilder.voter;
-import static com.infinityworks.webapp.testsupport.builder.WardBuilder.ward;
+import static com.infinityworks.testsupport.builder.PropertyBuilder.property;
+import static com.infinityworks.testsupport.builder.VoterBuilder.voter;
 import static java.util.Arrays.asList;
 import static java.util.Collections.emptyList;
 import static java.util.Collections.singletonList;
@@ -27,9 +25,7 @@ public class PdfRendererTest {
         List<VotersByStreet> votersByStreets = asList(street1(), street2());
 
         List<GeneratedPdfTable> tables = underTest.generatePDF(
-                votersByStreets,
-                ward().withWardName("Henley").build(),
-                constituency().withName("Coventry South").build());
+                votersByStreets, "E0900134", "Henley", "Coventry South");
 
         assertThat(tables.size(), is(2));
         assertThat(tables.get(0).getMainStreetName(), is("Street1"));
@@ -46,9 +42,8 @@ public class PdfRendererTest {
     public void handlesEmptyVotersByStreets() throws Exception {
         List<VotersByStreet> votersByStreets = emptyList();
 
-        List<GeneratedPdfTable> tables = underTest.generatePDF(votersByStreets,
-                ward().withWardName("Henley").build(),
-                constituency().withName("Coventry South").build());
+        List<GeneratedPdfTable> tables = underTest.generatePDF(votersByStreets, "E0900134",
+                "Henley", "Coventry South");
 
         assertThat(tables, is(empty()));
     }

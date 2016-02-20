@@ -1,12 +1,10 @@
 package com.infinityworks.webapp.pdf;
 
-import com.infinityworks.pdfgen.ElectorRow;
-import com.infinityworks.pdfgen.GeneratedPdfTable;
+import com.infinityworks.commondto.VotersByStreet;
+import com.infinityworks.pdfgen.model.ElectorRow;
+import com.infinityworks.pdfgen.model.GeneratedPdfTable;
 import com.infinityworks.pdfgen.TableBuilder;
-import com.infinityworks.webapp.converter.PropertyToRowConverter;
-import com.infinityworks.webapp.domain.Constituency;
-import com.infinityworks.webapp.domain.Ward;
-import com.infinityworks.webapp.service.client.VotersByStreet;
+import com.infinityworks.pdfgen.converter.PropertyToRowConverter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -31,16 +29,16 @@ class PdfRenderer implements VotersPdfGenerator {
      * Build a pdf table for each street. Uses a sequential stream to build each street, which (from benchmarking) is faster than
      * a parallelStream since the number of streets is typically small.
      */
-    public List<GeneratedPdfTable> generatePDF(List<VotersByStreet> voters, Ward ward, Constituency constituency) {
+    public List<GeneratedPdfTable> generatePDF(List<VotersByStreet> voters, String wardCode, String wardName, String constituencyName) {
         return voters.stream()
                 .map(street -> {
                     String mainStreetName = street.getMainStreetName();
                     List<ElectorRow> electors = street.getProperties()
                             .stream()
-                            .map(property -> propertyToRowConverter.apply(ward.getCode(), property))
+                            .map(property -> propertyToRowConverter.apply(wardCode, property))
                             .flatMap(Collection::stream)
                             .collect(toList());
-                    return tableBuilder.generateTableRows(electors, mainStreetName, ward.getName(), constituency.getName());
+                    return tableBuilder.generateTableRows(electors, mainStreetName, wardName, constituencyName);
                 })
                 .filter(Optional::isPresent)
                 .map(Optional::get)

@@ -1,6 +1,6 @@
 package com.infinityworks.webapp.feature;
 
-import com.infinityworks.webapp.common.Try;
+import com.infinityworks.common.lang.Try;
 import com.infinityworks.webapp.error.RestErrorHandler;
 import com.infinityworks.webapp.repository.WardRepository;
 import com.infinityworks.webapp.rest.WardController;

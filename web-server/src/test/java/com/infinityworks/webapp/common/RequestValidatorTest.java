@@ -2,6 +2,7 @@ package com.infinityworks.webapp.common;
 
 import com.fasterxml.jackson.core.JsonGenerationException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.infinityworks.common.lang.Try;
 import org.junit.Before;
 import org.junit.Test;
 

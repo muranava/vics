@@ -2,6 +2,7 @@ package com.infinityworks.webapp.common;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.infinityworks.common.lang.Try;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

@@ -1,7 +1,7 @@
 package com.infinityworks.webapp.feature;
 
 import com.infinityworks.webapp.common.RequestValidator;
-import com.infinityworks.webapp.common.Try;
+import com.infinityworks.common.lang.Try;
 import com.infinityworks.webapp.domain.Role;
 import com.infinityworks.webapp.domain.User;
 import com.infinityworks.webapp.error.RestErrorHandler;

@@ -27,6 +27,9 @@ angular
       $scope.rollNum = "";
     };
 
+    /**
+     * FIXME this should be changed when we decide what the API looks like
+     */
     function formatErn(pollingDistrict, rollNum) {
       return pollingDistrict + rollNum;
     }

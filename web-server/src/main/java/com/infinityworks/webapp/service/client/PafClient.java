@@ -1,6 +1,9 @@
 package com.infinityworks.webapp.service.client;
 
-import com.infinityworks.webapp.common.Try;
+import com.infinityworks.commondto.Property;
+import com.infinityworks.commondto.Voter;
+import com.infinityworks.commondto.VotersByStreet;
+import com.infinityworks.common.lang.Try;
 import com.infinityworks.webapp.config.CanvassConfig;
 import com.infinityworks.webapp.error.PafApiFailure;
 import com.infinityworks.webapp.error.ServerFailure;

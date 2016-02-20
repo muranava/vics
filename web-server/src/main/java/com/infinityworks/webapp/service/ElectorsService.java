@@ -1,8 +1,10 @@
 package com.infinityworks.webapp.service;
 
+import com.infinityworks.commondto.VotersByStreet;
 import com.infinityworks.pdfgen.DocumentBuilder;
-import com.infinityworks.pdfgen.GeneratedPdfTable;
-import com.infinityworks.webapp.common.Try;
+import com.infinityworks.pdfgen.model.GeneratedPdfTable;
+import com.infinityworks.common.lang.Try;
+import com.infinityworks.webapp.domain.Constituency;
 import com.infinityworks.webapp.domain.User;
 import com.infinityworks.webapp.domain.Ward;
 import com.infinityworks.webapp.error.NotAuthorizedFailure;
@@ -10,7 +12,6 @@ import com.infinityworks.webapp.error.NotFoundFailure;
 import com.infinityworks.webapp.pdf.VotersPdfGenerator;
 import com.infinityworks.webapp.rest.dto.TownStreets;
 import com.infinityworks.webapp.service.client.PafClient;
-import com.infinityworks.webapp.service.client.VotersByStreet;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -80,23 +81,28 @@ public class ElectorsService {
             String msg = String.format("No ward with code=%s", wardCode);
             log.warn(msg);
             return Try.failure(new NotFoundFailure(msg));
+        } else {
+            Ward ward = byCode.get();
+            Constituency constituency = ward.getConstituency();
+
+            if (!user.hasWardPermission(ward)) {
+                String msg = String.format("User=%s tried to access ward=%s", user, wardCode);
+                log.warn(msg);
+                return Try.failure(new NotAuthorizedFailure("Not Authorized"));
+            }
+
+            log.debug("Generating PDF... ward={} constituency={}", wardCode, constituency.getCode());
+            Try<ByteArrayOutputStream> pdfContent = pafClient.findElectorsByStreet(townStreets, wardCode)
+                    .map(electors -> {
+                        List<GeneratedPdfTable> generatedPdfTables = pdfRenderer.generatePDF(
+                                electors, ward.getCode(), ward.getName(), constituency.getName());
+                        return documentBuilder.buildPages(generatedPdfTables);
+                    });
+            log.debug("Finished generating PDF... ward={} constituency={}", wardCode, constituency.getCode());
+            return pdfContent;
         }
 
-        if (!user.hasWardPermission(byCode.get())) {
-            String msg = String.format("User=%s tried to access ward=%s", user, wardCode);
-            log.warn(msg);
-            return Try.failure(new NotAuthorizedFailure("Not Authorized"));
-        }
 
-        log.debug("Generating PDF... ward={} constituency={}", wardCode, byCode.get().getConstituency().getCode());
-        Try<ByteArrayOutputStream> pdfContent = pafClient.findElectorsByStreet(townStreets, wardCode)
-                .map(electors -> {
-                    List<GeneratedPdfTable> generatedPdfTables = pdfRenderer.generatePDF(
-                            electors, byCode.get(), byCode.get().getConstituency());
-                    return documentBuilder.buildPages(generatedPdfTables);
-                });
-        log.debug("Finished generating PDF... ward={} constituency={}", wardCode, byCode.get().getConstituency().getCode());
-        return pdfContent;
     }
 
 }

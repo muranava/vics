@@ -1,6 +1,6 @@
 package com.infinityworks.webapp.service;
 
-import com.infinityworks.webapp.common.Try;
+import com.infinityworks.common.lang.Try;
 import com.infinityworks.webapp.domain.User;
 import com.infinityworks.webapp.error.BadRequestFailure;
 import com.infinityworks.webapp.error.NotAuthorizedFailure;

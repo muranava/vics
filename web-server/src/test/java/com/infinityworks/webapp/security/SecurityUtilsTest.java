@@ -1,6 +1,6 @@
 package com.infinityworks.webapp.security;
 
-import com.infinityworks.webapp.common.Try;
+import com.infinityworks.common.lang.Try;
 import com.infinityworks.webapp.rest.dto.Credentials;
 import org.junit.Test;
 
