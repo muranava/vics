@@ -9,6 +9,7 @@ import com.infinityworks.pdfgen.LogoRenderer;
 import com.infinityworks.pdfgen.TableBuilder;
 import com.infinityworks.webapp.common.RequestValidator;
 import com.infinityworks.webapp.error.RestErrorHandler;
+import com.infinityworks.webapp.filter.AllowedHosts;
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
 import org.apache.http.client.HttpClient;
@@ -31,7 +32,11 @@ import org.springframework.web.client.RestTemplate;
 import javax.sql.DataSource;
 import javax.validation.Validation;
 import javax.validation.ValidatorFactory;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
+
+import static java.util.Arrays.asList;
 
 @Configuration
 @EnableAutoConfiguration
@@ -91,6 +96,13 @@ public class Config {
                     jsonConverter.setObjectMapper(objectMapper);
                 });
         return restTemplate;
+    }
+
+    @Bean
+    public AllowedHosts allowedHostsForCORS(Environment env) {
+        String allowedHosts = env.getRequiredProperty("canvass.cors.allowedHosts");
+        Set<String> hosts = new HashSet<>(asList(allowedHosts.split(",")));
+        return new AllowedHosts(hosts);
     }
 
     @Bean

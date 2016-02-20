@@ -31,6 +31,10 @@
                                     </fileset>
                                 </copy>
                             </tasks>
+                            <target>
+                                <chmod file="${project.basedir}/../dist/run-web-server.sh" perm="755"/>
+                                <chmod file="${project.basedir}/../dist/install-db.sh" perm="755"/>
+                            </target>
                         </configuration>
                         <goals>
                             <goal>run</goal>

@@ -1,12 +1,7 @@
 
 DROP DATABASE IF EXISTS canvassapp;
-DROP USER IF EXISTS canvasser;
 
-CREATE USER canvasser PASSWORD 'canvasser';
-
-CREATE DATABASE canvassapp WITH OWNER = canvasser ENCODING = 'UTF8' LC_COLLATE = 'en_US.UTF-8' LC_CTYPE = 'en_US.UTF-8' TABLESPACE = pg_default TEMPLATE template0;
-
-GRANT ALL ON DATABASE canvassapp TO canvasser;
+CREATE DATABASE canvassapp WITH ENCODING = 'UTF8' LC_COLLATE = 'en_US.UTF-8' LC_CTYPE = 'en_US.UTF-8' TABLESPACE = pg_default TEMPLATE template0;
 
 \connect canvassapp;
 

@@ -5,7 +5,7 @@ server:
 spring:
   jpa:
     hibernate:
-      ddl-auto: drop-create
+      ddl-auto: validate
     database-platform: org.hibernate.dialect.PostgreSQLDialect
   datasource:
     driver: org.postgresql.Driver
@@ -19,6 +19,8 @@ spring:
     maximumPoolSize: 10
 
 canvass:
+  cors:
+    allowedHosts: "*"
   pafApiBaseUrl: http://localhost:9002/v1
   pafApiToken: token
 

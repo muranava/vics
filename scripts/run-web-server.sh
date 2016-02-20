@@ -2,8 +2,8 @@
 
 # Web server startup script
 
-DIST_DIR=../../dist/
-APP_JAR=$DIST_DIR/web-server-0.0.1-SNAPSHOT.jar
+DIST_DIR=.
+APP_JAR=$DIST_DIR/web-server-0.0.1.jar
 
 PORT=18080
 CONTEXT_PATH=/api/canvass

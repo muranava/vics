@@ -9,7 +9,7 @@ import java.io.IOException;
 
 import static com.itextpdf.text.Font.FontFamily.HELVETICA;
 
-public class PageInfoRenderer extends PdfPageEventHelper {
+class PageInfoRenderer extends PdfPageEventHelper {
     private static final Logger log = LoggerFactory.getLogger(PageInfoRenderer.class);
     private static Font font = new Font(HELVETICA, 9);
     private static final String FOOTER_TEXT =
@@ -17,16 +17,14 @@ public class PageInfoRenderer extends PdfPageEventHelper {
                     "http://www.voteleavetakecontrol.org/privacy";
 
     private static final String LIKELIHOOD_KEY =
-            "Voting Likelihood:" +
-            "\n1 Definitely won't vote" +
+            "1 Definitely won't vote" +
             "\n2 Probably won't vote" +
             "\n3 Undecided" +
             "\n4 Probably will vote" +
             "\n5 Definitely will vote";
 
     private static final String INTENTION_KEY =
-            "Voting Intention:" +
-            "\n1 Definitely Remain" +
+            "1 Definitely Remain" +
             "\n2 Probably Remain" +
             "\n3 Undecided" +
             "\n4 Probably Leave" +
