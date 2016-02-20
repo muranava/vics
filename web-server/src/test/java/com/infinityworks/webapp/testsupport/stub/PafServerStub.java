@@ -5,6 +5,7 @@ import com.github.tomakehurst.wiremock.client.WireMock;
 import com.google.common.io.Resources;
 
 import java.io.IOException;
+import java.net.URLEncoder;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -29,7 +30,7 @@ public class PafServerStub {
     static {
         files.put("E05001221", "json/paf-streets-earlsdon.json");
         files.put("E05001221,Coventry", "paf-voters-multiple-streets.json");
-        files.put("voted,ADD/313/1", "");
+        files.put("voted,ADD3131", "json/paf-record-voted.json");
     }
 
     public void start() {
@@ -69,11 +70,10 @@ public class PafServerStub {
         String file = requireNonNull(files.get("voted," + ern), "No json file for voted request ern=" + ern);
         String jsonData = Resources.toString(getResource(file), UTF_8);
 
-        String urlPath = String.format("/v1/voted/ern/%s", ern);
-        wireMock.register(post(urlPathMatching(urlPath))
+        String urlPath = "/v1/voter/" + ern;
+        wireMock.register(put(urlPathMatching(urlPath))
                 .willReturn(aResponse()
                         .withStatus(200)
-                        .withHeader(CONTENT_TYPE, APPLICATION_JSON_VALUE)
                         .withBody(jsonData)));
     }
 }

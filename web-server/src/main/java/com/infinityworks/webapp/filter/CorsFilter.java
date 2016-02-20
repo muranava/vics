@@ -34,7 +34,7 @@ public class CorsFilter implements Filter {
         String requestOrigin = request.getHeader("Origin");
 
         if (isHostAllowed(requestOrigin)) {
-            response.setHeader("Access-Control-Allow-Origin", requestOrigin);
+                    response.setHeader("Access-Control-Allow-Origin", requestOrigin);
         }
 
         response.setHeader("Access-Control-Allow-Credentials", "true");
@@ -46,11 +46,12 @@ public class CorsFilter implements Filter {
     }
 
     private boolean isHostAllowed(String origin) {
-        if (allowedHosts.getHosts().contains("*")) {
+        if (allowedHosts.getHosts().contains("*") ||
+            allowedHosts.getHosts().contains(origin)) {
             return true;
-        } {
-            log.warn("Request failed CORS filter. origin={}, allowed={}", origin, allowedHosts);
-            return allowedHosts.getHosts().contains(origin);
+        } else {
+            log.debug("Request failed CORS filter. origin={}, allowed={}", origin, allowedHosts);
+            return false;
         }
     }
 

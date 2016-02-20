@@ -51,7 +51,7 @@ public abstract class WebApplicationTest {
     }
 
     @After
-    public void tearDown() {
+    public void tearDown() throws Exception {
         pafApiStub.stop();
     }
 }

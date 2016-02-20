@@ -1,9 +1,7 @@
 angular
   .module('canvass')
-  .controller('recordVoteController', function ($scope, RingBuffer, plugins) {
+  .controller('recordVoteController', function ($scope, RingBuffer, voteService) {
     var logSize = 7;
-
-    // FIXME remove stub data for demo
 
     $scope.searchResults = [];
     $scope.logs = RingBuffer.newInstance(logSize);
@@ -15,29 +13,30 @@ angular
     });
 
     $scope.onVote = function() {
-      $scope.logs.push({
-        pd: $scope.pollingDistrict,
-        rollNum: $scope.rollNum,
-        firstName: 'Jon',
-        lastName: 'Baines',
-        result: _.random(0, 1)
-      });
+      voteService.recordVote(formatErn($scope.rollNum, $scope.pollingDistrict))
+        .success(function(response) {
+          $scope.logs.push({
+            pd: response.pollingDistrict,
+            rollNum: response.rollNum,
+            firstName: response.firstName,
+            lastName: response.lastName,
+            result: response.success ? 1 : 0
+          });
+        });
 
       $scope.rollNum = "";
     };
+
+    function formatErn(pollingDistrict, rollNum) {
+      return pollingDistrict + rollNum;
+    }
 
     $scope.onSearchVoted = function() {
       $scope.onVote();
     };
 
     $scope.onSearch = function() {
-      $scope.searchResults.push({
-        rollNum: 'AAB/13451/2',
-        firstName: 'Amy',
-        lastName: 'Leigh',
-        address: '31 Mole Avenue',
-        postCode: 'AB2 9AP'
-      });
+      throw Error("Not yet implemented");
     };
 
     function emptyRow() {
@@ -49,6 +48,4 @@ angular
         result: -1
       };
     }
-
-    plugins.initFloatingLabels();
   });

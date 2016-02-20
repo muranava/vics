@@ -1,11 +1,14 @@
-
 angular
   .module('canvass')
-  .service('voteService', function(apiUrl, $http) {
+  .service('voteService', function (apiUrl, $http) {
     var api = {};
 
-    api.vote = function(ern) {
-      return $http.post(apiUrl + '/vote/' + ern);
+    api.recordVote = function (ern) {
+      return $http({
+        method: 'POST',
+        url: apiUrl + '/voted/' + ern,
+        withCredentials: true
+      });
     };
 
     return api;

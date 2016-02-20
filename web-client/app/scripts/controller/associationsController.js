@@ -58,11 +58,8 @@ angular
     $scope.onAddWard = function() {
       clearMessages();
 
-      var selectedWard = _.find($scope.wards, function(ward) {
-        return ward.id === $scope.wardSearchModel.id;
-      });
-      if (selectedWard) {
-        wardService.associateToUser(selectedWard.id, $scope.user.id)
+      if ($scope.wardSearchModel && $scope.wardSearchModel.id) {
+        wardService.associateToUser($scope.wardSearchModel.id, $scope.user.id)
           .success(function() {
             $scope.wardSearchModel = "";
             loadUser();
