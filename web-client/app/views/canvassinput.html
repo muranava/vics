@@ -175,21 +175,18 @@
                   <thead>
                   <tr>
                     <th>Roll #</th>
-                    <th>First Name</th>
-                    <th>Last Name</th>
-                    <th>Address</th>
-                    <th>Post Code</th>
+                    <th>Reason</th>
+                    <th>Result</th>
                     <th></th>
                   </tr>
                   </thead>
                   <tbody>
-                  <tr>
-                    <td>{{result.rollNum}}</td>
-                    <td>{{result.firstName}}</td>
-                    <td>{{result.lastName}}</td>
-                    <td>{{result.address}}</td>
-                    <td>{{result.postCode}}</td>
-                    <td><button type="submit" class="btn btn-sm btn-default" tabindex="-1" ng-click="onSearchVoted(result)">Voted</button></td>
+                  <tr ng-repeat="log in logs.elements.slice().reverse()"
+                      ng-class="{danger: !log.success, success: log.success}">
+                    <td>{{log.ern}}</td>
+                    <td>{{log.reason}}</td>
+                    <td ng-show="log.success">SUCCESS</td>
+                    <td ng-show="!log.success">FAILED</td>
                   </tr>
                   </tbody>
                 </table>

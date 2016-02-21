@@ -1,12 +1,14 @@
 package com.infinityworks.webapp.error;
 
-public class ErrorEntity {
+class ErrorEntity {
     private final String type;
     private final String message;
+    private final String custom;
 
-    public ErrorEntity(String type, String message) {
+    ErrorEntity(String type, String message, String custom) {
         this.type = type;
         this.message = message;
+        this.custom = custom;
     }
 
     public String getMessage() {
@@ -15,5 +17,9 @@ public class ErrorEntity {
 
     public String getType() {
         return type;
+    }
+
+    public String getCustom() {
+        return custom;
     }
 }

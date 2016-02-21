@@ -33,12 +33,12 @@ public final class RestErrorHandler {
         }
 
         if (exception instanceof BadCredentialsException) {
-            ErrorEntity errorEntity = new ErrorEntity(LoginFailure.class.getSimpleName(), "Bad credentials");
+            ErrorEntity errorEntity = new ErrorEntity(LoginFailure.class.getSimpleName(), "Bad credentials", "");
             return ResponseEntity.status(UNAUTHORIZED).body(errorEntity);
         }
 
         if (exception instanceof AccessDeniedException) {
-            ErrorEntity errorEntity = new ErrorEntity(exception.getClass().getSimpleName(), "Access denied");
+            ErrorEntity errorEntity = new ErrorEntity(exception.getClass().getSimpleName(), "Access denied", "");
             return ResponseEntity.status(FORBIDDEN).body(errorEntity);
         }
 
@@ -52,7 +52,7 @@ public final class RestErrorHandler {
 
         if (exception instanceof UserSessionFailure) {
             log.error("User session failure", exception);
-            ErrorEntity errorEntity = new ErrorEntity(LoginFailure.class.getSimpleName(), VAGUE_ERROR_RESPONSE);
+            ErrorEntity errorEntity = new ErrorEntity(LoginFailure.class.getSimpleName(), VAGUE_ERROR_RESPONSE, "");
             return ResponseEntity.status(INTERNAL_SERVER_ERROR).body(errorEntity);
         }
 
@@ -65,7 +65,7 @@ public final class RestErrorHandler {
         }
 
         if (exception instanceof PafApiFailure) {
-            ErrorEntity errorEntity = new ErrorEntity(PafApiFailure.class.getSimpleName(), VAGUE_ERROR_RESPONSE);
+            ErrorEntity errorEntity = new ErrorEntity(PafApiFailure.class.getSimpleName(), VAGUE_ERROR_RESPONSE, "");
             return ResponseEntity.status(INTERNAL_SERVER_ERROR).body(errorEntity);
         }
 
@@ -74,6 +74,12 @@ public final class RestErrorHandler {
     }
 
     private static ErrorEntity createError(Exception exception) {
-        return new ErrorEntity(exception.getClass().getSimpleName(), exception.getMessage());
+        String custom;
+        if (exception instanceof CanvassError) {
+            custom = ((CanvassError) exception).getCustom();
+        } else {
+            custom = "";
+        }
+        return new ErrorEntity(exception.getClass().getSimpleName(), exception.getMessage(), custom);
     }
 }

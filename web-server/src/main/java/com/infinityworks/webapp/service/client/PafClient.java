@@ -148,7 +148,7 @@ public class PafClient {
             if (e.getStatusCode().value() == 404) {
                 String message = String.format("No voter with ern=%s. PAF returned %s", ern, e.getStatusCode().getReasonPhrase());
                 log.debug(message);
-                return Try.failure(new NotFoundFailure(message));
+                return Try.failure(new NotFoundFailure(message, ern));
             } else {
                 return Try.failure(new ServerFailure(String.format(ADD_CONTACT_ERROR_MESSAGE, ern, e.getStatusCode().getReasonPhrase())));
             }

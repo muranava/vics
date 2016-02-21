@@ -9,7 +9,7 @@ angular
 
     RingBuffer.prototype.push = function(element) {
       this.elements.push(element);
-      if (this.elements.length >= this.size) {
+      if (this.elements.length > this.size) {
         this.elements.shift();
       }
     };

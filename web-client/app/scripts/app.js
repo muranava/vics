@@ -65,6 +65,7 @@ angular
     $routeProvider
       .when('/dashboard', {
         templateUrl: 'views/dashboard.html',
+        controller: 'dashboardController',
         resolve: {
           auth: userAuth
         }

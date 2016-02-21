@@ -72,7 +72,7 @@ public class ElectorsService {
             Constituency constituency = ward.getConstituency();
 
             if (!permissible.hasWardPermission(ward)) {
-                String msg = String.format("User=%s tried to access ward=%s", permissible, wardCode);
+                String msg = String.format("User=%s tried to access ward=%s without permission", permissible, wardCode);
                 log.warn(msg);
                 return Try.failure(new NotAuthorizedFailure("Not Authorized"));
             }
