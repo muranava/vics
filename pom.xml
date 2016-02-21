@@ -13,7 +13,6 @@
         <module>common</module>
         <module>common-dto</module>
         <module>pdf-gen</module>
-        <module>scripts</module>
         <module>test-support</module>
         <module>tools</module>
         <module>web-client</module>
