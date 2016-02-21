@@ -1,9 +1,29 @@
 package com.infinityworks.webapp.domain;
 
+import java.util.Set;
+
 public interface Permissible {
-    boolean hasWardPermission(Ward ward);
+    default boolean hasWardPermission(Ward ward) {
+        return getWards().contains(ward);
+    }
 
-    boolean hasConstituencyPermission(Constituency constituency);
+    default boolean hasConstituencyPermission(Constituency constituency) {
+        return getConstituencies().contains(constituency);
+    }
 
-    boolean isAdmin();
+    default boolean hasPermission(Permission permission) {
+        return getPermissions().stream().anyMatch(privilege -> privilege.getPermission() == permission);
+    }
+
+    default boolean isAdmin() {
+        return getRole() == Role.ADMIN;
+    }
+
+    Set<Ward> getWards();
+
+    Set<Constituency> getConstituencies();
+
+    Set<Privilege> getPermissions();
+
+    Role getRole();
 }

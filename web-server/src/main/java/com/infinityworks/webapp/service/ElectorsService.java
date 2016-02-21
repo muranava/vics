@@ -4,12 +4,14 @@ import com.infinityworks.common.lang.Try;
 import com.infinityworks.pdfgen.DocumentBuilder;
 import com.infinityworks.pdfgen.model.GeneratedPdfTable;
 import com.infinityworks.webapp.domain.Constituency;
+import com.infinityworks.webapp.domain.Permissible;
 import com.infinityworks.webapp.domain.User;
 import com.infinityworks.webapp.domain.Ward;
 import com.infinityworks.webapp.error.NotAuthorizedFailure;
 import com.infinityworks.webapp.error.NotFoundFailure;
 import com.infinityworks.webapp.pdf.VotersPdfGenerator;
 import com.infinityworks.webapp.rest.dto.ElectorSummary;
+import com.infinityworks.webapp.rest.dto.RecordContactRequest;
 import com.infinityworks.webapp.rest.dto.TownStreets;
 import com.infinityworks.webapp.service.client.PafClient;
 import org.slf4j.Logger;
@@ -54,11 +56,11 @@ public class ElectorsService {
      *
      * @param townStreets the streets to search for electors for
      * @param wardCode    the ward code associated with the streets
-     * @param user        the user making the request. Must have permission for the given ward
+     * @param permissible the permissible making the request. Must have permission for the given ward
      * @return the PDF contents as a byte stream
      */
-    public Try<ByteArrayOutputStream> electorsByStreets(TownStreets townStreets, String wardCode, User user) {
-        log.debug("Finding electors by streets={} for user={}", townStreets, user);
+    public Try<ByteArrayOutputStream> electorsByStreets(TownStreets townStreets, String wardCode, Permissible permissible) {
+        log.debug("Finding electors by streets={} for permissible={}", townStreets, permissible);
 
         Optional<Ward> byCode = wardService.findByCode(wardCode).stream().findFirst();
         if (!byCode.isPresent()) {
@@ -69,8 +71,8 @@ public class ElectorsService {
             Ward ward = byCode.get();
             Constituency constituency = ward.getConstituency();
 
-            if (!user.hasWardPermission(ward)) {
-                String msg = String.format("User=%s tried to access ward=%s", user, wardCode);
+            if (!permissible.hasWardPermission(ward)) {
+                String msg = String.format("User=%s tried to access ward=%s", permissible, wardCode);
                 log.warn(msg);
                 return Try.failure(new NotAuthorizedFailure("Not Authorized"));
             }
@@ -87,4 +89,19 @@ public class ElectorsService {
         }
     }
 
+    /**
+     * Adds a contact record representing the outcome of a canvassing activity
+     *
+     * @param user           the logged in user submitted the request
+     * @param ern            the ID of the voter contacted
+     * @param contactRequest the contact data
+     * @return the updated contact data, or a failure object if the operation failed
+     */
+    public Try<RecordContactRequest> recordContact(User user, String ern, RecordContactRequest contactRequest) {
+        if (!user.getWriteAccess()) {
+            log.warn("User={} tried to add contact for ern={} but does not have write access", user, ern);
+            return Try.failure(new NotAuthorizedFailure("Forbidden"));
+        }
+        return pafClient.recordContact(ern, contactRequest);
+    }
 }

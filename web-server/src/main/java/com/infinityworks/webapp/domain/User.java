@@ -5,6 +5,7 @@ import com.google.common.base.MoreObjects;
 import com.google.common.base.Objects;
 
 import javax.persistence.*;
+import java.util.List;
 import java.util.Set;
 
 /**
@@ -76,11 +77,6 @@ public class User extends BaseEntity implements Permissible {
     @Override
     public boolean hasWardPermission(Ward ward) {
         return isAdmin() || wards.contains(ward) || constituencies.contains(ward.getConstituency());
-    }
-
-    @Override
-    public boolean hasConstituencyPermission(Constituency constituency) {
-        return isAdmin() || constituencies.contains(constituency);
     }
 
     public String getUsername() {

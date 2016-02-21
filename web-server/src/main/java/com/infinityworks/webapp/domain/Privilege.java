@@ -1,5 +1,6 @@
 package com.infinityworks.webapp.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.google.common.base.MoreObjects;
 import com.google.common.base.Objects;
 
@@ -25,6 +26,11 @@ public class Privilege extends BaseEntity {
 
     public Permission getPermission() {
         return permission;
+    }
+
+    @JsonIgnore
+    public boolean hasPermission(Permission permission) {
+        return this.permission == permission;
     }
 
     public void setPermission(Permission permission) {

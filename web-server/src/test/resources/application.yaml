@@ -9,7 +9,7 @@ spring:
     database-platform: org.hibernate.dialect.PostgreSQLDialect
   datasource:
     driver: org.postgresql.Driver
-    url: jdbc:postgresql://localhost:5432/canvass
+    url: jdbc:postgresql://localhost:5432/canvassapp
     username: postgres
     password: postgres
     pool-name: HikariPool

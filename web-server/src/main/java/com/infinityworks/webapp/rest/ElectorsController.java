@@ -2,6 +2,7 @@ package com.infinityworks.webapp.rest;
 
 import com.infinityworks.webapp.common.RequestValidator;
 import com.infinityworks.webapp.error.RestErrorHandler;
+import com.infinityworks.webapp.rest.dto.RecordContactRequest;
 import com.infinityworks.webapp.rest.dto.TownStreets;
 import com.infinityworks.webapp.service.ElectorsService;
 import com.infinityworks.webapp.service.SessionService;
@@ -46,6 +47,16 @@ public class ElectorsController {
                                              Principal principal) throws DocumentException {
         return sessionService.extractUserFromPrincipal(principal)
                 .flatMap(user -> electorsService.electorByErn(ern))
+                .fold(errorHandler::mapToResponseEntity, ResponseEntity::ok);
+    }
+
+    @PreAuthorize("isAuthenticated()")
+    @RequestMapping(value = "/{ern}/contact", method = POST)
+    public ResponseEntity<?> recordContact(@PathVariable("ern") String ern,
+                                           Principal principal,
+                                           @Valid @RequestBody RecordContactRequest contactRequest) throws DocumentException {
+        return sessionService.extractUserFromPrincipal(principal)
+                .flatMap(user -> electorsService.recordContact(user, ern, contactRequest))
                 .fold(errorHandler::mapToResponseEntity, ResponseEntity::ok);
     }
 

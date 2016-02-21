@@ -21,43 +21,40 @@
           </div>
           <div class="card-body">
             <form class="form-horizontal">
-
+              <div class="alert alert-callout alert-danger" role="alert" ng-show="errors.length">
+                <p ng-repeat="error in errors">
+                  <i class="fa fa-warning"></i> &nbsp;{{error}}
+                </p>
+              </div>
               <!-- Elector details -->
               <div class="form-group">
-                <label for="groupbutton17" class="col-sm-2 control-label">Electoral ID</label>
-                <div class="col-sm-10">
-                  <div class="input-group">
-                    <div class="input-group-content">
-                      <input type="text" class="form-control" ng-model="inputRecordModel.electorID"
-                             placeholder="Enter the electoral roll number" id="groupbutton17">
-                    </div>
-                    <div class="input-group-btn">
-                      <button class="btn btn-default" type="button" ng-click="onSearchVoter()">SEARCH</button>
-                    </div>
-                  </div>
+                <label for="groupbutton17" class="col-sm-3 control-label">Elector ID</label>
+                <div class="col-sm-9">
+                  <input type="text" class="form-control" ng-model="inputRecordModel.ern"
+                         placeholder="Enter the electoral roll number" id="groupbutton17">
                 </div>
               </div>
 
               <!-- Name readonly input -->
               <div class="form-group" ng-if="elector">
-                <label for="disabled15" class="col-sm-2 control-label">Name</label>
-                <div class="col-sm-10">
+                <label for="disabled15" class="col-sm-3 control-label">Name</label>
+                <div class="col-sm-9">
                   <input type="text" class="form-control" id="disabled15" ng-model="electorName" disabled>
                 </div>
               </div>
 
               <!-- Address readonly input -->
               <div class="form-group" ng-if="elector">
-                <label for="readonly15" class="col-sm-2 control-label">Address</label>
-                <div class="col-sm-10">
+                <label for="readonly15" class="col-sm-3 control-label">Address</label>
+                <div class="col-sm-9">
                   <input type="text" class="form-control" id="readonly15" ng-model="electorAddress" readonly>
                 </div>
               </div>
 
               <!-- Likelihood to vote select box -->
               <div class="form-group">
-                <label class="col-sm-2 control-label">Voting Likelihood</label>
-                <div class="col-sm-10">
+                <label class="col-sm-3 control-label">Voting Likelihood</label>
+                <div class="col-sm-9">
                   <select name="likelihood"
                           class="form-control"
                           ng-options="item for item in [1,2,3,4,5] track by item"
@@ -68,23 +65,23 @@
 
               <!-- Key issues checkboxes -->
               <div class="form-group">
-                <label class="col-sm-2 control-label">Key Issues</label>
-                <div class="col-sm-10">
+                <label class="col-sm-3 control-label">Key Issues</label>
+                <div class="col-sm-9">
                   <div class="checkbox checkbox-styled">
                     <label>
-                      <input type="checkbox" value="">
+                      <input type="checkbox" ng-model="inputRecordModel.cost" value="">
                       <span>Cost</span>
                     </label>
                   </div>
                   <div class="checkbox checkbox-styled">
                     <label>
-                      <input type="checkbox" value="">
+                      <input type="checkbox" ng-model="inputRecordModel.sovereignty" value="">
                       <span>Sovereignty</span>
                     </label>
                   </div>
                   <div class="checkbox checkbox-styled">
                     <label>
-                      <input type="checkbox" value="">
+                      <input type="checkbox" ng-model="inputRecordModel.border" value="">
                       <span>Border</span>
                     </label>
                   </div>
@@ -93,8 +90,8 @@
 
               <!-- Intention to vote select -->
               <div class="form-group">
-                <label class="col-sm-2 control-label">Intention to Vote</label>
-                <div class="col-sm-10">
+                <label class="col-sm-3 control-label">Intention to Vote</label>
+                <div class="col-sm-9">
                   <select name="intention"
                           class="form-control"
                           ng-options="item for item in [1,2,3,4,5] track by item"
@@ -105,29 +102,35 @@
 
               <!-- key issues checkboxes -->
               <div class="form-group">
-                <label class="col-sm-2 control-label">Key Issues</label>
-                <div class="col-sm-10">
+                <label class="col-sm-3 control-label">Key Issues</label>
+                <div class="col-sm-9">
                   <div class="checkbox checkbox-styled">
                     <label>
-                      <input type="checkbox" value="">
+                      <input type="checkbox" ng-model="inputRecordModel.hasPV" value="">
                       <span>Has Postal Vote</span>
                     </label>
                   </div>
                   <div class="checkbox checkbox-styled">
                     <label>
-                      <input type="checkbox" value="">
+                      <input type="checkbox" ng-model="inputRecordModel.wantsPV" value="">
                       <span>Wants Postal Vote</span>
                     </label>
                   </div>
                   <div class="checkbox checkbox-styled">
                     <label>
-                      <input type="checkbox" value="">
+                      <input type="checkbox" ng-model="inputRecordModel.poster" value="">
                       <span>Will Display Poster</span>
                     </label>
                   </div>
                   <div class="checkbox checkbox-styled">
                     <label>
-                      <input type="checkbox" value="">
+                      <input type="checkbox" ng-model="inputRecordModel.lift" value="">
+                      <span>Needs Lift</span>
+                    </label>
+                  </div>
+                  <div class="checkbox checkbox-styled">
+                    <label>
+                      <input type="checkbox" ng-model="inputRecordModel.deceased" value="">
                       <span>Deceased</span>
                     </label>
                   </div>
@@ -157,20 +160,45 @@
 
           </div>
         </div>
+
+        <!-- Log Entries -->
         <div class="row">
           <div class="col-sm-12">
 
             <div class="card">
               <div class="card-head card-head-xs style-primary">
                 <header>Log</header>
-              </div><!--end .card-head -->
+              </div>
               <div class="card-body">
+
+                <table class="table no-margin table-hover">
+                  <thead>
+                  <tr>
+                    <th>Roll #</th>
+                    <th>First Name</th>
+                    <th>Last Name</th>
+                    <th>Address</th>
+                    <th>Post Code</th>
+                    <th></th>
+                  </tr>
+                  </thead>
+                  <tbody>
+                  <tr>
+                    <td>{{result.rollNum}}</td>
+                    <td>{{result.firstName}}</td>
+                    <td>{{result.lastName}}</td>
+                    <td>{{result.address}}</td>
+                    <td>{{result.postCode}}</td>
+                    <td><button type="submit" class="btn btn-sm btn-default" tabindex="-1" ng-click="onSearchVoted(result)">Voted</button></td>
+                  </tr>
+                  </tbody>
+                </table>
+
               </div>
             </div>
 
           </div>
         </div>
-
 
 
       </div>

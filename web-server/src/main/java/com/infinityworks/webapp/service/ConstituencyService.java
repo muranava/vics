@@ -2,6 +2,7 @@ package com.infinityworks.webapp.service;
 
 import com.infinityworks.common.lang.Try;
 import com.infinityworks.webapp.domain.Constituency;
+import com.infinityworks.webapp.domain.Permissible;
 import com.infinityworks.webapp.domain.User;
 import com.infinityworks.webapp.domain.Ward;
 import com.infinityworks.webapp.error.NotAuthorizedFailure;
@@ -43,27 +44,27 @@ public class ConstituencyService {
      * Gets the constituencies a user can access. This is the sum of the constituencies from
      * associated wards and directly associated wards
      *
-     * @param user the user to get constituencies
+     * @param permissible the user to get constituencies
      * @return the constituencies visible to a user (however the user may not have access to all wards
      * in the constituencies)
      */
-    public UserRestrictedConstituencies getVisibleConstituenciesByUserWithWardContext(User user) {
-        if (user.isAdmin()) {
+    public UserRestrictedConstituencies getVisibleConstituenciesByUserWithWardContext(Permissible permissible) {
+        if (permissible.isAdmin()) {
             return new UserRestrictedConstituencies(new HashSet<>(constituencyRepository.findAll()));
         } else {
-            Set<Constituency> wardConstituencies = user.getWards()
+            Set<Constituency> wardConstituencies = permissible.getWards()
                     .stream()
                     .map(Ward::getConstituency)
                     .collect(toSet());
 
-            wardConstituencies.addAll(user.getConstituencies());
+            wardConstituencies.addAll(permissible.getConstituencies());
             return new UserRestrictedConstituencies(wardConstituencies);
         }
     }
 
-    public Try<List<Constituency>> constituenciesByName(User user, String name, int limit) {
-        if (!user.isAdmin()) {
-            log.error("Non admin attempted to find all constituencies by name. user={}", user);
+    public Try<List<Constituency>> constituenciesByName(Permissible permissible, String name, int limit) {
+        if (!permissible.isAdmin()) {
+            log.error("Non admin attempted to find all constituencies by name. user={}", permissible);
             return Try.failure(new NotAuthorizedFailure("Forbidden content"));
         }
         List<Constituency> constituencies = constituencyRepository.findByNameIgnoreCaseContainingOrderByNameAsc(name, new PageRequest(0, limit));
@@ -71,9 +72,9 @@ public class ConstituencyService {
     }
 
     @Transactional
-    public Try<User> associateToUser(User user, UUID constituencyID, UUID userID) {
-        if (!user.isAdmin()) {
-            log.error("Non admin attempted to associate user={} to constituency={}. user={}", userID, constituencyID, user);
+    public Try<User> associateToUser(Permissible permissible, UUID constituencyID, UUID userID) {
+        if (!permissible.isAdmin()) {
+            log.error("Non admin attempted to associate user={} to constituency={}. user={}", userID, constituencyID, permissible);
             return Try.failure(new NotAuthorizedFailure("Forbidden content"));
         }
 
@@ -95,7 +96,6 @@ public class ConstituencyService {
         log.debug("Added association constituency={}, user={}", constituencyID, userID);
         return Try.success(updatedUser);
     }
-
 
     @Transactional
     public Try<User> removeUserAssociation(User user, UUID constituencyID, UUID userID) {

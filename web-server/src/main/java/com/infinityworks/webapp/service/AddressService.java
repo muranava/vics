@@ -1,6 +1,7 @@
 package com.infinityworks.webapp.service;
 
 import com.infinityworks.common.lang.Try;
+import com.infinityworks.webapp.domain.Permissible;
 import com.infinityworks.webapp.domain.User;
 import com.infinityworks.webapp.domain.Ward;
 import com.infinityworks.webapp.error.NotAuthorizedFailure;
@@ -27,13 +28,13 @@ public class AddressService {
         this.pafClient = pafClient;
     }
 
-    public Try<List<Street>> getTownStreetsByWardCode(String wardCode, User user) {
+    public Try<List<Street>> getTownStreetsByWardCode(String wardCode, Permissible permissible) {
         Optional<Ward> ward = wardService.findByCode(wardCode).stream().findFirst();
         if (!ward.isPresent()) {
             return Try.failure(new NotFoundFailure("No ward with code=" + wardCode));
         }
-        if (!user.hasWardPermission(ward.get())) {
-            log.error("User={} tried to access towns by wardCode={}", user, wardCode);
+        if (!permissible.hasWardPermission(ward.get())) {
+            log.error("User={} tried to access towns by wardCode={}", permissible, wardCode);
             return Try.failure(new NotAuthorizedFailure("Content forbidden"));
         }
         return pafClient.findStreetsByWardCode(wardCode);

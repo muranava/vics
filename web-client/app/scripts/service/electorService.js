@@ -38,6 +38,15 @@ angular
       });
     };
 
+    api.submitCanvassInput = function(inputModel) {
+      return $http({
+        url: apiUrl + '/elector/' + inputModel.ern + '/contact',
+        method: 'POST',
+        data: inputModel,
+        withCredentials: true
+      });
+    };
+
     /**
      * Retrieves the households and electors in the given streets
      */

@@ -5,8 +5,10 @@ import com.infinityworks.commondto.Voter;
 import com.infinityworks.commondto.VotersByStreet;
 import com.infinityworks.common.lang.Try;
 import com.infinityworks.webapp.config.CanvassConfig;
+import com.infinityworks.webapp.error.NotFoundFailure;
 import com.infinityworks.webapp.error.PafApiFailure;
 import com.infinityworks.webapp.error.ServerFailure;
+import com.infinityworks.webapp.rest.dto.RecordContactRequest;
 import com.infinityworks.webapp.rest.dto.Street;
 import com.infinityworks.webapp.rest.dto.TownStreets;
 import org.slf4j.Logger;
@@ -28,12 +30,14 @@ public class PafClient {
     private static final String DOWNSTREAM_ERROR_MESSAGE = "PAF api failure. Contact your system administrator";
     private static final String STREETS_BY_WARD_ERROR_MESSAGE = "PAF request failed when getting streets by wardCode=%s. %s";
     private static final String RECORD_VOTE_ERROR_MESSAGE = "PAF request failed when recording vote ern=%s. Paf responded with %s";
+    private static final String ADD_CONTACT_ERROR_MESSAGE = "PAF request failed when adding contact record ern=%s. Paf responded with %s";
     private static final String ELECTORS_BY_STREET_ERROR_MESSAGE = "PAF request failed when getting electors by street=%s. %s";
 
     private final String API_TOKEN;
     private final String STREETS_BY_WARD_ENDPOINT;
     private final String ELECTORS_BY_STREET_ENDPOINT;
     private final String VOTED_ENDPOINT;
+    private final String CONTACT_ENDPOINT;
 
     private final RestTemplate restTemplate;
     private final StreetConverter streetConverter;
@@ -46,6 +50,7 @@ public class PafClient {
         STREETS_BY_WARD_ENDPOINT = canvassConfig.getPafApiBaseUrl() + "/wards/%s/streets";
         ELECTORS_BY_STREET_ENDPOINT = canvassConfig.getPafApiBaseUrl() + "/wards/%s/streets";
         VOTED_ENDPOINT = canvassConfig.getPafApiBaseUrl() + "/voter/%s";
+        CONTACT_ENDPOINT = canvassConfig.getPafApiBaseUrl() + "/voter/%s/contact";
         API_TOKEN = canvassConfig.getPafApiToken();
     }
 
@@ -116,7 +121,7 @@ public class PafClient {
         HttpEntity<String> entity = new HttpEntity<>("", headers);
 
         try {
-            ResponseEntity<String> a = restTemplate.exchange(url, HttpMethod.PUT, entity, String.class);
+            restTemplate.exchange(url, HttpMethod.PUT, entity, String.class);
             log.debug("Recorded voter voted PUT {}", url);
             return Try.success(new RecordVoteResponse(ern, true));
         } catch (HttpClientErrorException e) {
@@ -124,6 +129,28 @@ public class PafClient {
                 return Try.success(new RecordVoteResponse(ern, false));
             } else {
                 return Try.failure(new ServerFailure(String.format(RECORD_VOTE_ERROR_MESSAGE, ern, e.getStatusCode().getReasonPhrase())));
+            }
+        }
+    }
+
+    public Try<RecordContactRequest> recordContact(String ern, RecordContactRequest contactRecord) {
+        String url = String.format(CONTACT_ENDPOINT, ern);
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.set("X-Authorization", API_TOKEN);
+        HttpEntity<RecordContactRequest> entity = new HttpEntity<>(contactRecord, headers);
+
+        try {
+            ResponseEntity<RecordContactRequest> response = restTemplate.exchange(url, HttpMethod.PUT, entity, RecordContactRequest.class);
+            log.debug("Recorded voter voted PUT {}", url);
+            return Try.success(response.getBody());
+        } catch (HttpClientErrorException e) {
+            if (e.getStatusCode().value() == 404) {
+                String message = String.format("No voter with ern=%s. PAF returned %s", ern, e.getStatusCode().getReasonPhrase());
+                log.debug(message);
+                return Try.failure(new NotFoundFailure(message));
+            } else {
+                return Try.failure(new ServerFailure(String.format(ADD_CONTACT_ERROR_MESSAGE, ern, e.getStatusCode().getReasonPhrase())));
             }
         }
     }
