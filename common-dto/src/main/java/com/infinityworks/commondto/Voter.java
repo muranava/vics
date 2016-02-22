@@ -7,7 +7,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import static com.google.common.base.Strings.nullToEmpty;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class Voter {
+public class Voter implements GeneratesErn {
     private final String pollingDistrict;
     private final String telephone;
     private final String electorId;
@@ -19,7 +19,7 @@ public class Voter {
 
     @JsonCreator
     public Voter(@JsonProperty("polling_district") String pollingDistrict,
-                 @JsonProperty("telephone") String telephone, // TODO not yet available in API
+                 @JsonProperty("telephone") String telephone,
                  @JsonProperty("elector_id") String electorId,
                  @JsonProperty("elector_suffix") String electorSuffix,
                  @JsonProperty("title") String title,
@@ -40,14 +40,17 @@ public class Voter {
         return telephone;
     }
 
+    @Override
     public String getPollingDistrict() {
         return pollingDistrict;
     }
 
+    @Override
     public String getElectorId() {
         return electorId;
     }
 
+    @Override
     public String getElectorSuffix() {
         return electorSuffix;
     }

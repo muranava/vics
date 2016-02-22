@@ -2,27 +2,29 @@ package com.infinityworks.pdfgen;
 
 import com.infinityworks.pdfgen.model.ElectorRow;
 import com.infinityworks.pdfgen.model.GeneratedPdfTable;
-import com.itextpdf.text.*;
-import com.itextpdf.text.pdf.PdfPCell;
-import com.itextpdf.text.pdf.PdfPTable;
+import com.lowagie.text.*;
+import com.lowagie.text.Font;
+import com.lowagie.text.pdf.PdfPCell;
+import com.lowagie.text.pdf.PdfPTable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
+import java.awt.*;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.IntStream;
 
-import static com.itextpdf.text.Font.FontFamily.HELVETICA;
+import static com.lowagie.text.Font.HELVETICA;
 
 @Component
 public class TableBuilder {
     private static final Logger log = LoggerFactory.getLogger(TableBuilder.class);
     private static final Font dataFont = new Font(HELVETICA, 11);
     private static final Font headerFont = new Font(HELVETICA, 10);
-    private static final BaseColor LIGHT_GREY = new BaseColor(215, 215, 215);
-    private static final BaseColor LIGHTER_GREY = new BaseColor(235, 235, 235);
+    private static final Color LIGHT_GREY = new Color(215, 215, 215);
+    private static final Color LIGHTER_GREY = new Color(235, 235, 235);
 
     private PdfPCell createHeaderCell(String content, int rotation) {
         PdfPCell header = new PdfPCell(new Phrase(content, headerFont));
@@ -132,10 +134,9 @@ public class TableBuilder {
     private void addChangeRow(PdfPTable table) {
         IntStream.range(0, TableConfig.NUM_COLUMNS)
                 .forEach(i -> {
-
                     PdfPCell cell = new PdfPCell();
-                    cell.setFixedHeight(1);
-                    cell.setBackgroundColor(BaseColor.BLACK);
+                    cell.setFixedHeight(0.15f);
+                    cell.setBackgroundColor(Color.BLACK);
                     table.addCell(cell);
                 });
 

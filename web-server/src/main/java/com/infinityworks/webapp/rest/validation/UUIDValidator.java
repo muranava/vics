@@ -1,11 +1,10 @@
 package com.infinityworks.webapp.rest.validation;
 
-
 import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
 import java.util.UUID;
 
-public class UUIDValidator implements ConstraintValidator<IsUUID, String> {
+class UUIDValidator implements ConstraintValidator<IsUUID, String> {
     @Override
     public void initialize(IsUUID constraintAnnotation) {
 

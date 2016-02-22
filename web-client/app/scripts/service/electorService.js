@@ -47,6 +47,21 @@ angular
       });
     };
 
+    api.search = function(searchParams, limit) {
+      return $http({
+        url: apiUrl + '/elector',
+        method: 'GET',
+        params: {
+          firstName: searchParams.firstName,
+          lastName: searchParams.lastName,
+          address: searchParams.address,
+          postCode: searchParams.postCode,
+          limit: limit
+        },
+        withCredentials: true
+      });
+    };
+
     /**
      * Retrieves the households and electors in the given streets
      */

@@ -14,18 +14,18 @@ public class TableConfig {
 
     static final int[] COLUMN_WIDTHS = {
             40, // house
-            75, // name
+            89, // name
             65, // tel
             40, // likelihood
-            30, // iss 1
+            28, // iss 1
             45, // iss 2
-            30, // iss 3
+            28, // iss 3
             40, // intention
-            20, // has pv
-            20, // wants pv
-            20, // needs lift
-            20, // poster
-            20, // dead
+            18, // has pv
+            18, // wants pv
+            18, // needs lift
+            18, // poster
+            18, // dead
             85  // ERN
     };
     static final int NUM_COLUMNS = COLUMN_WIDTHS.length;

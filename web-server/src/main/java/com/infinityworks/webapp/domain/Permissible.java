@@ -15,9 +15,15 @@ public interface Permissible {
         return getPermissions().stream().anyMatch(privilege -> privilege.getPermission() == permission);
     }
 
+    default Boolean hasWriteAccess() {
+        return getWriteAccess();
+    }
+
     default boolean isAdmin() {
         return getRole() == Role.ADMIN;
     }
+
+    Boolean getWriteAccess();
 
     Set<Ward> getWards();
 

@@ -1,5 +1,6 @@
 package com.infinityworks.webapp.service.client;
 
+import com.infinityworks.common.lang.StringExtras;
 import com.infinityworks.commondto.Property;
 import com.infinityworks.commondto.Voter;
 import com.infinityworks.commondto.VotersByStreet;
@@ -8,21 +9,27 @@ import com.infinityworks.webapp.config.CanvassConfig;
 import com.infinityworks.webapp.error.NotFoundFailure;
 import com.infinityworks.webapp.error.PafApiFailure;
 import com.infinityworks.webapp.error.ServerFailure;
-import com.infinityworks.webapp.rest.dto.RecordContactRequest;
-import com.infinityworks.webapp.rest.dto.Street;
-import com.infinityworks.webapp.rest.dto.TownStreets;
+import com.infinityworks.webapp.rest.dto.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.*;
 import org.springframework.stereotype.Component;
+import org.springframework.util.LinkedMultiValueMap;
+import org.springframework.util.MultiValueMap;
+import org.springframework.util.StringUtils;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
+import org.springframework.web.util.UriComponents;
+import org.springframework.web.util.UriComponentsBuilder;
 
+import java.util.Collections;
 import java.util.List;
 
 import static java.util.Arrays.asList;
+import static java.util.Collections.singletonList;
 import static java.util.stream.Collectors.toList;
+import static org.springframework.http.HttpMethod.GET;
 
 @Component
 public class PafClient {
@@ -41,19 +48,26 @@ public class PafClient {
 
     private final RestTemplate restTemplate;
     private final StreetConverter streetConverter;
+    private final String pafApiBaseUrl;
 
     @Autowired
     public PafClient(RestTemplate restTemplate, CanvassConfig canvassConfig, StreetConverter streetConverter) {
         this.restTemplate = restTemplate;
         this.streetConverter = streetConverter;
+        pafApiBaseUrl = canvassConfig.getPafApiBaseUrl();
 
-        STREETS_BY_WARD_ENDPOINT = canvassConfig.getPafApiBaseUrl() + "/wards/%s/streets";
-        ELECTORS_BY_STREET_ENDPOINT = canvassConfig.getPafApiBaseUrl() + "/wards/%s/streets";
-        VOTED_ENDPOINT = canvassConfig.getPafApiBaseUrl() + "/voter/%s";
-        CONTACT_ENDPOINT = canvassConfig.getPafApiBaseUrl() + "/voter/%s/contact";
+        STREETS_BY_WARD_ENDPOINT = pafApiBaseUrl + "/wards/%s/streets";
+        ELECTORS_BY_STREET_ENDPOINT = pafApiBaseUrl + "/wards/%s/streets";
+        VOTED_ENDPOINT = pafApiBaseUrl + "/voter/%s";
+        CONTACT_ENDPOINT = pafApiBaseUrl + "/voter/%s/contact";
         API_TOKEN = canvassConfig.getPafApiToken();
     }
 
+    /**
+     * Finds all the streets in a given ward.
+     * @param wardCode the ward code to retrieve streets by, e.g. E09000125
+     * @return
+     */
     public Try<List<Street>> findStreetsByWardCode(String wardCode) {
         String url = String.format(STREETS_BY_WARD_ENDPOINT, wardCode);
 
@@ -64,7 +78,7 @@ public class PafClient {
         ResponseEntity<Street[]> pafResponse;
 
         try {
-            pafResponse = restTemplate.exchange(url, HttpMethod.GET, httpEntity, Street[].class);
+            pafResponse = restTemplate.exchange(url, GET, httpEntity, Street[].class);
         } catch (HttpClientErrorException e) {
             String msg = String.format(STREETS_BY_WARD_ERROR_MESSAGE, wardCode, "");
             log.error(msg, e);
@@ -153,5 +167,41 @@ public class PafClient {
                 return Try.failure(new ServerFailure(String.format(ADD_CONTACT_ERROR_MESSAGE, ern, e.getStatusCode().getReasonPhrase())));
             }
         }
+    }
+
+    public Try<List<Voter>> searchElectors(SearchElectors searchElectors) {
+        String url = buildSearchUrl(searchElectors);
+        HttpHeaders headers = new HttpHeaders();
+        headers.set("X-Authorization", API_TOKEN);
+        headers.setAccept(singletonList(MediaType.APPLICATION_JSON));
+        HttpEntity entity = new HttpEntity<>(headers);
+
+        try {
+            ResponseEntity<Voter[]> response = restTemplate.exchange(url, GET, entity, Voter[].class);
+            log.debug("Recorded voter voted PUT {}", url);
+            return Try.success(asList(response.getBody()));
+        } catch (HttpClientErrorException e) {
+            return Try.failure(new PafApiFailure(String.format(ADD_CONTACT_ERROR_MESSAGE, searchElectors, e.getStatusCode().getReasonPhrase())));
+        }
+    }
+
+    private String buildSearchUrl(SearchElectors searchElectors) {
+        MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
+        if (!StringExtras.isNullOrEmpty(searchElectors.getFirstName())) {
+            params.add("firstName", searchElectors.getFirstName());
+        }
+        if (!StringExtras.isNullOrEmpty(searchElectors.getLastName())) {
+            params.add("lastName", searchElectors.getLastName());
+        }
+        if (!StringExtras.isNullOrEmpty(searchElectors.getAddress())) {
+            params.add("address", searchElectors.getAddress());
+        }
+        if (!StringExtras.isNullOrEmpty(searchElectors.getPostCode())) {
+            params.add("postCode", searchElectors.getPostCode());
+        }
+        return pafApiBaseUrl + UriComponentsBuilder.fromPath("/voter")
+                .queryParams(params)
+                .build()
+                .toUriString();
     }
 }

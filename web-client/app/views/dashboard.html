@@ -1,5 +1,72 @@
-<section class="countdown text-center">
-  <div class="section-body contain-lg" ng-show="seconds">
-    {{days}} Days, {{hours}} Hours, {{minutes}} minutes, {{seconds | number:0}} seconds
-  </div>
+<section>
+  <div class="section-body">
+    <div class="container">
+      <h2 class="text-light text-center">Countdown<br/><small class="text-primary">until the referendum</small></h2>
+      <br/>
+
+      <!-- Days -->
+      <div class="row">
+        <div class="col-md-3">
+          <div class="card  card-type-pricing text-center">
+
+            <div class="card-body style-gray">
+              <h2 class="text-light">Days</h2>
+              <div class="price">
+                <h2><span class="text-xxxl">{{days}}</span></h2>
+              </div>
+              <br/>
+            </div><!--end .card-body -->
+
+          </div><!--end .card -->
+        </div><!--end .col -->
+
+        <!-- Hours -->
+        <div class="col-md-3">
+          <div class="card card-type-pricing text-center">
+
+            <div class="card-body style-gray">
+              <h2 class="text-light">Hours</h2>
+              <div class="price">
+                <h2><span class="text-xxxl">{{hours}}</span></h2>
+              </div>
+              <br/>
+            </div><!--end .card-body -->
+
+          </div><!--end .card -->
+        </div><!--end .col -->
+
+        <!-- Minutes -->
+        <div class="col-md-3">
+          <div class="card card-type-pricing text-center">
+
+            <div class="card-body style-gray">
+              <h2 class="text-light">Minutes</h2>
+              <div class="price">
+                <h2><span class="text-xxxl">{{minutes}}</span></h2>
+              </div>
+              <br/>
+            </div><!--end .card-body -->
+
+          </div><!--end .card -->
+        </div><!--end .col -->
+
+        <!-- Seconds -->
+        <div class="col-md-3">
+          <div class="card card-type-pricing text-center">
+
+            <div class="card-body style-gray">
+              <h2 class="text-light">Seconds</h2>
+              <div class="price">
+                <h2><span class="text-xxxl">{{seconds | number:0}}</span></h2>
+              </div>
+              <br/>
+            </div><!--end .card-body -->
+
+          </div><!--end .card -->
+        </div><!--end .col -->
+      </div><!--end .row -->
+      <!-- END PRICING CARDS 1 -->
+
+    </div><!--end .container -->
+  </div><!--end .section-body -->
 </section>

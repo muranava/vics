@@ -40,7 +40,7 @@
                    id="constituencyInputID"
                    ng-model="constituencySearchModel"
                    placeholder="Type a constituency name"
-                   typeahead="c.name for c in constituencies | filter:$viewValue | limitTo:10"
+                   typeahead="c as c.name + ' (' + c.code + ')' for c in constituencies | filter:$viewValue | limitTo:10"
                    typeahead-on-select="onSelectConstituency()"
                    typeahead-loading="true"
                    class="form-control">
@@ -71,7 +71,7 @@
                    ng-disabled="allWards"
                    ng-model="wardSearchModel"
                    placeholder="Type a ward name"
-                   typeahead="w.name for w in wards | filter:$viewValue | limitTo:8"
+                   typeahead="w as w.name + ' (' + w.code + ')' for w in wards | filter:$viewValue | limitTo:8"
                    class="form-control">
           </div>
           <div class="card-actionbar">
@@ -84,7 +84,7 @@
     </div>
 
     <!-- Download Cards -->
-    <div class="row" ng-show="selectedWard">
+    <div class="row" ng-show="streets.length">
       <div class="col-md-12">
         <div class="card" ng-show="wards.length">
           <div class="card-head">
@@ -111,7 +111,7 @@
                       <li class="tile">
                         <a class="tile-content ink-reaction">
                           <div class="tile-text canvass-search-result">
-                            <div>{{selectedConstituency.name}} ({{selectedConstituency.code}})</div>
+                            <div>{{constituencySearchModel.name}} ({{constituencySearchModel.code}})</div>
                             <small>Constituency</small>
                           </div>
                         </a>
@@ -119,7 +119,7 @@
                       <li class="tile">
                         <a class="tile-content ink-reaction">
                           <div class="tile-text">
-                          <div>{{selectedWard.name}} ({{selectedWard.code}})</div>
+                          <div>{{wardSearchModel.name}} ({{wardSearchModel.code}})</div>
                             <small>Ward</small>
                           </div>
                         </a>

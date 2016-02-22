@@ -1,6 +1,7 @@
 package com.infinityworks.webapp.service;
 
 import com.infinityworks.common.lang.Try;
+import com.infinityworks.webapp.domain.Permissible;
 import com.infinityworks.webapp.domain.User;
 import com.infinityworks.webapp.error.BadRequestFailure;
 import com.infinityworks.webapp.error.NotAuthorizedFailure;
@@ -99,7 +100,7 @@ public class UserService {
     }
 
     @Transactional
-    public Try<User> create(User user, CreateUserRequest request) {
+    public Try<User> create(Permissible user, CreateUserRequest request) {
         if (!user.isAdmin()) {
             log.error("Non admin tried to create user!. User={}, request={}", user, request);
             return Try.failure(new NotAuthorizedFailure("Not authorized"));

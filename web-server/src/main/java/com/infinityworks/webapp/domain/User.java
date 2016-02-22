@@ -136,6 +136,7 @@ public class User extends BaseEntity implements Permissible {
         this.wards = wards;
     }
 
+    @Override
     public Boolean getWriteAccess() {
         return writeAccess;
     }

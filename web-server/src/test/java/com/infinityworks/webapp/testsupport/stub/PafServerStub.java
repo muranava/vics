@@ -3,9 +3,9 @@ package com.infinityworks.webapp.testsupport.stub;
 import com.github.tomakehurst.wiremock.WireMockServer;
 import com.github.tomakehurst.wiremock.client.WireMock;
 import com.google.common.io.Resources;
+import com.infinityworks.webapp.rest.dto.SearchElectors;
 
 import java.io.IOException;
-import java.net.URLEncoder;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -31,6 +31,7 @@ public class PafServerStub {
         files.put("E05001221", "json/paf-streets-earlsdon.json");
         files.put("E05001221,Coventry", "paf-voters-multiple-streets.json");
         files.put("voted,ADD3131", "json/paf-record-voted.json");
+        files.put("search,McCall,KT25BU", "json/paf-search-voter.json");
     }
 
     public void start() {
@@ -74,6 +75,22 @@ public class PafServerStub {
         wireMock.register(put(urlPathMatching(urlPath))
                 .willReturn(aResponse()
                         .withStatus(200)
+                        .withBody(jsonData)));
+    }
+
+    public void willSearchVoters(String lastName, String postCode) throws IOException {
+        String fileName = String.format("search,%s,%s", lastName, postCode);
+        String file = requireNonNull(files.get(fileName),
+                String.format("No json file for voted request lastName=%s, postCode=%s", lastName, postCode));
+        String jsonData = Resources.toString(getResource(file), UTF_8);
+
+        String urlPath = "/v1/voter";
+        wireMock.register(get(urlPathMatching(urlPath))
+                .withQueryParam("lastName", equalTo("McCall"))
+                .withQueryParam("postCode", equalTo("KT25BU"))
+                .willReturn(aResponse()
+                        .withStatus(200)
+                        .withHeader(CONTENT_TYPE, APPLICATION_JSON_VALUE)
                         .withBody(jsonData)));
     }
 }

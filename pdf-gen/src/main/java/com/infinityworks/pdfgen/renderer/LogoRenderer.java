@@ -1,21 +1,36 @@
 package com.infinityworks.pdfgen.renderer;
 
-import com.itextpdf.text.Document;
-import com.itextpdf.text.DocumentException;
-import com.itextpdf.text.Image;
-import com.itextpdf.text.pdf.PdfPageEventHelper;
-import com.itextpdf.text.pdf.PdfWriter;
+import com.lowagie.text.BadElementException;
+import com.lowagie.text.Document;
+import com.lowagie.text.DocumentException;
+import com.lowagie.text.Image;
+import com.lowagie.text.pdf.PdfPageEventHelper;
+import com.lowagie.text.pdf.PdfWriter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.io.IOException;
+import java.net.URL;
+
 public class LogoRenderer extends PdfPageEventHelper {
-    private final Image image = Images.logo;
     private final Logger log = LoggerFactory.getLogger(LogoRenderer.class);
+    private Image logo;
+
+    public LogoRenderer(URL logoURL) {
+        try {
+            this.logo = Image.getInstance(logoURL);
+            this.logo.scalePercent(8);
+        } catch (BadElementException | IOException e) {
+            log.error("Failed to load PDF image for page logo");
+        }
+    }
 
     @Override
     public void onEndPage(PdfWriter writer, Document document) {
         try {
-            writer.getDirectContent().addImage(image);
+            if (logo != null) {
+                writer.getDirectContent().addImage(logo);
+            }
         } catch (DocumentException e) {
             log.error("Failed to render logo", e);
         }
@@ -23,6 +38,8 @@ public class LogoRenderer extends PdfPageEventHelper {
 
     @Override
     public void onOpenDocument(PdfWriter writer, Document document) {
-        image.setAbsolutePosition(33, 510);
+        if (logo != null) {
+            logo.setAbsolutePosition(33, 515);
+        }
     }
 }

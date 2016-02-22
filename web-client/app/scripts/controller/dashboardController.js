@@ -3,7 +3,7 @@ angular
   .controller('dashboardController', function ($interval, $scope) {
     var referendumDate = new Date(2016, 5, 23, 8, 0);
 
-    $interval(function () {
+    function updateCountdown() {
       // get total seconds between the times
       var delta = Math.abs(referendumDate - new Date()) / 1000;
 
@@ -20,8 +20,9 @@ angular
       delta -= $scope.minutes * 60;
 
       // what's left is seconds
-      $scope.seconds = delta % 60;  // in theory the modulus is not required
+      $scope.seconds = delta % 60;
+    }
 
-    }, 999);
-
+    updateCountdown();
+    $interval(updateCountdown, 999, 0, true);
   });

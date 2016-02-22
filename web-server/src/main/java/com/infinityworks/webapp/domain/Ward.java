@@ -1,5 +1,6 @@
 package com.infinityworks.webapp.domain;
 
+import com.google.common.base.MoreObjects;
 import com.google.common.base.Objects;
 
 import javax.persistence.Entity;
@@ -53,5 +54,14 @@ public class Ward extends BaseEntity {
     @Override
     public final int hashCode() {
         return Objects.hashCode(code, name);
+    }
+
+    @Override
+    public String toString() {
+        return MoreObjects.toStringHelper(this)
+                .add("code", code)
+                .add("name", name)
+                .add("constituency", constituency)
+                .toString();
     }
 }

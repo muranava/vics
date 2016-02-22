@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.datatype.jdk8.Jdk8Module;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+import com.google.common.io.Resources;
 import com.infinityworks.pdfgen.DocumentBuilder;
 import com.infinityworks.pdfgen.converter.PropertyToRowConverter;
 import com.infinityworks.pdfgen.renderer.LogoRenderer;
@@ -33,6 +34,8 @@ import org.springframework.web.client.RestTemplate;
 import javax.sql.DataSource;
 import javax.validation.Validation;
 import javax.validation.ValidatorFactory;
+import java.io.InputStream;
+import java.net.URL;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -118,7 +121,8 @@ public class Config {
 
     @Bean
     public LogoRenderer logoRenderer() {
-        return new LogoRenderer();
+        URL logo = Resources.getResource("logo.png");
+        return new LogoRenderer(logo);
     }
 
     @Bean

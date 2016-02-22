@@ -1,6 +1,7 @@
 package com.infinityworks.webapp.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.google.common.base.MoreObjects;
 import com.google.common.base.Objects;
 
 import javax.persistence.Entity;
@@ -64,5 +65,13 @@ public class Constituency extends BaseEntity {
     @Override
     public int hashCode() {
         return Objects.hashCode(code, name);
+    }
+
+    @Override
+    public String toString() {
+        return MoreObjects.toStringHelper(this)
+                .add("code", code)
+                .add("name", name)
+                .toString();
     }
 }

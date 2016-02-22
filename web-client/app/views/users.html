@@ -1,199 +1,227 @@
 <section>
+  <br>
   <div class="section-body contain-lg">
-
-    <div class="row" ng-if="editMode">
-
-      <form class="form form-validate" novalidate="novalidate" ng-submit="onEditUser(editUser)">
-        <div class="card ">
-          <div class="card-head">
-            <header>Edit User</header>
-          </div>
-          <div class="card-body">
-            <div class="alert alert-callout alert-danger" role="alert"
-                 ng-show="editErrors.length || userExistsError">
-              <strong>Please correct form values</strong>
-              <p ng-repeat="error in editErrors">
-                <i class="fa fa-warning"></i> &nbsp;{{error}}
-              </p>
-              <p ng-show="userExistsError">
-                <i class="fa fa-warning"></i> &nbsp;User {{editUser.username}} already exists
-              </p>
-            </div>
-            <div class="form-group">
-              <input type="email" ng-model="editUser.username" class="form-control" id="edusername" name="edusername"
-                     required>
-              <label for="edusername">Email</label>
-            </div>
-            <div class="form-group">
-              <input type="text" class="form-control" ng-model="editUser.firstName" id="edfname" name="edfname"
-                     required>
-              <label for="edfname">First Name</label>
-            </div>
-            <div class="form-group">
-              <input type="text" class="form-control" ng-model="editUser.lastName" id="edlname" name="edlname"
-                     required>
-              <label for="edlname">Last Name</label>
-            </div>
-            <div class="form-group">
-              <div class="input-group">
-                <div class="input-group-btn">
-                  <button class="btn btn-default" type="button" ng-click="randomPassword(editUser)">Generate</button>
-                </div>
-                <div class="input-group-content">
-                  <input type="text" class="form-control" name="editpw1" ng-model="editUser.password" id="editpw1"
-                         data-rule-min="8" data-rule-max="50" required>
-                  <label for="editpw1">Password</label>
-                  <p class="help-block">Leave empty to keep existing password</p>
-                </div>
-              </div>
-            </div>
-            <div class="form-group">
-              <input type="text" class="form-control" ng-model="editUser.repeatPassword" id="editpw2" name="editpw2"
-                     data-rule-min="8" data-rule-max="50" required>
-              <label for="editpw2">Repeat Password</label>
-            </div>
-            <div class="form-group">
-              <div class="checkbox checkbox-styled">
-                <label>
-                  <input type="checkbox" name="terms1" ng-model="editUser.writeAccess" required>
-                  <span>Write access</span>
-                </label>
-              </div>
-            </div>
-
-          </div><!--end .card-body -->
-          <div class="card-actionbar">
-            <div class="card-actionbar-row">
-              <button type="submit" class="btn btn-flat btn-primary ink-reaction" ng-click="onCancelEdit()">CANCEL</button>
-              <button type="submit" class="btn btn-flat btn-primary ink-reaction" ng-click="onSaveEdit(editUser)">SAVE</button>
-            </div>
-          </div>
-        </div><!--end .card -->
-      </form>
-    </div>
-
-    <div class="row" ng-if="!editMode">
-
-      <form class="form form-validate" novalidate="novalidate" ng-submit="onCreateUser(createUserModel)">
-        <div class="card ">
-          <div class="card-head">
-            <header>Create a User</header>
-          </div>
-          <div class="card-body">
-            <div class="alert alert-callout alert-danger" role="alert" ng-show="validationErrors.length || userExistsError">
-              <strong>Please correct form values</strong>
-              <p ng-repeat="error in validationErrors">
-                <i class="fa fa-warning"></i> &nbsp;{{error}}
-              </p>
-              <p ng-show="userExistsError">
-                <i class="fa fa-warning"></i> &nbsp;User {{createUserModel.username}} already exists
-              </p>
-            </div>
-            <div class="alert alert-callout alert-success" role="alert" ng-show="successfullyCreatedUser">
-              <strong>Success</strong> Created user {{createdUserEmail}}
-            </div>
-            <div class="form-group">
-              <input type="email" ng-model="createUserModel.username" class="form-control" id="minmax2" name="minmax2"
-                     required>
-              <label for="minmax2">Email</label>
-            </div>
-            <div class="form-group">
-              <input type="text" class="form-control" ng-model="createUserModel.firstName" id="fname" name="fname"
-                     required>
-              <label for="fname">First Name</label>
-            </div>
-            <div class="form-group">
-              <input type="text" class="form-control" ng-model="createUserModel.lastName" id="lname" name="lname"
-                     required>
-              <label for="lname">Last Name</label>
-            </div>
-            <div class="form-group">
-              <div class="input-group">
-                <div class="input-group-btn">
-                  <button class="btn btn-default" type="button" ng-click="randomPassword(createUserModel)">Generate</button>
-                </div>
-                <div class="input-group-content">
-                  <input type="text" class="form-control" name="pw1" ng-model="createUserModel.password" id="pw1"
-                         data-rule-min="8" data-rule-max="50" required>
-                  <label for="pw1">Password</label>
-                  <p class="help-block">At least 8 characters with at least one number and uppercase character</p>
-                </div>
-              </div>
-            </div>
-            <div class="form-group">
-              <input type="text" class="form-control" ng-model="createUserModel.repeatPassword" id="pw2" name="pw2"
-                     data-rule-min="8" data-rule-max="50" required>
-              <label for="pw2">Repeat Password</label>
-            </div>
-
-            <!-- Write access -->
-            <div class="form-group">
-              <div class="checkbox checkbox-styled">
-                <label>
-                  <input type="checkbox" name="terms1" ng-model="createUserModel.writeAccess" required>
-                  <span>Write access</span>
-                </label>
-              </div>
-            </div>
-          </div><!--end .card-body -->
-          <div class="card-actionbar">
-            <div class="card-actionbar-row">
-              <button type="submit" class="btn btn-flat btn-primary ink-reaction">CREATE USER</button>
-            </div>
-          </div>
-        </div><!--end .card -->
-      </form>
-    </div>
-    <div class="row" ng-if="!editMode">
+    <div class="row">
       <div class="col-lg-12">
-        <h2 class="text-primary">Users</h2>
-      </div><!--end .col -->
-
-      <div class="col-lg-12">
-        <div class="alert alert-callout alert-danger" role="alert" ng-show="deleteUserFailed">
-          <strong>Failed to delete user</strong> check the response or server log for errors.
-        </div>
+        <h2 class="text-primary">User Management</h2>
       </div>
+      <div class="col-lg-8">
+        <article class="lead">
+          <p>
+            Create and delete users and associate permissions.
+          </p>
+        </article>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-sm-12">
 
-      <div class="row">
-        <div class="col-lg-12">
-          <div class="card">
-            <div class="card-body no-padding">
-              <ul class="list divider-full-bleed">
+        <div class="row" ng-if="editMode">
 
-                <li class="tile" ng-repeat="user in users">
-                  <a class="tile-content ink-reaction">
-                    <div class="tile-icon">
-                      <i ng-if="user.role === 'ADMIN'" class="fa fa-lock"></i>
-                      <i ng-if="user.role === 'USER'" class="fa fa-user"></i>
+          <div class="card ">
+            <div class="card-head">
+              <header>Edit User</header>
+            </div>
+            <div class="card-body">
+              <form class="form form-validate" novalidate="novalidate" ng-submit="onEditUser(editUser)">
+
+                <div class="alert alert-callout alert-danger" role="alert"
+                     ng-show="editErrors.length || userExistsError">
+                  <strong>Please correct form values</strong>
+                  <p ng-repeat="error in editErrors">
+                    <i class="fa fa-warning"></i> &nbsp;{{error}}
+                  </p>
+                  <p ng-show="userExistsError">
+                    <i class="fa fa-warning"></i> &nbsp;User {{editUser.username}} already exists
+                  </p>
+                </div>
+                <div class="form-group">
+                  <input type="email" ng-model="editUser.username" class="form-control" id="edusername"
+                         name="edusername"
+                         required>
+                  <label for="edusername">Email</label>
+                </div>
+                <div class="form-group">
+                  <input type="text" class="form-control" ng-model="editUser.firstName" id="edfname" name="edfname"
+                         required>
+                  <label for="edfname">First Name</label>
+                </div>
+                <div class="form-group">
+                  <input type="text" class="form-control" ng-model="editUser.lastName" id="edlname" name="edlname"
+                         required>
+                  <label for="edlname">Last Name</label>
+                </div>
+                <div class="form-group">
+                  <div class="input-group">
+                    <div class="input-group-btn">
+                      <button class="btn btn-default" type="button" ng-click="randomPassword(editUser)">Generate
+                      </button>
                     </div>
-                    <div class="tile-text">{{user.username}}</div>
-                  </a>
-                  <a ng-if="user.role === 'USER'" class="btn btn-flat ink-reaction" ng-href="#/associations/{{user.id}}">
-                    <i class="fa fa-sitemap"></i>
-                  </a>
-                  &nbsp;
-                  <a ng-if="user.role === 'USER'" class="btn btn-flat ink-reaction" ng-click="onEditUser(user.id)">
-                    <i class="fa fa-edit"></i>
-                  </a>
-                  &nbsp;
-                  <a ng-if="user.role === 'USER'" class="btn btn-flat ink-reaction">
-                    <i class="fa fa-trash" data-toggle="modal" data-target="#simpleModal"
-                       ng-click="preDeleteUser(user)"></i>
-                  </a>
-                </li>
+                    <div class="input-group-content">
+                      <input type="text" class="form-control" name="editpw1" ng-model="editUser.password" id="editpw1"
+                             data-rule-min="8" data-rule-max="50" required>
+                      <label for="editpw1">Password</label>
+                      <p class="help-block">Leave empty to keep existing password</p>
+                    </div>
+                  </div>
+                </div>
+                <div class="form-group">
+                  <input type="text" class="form-control" ng-model="editUser.repeatPassword" id="editpw2" name="editpw2"
+                         data-rule-min="8" data-rule-max="50" required>
+                  <label for="editpw2">Repeat Password</label>
+                </div>
+                <div class="form-group">
+                  <div class="checkbox checkbox-styled">
+                    <label>
+                      <input type="checkbox" name="terms1" ng-model="editUser.writeAccess" required>
+                      <span>Write access</span>
+                    </label>
+                  </div>
+                </div>
 
-              </ul>
+
+              </form>
             </div><!--end .card-body -->
+            <div class="card-actionbar">
+              <div class="card-actionbar-row">
+                <button type="submit" class="btn btn-flat btn-primary ink-reaction" ng-click="onCancelEdit()">CANCEL
+                </button>
+                <button type="submit" class="btn btn-flat btn-primary ink-reaction" ng-click="onSaveEdit(editUser)">SAVE
+                </button>
+              </div>
+            </div>
           </div><!--end .card -->
         </div>
+
+        <div class="row" ng-if="!editMode">
+
+          <form class="form form-validate" novalidate="novalidate" ng-submit="onCreateUser(createUserModel)">
+            <div class="card ">
+              <div class="card-head">
+                <header>Create a User</header>
+              </div>
+              <div class="card-body">
+                <div class="alert alert-callout alert-danger" role="alert"
+                     ng-show="validationErrors.length || userExistsError">
+                  <strong>Please correct form values</strong>
+                  <p ng-repeat="error in validationErrors">
+                    <i class="fa fa-warning"></i> &nbsp;{{error}}
+                  </p>
+                  <p ng-show="userExistsError">
+                    <i class="fa fa-warning"></i> &nbsp;User {{createUserModel.username}} already exists
+                  </p>
+                </div>
+                <div class="alert alert-callout alert-success" role="alert" ng-show="successfullyCreatedUser">
+                  <strong>Success</strong> Created user {{createdUserEmail}}
+                </div>
+                <div class="form-group">
+                  <input type="email" ng-model="createUserModel.username" class="form-control" id="minmax2"
+                         name="minmax2"
+                         required>
+                  <label for="minmax2">Email</label>
+                </div>
+                <div class="form-group">
+                  <input type="text" class="form-control" ng-model="createUserModel.firstName" id="fname" name="fname"
+                         required>
+                  <label for="fname">First Name</label>
+                </div>
+                <div class="form-group">
+                  <input type="text" class="form-control" ng-model="createUserModel.lastName" id="lname" name="lname"
+                         required>
+                  <label for="lname">Last Name</label>
+                </div>
+                <div class="form-group">
+                  <div class="input-group">
+                    <div class="input-group-btn">
+                      <button class="btn btn-default" type="button" ng-click="randomPassword(createUserModel)">Generate
+                      </button>
+                    </div>
+                    <div class="input-group-content">
+                      <input type="text" class="form-control" name="pw1" ng-model="createUserModel.password" id="pw1"
+                             data-rule-min="8" data-rule-max="50" required>
+                      <label for="pw1">Password</label>
+                      <p class="help-block">At least 8 characters with at least one number and uppercase character</p>
+                    </div>
+                  </div>
+                </div>
+                <div class="form-group">
+                  <input type="text" class="form-control" ng-model="createUserModel.repeatPassword" id="pw2" name="pw2"
+                         data-rule-min="8" data-rule-max="50" required>
+                  <label for="pw2">Repeat Password</label>
+                </div>
+
+                <!-- Write access -->
+                <div class="form-group">
+                  <div class="checkbox checkbox-styled">
+                    <label>
+                      <input type="checkbox" name="terms1" ng-model="createUserModel.writeAccess" required>
+                      <span>Write access</span>
+                    </label>
+                  </div>
+                </div>
+              </div><!--end .card-body -->
+              <div class="card-actionbar">
+                <div class="card-actionbar-row">
+                  <button type="submit" class="btn btn-flat btn-primary ink-reaction">CREATE USER</button>
+                </div>
+              </div>
+            </div><!--end .card -->
+          </form>
+        </div>
+        <div class="row" ng-if="!editMode">
+          <div class="col-lg-12">
+            <h2 class="text-primary">Users</h2>
+          </div><!--end .col -->
+
+          <div class="col-lg-12">
+            <div class="alert alert-callout alert-danger" role="alert" ng-show="deleteUserFailed">
+              <strong>Failed to delete user</strong> check the response or server log for errors.
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-lg-12">
+              <div class="card">
+                <div class="card-body no-padding">
+                  <ul class="list divider-full-bleed">
+
+                    <li class="tile" ng-repeat="user in users">
+                      <a class="tile-content ink-reaction">
+                        <div class="tile-icon">
+                          <i ng-if="user.role === 'ADMIN'" class="fa fa-lock"></i>
+                          <i ng-if="user.role === 'USER'" class="fa fa-user"></i>
+                        </div>
+                        <div class="tile-text">{{user.username}}<small>{{user.lastName}}, {{user.firstName}}</small></div>
+                      </a>
+                      <a ng-if="user.role === 'USER'" class="btn btn-flat ink-reaction"
+                         ng-href="#/associations/{{user.id}}">
+                        <i class="fa fa-sitemap"></i>
+                      </a>
+                      &nbsp;
+                      <a ng-if="user.role === 'USER'" class="btn btn-flat ink-reaction" ng-click="onEditUser(user.id)">
+                        <i class="fa fa-edit"></i>
+                      </a>
+                      &nbsp;
+                      <a ng-if="user.role === 'USER'" class="btn btn-flat ink-reaction">
+                        <i class="fa fa-trash" data-toggle="modal" data-target="#simpleModal"
+                           ng-click="preDeleteUser(user)"></i>
+                      </a>
+                    </li>
+
+                  </ul>
+                </div><!--end .card-body -->
+              </div><!--end .card -->
+            </div>
+          </div>
+          <br><br>
+
+        </div>
+
       </div>
-      <br><br>
-
     </div>
-
   </div>
 </section>
+
 
 <!-- CONFIRM DELETE MODAL -->
 <div class="modal fade" id="simpleModal" tabindex="-1" role="dialog" aria-labelledby="simpleModalLabel"
@@ -209,7 +237,9 @@
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
-        <button type="button" class="btn btn-primary" data-dismiss="modal" ng-click="onConfirmDeleteUser(userToDelete)">Delete</button>
+        <button type="button" class="btn btn-primary" data-dismiss="modal" ng-click="onConfirmDeleteUser(userToDelete)">
+          Delete
+        </button>
       </div>
     </div><!-- /.modal-content -->
   </div><!-- /.modal-dialog -->

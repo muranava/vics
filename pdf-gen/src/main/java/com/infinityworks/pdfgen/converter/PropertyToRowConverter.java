@@ -1,8 +1,6 @@
 package com.infinityworks.pdfgen.converter;
 
-import com.infinityworks.common.lang.StringExtras;
 import com.infinityworks.commondto.Property;
-import com.infinityworks.commondto.Voter;
 import com.infinityworks.pdfgen.model.ElectorRow;
 import org.springframework.stereotype.Component;
 
@@ -36,14 +34,7 @@ public class PropertyToRowConverter implements BiFunction<String, Property, List
                         .withPoster("")
                         .withDeceased("")
                         .withStreet(property.getStreetLabel())
-                        .withErn(generateErn(wardCode, voter))
+                        .withErn(voter.getErn())
                         .build()).collect(toList());
-    }
-
-    private String generateErn(String wardCode, Voter voter) {
-            String mandatoryPart = wardCode + "/" + voter.getElectorId();
-            return StringExtras.isNullOrEmpty(voter.getElectorSuffix())
-                    ? mandatoryPart
-                    : mandatoryPart + "/" + voter.getElectorSuffix();
     }
 }

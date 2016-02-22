@@ -1,13 +1,13 @@
 package com.infinityworks.pdfgen.renderer;
 
-import com.itextpdf.text.*;
-import com.itextpdf.text.pdf.*;
+import com.lowagie.text.*;
+import com.lowagie.text.pdf.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 
-import static com.itextpdf.text.Font.FontFamily.HELVETICA;
+import static com.lowagie.text.Font.HELVETICA;
 
 public class PageInfoRenderer extends PdfPageEventHelper {
     private static final Logger log = LoggerFactory.getLogger(PageInfoRenderer.class);
@@ -68,7 +68,7 @@ public class PageInfoRenderer extends PdfPageEventHelper {
             BaseFont bf = BaseFont.createFont(BaseFont.HELVETICA, BaseFont.CP1252, BaseFont.NOT_EMBEDDED);
             cb.saveState();
             cb.beginText();
-            cb.moveText(110, 565);
+            cb.moveText(100, 565);
             cb.setFontAndSize(bf, 18);
             cb.showText("Vote Leave");
             cb.endText();
@@ -81,7 +81,7 @@ public class PageInfoRenderer extends PdfPageEventHelper {
     private void createLikelihoodKey(PdfContentByte cb) {
         ColumnText ct = new ColumnText(cb);
         ct.setText(new Phrase(LIKELIHOOD_KEY, font));
-        ct.setSimpleColumn(new Rectangle(300, 100, 700, 590));
+        ct.setSimpleColumn(322, 100, 700, 590);
         try {
             ct.go();
         } catch (DocumentException e) {
@@ -92,7 +92,7 @@ public class PageInfoRenderer extends PdfPageEventHelper {
     private void createIntentionKey(PdfContentByte cb) {
         ColumnText ct = new ColumnText(cb);
         ct.setText(new Phrase(INTENTION_KEY, font));
-        ct.setSimpleColumn(new Rectangle(500, 0, 700, 590));
+        ct.setSimpleColumn(517, 0, 700, 590);
         try {
             ct.go();
         } catch (DocumentException e) {
@@ -104,7 +104,7 @@ public class PageInfoRenderer extends PdfPageEventHelper {
         ColumnText ct = new ColumnText(cb);
         String format = String.format(META_TEMPLATE, constituencyName, wardName, street);
         ct.setText(new Phrase(format, font));
-        ct.setSimpleColumn(new Rectangle(110, 50, 700, 557));
+        ct.setSimpleColumn(100, 50, 700, 557);
         try {
             ct.go();
         } catch (DocumentException e) {

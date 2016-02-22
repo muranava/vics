@@ -4,17 +4,18 @@
 angular
   .module('canvass')
   .controller('canvassInputController', function ($scope, electorService, RingBuffer) {
-    var logSize = 5;
-    $scope.issues = [''];
+    var logSize = 5,
+      searchLimit = 10;
 
+    $scope.issues = [''];
+    $scope.searchResults = [];
     $scope.elector = null;
     $scope.logs = RingBuffer.newInstance(logSize);
 
-    // main form data model
     $scope.inputRecordModel = {
       ern: '',
-      likelihood: 3,
-      intention: 3,
+      likelihood: '3 - Undecided',
+      intention: '3 - Undecided',
       cost: false,
       border: false,
       sovereignty: false,
@@ -25,39 +26,77 @@ angular
       deceased: false
     };
 
+    $scope.searchForm = {
+      firstName: '',
+      lastName: '',
+      address: '',
+      postCode: ''
+    };
+
+    $scope.onSearchVoter = function() {
+      function handleSuccess(response) {
+        $scope.searchResults.push({
+
+        });
+      }
+
+      function handleError() {
+        $scope.searchFailed = true;
+      }
+
+      electorService.search($scope.searchForm, searchLimit)
+        .success(handleSuccess)
+        .error(handleError);
+    };
+
+    /**
+     * Submits the entry form and adds the result to the log.
+     */
     $scope.onSubmitRecord = function () {
       $scope.errors = validateForm();
-      if (_.isEmpty($scope.errors)) {
-        electorService.submitCanvassInput($scope.inputRecordModel)
-          .success(function (response) {
-            $scope.elector = response;
-            $scope.electorName = $scope.elector.lastName + ", " + $scope.elector.firstName;
-            $scope.electorAddress = $scope.elector.address;
 
-            $scope.logs.push({
-              ern: err.custom,
-              reason: '-',
-              success: true
-            });
-          })
-          .error(function (err) {
-            if (err && err.type === 'NotFoundFailure') {
-              $scope.logs.push({
-                ern: err.custom,
-                reason: 'Invalid roll number',
-                success: false
-              });
-            } else {
-              $scope.logs.push({
-                ern: err.custom,
-                reason: 'Failed to contact server',
-                success: false
-              });
-            }
-            $scope.elector = null;
-          });
+      if (_.isEmpty($scope.errors)) {
+        electorService.submitCanvassInput(mapFormToRequest($scope.inputRecordModel))
+          .success(handleSubmitEntrySuccess)
+          .error(handleSubmitEntryFailure);
       }
     };
+
+    function mapFormToRequest(formModel) {
+      var copy = $.extend(true, {}, formModel);
+      copy.intention = _.parseInt(formModel.intention.charAt(0));
+      copy.likelihood = _.parseInt(formModel.likelihood.charAt(0));
+      return copy;
+    }
+
+    function handleSubmitEntrySuccess(response) {
+      $scope.elector = response;
+      $scope.electorName = $scope.elector.lastName + ", " + $scope.elector.firstName;
+      $scope.electorAddress = $scope.elector.address;
+
+      $scope.logs.push({
+        ern: response.ern,
+        reason: '-',
+        success: true
+      });
+    }
+
+    function handleSubmitEntryFailure(err) {
+      if (err && err.type === 'NotFoundFailure') {
+        $scope.logs.push({
+          ern: err.custom,
+          reason: 'Invalid roll number',
+          success: false
+        });
+      } else {
+        $scope.logs.push({
+          ern: err.custom,
+          reason: 'Failed to contact server',
+          success: false
+        });
+      }
+      $scope.elector = null;
+    }
 
     function validateForm() {
       var errors = [];
@@ -68,17 +107,4 @@ angular
 
       return errors;
     }
-
-    $scope.onSearchVoter = function () {
-      $scope.elector = null;
-      electorService.retrieveElectorByErn($scope.inputRecordModel.ern)
-        .success(function (response) {
-          $scope.elector = response;
-          $scope.electorName = $scope.elector.lastName + ", " + $scope.elector.firstName;
-          $scope.electorAddress = $scope.elector.address;
-        })
-        .error(function () {
-          $scope.elector = null;
-        });
-    };
   });

@@ -6,7 +6,7 @@ angular
     api.recordVote = function (ern) {
       return $http({
         method: 'POST',
-        url: apiUrl + '/voted/' + ern,
+        url: apiUrl + '/elector/' + ern + '/voted',
         withCredentials: true
       });
     };

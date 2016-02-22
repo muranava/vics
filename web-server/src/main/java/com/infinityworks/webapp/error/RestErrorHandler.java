@@ -69,6 +69,10 @@ public final class RestErrorHandler {
             return ResponseEntity.status(INTERNAL_SERVER_ERROR).body(errorEntity);
         }
 
+        if (exception instanceof ServerFailure) {
+            return ResponseEntity.status(INTERNAL_SERVER_ERROR).body(createError(exception));
+        }
+
         log.error("Error is not mapped", exception);
         return ResponseEntity.status(INTERNAL_SERVER_ERROR).body(VAGUE_ERROR_RESPONSE);
     }

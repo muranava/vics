@@ -3,10 +3,10 @@ package com.infinityworks.pdfgen;
 import com.infinityworks.pdfgen.model.GeneratedPdfTable;
 import com.infinityworks.pdfgen.renderer.LogoRenderer;
 import com.infinityworks.pdfgen.renderer.PageInfoRenderer;
-import com.itextpdf.text.Document;
-import com.itextpdf.text.DocumentException;
-import com.itextpdf.text.PageSize;
-import com.itextpdf.text.pdf.PdfWriter;
+import com.lowagie.text.Document;
+import com.lowagie.text.DocumentException;
+import com.lowagie.text.PageSize;
+import com.lowagie.text.pdf.PdfWriter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -25,6 +25,11 @@ public class DocumentBuilder {
         this.logoRenderer = logoRenderer;
     }
 
+    /**
+     * Builds a PDF as a byte stream from the given tables
+     * @param pdfTables the contents of the data tables
+     * @return the generated PDF document as a byte stream
+     */
     public ByteArrayOutputStream buildPages(List<GeneratedPdfTable> pdfTables) {
         ByteArrayOutputStream os = new ByteArrayOutputStream();
         Document document = createDocument();

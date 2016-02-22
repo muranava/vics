@@ -1,6 +1,7 @@
 package com.infinityworks.webapp.service;
 
 import com.infinityworks.common.lang.Try;
+import com.infinityworks.commondto.Voter;
 import com.infinityworks.pdfgen.DocumentBuilder;
 import com.infinityworks.pdfgen.model.GeneratedPdfTable;
 import com.infinityworks.webapp.domain.Constituency;
@@ -12,6 +13,7 @@ import com.infinityworks.webapp.error.NotFoundFailure;
 import com.infinityworks.webapp.pdf.VotersPdfGenerator;
 import com.infinityworks.webapp.rest.dto.ElectorSummary;
 import com.infinityworks.webapp.rest.dto.RecordContactRequest;
+import com.infinityworks.webapp.rest.dto.SearchElectors;
 import com.infinityworks.webapp.rest.dto.TownStreets;
 import com.infinityworks.webapp.service.client.PafClient;
 import org.slf4j.Logger;
@@ -79,10 +81,17 @@ public class ElectorsService {
 
             log.debug("Generating PDF... ward={} constituency={}", wardCode, constituency.getCode());
             Try<ByteArrayOutputStream> pdfContent = pafClient.findElectorsByStreet(townStreets, wardCode)
-                    .map(electors -> {
+                    .flatMap(electors -> {
                         List<GeneratedPdfTable> generatedPdfTables = pdfRenderer.generatePDF(
                                 electors, ward.getCode(), ward.getName(), constituency.getName());
-                        return documentBuilder.buildPages(generatedPdfTables);
+
+                        if (generatedPdfTables.isEmpty()) {
+                            log.debug("No voters found for ward={} streets={}", ward, townStreets);
+                            return Try.failure(new NotFoundFailure("No voters found"));
+                        } else {
+                            ByteArrayOutputStream content = documentBuilder.buildPages(generatedPdfTables);
+                            return Try.success(content);
+                        }
                     });
             log.debug("Finished generating PDF... ward={} constituency={}", wardCode, constituency.getCode());
             return pdfContent;
@@ -103,5 +112,9 @@ public class ElectorsService {
             return Try.failure(new NotAuthorizedFailure("Forbidden"));
         }
         return pafClient.recordContact(ern, contactRequest);
+    }
+
+    public Try<List<Voter>> search(SearchElectors searchElectors) {
+        return pafClient.searchElectors(searchElectors);
     }
 }

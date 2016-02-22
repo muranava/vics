@@ -1,6 +1,6 @@
 package com.infinityworks.pdfgen.model;
 
-import com.itextpdf.text.pdf.PdfPTable;
+import com.lowagie.text.pdf.PdfPTable;
 
 public class GeneratedPdfTable {
     private final PdfPTable table;

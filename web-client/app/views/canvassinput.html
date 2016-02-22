@@ -57,7 +57,12 @@
                 <div class="col-sm-9">
                   <select name="likelihood"
                           class="form-control"
-                          ng-options="item for item in [1,2,3,4,5] track by item"
+                          ng-options="item for item in [
+                          '1 - Definitely won\'t vote',
+                          '2 - Probably won\'t vote',
+                          '3 - Undecided',
+                          '4 - Probably will vote',
+                          '5 - Definitely will vote'] track by item"
                           ng-model="inputRecordModel.likelihood">
                   </select>
                 </div>
@@ -94,7 +99,12 @@
                 <div class="col-sm-9">
                   <select name="intention"
                           class="form-control"
-                          ng-options="item for item in [1,2,3,4,5] track by item"
+                          ng-options="item for item in [
+                          '1 - Definitely remain',
+                          '2 - Probably remain',
+                          '3 - Undecided',
+                          '4 - Probably leave',
+                          '5 - Definitely leave'] track by item"
                           ng-model="inputRecordModel.intention">
                   </select>
                 </div>
@@ -147,23 +157,80 @@
         </div>
       </div>
       <div class="col-lg-6 col-md-6 col-sm-12">
+
         <div class="row">
-          <div class="col-sm-12">
-
-            <div class="card">
-              <div class="card-head card-head-xs style-primary">
-                <header>Search</header>
-              </div><!--end .card-head -->
-              <div class="card-body">
-              </div>
+          <!-- SEARCH -->
+          <div class="card">
+            <div class="card-head card-head-xs style-primary">
+              <header>Search</header>
             </div>
+            <div class="card-body">
 
+              <form ng-submit="onSearchVoter()">
+                <div class="form-group">
+
+                  <div class="input-group">
+                    <div class="input-group-content">
+                      <input type="text" placeholder="First name" class="form-control" ng-model="searchForm.firstName">
+                    </div>
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    <div class="input-group-content">
+                      <input type="text" placeholder="Last name" class="form-control" ng-model="searchForm.lastName">
+                    </div>
+                  </div>
+
+                  <div class="input-group">
+                    <div class="input-group-content">
+                      <input type="text" placeholder="Address" class="form-control" ng-model="searchForm.address">
+                    </div>
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    <div class="input-group-content">
+                      <input type="text" placeholder="Post Code" class="form-control" ng-model="searchForm.postCode">
+                    </div>
+                  </div>
+
+                  <br>
+                  <div class="input-group">
+                    <div class="input-group-btn">
+                      <button type="submit" class="btn btn-default" tabindex="-1">Search</button>
+                    </div>
+                  </div>
+                </div>
+              </form>
+
+              <!-- Search results -->
+              <table class="table no-margin table-hover" ng-show="searchResults.length">
+                <thead>
+                <tr>
+                  <th>Roll #</th>
+                  <th>First Name</th>
+                  <th>Last Name</th>
+                  <th>Address</th>
+                  <th>Post Code</th>
+                  <th></th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr ng-repeat="result in searchResults">
+                  <td>{{result.rollNum}}</td>
+                  <td>{{result.firstName}}</td>
+                  <td>{{result.lastName}}</td>
+                  <td>{{result.address}}</td>
+                  <td>{{result.postCode}}</td>
+                  <td>
+                    <button type="submit" class="btn btn-sm btn-default" tabindex="-1" ng-click="onSearchVoted(result)">
+                      Voted
+                    </button>
+                  </td>
+                </tr>
+                </tbody>
+              </table>
+
+            </div>
           </div>
         </div>
-
-        <!-- Log Entries -->
         <div class="row">
-          <div class="col-sm-12">
+
 
             <div class="card">
               <div class="card-head card-head-xs style-primary">
@@ -177,7 +244,6 @@
                     <th>Roll #</th>
                     <th>Reason</th>
                     <th>Result</th>
-                    <th></th>
                   </tr>
                   </thead>
                   <tbody>
@@ -194,11 +260,12 @@
               </div>
             </div>
 
-          </div>
         </div>
 
 
       </div>
     </div>
+
+
   </div>
 </section>
