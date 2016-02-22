@@ -80,6 +80,16 @@ public class WardController {
                 .fold(errorHandler::mapToResponseEntity, ResponseEntity::ok);
     }
 
+    @PreAuthorize("isAuthenticated()")
+    @RequestMapping(method = GET, value = "/search/restricted")
+    public ResponseEntity<?> wardsSearchByUser(
+            Principal principal,
+            @RequestParam(defaultValue = "10", name = "limit") int limit,
+            @RequestParam(name = "name") @NotEmpty String name) {
+        return sessionService.extractUserFromPrincipal(principal)
+                .flatMap(user -> wardService.searchByUserAndName(user, name, limit))
+                .fold(errorHandler::mapToResponseEntity, ResponseEntity::ok);
+    }
 
     @PreAuthorize("hasAuthority('ADMIN')")
     @RequestMapping(method = POST, value = "/{wardID}/user/{userID}")

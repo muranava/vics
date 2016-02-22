@@ -3,9 +3,10 @@
  */
 angular
   .module('canvass')
-  .controller('canvassInputController', function ($scope, electorService, RingBuffer) {
+  .controller('canvassInputController', function ($scope, electorService, RingBuffer, wardService) {
     var logSize = 5,
-      searchLimit = 10;
+      searchLimit = 10,
+      wardSearchLimit = 50;
 
     $scope.issues = [''];
     $scope.searchResults = [];
@@ -33,8 +34,16 @@ angular
       postCode: ''
     };
 
+    $scope.onWardInputKeypress = function() {
+        $scope.invalidWard = false;
+        wardService.searchRestricted($scope.wardSearchModel, wardSearchLimit)
+          .success(function(response) {
+            $scope.wards = response.wards;
+          });
+    };
+
     $scope.onSearchVoter = function() {
-      function handleSuccess(response) {
+      function handleSuccess() {
         $scope.searchResults.push({
 
         });

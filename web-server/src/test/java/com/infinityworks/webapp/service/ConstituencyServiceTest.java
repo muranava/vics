@@ -14,11 +14,10 @@ import static com.google.common.collect.Sets.newHashSet;
 import static com.infinityworks.webapp.testsupport.builder.ConstituencyBuilder.constituency;
 import static com.infinityworks.webapp.testsupport.builder.UserBuilder.user;
 import static com.infinityworks.webapp.testsupport.builder.WardBuilder.ward;
-import static java.util.Arrays.asList;
 import static org.hamcrest.CoreMatchers.hasItem;
 import static org.junit.Assert.assertThat;
-import static org.mockito.BDDMockito.given;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verifyZeroInteractions;
 
 public class ConstituencyServiceTest {
 
@@ -30,20 +29,6 @@ public class ConstituencyServiceTest {
         constituencyRepository = mock(ConstituencyRepository.class);
         UserRepository userRepository = mock(UserRepository.class);
         underTest = new ConstituencyService(constituencyRepository, userRepository);
-    }
-
-    @Test
-    public void returnsAllConstituenciesForAdmin() throws Exception {
-        User admin = user().withRole(Role.ADMIN).build();
-        Constituency covSouth = constituency().withName("Coventry South").build();
-        Constituency covWest = constituency().withName("Coventry West").build();
-        given(constituencyRepository.findAll()).willReturn(asList(covSouth, covWest));
-
-        UserRestrictedConstituencies constituencies = underTest.getVisibleConstituenciesByUserWithWardContext(admin);
-
-        assertThat(constituencies.getConstituencies(), hasItem(covSouth));
-        assertThat(constituencies.getConstituencies(), hasItem(covWest));
-        verify(constituencyRepository).findAll();
     }
 
     @Test

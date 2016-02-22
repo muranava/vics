@@ -17,13 +17,10 @@ import org.springframework.http.*;
 import org.springframework.stereotype.Component;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
-import org.springframework.util.StringUtils;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
-import org.springframework.web.util.UriComponents;
 import org.springframework.web.util.UriComponentsBuilder;
 
-import java.util.Collections;
 import java.util.List;
 
 import static java.util.Arrays.asList;
@@ -114,9 +111,9 @@ public class PafClient {
         for (VotersByStreet vbs : records) {
             for (Property property : vbs.getProperties()) {
                 // FIXME fake data for demo
-                property.getVoters().add(new Voter("EAF", "07831441567", "R987BB", "1", "", "Amy", "Langley", "Smith"));
-                property.getVoters().add(new Voter("EAF", "07831441563", "RE9141", "1", "", "Michael", "Langley", "Smith"));
-                property.getVoters().add(new Voter("EAF", "07831441563", "E98141", "2", "", "Tim", "Boon", "S"));
+                property.getVoters().add(new Voter("PD-AB123",   "R987BB", "07831441567", "1451", "", "", "Amy", "J", "Smith" ));
+                property.getVoters().add(new Voter("PD-GB123-1", "RE9141", "07831441563", "1144", "1", "", "Michael", "", "Smith"));
+                property.getVoters().add(new Voter("PD-GB123-2", "E98141", "07831441563", "2515", "2", "", "Tim", "N", "Boon"));
             }
         }
         return Try.success(records);

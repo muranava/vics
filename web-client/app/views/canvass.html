@@ -38,6 +38,7 @@
             <input type="text"
                    ng-readonly="readOnlyConstituency"
                    id="constituencyInputID"
+                   typeahead-editable="true"
                    ng-model="constituencySearchModel"
                    placeholder="Type a constituency name"
                    typeahead="c as c.name + ' (' + c.code + ')' for c in constituencies | filter:$viewValue | limitTo:10"
@@ -67,6 +68,7 @@
             </div>
             <input type="text"
                    id="wardInputID"
+                   typeahead-loading="loadingWards"
                    ng-readonly="readOnlyWard"
                    ng-disabled="allWards"
                    ng-model="wardSearchModel"

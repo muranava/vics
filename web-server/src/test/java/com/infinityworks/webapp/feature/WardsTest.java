@@ -2,7 +2,6 @@ package com.infinityworks.webapp.feature;
 
 import com.infinityworks.common.lang.Try;
 import com.infinityworks.webapp.error.RestErrorHandler;
-import com.infinityworks.webapp.repository.WardRepository;
 import com.infinityworks.webapp.rest.WardController;
 import com.infinityworks.webapp.rest.dto.Street;
 import com.infinityworks.webapp.rest.dto.UserRestrictedWards;
@@ -23,8 +22,6 @@ import java.util.List;
 
 import static com.infinityworks.webapp.common.Json.objectMapper;
 import static java.util.Arrays.asList;
-import static org.hamcrest.Matchers.equalTo;
-import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertThat;
 import static org.mockito.Matchers.any;
@@ -57,24 +54,6 @@ public class WardsTest extends WebApplicationTest {
                 .standaloneSetup(wardController)
                 .build();
         pafApiStub.start();
-    }
-
-    @Test
-    public void returnsAllTheWardsForAdmin() throws Exception {
-        String endpoint = "/ward";
-        when(sessionService.extractUserFromPrincipal(any(Principal.class)))
-                .thenReturn(Try.success(admin()));
-
-        int totalWards = (int) getBean(WardRepository.class).count();
-
-        ResultActions response = mockMvc.perform(get(endpoint)
-                .accept(MediaType.APPLICATION_JSON))
-                .andDo(print());
-
-        MvcResult result = response.andExpect(status().isOk()).andReturn();
-        UserRestrictedWards wards = objectMapper.readValue(result.getResponse().getContentAsString(), UserRestrictedWards.class);
-
-        assertThat(wards.getWards(), hasSize(equalTo(totalWards)));
     }
 
     @Test

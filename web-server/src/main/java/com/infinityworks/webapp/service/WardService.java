@@ -19,7 +19,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.*;
 
-import static com.google.common.collect.Sets.newHashSet;
 import static java.util.stream.Collectors.toList;
 import static java.util.stream.Collectors.toSet;
 
@@ -53,16 +52,11 @@ public class WardService {
             return Try.failure(new NotFoundFailure("No constituency with ID " + id));
         }
 
-        Set<Ward> wards;
-        if (user.isAdmin()) {
-            wards = newHashSet(wardRepository.findAll());
-        } else {
-            wards = user.getConstituencies().stream()
-                    .map(Constituency::getWards)
-                    .flatMap(Collection::stream)
-                    .collect(toSet());
-            wards.addAll(user.getWards());
-        }
+        Set<Ward> wards = user.getConstituencies().stream()
+                .map(Constituency::getWards)
+                .flatMap(Collection::stream)
+                .collect(toSet());
+        wards.addAll(user.getWards());
 
         UserRestrictedWards userRestrictedWards = new UserRestrictedWards(wards.stream()
                 .filter(ward -> Objects.equals(ward.getConstituency(), constituency.get()))
@@ -71,13 +65,11 @@ public class WardService {
     }
 
     public UserRestrictedWards getByUser(User user) {
-        if (user.isAdmin()) {
-            return new UserRestrictedWards(wardRepository.findAll());
-        } else {
-            Set<Ward> wards = wardRepository.findByConstituencyIn(user.getConstituencies());
-            wards.addAll(user.getWards());
-            return new UserRestrictedWards(new ArrayList<>(wards));
-        }
+        log.debug("Getting wards by user={}", user);
+
+        Set<Ward> wards = wardRepository.findByConstituencyIn(user.getConstituencies());
+        wards.addAll(user.getWards());
+        return new UserRestrictedWards(new ArrayList<>(wards));
     }
 
     public Try<List<Ward>> getAllByName(User user, String name, int limit) {
@@ -86,6 +78,15 @@ public class WardService {
         } else {
             return Try.failure(new NotAuthorizedFailure("Forbidden content"));
         }
+    }
+
+    public Try<UserRestrictedWards> searchByUserAndName(User user, String wardName, int limit) {
+        log.debug("Getting wards by user={}, wardName={} limit={}", user, wardName, limit);
+
+        Set<Ward> wards = wardRepository.searchByUsernameAndWardName(user.getUsername(), wardName.toUpperCase(), limit);
+
+        log.debug("Found {} wards for user={}", wards, user);
+        return Try.success(new UserRestrictedWards(new ArrayList<>(wards)));
     }
 
     @Transactional
@@ -113,7 +114,6 @@ public class WardService {
         log.debug("Added association ward={}, user={}", wardID, userID);
         return Try.success(updatedUser);
     }
-
 
     @Transactional
     public Try<User> removeUserAssociation(User user, UUID wardID, UUID userID) {

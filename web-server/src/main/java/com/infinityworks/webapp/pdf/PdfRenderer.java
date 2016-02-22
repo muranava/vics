@@ -38,7 +38,7 @@ class PdfRenderer implements VotersPdfGenerator {
                             .map(property -> propertyToRowConverter.apply(wardCode, property))
                             .flatMap(Collection::stream)
                             .collect(toList());
-                    return tableBuilder.generateTableRows(electors, mainStreetName, wardName, constituencyName);
+                    return tableBuilder.generateTableRows(electors, mainStreetName, wardName, wardCode, constituencyName);
                 })
                 .filter(Optional::isPresent)
                 .map(Optional::get)

@@ -17,7 +17,6 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.UUID;
@@ -49,17 +48,13 @@ public class ConstituencyService {
      * in the constituencies)
      */
     public UserRestrictedConstituencies getVisibleConstituenciesByUserWithWardContext(Permissible permissible) {
-        if (permissible.isAdmin()) {
-            return new UserRestrictedConstituencies(new HashSet<>(constituencyRepository.findAll()));
-        } else {
-            Set<Constituency> wardConstituencies = permissible.getWards()
-                    .stream()
-                    .map(Ward::getConstituency)
-                    .collect(toSet());
+        Set<Constituency> wardConstituencies = permissible.getWards()
+                .stream()
+                .map(Ward::getConstituency)
+                .collect(toSet());
 
-            wardConstituencies.addAll(permissible.getConstituencies());
-            return new UserRestrictedConstituencies(wardConstituencies);
-        }
+        wardConstituencies.addAll(permissible.getConstituencies());
+        return new UserRestrictedConstituencies(wardConstituencies);
     }
 
     public Try<List<Constituency>> constituenciesByName(Permissible permissible, String name, int limit) {

@@ -8,6 +8,7 @@ import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.context.jdbc.SqlGroup;
 
 import java.util.List;
+import java.util.Set;
 import java.util.UUID;
 
 import static com.infinityworks.webapp.testsupport.builder.WardBuilder.ward;
@@ -18,7 +19,9 @@ import static org.junit.Assert.assertThat;
         @Sql(executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD,
                 scripts = {"classpath:drop-create.sql",
                         "classpath:constituencies.sql",
-                        "classpath:wards.sql"})
+                        "classpath:wards.sql",
+                        "classpath:users.sql"
+                })
 })
 public class WardRepositoryTest extends RepositoryTest {
 
@@ -27,6 +30,9 @@ public class WardRepositoryTest extends RepositoryTest {
 
     @Autowired
     private ConstituencyRepository constituencyRepository;
+
+    @Autowired
+    private UserRepository userRepository;
 
     @Test
     public void returnsTheWards() throws Exception {
@@ -65,5 +71,12 @@ public class WardRepositoryTest extends RepositoryTest {
                 .build();
 
         assertThat(wards, hasItem(earlsdon));
+    }
+
+    @Test
+    public void searchTheWardsByUser() throws Exception {
+        Set<Ward> wards = wardRepository.searchByUsernameAndWardName("cov@south.cov", "od", 10);
+
+        assertThat(wards, hasSize(2));
     }
 }

@@ -10,6 +10,11 @@ import javax.validation.constraints.NotNull;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class RecordContactRequest {
+
+    @Min(5)
+    @Max(50)
+    @NotNull
+    private final String ern;
     @NotNull
     @Min(1)
     @Max(5)
@@ -36,7 +41,8 @@ public class RecordContactRequest {
     private final Boolean poster;
 
     @JsonCreator
-    public RecordContactRequest(@JsonProperty("intention") Integer intention,
+    public RecordContactRequest(@JsonProperty("ern") String ern,
+                                @JsonProperty("intention") Integer intention,
                                 @JsonProperty("likelihood") Integer likelihood,
                                 @JsonProperty("cost") Boolean cost,
                                 @JsonProperty("sovereignty") Boolean sovereignty,
@@ -46,6 +52,7 @@ public class RecordContactRequest {
                                 @JsonProperty("wantsPV") Boolean wantsPV,
                                 @JsonProperty("deceased") Boolean deceased,
                                 @JsonProperty("poster") Boolean poster) {
+        this.ern = ern;
         this.intention = intention;
         this.likelihood = likelihood;
         this.cost = cost;
@@ -56,6 +63,10 @@ public class RecordContactRequest {
         this.wantsPV = wantsPV;
         this.deceased = deceased;
         this.poster = poster;
+    }
+
+    public String getErn() {
+        return ern;
     }
 
     public Integer getIntention() {

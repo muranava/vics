@@ -9,6 +9,7 @@ import com.infinityworks.webapp.service.ElectorsService;
 import com.infinityworks.webapp.service.SessionService;
 import com.infinityworks.webapp.service.VoteService;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.context.jdbc.SqlGroup;
@@ -63,6 +64,7 @@ public class ElectorsTest extends WebApplicationTest {
     }
 
     @Test
+    @Ignore
     public void returnsTheElectorsByStreetAndTown() throws Exception {
         String wardCode = "E05001221";
         String town = "Coventry";
@@ -76,8 +78,7 @@ public class ElectorsTest extends WebApplicationTest {
         ResultActions response = mockMvc.perform(post(url)
                 .accept("application/pdf")
                 .contentType(APPLICATION_JSON)
-                .content(objectMapper.writeValueAsString(townStreets)))
-                .andDo(print());
+                .content(objectMapper.writeValueAsString(townStreets)));
 
         response.andExpect(status().isOk());
     }
@@ -136,7 +137,6 @@ public class ElectorsTest extends WebApplicationTest {
                 .andExpect(jsonPath("$[0].pollingDistrict", is("AB")))
                 .andExpect(jsonPath("$[0].electorId", is("22217bf4")))
                 .andExpect(jsonPath("$[0].firstName", is("John")))
-                .andExpect(jsonPath("$[0].lastName", is("McCall")))
-                .andExpect(jsonPath("$[0].ern", is("AB/22217bf4")));
+                .andExpect(jsonPath("$[0].lastName", is("McCall")));
     }
 }

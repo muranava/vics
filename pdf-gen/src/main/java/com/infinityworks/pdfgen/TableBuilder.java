@@ -67,7 +67,7 @@ public class TableBuilder {
         table.addCell(createHeaderCell("Roll #", TableConfig.HORIZONTAL_TEXT_ANGLE));
     }
 
-    public Optional<GeneratedPdfTable> generateTableRows(List<ElectorRow> rows, String mainStreetName, String wardName, String constituencyName) {
+    public Optional<GeneratedPdfTable> generateTableRows(List<ElectorRow> rows, String mainStreetName, String wardName, String wardCode, String constituencyName) {
         if (rows.isEmpty()) {
             return Optional.empty();
         }
@@ -88,7 +88,7 @@ public class TableBuilder {
             prevHouse = createRow(table, prevHouse, row);
         }
 
-        return Optional.of(new GeneratedPdfTable(table, mainStreetName, wardName, constituencyName));
+        return Optional.of(new GeneratedPdfTable(table, mainStreetName, wardName, wardCode, constituencyName));
     }
 
     /**

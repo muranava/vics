@@ -111,6 +111,10 @@ public class ElectorsService {
             log.warn("User={} tried to add contact for ern={} but does not have write access", user, ern);
             return Try.failure(new NotAuthorizedFailure("Forbidden"));
         }
+
+//        if (user.hasWardPermission(contactRequest.)) {
+//        }
+
         return pafClient.recordContact(ern, contactRequest);
     }
 

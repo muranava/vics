@@ -11,6 +11,7 @@ public class VoterBuilder {
     private String firstName;
     private String initial;
     private String lastName;
+    private String ern;
 
     public static VoterBuilder voter() {
         return new VoterBuilder().withDefaults();
@@ -24,7 +25,8 @@ public class VoterBuilder {
                 .withFirstName("May")
                 .withLastName("Rose")
                 .withInitial("")
-                .withTitle("Ms");
+                .withTitle("Ms")
+                .withErn("pd-rollNum-suffix");
         return this;
     }
 
@@ -68,7 +70,12 @@ public class VoterBuilder {
         return this;
     }
 
+    public VoterBuilder withErn(String ern) {
+        this.ern = ern;
+        return this;
+    }
+
     public Voter build() {
-        return new Voter(pollingDistrict, telephone, electorId, electorSuffix, title, firstName, initial, lastName);
+        return new Voter(pollingDistrict, telephone, electorId, electorSuffix, title, firstName, initial, lastName, ern);
     }
 }

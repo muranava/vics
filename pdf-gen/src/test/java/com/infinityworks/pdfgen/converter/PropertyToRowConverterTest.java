@@ -32,17 +32,17 @@ public class PropertyToRowConverterTest {
         List<ElectorRow> electorRows = underTest.apply("E0123456", property);
 
         assertThat(electorRows.get(0).getName(), is("Benz, Andy"));
-        assertThat(electorRows.get(0).getErn(), is("E0123456/1/11"));
+        assertThat(electorRows.get(0).getErn(), is("E09211005/1/11"));
         assertThat(electorRows.get(0).getHouse(), is("10"));
         assertThat(electorRows.get(0).getStreet(), is("Highland Close, Glen Avenue, Amber, Bournemouth"));
 
         assertThat(electorRows.get(1).getName(), is("Benz, Mike"));
-        assertThat(electorRows.get(1).getErn(), is("E0123456/2/22"));
+        assertThat(electorRows.get(1).getErn(), is("E09211005/2/22"));
         assertThat(electorRows.get(1).getHouse(), is("10"));
         assertThat(electorRows.get(1).getStreet(), is("Highland Close, Glen Avenue, Amber, Bournemouth"));
 
         assertThat(electorRows.get(2).getName(), is("Benz, Samo"));
-        assertThat(electorRows.get(2).getErn(), is("E0123456/3/33"));
+        assertThat(electorRows.get(2).getErn(), is("E09211005/3/33"));
         assertThat(electorRows.get(2).getHouse(), is("10"));
         assertThat(electorRows.get(2).getStreet(), is("Highland Close, Glen Avenue, Amber, Bournemouth"));
 
