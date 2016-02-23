@@ -4,21 +4,22 @@ Application to generate canvass cards and record canvassing activities.
 
 ## Stack
 
-The UI is written in Javascript, Html and CSS using AngularJS as a client side SPA.
+The UI is written in JS, HTML and CSS using AngularJS (v1.4) as a client side SPA.
 
 The web app serving the client is written in Java. Spring Boot is the web framework.  Data between
 the UI and server is REST over HTTP serialized as JSON.  PDFs are generated on the server and 
-returned to the client as Byte Streams.
+returned to the client as byte arrays.
 
 PostgreSQL is used for persistence.
 
 ## Build & Test
 
-Install maven 3 and Java 8, then test build the entire project from the root directory as follows
+Install maven 3 and Java 8, then test and build the entire project from the root directory as follows
 
     mvn clean install
 
-This will generate a ```/dist``` that contains all artefacts for deployment
+This will generate a ```/dist``` folder that contains all artefacts for deployment - minified javascript/html/css, java server as a fat jar
+and the database installation scripts that contain reference data
 
 ## Project Modules
 
@@ -35,6 +36,6 @@ This will generate a ```/dist``` that contains all artefacts for deployment
 The electoral roll number is the combination of the following:
 
 ```
-{Polling district}/{Elector ID}/{Elector Suffix}
+{Polling district}-{Elector ID}-{Elector Suffix}
 ```
 
