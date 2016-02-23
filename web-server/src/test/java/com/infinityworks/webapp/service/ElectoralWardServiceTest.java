@@ -1,6 +1,7 @@
 package com.infinityworks.webapp.service;
 
 import com.infinityworks.common.lang.Try;
+import com.infinityworks.webapp.converter.WardSummaryConverter;
 import com.infinityworks.webapp.domain.Constituency;
 import com.infinityworks.webapp.domain.User;
 import com.infinityworks.webapp.domain.Ward;
@@ -32,7 +33,7 @@ public class ElectoralWardServiceTest {
         WardRepository wardRepository = mock(WardRepository.class);
         constituencyRepository = mock(ConstituencyRepository.class);
         userRepository = mock(UserRepository.class);
-        underTest = new WardService(wardRepository, userRepository, constituencyRepository);
+        underTest = new WardService(new WardSummaryConverter(), wardRepository, userRepository, constituencyRepository);
     }
 
     @Test

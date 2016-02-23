@@ -24,6 +24,10 @@ angular
       return emailRegex.test(email);
     };
 
+    api.notEmpty = function(underTest) {
+      return !_.isEmpty(underTest);
+    };
+
     api.generatePassword = function () {
       var password = "";
       password += _.sample(chars);

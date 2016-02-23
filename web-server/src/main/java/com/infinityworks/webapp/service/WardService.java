@@ -1,6 +1,7 @@
 package com.infinityworks.webapp.service;
 
 import com.infinityworks.common.lang.Try;
+import com.infinityworks.webapp.converter.WardSummaryConverter;
 import com.infinityworks.webapp.domain.Constituency;
 import com.infinityworks.webapp.domain.User;
 import com.infinityworks.webapp.domain.Ward;
@@ -10,6 +11,7 @@ import com.infinityworks.webapp.repository.ConstituencyRepository;
 import com.infinityworks.webapp.repository.UserRepository;
 import com.infinityworks.webapp.repository.WardRepository;
 import com.infinityworks.webapp.rest.dto.UserRestrictedWards;
+import com.infinityworks.webapp.rest.dto.WardSummary;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,12 +30,17 @@ import static java.util.stream.Collectors.toSet;
 @Service
 public class WardService {
     private final Logger log = LoggerFactory.getLogger(WardService.class);
+    private final WardSummaryConverter wardSummaryConverter;
     private final WardRepository wardRepository;
     private final UserRepository userRepository;
     private final ConstituencyRepository constituencyRepository;
 
     @Autowired
-    public WardService(WardRepository wardRepository, UserRepository userRepository, ConstituencyRepository constituencyRepository) {
+    public WardService(WardSummaryConverter wardSummaryConverter,
+                       WardRepository wardRepository,
+                       UserRepository userRepository,
+                       ConstituencyRepository constituencyRepository) {
+        this.wardSummaryConverter = wardSummaryConverter;
         this.wardRepository = wardRepository;
         this.userRepository = userRepository;
         this.constituencyRepository = constituencyRepository;
@@ -70,6 +77,13 @@ public class WardService {
         Set<Ward> wards = wardRepository.findByConstituencyIn(user.getConstituencies());
         wards.addAll(user.getWards());
         return new UserRestrictedWards(new ArrayList<>(wards));
+    }
+
+    public List<WardSummary> getSummaryByUser(User user) {
+        log.debug("Getting wards summary by user={}", user);
+        Set<Ward> wards = wardRepository.findByConstituencyIn(user.getConstituencies());
+        wards.addAll(user.getWards());
+        return wards.stream().map(wardSummaryConverter).collect(toList());
     }
 
     public Try<List<Ward>> getAllByName(User user, String name, int limit) {

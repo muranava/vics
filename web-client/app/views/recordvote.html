@@ -5,10 +5,11 @@
       <div class="col-lg-12">
         <h2 class="text-primary">Record Vote</h2>
       </div>
-      <div class="col-lg-8">
+      <div class="col-lg-12">
         <article class="lead">
           <p>
-            Some text to explain this!!!
+            Enter the ward code and elector ID from the canvass card. If you do not have this information,
+            search for the user by name and address.
           </p>
         </article>
       </div>
@@ -18,34 +19,49 @@
         <div class="card">
           <div class="card-head">
             <header>Enter the Elector ID</header>
+            <div class="tools">
+              <div class="btn-group">
+                <a class="btn btn-icon-toggle btn-refresh" data-toggle="modal" data-target="#simpleModal"><i
+                  class="fa fa-question"></i></a>
+              </div>
+            </div>
           </div><!--end .card-head -->
           <div class="card-body">
             <form class="form" ng-submit="onVote()">
               <div class="form-group">
+
+                <label for="selectWard">Ward</label>
+                <select id="selectWard" class="form-control"
+                  ng-model="formModel.selectedWard"
+                  ng-options="ward.name + ' in ' + ward.constituencyName for ward in wards">
+                </select>
+
+              </div>
+
+              <div class="form-group">
+                  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+
                 <div class="input-group">
                   <div class="input-group-content">
-                    <input name="wardCode" id="wardCode" type="text" class="form-control" ng-model="formModel.wardCode">
-                    <label for="wardCode">Ward Code</label>
-                  </div>
-                  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-
-                  <div class="input-group-content">
-                    <input id="pollingDistrict" type="text" class="form-control" ng-model="formModel.pollingDistrict">
-                    <label for="pollingDistrict">Polling District</label>
-                  </div>
-                  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-
-                  <div class="input-group-content">
                     <input id="rollNum" type="text" class="form-control" ng-model="formModel.ern">
-                    <label for="rollNum">Roll Number</label>
+                    <label for="rollNum">Elector ID</label>
+                  </div>
 
+                  <div class="input-group-btn">
+                    <button type="submit" class="btn btn-danger" tabindex="-1">VOTED</button>
                   </div>
                 </div>
                 <br>
-                <div class="input-group">
-                  <div class="input-group-btn">
-                    <button type="submit" class="btn btn-default" tabindex="-1">VOTED</button>
-                  </div>
+                <div class="alert alert-callout alert-danger" role="alert" ng-show="invalidErn">
+                  <p>
+                    <i class="fa fa-warning"></i> &nbsp;Invalid Elector ID. <a class="btn btn-icon-toggle btn-refresh" data-toggle="modal" data-target="#simpleModal"><i
+                    class="fa fa-question"></i></a>
+                  </p>
+                </div>
+                <div class="alert alert-callout alert-danger" role="alert" ng-show="invalidWard">
+                  <p>
+                    <i class="fa fa-warning"></i> &nbsp;Ward is not selected
+                  </p>
                 </div>
 
               </div>
@@ -54,17 +70,15 @@
             <table class="table no-margin table-hover">
               <thead>
               <tr>
-                <th>Ward Code</th>
-                <th>Polling district</th>
-                <th>Roll #</th>
+                <th>Ward</th>
+                <th>Elector ID</th>
                 <th></th>
               </tr>
               </thead>
               <tbody>
               <tr ng-repeat="log in logs.elements.slice().reverse()"
                   ng-class="{danger: log.result === 0, success: log.result === 1}">
-                <td>{{log.wardCode}}</td>
-                <td>{{log.pollingDistrict}}</td>
+                <td>{{log.wardName}}</td>
                 <td>{{log.ern}}</td>
                 <td ng-show="log.result === 1">SUCCESS</td>
                 <td ng-show="log.result === 0">FAILED</td>
@@ -87,25 +101,25 @@
 
                 <div class="input-group">
                   <div class="input-group-content">
-                    <input id="fName" type="text"  class="form-control" ng-model="firstNameSearch">
+                    <input id="fName" type="text" class="form-control" ng-model="searchModel.firstName">
                     <label for="fName">First Name</label>
                   </div>
                   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                   <div class="input-group-content">
-                    <input id="lName" type="text" class="form-control" ng-model="lastNameSearch">
-                    <label for="lName">First Name</label>
+                    <input id="lName" type="text" class="form-control" ng-model="searchModel.lastName">
+                    <label for="lName">Last Name</label>
                   </div>
                 </div>
                 <br><br>
                 <div class="input-group">
                   <div class="input-group-content">
-                    <input id="address" type="text" class="form-control" ng-model="addressSearch">
+                    <input id="address" type="text" class="form-control" ng-model="searchModel.address">
                     <label for="address">Address</label>
                   </div>
 
                   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                   <div class="input-group-content">
-                    <input id="pCode" type="text" class="form-control" ng-model="postCodeSearch">
+                    <input id="pCode" type="text" class="form-control" ng-model="searchModel.postCode">
                     <label for="pCode">Post Code</label>
                   </div>
                 </div>
@@ -153,3 +167,41 @@
     </div>
   </div>
 </section>
+
+<!-- Elector ID modal -->
+<div class="modal fade" id="simpleModal" tabindex="-1" role="dialog" aria-labelledby="simpleModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        <h4 class="modal-title" id="simpleModalLabel">Elector ID explained</h4>
+      </div>
+      <div class="modal-body">
+        <p>The Elector ID is a compound ID that uniquely identifiers an elector within a given ward. This ID is created
+          by the application and is printed on the right column of the canvass card.
+        </p>
+        <br>
+        <p class="text-center text-xxxl">BA-412-2</p>
+        <p>Where</p>
+        <p>
+        <dl class="dl-horizontal">
+          <dt>BA</dt>
+          <dd>Polling district</dd>
+
+          <dt>412</dt>
+          <dd>Elector ID</dd>
+
+          <dt>2</dt>
+          <dd>Elector Suffix (optional)</dd>
+
+        </dl>
+        <p>The hyphen delimits the parts of the ID and is not part of the data. If the Elector Suffix is not present the
+          Elector ID
+          is represented as <b>BA-412</b>
+        </p>
+        </p>
+      </div>
+    </div>
+  </div>
+</div>

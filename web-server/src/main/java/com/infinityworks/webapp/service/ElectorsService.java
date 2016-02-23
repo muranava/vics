@@ -64,13 +64,13 @@ public class ElectorsService {
     public Try<ByteArrayOutputStream> electorsByStreets(TownStreets townStreets, String wardCode, Permissible permissible) {
         log.debug("Finding electors by streets={} for permissible={}", townStreets, permissible);
 
-        Optional<Ward> byCode = wardService.findByCode(wardCode).stream().findFirst();
-        if (!byCode.isPresent()) {
+        Optional<Ward> byWard = wardService.findByCode(wardCode).stream().findFirst();
+        if (!byWard.isPresent()) {
             String msg = String.format("No ward with code=%s", wardCode);
             log.warn(msg);
             return Try.failure(new NotFoundFailure(msg));
         } else {
-            Ward ward = byCode.get();
+            Ward ward = byWard.get();
             Constituency constituency = ward.getConstituency();
 
             if (!permissible.hasWardPermission(ward)) {
@@ -112,13 +112,26 @@ public class ElectorsService {
             return Try.failure(new NotAuthorizedFailure("Forbidden"));
         }
 
-//        if (user.hasWardPermission(contactRequest.)) {
-//        }
+        // FIXME check ward permission
 
         return pafClient.recordContact(ern, contactRequest);
     }
 
-    public Try<List<Voter>> search(SearchElectors searchElectors) {
-        return pafClient.searchElectors(searchElectors);
+    public Try<List<Voter>> search(Permissible permissible, SearchElectors searchElectors) {
+        String wardCode = searchElectors.getWardCode();
+        Optional<Ward> byWard = wardService.findByCode(wardCode).stream().findFirst();
+        if (!byWard.isPresent()) {
+            String msg = String.format("No ward with code=%s", wardCode);
+            log.warn(msg);
+            return Try.failure(new NotFoundFailure(msg));
+        } else {
+            Ward ward = byWard.get();
+            if (!permissible.hasWardPermission(ward)) {
+                String msg = String.format("User=%s tried to access ward=%s without permission", permissible, wardCode);
+                log.warn(msg);
+                return Try.failure(new NotAuthorizedFailure("Not Authorized"));
+            }
+            return pafClient.searchElectors(searchElectors);
+        }
     }
 }

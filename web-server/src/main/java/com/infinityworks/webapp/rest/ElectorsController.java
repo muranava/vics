@@ -58,15 +58,16 @@ public class ElectorsController {
     @PreAuthorize("isAuthenticated()")
     @RequestMapping(method = GET)
     public ResponseEntity<?> searchByAttributes(
+            @RequestParam(required = false, name = "wardCode") String wardCode,
             @RequestParam(required = false, name = "firstName") String firstName,
             @RequestParam(required = false, name = "lastName") String lastName,
             @RequestParam(required = false, name = "address") String address,
             @RequestParam(required = false, name = "postCode") String postCode,
             Principal principal) {
-        SearchElectors searchRequest = new SearchElectors(firstName, lastName, address, postCode);
+        SearchElectors searchRequest = new SearchElectors(firstName, lastName, address, postCode, wardCode);
         return requestValidator.validate(searchRequest)
                 .flatMap(request -> sessionService.extractUserFromPrincipal(principal))
-                .flatMap(user -> electorsService.search(searchRequest))
+                .flatMap(user -> electorsService.search(user, searchRequest))
                 .fold(errorHandler::mapToResponseEntity, ResponseEntity::ok);
     }
 

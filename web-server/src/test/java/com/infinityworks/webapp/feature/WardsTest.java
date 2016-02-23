@@ -5,6 +5,7 @@ import com.infinityworks.webapp.error.RestErrorHandler;
 import com.infinityworks.webapp.rest.WardController;
 import com.infinityworks.webapp.rest.dto.Street;
 import com.infinityworks.webapp.rest.dto.UserRestrictedWards;
+import com.infinityworks.webapp.rest.dto.WardSummary;
 import com.infinityworks.webapp.service.AddressService;
 import com.infinityworks.webapp.service.SessionService;
 import com.infinityworks.webapp.service.WardService;
@@ -70,6 +71,24 @@ public class WardsTest extends WebApplicationTest {
         UserRestrictedWards wards = objectMapper.readValue(result.getResponse().getContentAsString(), UserRestrictedWards.class);
 
         assertThat(wards.getWards().size(), is(6));
+    }
+
+    @Test
+    public void returnsTheWardsSummariesForCovs() throws Exception {
+        String endpoint = "/ward?summary=true";
+        when(sessionService.extractUserFromPrincipal(any(Principal.class)))
+                .thenReturn(Try.success(covs()));
+
+        ResultActions response = mockMvc.perform(get(endpoint)
+                .accept(MediaType.APPLICATION_JSON))
+                .andDo(print());
+
+        MvcResult result = response.andExpect(status().isOk()).andReturn();
+        WardSummary[] wards = objectMapper.readValue(result.getResponse().getContentAsString(), WardSummary[].class);
+
+        assertThat(wards[0].getName(), is("Binley and Willenhall"));
+        assertThat(wards[0].getCode(), is("E05001219"));
+        assertThat(wards[0].getConstituencyName(), is("Coventry South"));
     }
 
     @Test

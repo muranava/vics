@@ -39,6 +39,19 @@ angular
     };
 
     /**
+     * Finds all wards in short format without associated objects like constituency
+     * (the server will restrict the result set to
+     * the wards the current user has access to)
+     */
+    api.findAllSummarized = function() {
+      return $http({
+        method: 'GET',
+        url: apiUrl + '/ward?summary=true',
+        withCredentials: true
+      });
+    };
+
+    /**
      * Search wards by name (server performs a contains string search ignoring case)
      * @param {String} name - the ward name to search
      * @param {Number} limit - number of params to return

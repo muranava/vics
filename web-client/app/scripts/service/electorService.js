@@ -1,6 +1,6 @@
 angular
   .module('canvass')
-  .service('electorService', function (apiUrl, $http) {
+  .service('electorService', function (apiUrl, $http, util) {
     var api = {};
 
     /**
@@ -48,16 +48,25 @@ angular
     };
 
     api.search = function(searchParams, limit) {
+      var params = {};
+      if (util.notEmpty(searchParams.firstName)) {
+        params.firstName = searchParams.firstName;
+      }
+      if (util.notEmpty(searchParams.lastName)) {
+        params.lastName = searchParams.lastName;
+      }
+      if (util.notEmpty(searchParams.address)) {
+        params.address = searchParams.address;
+      }
+      if (util.notEmpty(searchParams.postCode)) {
+        params.postCode = searchParams.postCode;
+      }
+      params.limit = limit;
+
       return $http({
         url: apiUrl + '/elector',
         method: 'GET',
-        params: {
-          firstName: searchParams.firstName,
-          lastName: searchParams.lastName,
-          address: searchParams.address,
-          postCode: searchParams.postCode,
-          limit: limit
-        },
+        params: params,
         withCredentials: true
       });
     };

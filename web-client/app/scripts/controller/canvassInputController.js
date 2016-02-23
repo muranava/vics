@@ -24,7 +24,8 @@ angular
       wantsPV: false,
       poster: false,
       lift: false,
-      deceased: false
+      deceased: false,
+      ward: null
     };
 
     $scope.searchForm = {
@@ -33,6 +34,12 @@ angular
       address: '',
       postCode: ''
     };
+
+    wardService.findAllSummarized()
+      .success(function(response) {
+        $scope.wards = response;
+        $scope.inputRecordModel.ward = $scope.wards[0];
+      });
 
     $scope.onWardInputKeypress = function() {
         $scope.invalidWard = false;

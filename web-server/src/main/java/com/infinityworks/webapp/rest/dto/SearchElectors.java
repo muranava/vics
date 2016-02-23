@@ -7,17 +7,18 @@ import static com.google.common.base.Strings.nullToEmpty;
 
 @ValidSearchElectorsRequest
 public class SearchElectors {
-
+    private final String wardCode;
     private final String firstName;
     private final String lastName;
     private final String address;
     private final String postCode;
 
-    public SearchElectors(String firstName, String lastName, String address, String postCode) {
+    public SearchElectors(String firstName, String lastName, String address, String postCode, String wardCode) {
         this.firstName = nullToEmpty(firstName);
         this.lastName = nullToEmpty(lastName);
         this.address = nullToEmpty(address);
         this.postCode = nullToEmpty(postCode);
+        this.wardCode = nullToEmpty(wardCode);
     }
 
     public String getFirstName() {
@@ -36,6 +37,10 @@ public class SearchElectors {
         return postCode;
     }
 
+    public String getWardCode() {
+        return wardCode;
+    }
+
     @Override
     public String toString() {
         return MoreObjects.toStringHelper(this)
@@ -43,6 +48,7 @@ public class SearchElectors {
                 .add("lastName", lastName)
                 .add("address", address)
                 .add("postCode", postCode)
+                .add("wardCode", wardCode)
                 .toString();
     }
 }

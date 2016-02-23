@@ -126,7 +126,7 @@ public class PafClient {
      * Records that an elector has voted.  Not found responses from PAF are treated as
      * success in the context of the application (users will type ids at a fast rate and
      * erroneous inputs are expected) and we set a failure flag in the return entity.
-     * @param recordVote
+     * @param recordVote the details of the voter to record
      */
     public Try<RecordVote> recordVoted(RecordVote recordVote) {
         String ern = recordVote.getErn();
@@ -139,10 +139,10 @@ public class PafClient {
         try {
             restTemplate.exchange(url, HttpMethod.PUT, entity, String.class);
             log.debug("Recorded voter voted PUT {}", url);
-            return Try.success(new RecordVote(recordVote.getWardCode(), recordVote.getPollingDistrict(), ern, true));
+            return Try.success(new RecordVote(recordVote.getWardCode(), recordVote.getWardName(), ern, true));
         } catch (HttpClientErrorException e) {
             if (e.getStatusCode().value() == 404) {
-                return Try.success(new RecordVote(ern, recordVote.getPollingDistrict(), recordVote.getWardCode(), false));
+                return Try.success(new RecordVote(recordVote.getWardCode(), recordVote.getWardName(), ern, false));
             } else {
                 return Try.failure(new ServerFailure(String.format(RECORD_VOTE_ERROR_MESSAGE, ern, e.getStatusCode().getReasonPhrase())));
             }
@@ -183,7 +183,8 @@ public class PafClient {
             log.debug("Recorded voter voted PUT {}", url);
             return Try.success(asList(response.getBody()));
         } catch (HttpClientErrorException e) {
-            return Try.failure(new PafApiFailure(String.format(ADD_CONTACT_ERROR_MESSAGE, searchElectors, e.getStatusCode().getReasonPhrase())));
+            return Try.failure(new PafApiFailure(String.format("Paf request failed when searching elector. " +
+                    "search=%s. Paf responded with %s", searchElectors, e.getStatusCode().getReasonPhrase())));
         }
     }
 

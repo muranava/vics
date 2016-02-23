@@ -21,9 +21,9 @@ spring:
 canvass:
   cors:
     hosts: "*"
+    methods:  "POST, GET, PUT, OPTIONS, DELETE"
   pafApiBaseUrl: http://localhost:9002/v1
   pafApiToken: token
-
 
 logging:
   level:
