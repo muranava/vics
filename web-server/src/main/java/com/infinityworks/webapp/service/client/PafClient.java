@@ -139,7 +139,7 @@ public class PafClient {
         try {
             restTemplate.exchange(url, HttpMethod.PUT, entity, String.class);
             log.debug("Recorded voter voted PUT {}", url);
-            return Try.success(new RecordVote(ern, recordVote.getPollingDistrict(), recordVote.getWardCode(), true));
+            return Try.success(new RecordVote(recordVote.getWardCode(), recordVote.getPollingDistrict(), ern, true));
         } catch (HttpClientErrorException e) {
             if (e.getStatusCode().value() == 404) {
                 return Try.success(new RecordVote(ern, recordVote.getPollingDistrict(), recordVote.getWardCode(), false));
