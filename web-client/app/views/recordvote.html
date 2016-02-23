@@ -20,22 +20,25 @@
             <header>Enter the Elector ID</header>
           </div><!--end .card-head -->
           <div class="card-body">
-            <form ng-submit="onVote()">
-
+            <form class="form" ng-submit="onVote()">
               <div class="form-group">
                 <div class="input-group">
                   <div class="input-group-content">
-                    <input type="text" placeholder="Ward code" class="form-control" ng-model="formModel.wardCode">
+                    <input name="wardCode" id="wardCode" type="text" class="form-control" ng-model="formModel.wardCode">
+                    <label for="wardCode">Ward Code</label>
                   </div>
                   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 
                   <div class="input-group-content">
-                    <input type="text" placeholder="Polling district" class="form-control" ng-model="formModel.pollingDistrict">
+                    <input id="pollingDistrict" type="text" class="form-control" ng-model="formModel.pollingDistrict">
+                    <label for="pollingDistrict">Polling District</label>
                   </div>
                   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 
                   <div class="input-group-content">
-                    <input type="text" placeholder="Roll #, e.g. 143-2" class="form-control" ng-model="formModel.ern">
+                    <input id="rollNum" type="text" class="form-control" ng-model="formModel.ern">
+                    <label for="rollNum">Roll Number</label>
+
                   </div>
                 </div>
                 <br>
@@ -79,26 +82,31 @@
             <header>Search by Name and Address</header>
           </div><!--end .card-head -->
           <div class="card-body">
-            <form ng-submit="onSearch()">
+            <form class="form" ng-submit="onSearch()">
               <div class="form-group">
 
                 <div class="input-group">
                   <div class="input-group-content">
-                    <input type="text" placeholder="First name" class="form-control" ng-model="firstNameSearch">
+                    <input id="fName" type="text"  class="form-control" ng-model="firstNameSearch">
+                    <label for="fName">First Name</label>
                   </div>
                   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                   <div class="input-group-content">
-                    <input type="text" placeholder="Last name" class="form-control" ng-model="lastNameSearch">
+                    <input id="lName" type="text" class="form-control" ng-model="lastNameSearch">
+                    <label for="lName">First Name</label>
                   </div>
                 </div>
-
+                <br><br>
                 <div class="input-group">
                   <div class="input-group-content">
-                    <input type="text" placeholder="Address" class="form-control" ng-model="addressSearch">
+                    <input id="address" type="text" class="form-control" ng-model="addressSearch">
+                    <label for="address">Address</label>
                   </div>
+
                   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                   <div class="input-group-content">
-                    <input type="text" placeholder="Post Code" class="form-control" ng-model="postCodeSearch">
+                    <input id="pCode" type="text" class="form-control" ng-model="postCodeSearch">
+                    <label for="pCode">Post Code</label>
                   </div>
                 </div>
 
@@ -108,7 +116,6 @@
                     <button type="submit" class="btn btn-default" tabindex="-1">Search</button>
                   </div>
                 </div>
-
               </div>
 
             </form>

@@ -25,9 +25,9 @@ angular
             wardCode: response.wardCode,
             result: response.success ? 1 : 0
           });
-        });
 
-      $scope.rollNum = "";
+          $scope.formModel.ern = "";
+        });
     };
 
     $scope.onSearchVoted = function() {
