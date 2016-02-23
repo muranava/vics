@@ -36,8 +36,6 @@ module.exports = function(config) {
       'bower_components/bootstrap/dist/js/bootstrap.js',
       'bower_components/multiselect/js/jquery.multi-select.js',
       'bower_components/angular-loading-bar/build/loading-bar.js',
-      'bower_components/ui-select/dist/select.js',
-      'bower_components/select2/dist/js/select2.js',
       'bower_components/angular-mocks/angular-mocks.js',
       // endbower
       "app/scripts/**/*.js",

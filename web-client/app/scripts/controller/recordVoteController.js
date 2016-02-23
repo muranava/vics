@@ -32,7 +32,7 @@ angular
     });
 
     $scope.onVote = function () {
-      console.log($scope.formModel.selectedWard)
+      console.log($scope.formModel.selectedWard);
       if (isValidElectorID($scope.formModel.ern) &&
         isValidWard($scope.formModel.selectedWard)) {
 
@@ -88,7 +88,7 @@ angular
       var parts = _.filter(electorID.split("-"), function (part) {
         return !_.isEmpty(part);
       });
-      var valid = parts.length === 3 || parts.length == 2;
+      var valid = parts.length === 3 || parts.length === 2;
       if (valid) {
         return true;
       } else {

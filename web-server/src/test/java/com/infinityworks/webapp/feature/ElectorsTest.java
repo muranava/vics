@@ -124,6 +124,7 @@ public class ElectorsTest extends WebApplicationTest {
         MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
         params.add("lastName", "McCall");
         params.add("postCode", "KT25BU");
+        params.add("wardCode", "E05001221");
         UriComponents uriComponents = UriComponentsBuilder.fromPath("/elector")
                 .queryParams(params)
                 .build();
@@ -138,5 +139,49 @@ public class ElectorsTest extends WebApplicationTest {
                 .andExpect(jsonPath("$[0].electorId", is("22217bf4")))
                 .andExpect(jsonPath("$[0].firstName", is("John")))
                 .andExpect(jsonPath("$[0].lastName", is("McCall")));
+    }
+
+    @Test
+    public void searchReturnsNotAuthorizedIfElectorHasNoWardPermission() throws Exception {
+        when(sessionService.extractUserFromPrincipal(any(Principal.class)))
+                .thenReturn(Try.success(covs()));
+        pafApiStub.willSearchVoters("McCall", "KT25BU");
+
+        MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
+        params.add("lastName", "McCall");
+        params.add("postCode", "KT25BU");
+        params.add("wardCode", "E05001235");
+        UriComponents uriComponents = UriComponentsBuilder.fromPath("/elector")
+                .queryParams(params)
+                .build();
+
+        String url = uriComponents.toUriString();
+
+        mockMvc.perform(get(url)
+                .accept(APPLICATION_JSON))
+                .andDo(print())
+                .andExpect(status().isUnauthorized());
+    }
+
+    @Test
+    public void searchReturnsNotFoundIfWardInvalid() throws Exception {
+        when(sessionService.extractUserFromPrincipal(any(Principal.class)))
+                .thenReturn(Try.success(covs()));
+        pafApiStub.willSearchVoters("McCall", "KT25BU");
+
+        MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
+        params.add("lastName", "McCall");
+        params.add("postCode", "KT25BU");
+        params.add("wardCode", "A05001235");
+        UriComponents uriComponents = UriComponentsBuilder.fromPath("/elector")
+                .queryParams(params)
+                .build();
+
+        String url = uriComponents.toUriString();
+
+        mockMvc.perform(get(url)
+                .accept(APPLICATION_JSON))
+                .andDo(print())
+                .andExpect(status().isNotFound());
     }
 }
