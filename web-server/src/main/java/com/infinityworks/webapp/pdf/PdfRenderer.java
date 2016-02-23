@@ -15,7 +15,7 @@ import java.util.Optional;
 import static java.util.stream.Collectors.toList;
 
 @Component
-class PdfRenderer implements VotersPdfGenerator {
+public class PdfRenderer {
     private final PropertyToRowConverter propertyToRowConverter;
     private final TableBuilder tableBuilder;
 

@@ -10,7 +10,7 @@ import com.infinityworks.webapp.domain.User;
 import com.infinityworks.webapp.domain.Ward;
 import com.infinityworks.webapp.error.NotAuthorizedFailure;
 import com.infinityworks.webapp.error.NotFoundFailure;
-import com.infinityworks.webapp.pdf.VotersPdfGenerator;
+import com.infinityworks.webapp.pdf.PdfRenderer;
 import com.infinityworks.webapp.rest.dto.ElectorSummary;
 import com.infinityworks.webapp.rest.dto.RecordContactRequest;
 import com.infinityworks.webapp.rest.dto.SearchElectors;
@@ -34,13 +34,13 @@ public class ElectorsService {
     private final Logger log = LoggerFactory.getLogger(ElectorsService.class);
     private final PafClient pafClient;
     private final WardService wardService;
-    private final VotersPdfGenerator pdfRenderer;
+    private final PdfRenderer pdfRenderer;
     private final DocumentBuilder documentBuilder;
 
     @Autowired
     public ElectorsService(PafClient pafClient,
                            WardService wardService,
-                           VotersPdfGenerator pdfRenderer,
+                           PdfRenderer pdfRenderer,
                            DocumentBuilder documentBuilder) {
         this.pafClient = pafClient;
         this.wardService = wardService;

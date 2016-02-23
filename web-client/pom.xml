@@ -71,6 +71,7 @@
         <version>1.8</version>
         <executions>
           <execution>
+            <id>copy-resources</id>
             <phase>process-resources</phase>
             <configuration>
               <tasks>
@@ -79,6 +80,20 @@
                     <include name="**/*"/>
                   </fileset>
                 </copy>
+              </tasks>
+            </configuration>
+            <goals>
+              <goal>run</goal>
+            </goals>
+          </execution>
+          <execution>
+            <id>replace-api-url</id>
+            <phase>prepare-package</phase>
+            <configuration>
+              <tasks>
+                <replace token="http://localhost:8080/api/canvass" value="/api/canvass" dir="${project.basedir}/../dist/static/scripts">
+                  <include name="scripts.*.js"/>
+                </replace>
               </tasks>
             </configuration>
             <goals>

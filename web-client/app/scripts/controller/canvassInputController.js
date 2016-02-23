@@ -75,17 +75,6 @@ angular
       }
     };
 
-    function isValidElectorID(electorID) {
-      $scope.invalidErn = false;
-      var valid = util.isValidElectorID(electorID);
-      if (valid) {
-        return true;
-      } else {
-        $scope.invalidErn = true;
-        return false;
-      }
-    }
-
     function mapFormToRequest(formModel) {
       var copy = $.extend(true, {}, formModel);
       copy.intention = _.parseInt(formModel.intention.charAt(0));
