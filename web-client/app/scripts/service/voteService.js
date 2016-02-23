@@ -3,10 +3,11 @@ angular
   .service('voteService', function (apiUrl, $http) {
     var api = {};
 
-    api.recordVote = function (ern) {
+    api.recordVote = function (model) {
       return $http({
         method: 'POST',
-        url: apiUrl + '/elector/' + ern + '/voted',
+        url: apiUrl + '/elector/voted',
+        data: model,
         withCredentials: true
       });
     };

@@ -10,6 +10,9 @@ The web app serving the client is written in Java. Spring Boot is the web framew
 the UI and server is REST over HTTP serialized as JSON.  PDFs are generated on the server and 
 returned to the client as byte arrays.
 
+A security system is implemented using Spring security and Redis for session state persistence.
+The application should be deployed using TLS.
+
 PostgreSQL is used for persistence.
 
 ## Build & Test

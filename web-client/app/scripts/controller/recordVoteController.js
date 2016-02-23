@@ -5,34 +5,30 @@ angular
 
     $scope.searchResults = [];
     $scope.logs = RingBuffer.newInstance(logSize);
-    $scope.rollNum = "";
-    $scope.pollingDistrict = "";
+
+    $scope.formModel = {
+      wardCode: '',
+      pollingDistrict: '',
+      ern: ''
+    };
 
     _.times(logSize, function () {
       $scope.logs.push(emptyRow());
     });
 
     $scope.onVote = function() {
-      voteService.recordVote(formatErn($scope.rollNum, $scope.pollingDistrict))
+      voteService.recordVote($scope.formModel)
         .success(function(response) {
           $scope.logs.push({
-            pd: response.pollingDistrict,
-            rollNum: response.rollNum,
-            firstName: response.firstName,
-            lastName: response.lastName,
+            pollingDistrict: response.pollingDistrict,
+            ern: response.ern,
+            wardCode: response.wardCode,
             result: response.success ? 1 : 0
           });
         });
 
       $scope.rollNum = "";
     };
-
-    /**
-     * FIXME this should be changed when we decide what the API looks like
-     */
-    function formatErn(pollingDistrict, rollNum) {
-      return pollingDistrict + rollNum;
-    }
 
     $scope.onSearchVoted = function() {
       $scope.onVote();
@@ -44,10 +40,9 @@ angular
 
     function emptyRow() {
       return {
-        pd: '-',
-        rollNum: '-',
-        firstName: '-',
-        lastName: '-',
+        wardCode: '-',
+        pollingDistrict: '-',
+        ern: '-',
         result: -1
       };
     }

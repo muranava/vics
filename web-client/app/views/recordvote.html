@@ -21,39 +21,48 @@
           </div><!--end .card-head -->
           <div class="card-body">
             <form ng-submit="onVote()">
+
               <div class="form-group">
                 <div class="input-group">
                   <div class="input-group-content">
-                    <input type="text" placeholder="Polling district" class="form-control" ng-model="pollingDistrict">
+                    <input type="text" placeholder="Ward code" class="form-control" ng-model="formModel.wardCode">
                   </div>
                   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+
                   <div class="input-group-content">
-                    <input type="text" placeholder="Roll #, e.g. 143-2" class="form-control" ng-model="rollNum">
+                    <input type="text" placeholder="Polling district" class="form-control" ng-model="formModel.pollingDistrict">
                   </div>
+                  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+
+                  <div class="input-group-content">
+                    <input type="text" placeholder="Roll #, e.g. 143-2" class="form-control" ng-model="formModel.ern">
+                  </div>
+                </div>
+                <br>
+                <div class="input-group">
                   <div class="input-group-btn">
                     <button type="submit" class="btn btn-default" tabindex="-1">VOTED</button>
                   </div>
-                </div><!--end .input-group -->
-              </div><!--end .form-group -->
+                </div>
+
+              </div>
             </form>
             <br>
             <table class="table no-margin table-hover">
               <thead>
               <tr>
+                <th>Ward Code</th>
                 <th>Polling district</th>
                 <th>Roll #</th>
-                <th>First Name</th>
-                <th>Last Name</th>
-                <th>Result</th>
+                <th></th>
               </tr>
               </thead>
               <tbody>
               <tr ng-repeat="log in logs.elements.slice().reverse()"
                   ng-class="{danger: log.result === 0, success: log.result === 1}">
-                <td>{{log.pd}}</td>
-                <td>{{log.rollNum}}</td>
-                <td>{{log.firstName}}</td>
-                <td>{{log.lastName}}</td>
+                <td>{{log.wardCode}}</td>
+                <td>{{log.pollingDistrict}}</td>
+                <td>{{log.ern}}</td>
                 <td ng-show="log.result === 1">SUCCESS</td>
                 <td ng-show="log.result === 0">FAILED</td>
                 <td ng-show="log.result === -1">-</td>
@@ -122,7 +131,11 @@
                 <td>{{result.lastName}}</td>
                 <td>{{result.address}}</td>
                 <td>{{result.postCode}}</td>
-                <td><button type="submit" class="btn btn-sm btn-default" tabindex="-1" ng-click="onSearchVoted(result)">Voted</button></td>
+                <td>
+                  <button type="submit" class="btn btn-sm btn-default" tabindex="-1" ng-click="onSearchVoted(result)">
+                    Voted
+                  </button>
+                </td>
               </tr>
               </tbody>
             </table>

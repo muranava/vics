@@ -9,6 +9,7 @@ import com.infinityworks.webapp.rest.dto.TownStreets;
 import com.infinityworks.webapp.service.ElectorsService;
 import com.infinityworks.webapp.service.SessionService;
 import com.infinityworks.webapp.service.VoteService;
+import com.infinityworks.webapp.service.client.RecordVote;
 import com.lowagie.text.DocumentException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -98,8 +99,8 @@ public class ElectorsController {
     }
 
     @PreAuthorize("isAuthenticated()")
-    @RequestMapping(method = POST, value = "/{ern}/voted")
-    public ResponseEntity<?> recordVote(@PathVariable(value = "ern") String ern,
+    @RequestMapping(method = POST, value = "/voted")
+    public ResponseEntity<?> recordVote(@RequestBody() RecordVote ern,
                                         Principal principal) {
         return sessionService.extractUserFromPrincipal(principal)
                 .flatMap(user -> voteService.recordVote(user, ern))

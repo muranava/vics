@@ -4,7 +4,7 @@ import com.infinityworks.common.lang.Try;
 import com.infinityworks.webapp.domain.Permissible;
 import com.infinityworks.webapp.error.NotAuthorizedFailure;
 import com.infinityworks.webapp.service.client.PafClient;
-import com.infinityworks.webapp.service.client.RecordVoteResponse;
+import com.infinityworks.webapp.service.client.RecordVote;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,11 +20,11 @@ public class VoteService {
         this.pafClient = pafClient;
     }
 
-    public Try<RecordVoteResponse> recordVote(Permissible permissible, String ern) {
+    public Try<RecordVote> recordVote(Permissible permissible, RecordVote recordVote) {
         if (!permissible.hasWriteAccess()) {
-            log.debug("User={} tried to record vote for ern={} but does not have write access", permissible, ern);
+            log.debug("User={} tried to record vote for recordVote={} but does not have write access", permissible, recordVote);
             return Try.failure(new NotAuthorizedFailure("Forbidden"));
         }
-        return pafClient.recordVoted(ern);
+        return pafClient.recordVoted(recordVote);
     }
 }

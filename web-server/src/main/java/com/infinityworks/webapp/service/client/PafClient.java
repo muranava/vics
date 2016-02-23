@@ -1,15 +1,18 @@
 package com.infinityworks.webapp.service.client;
 
 import com.infinityworks.common.lang.StringExtras;
+import com.infinityworks.common.lang.Try;
 import com.infinityworks.commondto.Property;
 import com.infinityworks.commondto.Voter;
 import com.infinityworks.commondto.VotersByStreet;
-import com.infinityworks.common.lang.Try;
 import com.infinityworks.webapp.config.CanvassConfig;
 import com.infinityworks.webapp.error.NotFoundFailure;
 import com.infinityworks.webapp.error.PafApiFailure;
 import com.infinityworks.webapp.error.ServerFailure;
-import com.infinityworks.webapp.rest.dto.*;
+import com.infinityworks.webapp.rest.dto.RecordContactRequest;
+import com.infinityworks.webapp.rest.dto.SearchElectors;
+import com.infinityworks.webapp.rest.dto.Street;
+import com.infinityworks.webapp.rest.dto.TownStreets;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -123,8 +126,10 @@ public class PafClient {
      * Records that an elector has voted.  Not found responses from PAF are treated as
      * success in the context of the application (users will type ids at a fast rate and
      * erroneous inputs are expected) and we set a failure flag in the return entity.
+     * @param recordVote
      */
-    public Try<RecordVoteResponse> recordVoted(String ern) {
+    public Try<RecordVote> recordVoted(RecordVote recordVote) {
+        String ern = recordVote.getErn();
         String url = String.format(VOTED_ENDPOINT, ern);
 
         HttpHeaders headers = new HttpHeaders();
@@ -134,10 +139,10 @@ public class PafClient {
         try {
             restTemplate.exchange(url, HttpMethod.PUT, entity, String.class);
             log.debug("Recorded voter voted PUT {}", url);
-            return Try.success(new RecordVoteResponse(ern, true));
+            return Try.success(new RecordVote(ern, recordVote.getPollingDistrict(), recordVote.getWardCode(), true));
         } catch (HttpClientErrorException e) {
             if (e.getStatusCode().value() == 404) {
-                return Try.success(new RecordVoteResponse(ern, false));
+                return Try.success(new RecordVote(ern, recordVote.getPollingDistrict(), recordVote.getWardCode(), false));
             } else {
                 return Try.failure(new ServerFailure(String.format(RECORD_VOTE_ERROR_MESSAGE, ern, e.getStatusCode().getReasonPhrase())));
             }
