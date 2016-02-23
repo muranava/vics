@@ -1,6 +1,6 @@
 angular
   .module('canvass')
-  .controller('recordVoteController', function ($timeout, $scope, RingBuffer, voteService, electorService, wardService) {
+  .controller('recordVoteController', function (util, $timeout, $scope, RingBuffer, voteService, electorService, wardService) {
     var logSize = 7,
       searchLimit = 10;
 
@@ -32,9 +32,8 @@ angular
     });
 
     $scope.onVote = function () {
-      console.log($scope.formModel.selectedWard);
       if (isValidElectorID($scope.formModel.ern) &&
-        isValidWard($scope.formModel.selectedWard)) {
+          isValidWard($scope.formModel.selectedWard)) {
 
         var elector = mapToRequest($scope.formModel);
 
@@ -47,18 +46,10 @@ angular
               result: response.success ? 1 : 0
             });
 
-            $scope.formModel.ern = extractErnPrefix(response.ern);
+            $scope.formModel.ern = util.extractErnPrefix(response.ern);
           });
       }
     };
-
-    /**
-     * Allows the user to quickly type a sequence of records. In practice the first part (polling district)
-     * does not change frequently
-     */
-    function extractErnPrefix(ern) {
-      return _.head(ern.split('-')) + '-';
-    }
 
     function mapToRequest(model) {
       // removes any trailing hyphens
@@ -85,10 +76,8 @@ angular
     }
 
     function isValidElectorID(electorID) {
-      var parts = _.filter(electorID.split("-"), function (part) {
-        return !_.isEmpty(part);
-      });
-      var valid = parts.length === 3 || parts.length === 2;
+      $scope.invalidErn = false;
+      var valid = util.validErn(electorID);
       if (valid) {
         return true;
       } else {

@@ -3,6 +3,7 @@ package com.infinityworks.webapp.rest.dto;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import org.hibernate.validator.constraints.NotEmpty;
 
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
@@ -11,9 +12,7 @@ import javax.validation.constraints.NotNull;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class RecordContactRequest {
 
-    @Min(5)
-    @Max(50)
-    @NotNull
+    @NotEmpty
     private final String ern;
     @NotNull
     @Min(1)
@@ -39,6 +38,8 @@ public class RecordContactRequest {
     private final Boolean deceased;
     @NotNull
     private final Boolean poster;
+    @NotEmpty
+    private final String wardCode;
 
     @JsonCreator
     public RecordContactRequest(@JsonProperty("ern") String ern,
@@ -51,7 +52,8 @@ public class RecordContactRequest {
                                 @JsonProperty("hasPV") Boolean hasPV,
                                 @JsonProperty("wantsPV") Boolean wantsPV,
                                 @JsonProperty("deceased") Boolean deceased,
-                                @JsonProperty("poster") Boolean poster) {
+                                @JsonProperty("poster") Boolean poster,
+                                @JsonProperty("wardCode") String wardCode) {
         this.ern = ern;
         this.intention = intention;
         this.likelihood = likelihood;
@@ -63,6 +65,7 @@ public class RecordContactRequest {
         this.wantsPV = wantsPV;
         this.deceased = deceased;
         this.poster = poster;
+        this.wardCode = wardCode;
     }
 
     public String getErn() {
@@ -107,5 +110,9 @@ public class RecordContactRequest {
 
     public Boolean getPoster() {
         return poster;
+    }
+
+    public String getWardCode() {
+        return wardCode;
     }
 }

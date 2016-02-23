@@ -30,7 +30,7 @@ public class PageInfoRenderer extends PdfPageEventHelper {
             "\n4 Probably Leave" +
             "\n5 Definitely Leave";
 
-    private static final String META_TEMPLATE = "Constituency: %s\nWard: %s (%s)\nStreet: %s";
+    private static final String META_TEMPLATE = "Constituency: %s\nWard: %s \nStreet: %s";
 
     private String constituencyName = "";
     private String wardName = "";
@@ -103,7 +103,7 @@ public class PageInfoRenderer extends PdfPageEventHelper {
 
     private void createMetaSection(PdfContentByte cb) {
         ColumnText ct = new ColumnText(cb);
-        String format = String.format(META_TEMPLATE, constituencyName, wardName, wardCode, street);
+        String format = String.format(META_TEMPLATE, constituencyName, wardName, street);
         ct.setText(new Phrase(format, font));
         ct.setSimpleColumn(100, 50, 700, 557);
         try {

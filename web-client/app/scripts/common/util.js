@@ -24,6 +24,17 @@ angular
       return emailRegex.test(email);
     };
 
+    api.extractErnPrefix = function(ern) {
+      return _.head(ern.split('-')) + '-';
+    };
+
+    api.validErn = function(electorID) {
+      var parts = _.filter(electorID.split("-"), function (part) {
+        return !_.isEmpty(part);
+      });
+      return parts.length === 3 || parts.length === 2;
+    };
+
     api.notEmpty = function(underTest) {
       return !_.isEmpty(underTest);
     };

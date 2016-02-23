@@ -3,30 +3,37 @@
  */
 angular
   .module('canvass')
-  .controller('canvassInputController', function ($scope, electorService, RingBuffer, wardService) {
+  .controller('canvassInputController', function (util, $scope, electorService, RingBuffer, wardService) {
     var logSize = 5,
-      searchLimit = 10,
-      wardSearchLimit = 50;
+      searchLimit = 10;
 
     $scope.issues = [''];
     $scope.searchResults = [];
-    $scope.elector = null;
     $scope.logs = RingBuffer.newInstance(logSize);
 
-    $scope.inputRecordModel = {
-      ern: '',
-      likelihood: '3 - Undecided',
-      intention: '3 - Undecided',
-      cost: false,
-      border: false,
-      sovereignty: false,
-      hasPV: false,
-      wantsPV: false,
-      poster: false,
-      lift: false,
-      deceased: false,
-      ward: null
-    };
+    function initForm() {
+      var prevWard = $scope.inputRecordModel && $scope.inputRecordModel.ward;
+      $scope.inputRecordModel = {
+        ern: '',
+        likelihood: '3 - Undecided',
+        intention: '3 - Undecided',
+        cost: false,
+        border: false,
+        sovereignty: false,
+        hasPV: false,
+        wantsPV: false,
+        poster: false,
+        lift: false,
+        deceased: false,
+        ward: null
+      };
+
+      if (prevWard) {
+        $scope.inputRecordModel.ward = prevWard;
+      }
+    }
+
+    initForm();
 
     $scope.searchForm = {
       firstName: '',
@@ -36,24 +43,14 @@ angular
     };
 
     wardService.findAllSummarized()
-      .success(function(response) {
+      .success(function (response) {
         $scope.wards = response;
         $scope.inputRecordModel.ward = $scope.wards[0];
       });
 
-    $scope.onWardInputKeypress = function() {
-        $scope.invalidWard = false;
-        wardService.searchRestricted($scope.wardSearchModel, wardSearchLimit)
-          .success(function(response) {
-            $scope.wards = response.wards;
-          });
-    };
-
-    $scope.onSearchVoter = function() {
+    $scope.onSearchVoter = function () {
       function handleSuccess() {
-        $scope.searchResults.push({
-
-        });
+        $scope.searchResults.push({});
       }
 
       function handleError() {
@@ -78,17 +75,29 @@ angular
       }
     };
 
+    function isValidElectorID(electorID) {
+      $scope.invalidErn = false;
+      var valid = util.isValidElectorID(electorID);
+      if (valid) {
+        return true;
+      } else {
+        $scope.invalidErn = true;
+        return false;
+      }
+    }
+
     function mapFormToRequest(formModel) {
       var copy = $.extend(true, {}, formModel);
       copy.intention = _.parseInt(formModel.intention.charAt(0));
       copy.likelihood = _.parseInt(formModel.likelihood.charAt(0));
+      copy.wardCode = formModel.ward.code;
+      delete copy.ward;
       return copy;
     }
 
     function handleSubmitEntrySuccess(response) {
       $scope.elector = response;
-      $scope.electorName = $scope.elector.lastName + ", " + $scope.elector.firstName;
-      $scope.electorAddress = $scope.elector.address;
+      resetForm();
 
       $scope.logs.push({
         ern: response.ern,
@@ -97,7 +106,14 @@ angular
       });
     }
 
+    function resetForm() {
+      var prefix = util.extractErnPrefix($scope.inputRecordModel.ern);
+      initForm();
+      $scope.inputRecordModel.ern = prefix;
+    }
+
     function handleSubmitEntryFailure(err) {
+      resetForm();
       if (err && err.type === 'NotFoundFailure') {
         $scope.logs.push({
           ern: err.custom,
@@ -111,7 +127,6 @@ angular
           success: false
         });
       }
-      $scope.elector = null;
     }
 
     function validateForm() {
@@ -119,6 +134,10 @@ angular
 
       if (_.isEmpty($scope.inputRecordModel.ern)) {
         errors.push("Elector ID is empty");
+      }
+
+      if (!util.validErn($scope.inputRecordModel.ern)) {
+        errors.push("Elector ID is invalid");
       }
 
       return errors;

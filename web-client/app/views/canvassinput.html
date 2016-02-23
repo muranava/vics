@@ -29,7 +29,8 @@
             <form class="form-horizontal" ng-submit="onSubmitRecord()">
               <div class="alert alert-callout alert-danger" role="alert" ng-show="errors.length">
                 <p ng-repeat="error in errors">
-                  <i class="fa fa-warning"></i> &nbsp;{{error}}
+                  <i class="fa fa-warning"></i> &nbsp;{{error}} <a class="btn btn-icon-toggle btn-refresh" data-toggle="modal" data-target="#simpleModal"><i
+                  class="fa fa-question"></i></a>
                 </p>
               </div>
 
