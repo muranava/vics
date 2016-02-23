@@ -76,6 +76,6 @@ public class VoterBuilder {
     }
 
     public Voter build() {
-        return new Voter(pollingDistrict, telephone, electorId, electorSuffix, title, firstName, initial, lastName, ern);
+        return new Voter(ern, pollingDistrict, telephone, electorId, electorSuffix, title, firstName, initial, lastName);
     }
 }

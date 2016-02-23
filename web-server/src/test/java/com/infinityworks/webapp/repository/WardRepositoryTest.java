@@ -72,11 +72,4 @@ public class WardRepositoryTest extends RepositoryTest {
 
         assertThat(wards, hasItem(earlsdon));
     }
-
-    @Test
-    public void searchTheWardsByUser() throws Exception {
-        Set<Ward> wards = wardRepository.searchByUsernameAndWardName("cov@south.cov", "od", 10);
-
-        assertThat(wards, hasSize(2));
-    }
 }

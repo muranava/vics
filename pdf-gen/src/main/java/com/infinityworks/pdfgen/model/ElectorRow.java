@@ -17,6 +17,7 @@ public class ElectorRow {
     private final String deceased;
     private final String ern;
 
+
     public ElectorRow(String house, String street, String name, String telephone, String likelihood, String issue1, String issue2, String issue3, String support, String hasPV, String wantsPV, String needsLift, String poster, String deceased, String ern) {
         this.house = house;
         this.street = street;
