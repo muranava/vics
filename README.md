@@ -23,13 +23,13 @@ and the database installation scripts that contain reference data
 
 ## Project Modules
 
+    * web-server - the main web application that provides data to the UI and manages users (Java/Spring Boot)
+    * web-client - the user interface (AngularJS app)
     * common - utilities and language extensions that can be reused across all modules
     * common-dto - data transfer objects that can be shared between modules
     * test-support - test related utilities, matchers and builders
     * pdf-gen - code to generate PDFs from elector data
-    * web-server - the main web application that provides data to the UI and manages users (Java/Spring Boot)
     * tools - scripts and tools around for managing data and deploying the application
-    * web-client - the user interface (AngularJS)
 
 ## Electoral Roll Number (ERN)
 
