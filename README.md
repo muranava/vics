@@ -29,7 +29,7 @@ and the database installation scripts that contain reference data
     * common-dto - data transfer objects that can be shared between modules
     * test-support - test related utilities, matchers and builders
     * pdf-gen - code to generate PDFs from elector data
-    * tools - scripts and tools around for managing data and deploying the application
+    * tools - scripts and tools for managing data and deploying the application
 
 ## Electoral Roll Number (ERN)
 
