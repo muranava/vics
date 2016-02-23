@@ -13,8 +13,8 @@ angular
       $scope.logout = function() {
         authService.logout()
           .finally(function() {
-            $rootScope.currentUser = null;
             $location.path('/login');
           });
+        $rootScope.currentUser = null;
       };
     });

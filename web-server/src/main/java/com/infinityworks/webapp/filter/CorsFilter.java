@@ -9,16 +9,15 @@ import javax.servlet.*;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.List;
 
 @Component
 public class CorsFilter implements Filter {
     private static final Logger log = LoggerFactory.getLogger(CorsFilter.class);
-    private final AllowedHosts allowedHosts;
+    private final CorsConfig hosts;
 
     @Autowired
-    public CorsFilter(AllowedHosts allowedHosts) {
-        this.allowedHosts = allowedHosts;
+    public CorsFilter(CorsConfig hosts) {
+        this.hosts = hosts;
     }
 
     @Override
@@ -33,12 +32,14 @@ public class CorsFilter implements Filter {
         HttpServletResponse response = (HttpServletResponse) res;
         String requestOrigin = request.getHeader("Origin");
 
+        log.debug(requestOrigin);
+
         if (isHostAllowed(requestOrigin)) {
-                    response.setHeader("Access-Control-Allow-Origin", requestOrigin);
+            response.setHeader("Access-Control-Allow-Origin", requestOrigin);
         }
 
         response.setHeader("Access-Control-Allow-Credentials", "true");
-        response.setHeader("Access-Control-Allow-Methods", "POST, GET, PUT, OPTIONS, DELETE");
+        response.setHeader("Access-Control-Allow-Methods", hosts.getMethods());
         response.setHeader("Access-Control-Max-Age", "3600");
         response.setHeader("Access-Control-Allow-Headers", "Content-Type, Authorization, Accept, X-Requested-With");
 
@@ -46,11 +47,11 @@ public class CorsFilter implements Filter {
     }
 
     private boolean isHostAllowed(String origin) {
-        if (allowedHosts.getHosts().contains("*") ||
-            allowedHosts.getHosts().contains(origin)) {
+        if (hosts.getHosts().contains("*") ||
+            hosts.getHosts().contains(origin)) {
             return true;
         } else {
-            log.debug("Request failed CORS filter. origin={}, allowed={}", origin, allowedHosts);
+            log.debug("Request failed CORS filter. origin={}, allowed={}", origin, hosts);
             return false;
         }
     }

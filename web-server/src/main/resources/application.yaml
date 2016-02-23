@@ -23,7 +23,8 @@ spring:
 
 canvass:
   cors:
-    allowedHosts: "*"
+    hosts: "*"
+    methods:  "POST, GET, PUT, OPTIONS, DELETE"
   pafApiBaseUrl: https://api.voteleave.uk/v1
   pafApiToken: 90f88caae35a5b863ae2450b55688a559b52a343
 

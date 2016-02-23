@@ -20,7 +20,7 @@ spring:
 
 canvass:
   cors:
-    allowedHosts: "*"
+    hosts: "*"
   pafApiBaseUrl: http://localhost:9002/v1
   pafApiToken: token
 

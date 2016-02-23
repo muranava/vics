@@ -27,7 +27,7 @@ public class CorsFilterTest {
     @Test
     public void allowsTheHostIfDefined() throws Exception {
         given(req.getHeader("Origin")).willReturn("http://135.31.22.221");
-        AllowedHosts allowedHosts = new AllowedHosts(ImmutableSet.of("http://135.31.22.221"));
+        CorsConfig allowedHosts = new CorsConfig(ImmutableSet.of("http://135.31.22.221"), "");
         CorsFilter underTest = new CorsFilter(allowedHosts);
 
         underTest.doFilter(req, res, chain);
@@ -38,7 +38,7 @@ public class CorsFilterTest {
     @Test
     public void deniesTheHostIfNotRegistered() throws Exception {
         given(req.getHeader("Origin")).willReturn("http://111.11.11.111");
-        AllowedHosts allowedHosts = new AllowedHosts(ImmutableSet.of("http://135.31.22.221"));
+        CorsConfig allowedHosts = new CorsConfig(ImmutableSet.of("http://135.31.22.221"), "");
         CorsFilter underTest = new CorsFilter(allowedHosts);
 
         underTest.doFilter(req, res, chain);
@@ -49,7 +49,7 @@ public class CorsFilterTest {
     @Test
     public void allowsAnyHostIfWildcard() throws Exception {
         given(req.getHeader("Origin")).willReturn("http://111.11.11.111");
-        AllowedHosts allowedHosts = new AllowedHosts(ImmutableSet.of("*"));
+        CorsConfig allowedHosts = new CorsConfig(ImmutableSet.of("*"), "");
         CorsFilter underTest = new CorsFilter(allowedHosts);
 
         underTest.doFilter(req, res, chain);

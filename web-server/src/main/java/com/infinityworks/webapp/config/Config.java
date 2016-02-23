@@ -11,7 +11,7 @@ import com.infinityworks.pdfgen.renderer.LogoRenderer;
 import com.infinityworks.pdfgen.TableBuilder;
 import com.infinityworks.webapp.common.RequestValidator;
 import com.infinityworks.webapp.error.RestErrorHandler;
-import com.infinityworks.webapp.filter.AllowedHosts;
+import com.infinityworks.webapp.filter.CorsConfig;
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
 import org.apache.http.client.HttpClient;
@@ -34,7 +34,6 @@ import org.springframework.web.client.RestTemplate;
 import javax.sql.DataSource;
 import javax.validation.Validation;
 import javax.validation.ValidatorFactory;
-import java.io.InputStream;
 import java.net.URL;
 import java.util.HashSet;
 import java.util.List;
@@ -103,10 +102,11 @@ public class Config {
     }
 
     @Bean
-    public AllowedHosts allowedHostsForCORS(Environment env) {
-        String allowedHosts = env.getRequiredProperty("canvass.cors.allowedHosts");
+    public CorsConfig allowedHostsForCORS(Environment env) {
+        String allowedHosts = env.getRequiredProperty("canvass.cors.hosts");
+        String methods = env.getRequiredProperty("canvass.cors.methods");
         Set<String> hosts = new HashSet<>(asList(allowedHosts.split(",")));
-        return new AllowedHosts(hosts);
+        return new CorsConfig(hosts, methods);
     }
 
     @Bean
