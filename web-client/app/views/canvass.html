@@ -41,7 +41,7 @@
                    typeahead-editable="true"
                    ng-model="constituencySearchModel"
                    placeholder="Type a constituency name"
-                   typeahead="c as c.name + ' (' + c.code + ')' for c in constituencies | filter:$viewValue | limitTo:10"
+                   typeahead="c as c.name for c in constituencies | filter:$viewValue | limitTo:10"
                    typeahead-on-select="onSelectConstituency()"
                    typeahead-loading="true"
                    class="form-control">
@@ -73,7 +73,7 @@
                    ng-disabled="allWards"
                    ng-model="wardSearchModel"
                    placeholder="Type a ward name"
-                   typeahead="w as w.name + ' (' + w.code + ')' for w in wards | filter:$viewValue | limitTo:8"
+                   typeahead="w as w.name for w in wards | filter:$viewValue | limitTo:8"
                    class="form-control">
           </div>
           <div class="card-actionbar">

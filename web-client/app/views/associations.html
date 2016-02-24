@@ -67,7 +67,7 @@
                          id="constituencyInputID"
                          placeholder="Type a constituency name"
                          ng-model="constituencySearchModel"
-                         typeahead="c as c.name + ' (' + c.code + ')' for c in constituencies | filter:$viewValue | limitTo:8"
+                         typeahead="c as c.name + ' in (' + c.code + ')' for c in constituencies | filter:$viewValue | limitTo:8"
                          typeahead-on-select="onSelectConstituency()"
                          typeahead-loading="true"
                          class="form-control" id="pw1">
