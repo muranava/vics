@@ -6,7 +6,8 @@ angular
       chars = "abcdefghjknopqrstuvwxyz=@£!&%",
       uppers = "ABCDEFGHJKMNPQRSTUVWXYZ",
       numbers = "23456789",
-      emailRegex = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+      emailRegex = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
+      ernRegex = /^(\w+-){1,2}\w+$/;
 
 
     api.uuid = function () {
@@ -29,10 +30,7 @@ angular
     };
 
     api.validErn = function(electorID) {
-      var parts = _.filter(electorID.split("-"), function (part) {
-        return !_.isEmpty(part);
-      });
-      return parts.length === 3 || parts.length === 2;
+      return electorID && ernRegex.test(electorID);
     };
 
     api.notEmpty = function(underTest) {
