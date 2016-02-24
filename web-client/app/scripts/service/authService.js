@@ -3,12 +3,12 @@
  */
 angular
   .module('canvass')
-  .service("authService", function ($http, $q, $window, apiUrl) {
+  .service("authService", function ($http, $q, $window, config) {
     var api = {};
 
     api.login = function (username, password) {
       return $http({
-        url: apiUrl + '/user/login',
+        url: config.apiUrl + '/user/login',
         method: 'POST',
         headers: {
           'Authorization': generateAuthHeader(username, password)
@@ -21,7 +21,7 @@ angular
     api.test = function (role) {
       role = role || 'ADMIN';
       return $http({
-        url: apiUrl + '/user/login/test?role=' + role,
+        url: config.apiUrl + '/user/login/test?role=' + role,
         method: 'GET',
         withCredentials: true
       });
@@ -34,7 +34,7 @@ angular
 
     api.logout = function () {
       return $http({
-        url: apiUrl + '/user/logout',
+        url: config.apiUrl + '/user/logout',
         method: 'POST',
         withCredentials: true
       });

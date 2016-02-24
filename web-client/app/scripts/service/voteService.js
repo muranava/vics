@@ -1,7 +1,8 @@
 angular
   .module('canvass')
-  .service('voteService', function (apiUrl, $http) {
-    var api = {};
+  .service('voteService', function (config, $http) {
+    var api = {},
+      apiUrl = config.apiUrl;
 
     api.recordVote = function (model) {
       return $http({

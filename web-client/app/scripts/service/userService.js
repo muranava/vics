@@ -1,7 +1,8 @@
 angular
   .module('canvass')
-  .service('userService', function ($http, apiUrl) {
-    var api = {};
+  .service('userService', function ($http, config) {
+    var api = {}, 
+      apiUrl = config.apiUrl;
 
     api.retrieveAllUsers = function() {
       return $http({

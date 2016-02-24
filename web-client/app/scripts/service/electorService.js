@@ -1,7 +1,8 @@
 angular
   .module('canvass')
-  .service('electorService', function (apiUrl, $http, util) {
-    var api = {};
+  .service('electorService', function (config, $http, util) {
+    var api = {},
+      apiUrl = config.apiUrl;
 
     /**
      * Retrieves the elector records for the given ward

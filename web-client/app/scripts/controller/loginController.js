@@ -1,6 +1,6 @@
 angular
   .module('canvass')
-  .controller('loginController', function ($scope, $http, $location, apiUrl, authService) {
+  .controller('loginController', function ($scope, $http, $location, authService) {
 
     $scope.failedLogin = false;
     $scope.credentials = {};

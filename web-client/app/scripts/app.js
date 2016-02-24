@@ -19,7 +19,13 @@ angular
     'ui.bootstrap',
     'angular-loading-bar'
   ])
-  .constant('apiUrl', 'http://localhost:8080/api/canvass')
+  .constant('config', {
+    apiUrl: 'http://localhost:8080/api/canvass',
+    supportEmail: 'canvassappsupport@voteleave.uk'
+  })
+  .run(function($rootScope, config) {
+    $rootScope.supportEmail = config.supportEmail;
+  })
   .config(function ($routeProvider) {
 
     var authByRoute = [

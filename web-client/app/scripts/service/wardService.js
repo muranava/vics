@@ -3,8 +3,9 @@
  */
 angular
   .module('canvass')
-  .service('wardService', function ($http, apiUrl) {
-    var api = {};
+  .service('wardService', function ($http, config) {
+    var api = {},
+      apiUrl = config.apiUrl;
 
     /**
      * Finds the wards within constituency

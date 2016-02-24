@@ -3,8 +3,9 @@
  */
 angular
     .module('canvass')
-    .service('healthService', function(apiUrl, $http) {
-        var api = {};
+    .service('healthService', function(config, $http) {
+        var api = {}, 
+          apiUrl = config.apiUrl;
 
         /**
          * Gets the health of the api

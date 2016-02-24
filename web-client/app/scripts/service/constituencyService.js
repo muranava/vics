@@ -1,8 +1,9 @@
 
 angular
   .module('canvass')
-  .service('constituencyService', function (apiUrl, $http) {
-    var api = {};
+  .service('constituencyService', function (config, $http) {
+    var api = {},
+      apiUrl = config.apiUrl;
 
     api.retrieveByUser = function () {
       return $http({
