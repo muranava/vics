@@ -1,7 +1,6 @@
 package com.infinityworks.webapp.rest;
 
 import com.infinityworks.webapp.error.RestErrorHandler;
-import com.infinityworks.webapp.rest.validation.IsUUID;
 import com.infinityworks.webapp.service.ConstituencyService;
 import com.infinityworks.webapp.service.SessionService;
 import org.hibernate.validator.constraints.NotEmpty;
@@ -47,7 +46,7 @@ public class ConstituencyController {
     public ResponseEntity<?> constituencySearch(
             Principal principal,
             @RequestParam(defaultValue = "10", name = "limit") int limit,
-            @RequestParam(required = true, name = "name") @NotEmpty String name) {
+            @RequestParam(name = "name") @NotEmpty String name) {
         return sessionService.extractUserFromPrincipal(principal)
                 .flatMap(user -> constituencyService.constituenciesByName(user, name, limit))
                 .fold(errorHandler::mapToResponseEntity, ResponseEntity::ok);
@@ -57,10 +56,10 @@ public class ConstituencyController {
     @RequestMapping(method = POST, value = "/{constituencyID}/user/{userID}")
     public ResponseEntity<?> addUserAssociation(
             Principal principal,
-            @PathVariable("constituencyID") @IsUUID String constituencyID,
-            @PathVariable("userID") @IsUUID String userID) {
+            @PathVariable("constituencyID") UUID constituencyID,
+            @PathVariable("userID") UUID userID) {
         return sessionService.extractUserFromPrincipal(principal)
-                .flatMap(user -> constituencyService.associateToUser(user, UUID.fromString(constituencyID), UUID.fromString(userID)))
+                .flatMap(user -> constituencyService.associateToUser(user, constituencyID, userID))
                 .fold(errorHandler::mapToResponseEntity, ResponseEntity::ok);
     }
 
@@ -68,10 +67,10 @@ public class ConstituencyController {
     @RequestMapping(method = DELETE, value = "/{constituencyID}/user/{userID}")
     public ResponseEntity<?> removeUserAssociation(
             Principal principal,
-            @PathVariable("constituencyID") @IsUUID String constituencyID,
-            @PathVariable("userID") @IsUUID String userID) {
+            @PathVariable("constituencyID") UUID constituencyID,
+            @PathVariable("userID") UUID userID) {
         return sessionService.extractUserFromPrincipal(principal)
-                .flatMap(user -> constituencyService.removeUserAssociation(user, UUID.fromString(constituencyID), UUID.fromString(userID)))
+                .flatMap(user -> constituencyService.removeUserAssociation(user, constituencyID, userID))
                 .fold(errorHandler::mapToResponseEntity, ResponseEntity::ok);
     }
 }

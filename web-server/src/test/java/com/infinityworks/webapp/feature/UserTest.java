@@ -1,7 +1,7 @@
 package com.infinityworks.webapp.feature;
 
-import com.infinityworks.webapp.common.RequestValidator;
 import com.infinityworks.common.lang.Try;
+import com.infinityworks.webapp.common.RequestValidator;
 import com.infinityworks.webapp.domain.Role;
 import com.infinityworks.webapp.domain.User;
 import com.infinityworks.webapp.error.RestErrorHandler;
@@ -144,5 +144,13 @@ public class UserTest extends WebApplicationTest {
 
         Optional<User> deleted = userRepository.findOneByUsername("cov@south.cov");
         assertThat(deleted.isPresent(), is(false));
+    }
+
+    @Test
+    public void returns400IfIdNotUUID() throws Exception {
+        mockMvc.perform(delete("/user/not_a_uuid")
+                .accept(APPLICATION_JSON))
+                .andDo(print())
+                .andExpect(status().isBadRequest());
     }
 }

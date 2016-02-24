@@ -8,7 +8,6 @@ import com.infinityworks.webapp.error.RestErrorHandler;
 import com.infinityworks.webapp.rest.dto.AuthenticationToken;
 import com.infinityworks.webapp.rest.dto.CreateUserRequest;
 import com.infinityworks.webapp.rest.dto.UpdateUserRequest;
-import com.infinityworks.webapp.rest.validation.IsUUID;
 import com.infinityworks.webapp.security.SecurityUtils;
 import com.infinityworks.webapp.service.SessionService;
 import com.infinityworks.webapp.service.UserService;
@@ -71,18 +70,18 @@ public class UserController {
 
     @PreAuthorize("hasAuthority('ADMIN')")
     @RequestMapping(method = DELETE, value = "/{id}")
-    public ResponseEntity<?> delete(@PathVariable("id") @IsUUID String id, Principal principal) {
+    public ResponseEntity<?> delete(@PathVariable("id") UUID id, Principal principal) {
         return sessionService.extractUserFromPrincipal(principal)
-                .flatMap(user -> userService.delete(user, UUID.fromString(id)))
+                .flatMap(user -> userService.delete(user, id))
                 .fold(errorHandler::mapToResponseEntity, ResponseEntity::ok);
     }
 
     @PreAuthorize("hasAuthority('ADMIN')")
     @RequestMapping(method = PUT, value = "/{id}")
-    public ResponseEntity<?> update(@PathVariable("id") @IsUUID String id, @RequestBody UpdateUserRequest updateRequest, Principal principal) {
+    public ResponseEntity<?> update(@PathVariable("id") UUID id, @RequestBody UpdateUserRequest updateRequest, Principal principal) {
         return requestValidator.validate(updateRequest)
                 .flatMap(request -> sessionService.extractUserFromPrincipal(principal))
-                .flatMap(user -> userService.update(user, UUID.fromString(id), updateRequest))
+                .flatMap(user -> userService.update(user, id, updateRequest))
                 .fold(errorHandler::mapToResponseEntity, ResponseEntity::ok);
     }
 
@@ -108,9 +107,9 @@ public class UserController {
 
     @PreAuthorize("hasAuthority('ADMIN')")
     @RequestMapping(method = GET, value = "/{id}")
-    public ResponseEntity<?> getUser(@PathVariable(value = "id") @IsUUID String id, Principal principal) {
+    public ResponseEntity<?> getUser(@PathVariable(value = "id") UUID id, Principal principal) {
         return sessionService.extractUserFromPrincipal(principal)
-                .flatMap(user -> userService.getByID(user, UUID.fromString(id)))
+                .flatMap(user -> userService.getByID(user, id))
                 .fold(errorHandler::mapToResponseEntity, ResponseEntity::ok);
     }
 
