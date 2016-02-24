@@ -102,7 +102,7 @@ public class WardController {
     @RequestMapping(method = POST, value = "/{wardID}/user/{userID}")
     public ResponseEntity<?> addUserAssociation(
             Principal principal,
-            @PathVariable("wardID") @IsUUID String wardID,
+            @PathVariable("wardID") @IsUUID String wardID, // FIXME validation not working - test!
             @PathVariable("userID") @IsUUID String userID) {
         return sessionService.extractUserFromPrincipal(principal)
                 .flatMap(user -> wardService.associateToUser(user, UUID.fromString(wardID), UUID.fromString(userID)))

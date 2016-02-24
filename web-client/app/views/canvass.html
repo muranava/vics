@@ -20,7 +20,7 @@
         </article>
       </div>
     </div>
-    <div class="row" ng-if="userHasNoAssociations">
+    <div class="row" ng-show="userHasNoAssociations">
       <div class="col-sm-12">
         <div class="alert alert-callout alert-warning" role="alert">
           <strong>Warning!</strong> You do not have any wards associated with your account. This will prevent
@@ -28,7 +28,7 @@
         </div>
       </div>
     </div>
-    <div class="row" ng-if="!userHasNoAssociations">
+    <div class="row" ng-show="!userHasNoAssociations">
       <div class="col-md-12">
         <div class="card">
           <div class="card-head">
