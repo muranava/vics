@@ -16,6 +16,7 @@ angular
     constituencyService.retrieveByUser()
       .success(function (response) {
         $scope.constituencies = response.constituencies;
+        $scope.userHasNoAssociations = _.isEmpty($scope.constituencies);
       })
       .error(function () {
         $scope.errorLoadingData = true;

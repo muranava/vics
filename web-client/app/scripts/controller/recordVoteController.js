@@ -24,6 +24,7 @@ angular
     wardService.findAllSummarized()
       .success(function(response) {
         $scope.wards = response;
+        $scope.userHasNoAssociations = _.isEmpty($scope.wards);
         $scope.formModel.selectedWard = $scope.wards[0];
       });
 

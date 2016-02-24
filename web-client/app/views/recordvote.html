@@ -14,7 +14,15 @@
         </article>
       </div>
     </div>
-    <div class="row">
+    <div class="row" ng-if="userHasNoAssociations">
+      <div class="col-sm-12">
+        <div class="alert alert-callout alert-warning" role="alert">
+          <strong>Warning!</strong> You do not have any wards associated with your account. This will prevent
+          you from submitting canvass data. Please contact <a href="mailto:{{supportEmail}}">{{supportEmail}}</a> to request access.
+        </div>
+      </div>
+    </div>
+    <div class="row" ng-if="!userHasNoAssociations">
       <div class="col-lg-6 col-sm-6">
         <div class="card">
           <div class="card-head">
