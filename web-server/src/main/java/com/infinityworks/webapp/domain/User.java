@@ -5,7 +5,6 @@ import com.google.common.base.MoreObjects;
 import com.google.common.base.Objects;
 
 import javax.persistence.*;
-import java.util.List;
 import java.util.Set;
 
 /**
@@ -69,11 +68,13 @@ public class User extends BaseEntity implements Permissible {
             uniqueConstraints = @UniqueConstraint(columnNames={"users_id", "wards_id"}))
     private Set<Ward> wards;
 
+    @JsonIgnore
     @Override
     public boolean isAdmin() {
         return role == Role.ADMIN;
     }
 
+    @JsonIgnore
     @Override
     public boolean hasWardPermission(Ward ward) {
         return isAdmin() || wards.contains(ward) || constituencies.contains(ward.getConstituency());

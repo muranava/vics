@@ -62,7 +62,9 @@
               </div>
             </div>
           </div>
+          <form ng-submit="onSearch()">
           <div class="card-body">
+
             <div ng-if="wardNotSelectedError" class="alert alert-callout alert-danger" role="alert">
               <strong>Error!</strong> Please choose a valid Ward
             </div>
@@ -78,9 +80,10 @@
           </div>
           <div class="card-actionbar">
             <div class="card-actionbar-row">
-              <a class="btn ink-reaction btn-default" ng-click="onSearch()">Search</a>
+              <button class="btn ink-reaction btn-danger" type="submit">Search</button>
             </div>
           </div>
+          </form>
         </div>
       </div>
     </div>

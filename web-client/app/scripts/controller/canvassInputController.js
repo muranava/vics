@@ -124,9 +124,7 @@ angular
 
       if (_.isEmpty($scope.inputRecordModel.ern)) {
         errors.push("Elector ID is empty");
-      }
-
-      if (!util.validErn($scope.inputRecordModel.ern)) {
+      } else if (!util.validErn($scope.inputRecordModel.ern)) {
         errors.push("Elector ID is invalid");
       }
 
