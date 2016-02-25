@@ -3,30 +3,22 @@ angular
   .module('canvass')
   .controller('gotvController', function($scope, wardService, electorService) {
 
-    $scope.intentionSlider = {
-      minValue: 3,
-      maxValue: 4,
-      options: {
-        floor: 1,
-        ceil: 5,
-        showTicks: true,
-        showTicksValues: true,
-        getSelectionBarColor: function() {
-          return '';
-        }
-      }
-    };
+    $scope.numStreetsSelected = 0;
+    $scope.intentionSlider = defaultSliderOptions();
+    $scope.likelihoodSlider = defaultSliderOptions();
 
-    $scope.likelihoodSlider = {
-      minValue: 3,
-      maxValue: 4,
-      options: {
-        floor: 1,
-        ceil: 5,
-        showTicks: true,
-        showTicksValues: true
-      }
-    };
+    function defaultSliderOptions() {
+      return {
+        minValue: 3,
+        maxValue: 4,
+        options: {
+          floor: 1,
+          ceil: 5,
+          showTicks: true,
+          showTicksValues: true
+        }
+      };
+    }
 
     $scope.onSearch = function () {
       wardService.findStreetsByWard($scope.ward.code)
