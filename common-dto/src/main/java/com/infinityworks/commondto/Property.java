@@ -4,6 +4,7 @@ package com.infinityworks.commondto;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.google.common.base.MoreObjects;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -12,7 +13,7 @@ import static com.google.common.base.MoreObjects.firstNonNull;
 import static com.google.common.base.Strings.nullToEmpty;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class Property implements GeneratesStreetLabel {
+public class Property implements GeneratesStreetLabel, GeneratesHouseNumber {
     private final String buildingNumber;
     private final String mainStreet;
     private final String postTown;
@@ -61,5 +62,17 @@ public class Property implements GeneratesStreetLabel {
 
     public List<Voter> getVoters() {
         return voters;
+    }
+
+    @Override
+    public String toString() {
+        return MoreObjects.toStringHelper(this)
+                .add("buildingNumber", buildingNumber)
+                .add("mainStreet", mainStreet)
+                .add("postTown", postTown)
+                .add("dependentLocality", dependentLocality)
+                .add("dependentStreet", dependentStreet)
+                .add("voters", voters)
+                .toString();
     }
 }

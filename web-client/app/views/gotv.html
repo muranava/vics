@@ -16,11 +16,70 @@
 
     <!-- Download Cards -->
     <!--<div class="row" ng-if="ward">-->
-    <div class="row">
+    <div class="card" ng-if="ward">
+      <div class="card-head">
+        <header>3. Target Voters</header>
+      </div>
+      <div class="card-body tab-content style-default-bright">
+        <div class="row">
+
+          <div class="form-group">
+            <label class="col-sm-3 control-label">Voting Intention</label>
+            <div class="col-sm-9">
+              <rzslider class="slider"
+                        rz-slider-model="intentionSlider.minValue"
+                        rz-slider-high="intentionSlider.maxValue"
+                        rz-slider-options="intentionSlider.options">
+              </rzslider>
+            </div>
+          </div>
+        </div>
+        <div class="row" style="margin-top: 25px">
+          <div class="form-group">
+            <label class="col-sm-3 control-label">Voting Likelihood</label>
+            <div class="col-sm-9">
+              <rzslider
+                rz-slider-model="likelihoodSlider.minValue"
+                rz-slider-high="likelihoodSlider.maxValue"
+                rz-slider-options="likelihoodSlider.options">
+              </rzslider>
+            </div>
+          </div>
+        </div>
+        <div class="row" style="margin-top: 25px">
+
+          <div class="form-group">
+            <label class="col-sm-3 control-label">Postal Vote (PV)</label>
+            <div class="col-sm-9">
+              <label class="radio-inline radio-styled">
+                <input type="radio" name="inlineRadioOptions" value="option1"><span>Has PV</span>
+              </label>
+              <label class="radio-inline radio-styled">
+                <input type="radio" name="inlineRadioOptions" value="option2"><span>Wants PV</span>
+              </label>
+              <label class="radio-inline radio-styled">
+                <input type="radio" name="inlineRadioOptions" value="option3" checked><span>Both</span>
+              </label>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card-actionbar">
+        <div class="card-actionbar-row">
+          <button type="submit" class="btn btn-sm btn-danger raised" ng-click="onSearch()">Search</button>
+        </div>
+      </div>
+    </div>
+
+
+    <!-- 4. Select Streets -->
+    <!-- Download Cards -->
+    <div class="row" ng-if="streets">
       <div class="col-md-12">
         <div class="card">
           <div class="card-head">
-            <header>3. Target Voters<header>
+            <header>4. Download Canvass Cards</header>
           </div>
           <div class="card-body tab-content style-default-bright">
             <div class="row">
@@ -28,29 +87,72 @@
                 <h4>Selection</h4>
                 <div class="col-lg-12">
                   <article class="margin-bottom-xxl">
-
-                    <div class="form-group">
-                      <label class="col-sm-3 control-label">Postal Vote (PV)</label>
-                      <div class="col-sm-9">
-                        <label class="radio-inline radio-styled">
-                          <input type="radio" name="inlineRadioOptions" value="option1"><span>Has PV</span>
-                        </label>
-                        <label class="radio-inline radio-styled">
-                          <input type="radio" name="inlineRadioOptions" value="option2"><span>Wants PV</span>
-                        </label>
-                        <label class="radio-inline radio-styled">
-                          <input type="radio" name="inlineRadioOptions" value="option3" checked><span>Both</span>
-                        </label>
-                      </div>
-                    </div>
-
+                    <p>
+                      You have selected the following ward and constituency.
+                    </p>
                   </article>
                 </div>
               </div>
             </div>
+            <div class="row">
+              <div class="col-lg-12">
+                <div class="card">
+                  <div class="card-body no-padding">
+                    <ul class="list">
+                      <li class="tile">
+                        <a class="tile-content ink-reaction">
+                          <div class="tile-text canvass-search-result">
+                            <div>{{constituency.name}} ({{constituency.code}})</div>
+                            <small>Constituency</small>
+                          </div>
+                        </a>
+                      </li>
+                      <li class="tile">
+                        <a class="tile-content ink-reaction">
+                          <div class="tile-text">
+                            <div>{{ward.name}} ({{ward.code}})</div>
+                            <small>Ward</small>
+                          </div>
+                        </a>
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+                <br>
+                <div class="row">
+                  <div class="col-lg-12">
+                    <h4>Select individual streets or download all</h4>
+                  </div>
+                </div>
+                <em class="text-caption">{{numStreetsSelected}} of {{streets.length}} streets selected</em>
+                <div class="card">
+                  <div class="card-actionbar">
+                    <div class="card-actionbar-row">
+                      <button type="button" class="btn btn-primary btn-sm raised pull-left" ng-click="onPrintSelected()" ng-disabled="numStreetsSelected === 0">Print Selected</button>
+                      <a class="btn btn-danger btn-sm raised pull-left button-group-spacing" data-toggle="modal" data-target="#simpleModal">Print All</a>
+                    </div>
+                  </div>
+                  <div class="card-body no-padding">
+                    <ul class="list" data-sortable="true">
+                      <li class="tile" ng-repeat="street in streets">
+                        <div class="checkbox checkbox-styled tile-text">
+                          <label>
+                            <input ng-change="getNumStreetsSelected()" type="checkbox" ng-model="street.selected">
+														<span>
+															{{street | streetSingleLineFilter}}
+														</span>
+                          </label>
+                        </div>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+            </div>
+
           </div>
         </div>
       </div>
     </div>
   </div>
 </section>
+

@@ -34,7 +34,7 @@ logging:
   level:
     org.springframework.security: INFO
     com.zaxxer.hikari.HikariConfig: DEBUG
-    com.infinityworks.webapp: TRACE
+    com.infinityworks: TRACE
     org.hibernate.SQL: ERROR
     org.hibernate.type: ERROR
 

@@ -17,7 +17,8 @@ angular
     'ngSanitize',
     'ngTouch',
     'ui.bootstrap',
-    'angular-loading-bar'
+    'angular-loading-bar',
+    'rzModule'
   ])
   .constant('config', {
     apiUrl: 'http://localhost:8080/api/canvass',

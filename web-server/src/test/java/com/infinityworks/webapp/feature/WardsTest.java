@@ -10,10 +10,7 @@ import com.infinityworks.webapp.rest.WardController;
 import com.infinityworks.webapp.rest.dto.Street;
 import com.infinityworks.webapp.rest.dto.UserRestrictedWards;
 import com.infinityworks.webapp.rest.dto.WardSummary;
-import com.infinityworks.webapp.service.AddressService;
-import com.infinityworks.webapp.service.SessionService;
-import com.infinityworks.webapp.service.UserService;
-import com.infinityworks.webapp.service.WardService;
+import com.infinityworks.webapp.service.*;
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.http.MediaType;
@@ -62,8 +59,9 @@ public class WardsTest extends WebApplicationTest {
     public void setup() {
         sessionService = mock(SessionService.class);
         WardService wardService = getBean(WardService.class);
+        WardAssociationService wardAssociationService = getBean(WardAssociationService.class);
         AddressService addressService = getBean(AddressService.class);
-        WardController wardController = new WardController(sessionService, wardService, new RestErrorHandler(), addressService);
+        WardController wardController = new WardController(sessionService, wardService, wardAssociationService, new RestErrorHandler(), addressService);
         UserController userController = new UserController(getBean(UserService.class), getBean(RestErrorHandler.class), getBean(UserDetailsService.class), sessionService, getBean(AuthenticationManager.class), getBean(RequestValidator.class));
 
         mockMvc = MockMvcBuilders
@@ -169,7 +167,7 @@ public class WardsTest extends WebApplicationTest {
     }
 
     @Test
-    public void returns404IfInvalidUUID() throws Exception {
+    public void returns404IfNonExistantID() throws Exception {
         String invalidUUID = "968a5-5689-418d-b63d-b21545345f01";
         String endpoint = "/constituency/" + invalidUUID + "/ward";
 
@@ -193,7 +191,7 @@ public class WardsTest extends WebApplicationTest {
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$..wards[?(@.name =~ /.*Radford/i)].id",
-                           is(singletonList("eec12170-2d64-4522-8178-8ddf95aa7a06"))));
+                           is(singletonList(radford))));
     }
 
     @Test

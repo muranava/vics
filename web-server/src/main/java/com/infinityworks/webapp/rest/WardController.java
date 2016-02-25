@@ -3,6 +3,7 @@ package com.infinityworks.webapp.rest;
 import com.infinityworks.webapp.error.RestErrorHandler;
 import com.infinityworks.webapp.service.AddressService;
 import com.infinityworks.webapp.service.SessionService;
+import com.infinityworks.webapp.service.WardAssociationService;
 import com.infinityworks.webapp.service.WardService;
 import org.hibernate.validator.constraints.NotEmpty;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,16 +27,19 @@ import static org.springframework.web.bind.annotation.RequestMethod.*;
 public class WardController {
     private final SessionService sessionService;
     private final WardService wardService;
+    private final WardAssociationService wardAssociationService;
     private final RestErrorHandler errorHandler;
     private final AddressService addressService;
 
     @Autowired
     public WardController(SessionService sessionService,
                           WardService wardService,
+                          WardAssociationService wardAssociationService,
                           RestErrorHandler errorHandler,
                           AddressService addressService) {
         this.sessionService = sessionService;
         this.wardService = wardService;
+        this.wardAssociationService = wardAssociationService;
         this.errorHandler = errorHandler;
         this.addressService = addressService;
     }
@@ -102,7 +106,7 @@ public class WardController {
             @PathVariable("wardID") UUID wardID,
             @PathVariable("userID") UUID userID) {
         return sessionService.extractUserFromPrincipal(principal)
-                .flatMap(user -> wardService.associateToUser(user, wardID, userID))
+                .flatMap(user -> wardAssociationService.associateToUser(user, wardID, userID))
                 .fold(errorHandler::mapToResponseEntity, ResponseEntity::ok);
     }
 
@@ -113,7 +117,7 @@ public class WardController {
             @PathVariable("wardID") UUID wardID,
             @PathVariable("userID") UUID userID) {
         return sessionService.extractUserFromPrincipal(principal)
-                .flatMap(user -> wardService.removeUserAssociation(user, wardID, userID))
+                .flatMap(user -> wardAssociationService.removeUserAssociation(user, wardID, userID))
                 .fold(errorHandler::mapToResponseEntity, ResponseEntity::ok);
     }
 }

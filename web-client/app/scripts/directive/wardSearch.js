@@ -36,7 +36,7 @@ angular
          */
         scope.onSelectWardInternal = function() {
           if (scope.directiveModel.ward && scope.directiveModel.ward.id) {
-            scope.onSelect(scope.directiveModel.ward);
+            scope.onSelect(scope.directiveModel);
           }
         };
 

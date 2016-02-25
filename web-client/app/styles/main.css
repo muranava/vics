@@ -83,3 +83,17 @@ input:-webkit-autofill:hover {
 input:-webkit-autofill:focus {
   -webkit-box-shadow: 0 0 0px 1000px #e5e6e6 inset;
 }
+
+/* Range slider overrides */
+rzslider .rz-pointer {
+  background-color: #d43335;
+}
+rzslider .rz-pointer.rz-active:after {
+  background-color: #fff9ff;
+}
+rzslider .rz-bar.rz-selection {
+  background: #ff9798;
+}
+rzslider .rz-ticks .tick.selected {
+  background: #ff9798;
+}

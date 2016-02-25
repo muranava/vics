@@ -6,7 +6,6 @@ import com.infinityworks.webapp.domain.Constituency;
 import com.infinityworks.webapp.domain.User;
 import com.infinityworks.webapp.domain.Ward;
 import com.infinityworks.webapp.repository.ConstituencyRepository;
-import com.infinityworks.webapp.repository.UserRepository;
 import com.infinityworks.webapp.repository.WardRepository;
 import com.infinityworks.webapp.rest.dto.UserRestrictedWards;
 import org.junit.Before;
@@ -26,14 +25,12 @@ import static org.mockito.Mockito.mock;
 public class ElectoralWardServiceTest {
     private ConstituencyRepository constituencyRepository;
     private WardService underTest;
-    private UserRepository userRepository;
 
     @Before
     public void setUp() throws Exception {
         WardRepository wardRepository = mock(WardRepository.class);
         constituencyRepository = mock(ConstituencyRepository.class);
-        userRepository = mock(UserRepository.class);
-        underTest = new WardService(new WardSummaryConverter(), wardRepository, userRepository, constituencyRepository);
+        underTest = new WardService(new WardSummaryConverter(), wardRepository, constituencyRepository);
     }
 
     @Test

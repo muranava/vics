@@ -9,6 +9,7 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 import java.util.UUID;
 
@@ -18,6 +19,8 @@ public interface WardRepository extends JpaRepository<Ward, UUID> {
     List<Ward> findByConstituencyOrderByNameAsc(Constituency constituency);
 
     List<Ward> findByCodeOrderByNameAsc(String code);
+
+    Optional<Ward> findByCode(String code);
 
     Set<Ward> findByConstituencyIn(Set<Constituency> constituencies);
 

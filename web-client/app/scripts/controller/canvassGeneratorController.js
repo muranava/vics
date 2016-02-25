@@ -1,4 +1,3 @@
-
 /**
  * Controller for the main canvass generator
  */
@@ -12,55 +11,18 @@ angular
     $scope.numStreetsSelected = 0;
     $scope.errorLoadingData = false;
 
-    $scope.loadingConstituencies = true;
-    constituencyService.retrieveByUser()
-      .success(function (response) {
-        $scope.constituencies = response.constituencies;
-        $scope.userHasNoAssociations = _.isEmpty($scope.constituencies);
-      })
-      .error(function () {
-        $scope.errorLoadingData = true;
-      });
-
-    $scope.onSelectConstituency = function () {
-      $scope.wardSearchModel = null;
-      $scope.wards = [];
-      $scope.errorLoadingData = false;
-      reloadWardsByConstituency();
+    $scope.onSelectConstituency = function(constituency) {
+      $scope.constituencySearchModel = constituency;
     };
-  
-    function reloadWardsByConstituency() {
-      $scope.errorLoadingData = false;
-      wardService.findWardsWithinConstituency($scope.constituencySearchModel.id)
-        .success(function (response) {
-          $scope.wards = response.wards;
-        })
-        .error(function () {
-          $scope.errorLoadingData = true;
+
+    $scope.onSelectWard = function (model) {
+      $scope.wardSearchModel = model.ward;
+      $scope.constituencySearchModel = model.constituency;
+
+      wardService.findStreetsByWard($scope.wardSearchModel.code)
+        .success(function (streets) {
+          $scope.streets = streets;
         });
-    }
-
-    $scope.onSearch = function () {
-      $scope.errorLoadingData = false;
-      $scope.streets = [];
-      $scope.wardNotSelectedError = false;
-      $scope.constituencyNotSelectedError = false;
-
-      if (!$scope.constituencySearchModel.id) {
-        $scope.constituencyNotSelectedError = true;
-      } else {
-        if ($scope.wardSearchModel) {
-          wardService.findStreetsByWard($scope.wardSearchModel.code)
-            .success(function (streets) {
-              $scope.streets = streets;
-            })
-            .error(function () {
-              $scope.errorLoadingData = true;
-            });
-        } else {
-          $scope.wardNotSelectedError = true;
-        }
-      }
     };
 
     $scope.getNumStreetsSelected = function () {

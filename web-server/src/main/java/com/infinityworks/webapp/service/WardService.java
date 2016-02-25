@@ -3,12 +3,12 @@ package com.infinityworks.webapp.service;
 import com.infinityworks.common.lang.Try;
 import com.infinityworks.webapp.converter.WardSummaryConverter;
 import com.infinityworks.webapp.domain.Constituency;
+import com.infinityworks.webapp.domain.Permissible;
 import com.infinityworks.webapp.domain.User;
 import com.infinityworks.webapp.domain.Ward;
 import com.infinityworks.webapp.error.NotAuthorizedFailure;
 import com.infinityworks.webapp.error.NotFoundFailure;
 import com.infinityworks.webapp.repository.ConstituencyRepository;
-import com.infinityworks.webapp.repository.UserRepository;
 import com.infinityworks.webapp.repository.WardRepository;
 import com.infinityworks.webapp.rest.dto.UserRestrictedWards;
 import com.infinityworks.webapp.rest.dto.WardSummary;
@@ -17,7 +17,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.*;
 
@@ -32,20 +31,37 @@ public class WardService {
     private final Logger log = LoggerFactory.getLogger(WardService.class);
     private final WardSummaryConverter wardSummaryConverter;
     private final WardRepository wardRepository;
-    private final UserRepository userRepository;
     private final ConstituencyRepository constituencyRepository;
 
     @Autowired
     public WardService(WardSummaryConverter wardSummaryConverter,
                        WardRepository wardRepository,
-                       UserRepository userRepository,
                        ConstituencyRepository constituencyRepository) {
         this.wardSummaryConverter = wardSummaryConverter;
         this.wardRepository = wardRepository;
-        this.userRepository = userRepository;
         this.constituencyRepository = constituencyRepository;
     }
 
+    public Try<Ward> getByCode(String wardCode, Permissible permissible) {
+        Optional<Ward> byWard = wardRepository.findByCode(wardCode);
+        if (!byWard.isPresent()) {
+            String msg = String.format("No ward with code=%s", wardCode);
+            log.warn(msg);
+            return Try.failure(new NotFoundFailure(msg));
+        } else {
+            Ward ward = byWard.get();
+            if (!permissible.hasWardPermission(ward)) {
+                String msg = String.format("User=%s tried to access ward=%s without permission", permissible, wardCode);
+                log.warn(msg);
+                return Try.failure(new NotAuthorizedFailure("Not Authorized"));
+            } else {
+                return Try.success(ward);
+            }
+        }
+    }
+
+    // TODO user the version that checks permissions. Remove this after refactor
+    @Deprecated
     public List<Ward> findByCode(String code) {
         return wardRepository.findByCodeOrderByNameAsc(code);
     }
@@ -102,61 +118,5 @@ public class WardService {
 
         log.debug("Found {} wards for user={}", wards, user);
         return Try.success(new UserRestrictedWards(new ArrayList<>(wards)));
-    }
-
-    @Transactional
-    public Try<User> associateToUser(User user, UUID wardID, UUID userID) {
-        if (!user.isAdmin()) {
-            log.warn("Non admin attempted to associate user={} to ward={}. user={}", userID, wardID, user);
-            return Try.failure(new NotAuthorizedFailure("Forbidden content"));
-        }
-
-        Ward ward = wardRepository.findOne(wardID);
-        if (ward == null) {
-            String msg = "No ward=" + wardID;
-            log.debug(msg);
-            return Try.failure(new NotFoundFailure(msg));
-        }
-
-        User foundUser = userRepository.findOne(userID);
-        if (foundUser == null) {
-            String msg = "No user=" + userID;
-            log.debug(msg);
-            return Try.failure(new NotFoundFailure(msg));
-        }
-
-        foundUser.getWards().add(ward);
-        User updatedUser = userRepository.save(foundUser);
-
-        log.info("Added association ward={}, user={}", wardID, userID);
-        return Try.success(updatedUser);
-    }
-
-    @Transactional
-    public Try<User> removeUserAssociation(User user, UUID wardID, UUID userID) {
-        if (!user.isAdmin()) {
-            log.warn("Non admin attempted to remove association of user={} to ward={}. user={}", userID, wardID, user);
-            return Try.failure(new NotAuthorizedFailure("Forbidden content"));
-        }
-
-        Ward ward = wardRepository.findOne(wardID);
-        if (ward == null) {
-            String msg = "No ward=" + wardID;
-            log.debug(msg);
-            return Try.failure(new NotFoundFailure(msg));
-        }
-
-        User foundUser = userRepository.findOne(userID);
-        if (foundUser == null) {
-            String msg = "No user=" + userID;
-            log.debug(msg);
-            return Try.failure(new NotFoundFailure(msg));
-        }
-
-        foundUser.removeWard(ward);
-        User updatedUser = userRepository.save(foundUser);
-
-        log.info("Removed association ward={}, user={}", wardID, userID);
-        return Try.success(updatedUser);
     }
 }

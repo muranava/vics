@@ -58,38 +58,26 @@ public class ElectorsService {
     public Try<ByteArrayOutputStream> electorsByStreets(TownStreets townStreets, String wardCode, Permissible permissible) {
         log.debug("Finding electors by streets={} for permissible={}", townStreets, permissible);
 
-        Optional<Ward> byWard = wardService.findByCode(wardCode).stream().findFirst();
-        if (!byWard.isPresent()) {
-            String msg = String.format("No ward with code=%s", wardCode);
-            log.warn(msg);
-            return Try.failure(new NotFoundFailure(msg));
-        } else {
-            Ward ward = byWard.get();
-            Constituency constituency = ward.getConstituency();
+        return wardService.getByCode(wardCode, permissible)
+                .flatMap(ward -> {
+                    Constituency constituency = ward.getConstituency();
+                    log.debug("Generating PDF... ward={} constituency={}", wardCode, constituency.getCode());
+                    Try<ByteArrayOutputStream> pdfContent = pafClient.findElectorsByStreet(townStreets, wardCode)
+                            .flatMap(electors -> {
+                                List<GeneratedPdfTable> generatedPdfTables = pdfRenderer.generatePDF(
+                                        electors, ward.getCode(), ward.getName(), constituency.getName());
 
-            if (!permissible.hasWardPermission(ward)) {
-                String msg = String.format("User=%s tried to access ward=%s without permission", permissible, wardCode);
-                log.warn(msg);
-                return Try.failure(new NotAuthorizedFailure("Not Authorized"));
-            }
-
-            log.debug("Generating PDF... ward={} constituency={}", wardCode, constituency.getCode());
-            Try<ByteArrayOutputStream> pdfContent = pafClient.findElectorsByStreet(townStreets, wardCode)
-                    .flatMap(electors -> {
-                        List<GeneratedPdfTable> generatedPdfTables = pdfRenderer.generatePDF(
-                                electors, ward.getCode(), ward.getName(), constituency.getName());
-
-                        if (generatedPdfTables.isEmpty()) {
-                            log.debug("No voters found for ward={} streets={}", ward, townStreets);
-                            return Try.failure(new NotFoundFailure("No voters found"));
-                        } else {
-                            ByteArrayOutputStream content = documentBuilder.buildPages(generatedPdfTables);
-                            return Try.success(content);
-                        }
-                    });
-            log.debug("Finished generating PDF... ward={} constituency={}", wardCode, constituency.getCode());
-            return pdfContent;
-        }
+                                if (generatedPdfTables.isEmpty()) {
+                                    log.debug("No voters found for ward={} streets={}", ward, townStreets);
+                                    return Try.failure(new NotFoundFailure("No voters found"));
+                                } else {
+                                    ByteArrayOutputStream content = documentBuilder.buildPages(generatedPdfTables);
+                                    return Try.success(content);
+                                }
+                            });
+                    log.debug("Finished generating PDF... ward={} constituency={}", wardCode, constituency.getCode());
+                    return pdfContent;
+                });
     }
 
     /**

@@ -3,6 +3,7 @@ package com.infinityworks.commondto;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.google.common.base.MoreObjects;
 
 import static com.google.common.base.Strings.nullToEmpty;
 
@@ -74,5 +75,20 @@ public class Voter {
 
     public String getLastName() {
         return lastName;
+    }
+
+    @Override
+    public String toString() {
+        return MoreObjects.toStringHelper(this)
+                .add("ern", ern)
+                .add("pollingDistrict", pollingDistrict)
+                .add("telephone", telephone)
+                .add("electorId", electorId)
+                .add("electorSuffix", electorSuffix)
+                .add("title", title)
+                .add("firstName", firstName)
+                .add("initial", initial)
+                .add("lastName", lastName)
+                .toString();
     }
 }
