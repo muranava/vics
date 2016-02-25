@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en" class="no-js" ng-app="canvass" class="ng-cloak">
+<html lang="en" class="no-js">
   <head>
     <meta charset="utf-8">
     <title>Canvass Dashboard</title>
@@ -16,6 +16,7 @@
     <!-- endbower -->
     <!-- endbuild -->
     <!-- build:css(.tmp) styles/main.css -->
+    <link rel="stylesheet" href="styles/css-init.css"/>
     <link href='http://fonts.googleapis.com/css?family=Roboto:300italic,400italic,300,400,500,700,900' rel='stylesheet'
           type='text/css'/>
     <link rel="stylesheet" href="styles/bootstrap.css"/>
@@ -26,7 +27,8 @@
     <link rel="stylesheet" href="styles/main.css">
     <!-- endbuild -->
   </head>
-  <body class="menubar-hoverable header-fixed menubar-pin" ng-controller="parentController">
+  <body ng-app="canvass" class="menubar-hoverable header-fixed menubar-pin">
+  <div ng-controller="parentController" ng-cloak>
     <!--[if lte IE 8]>
       <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
     <![endif]-->
@@ -142,7 +144,7 @@
       </div>
 
     </div>
-
+  </div>
     <!-- libs -->
     <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!--[if lt IE 9]>
@@ -197,7 +199,7 @@
     <script src="scripts/controller/associationsController.js"></script>
     <script src="scripts/controller/gotvController.js"></script>
     <script src="scripts/directive/healthComponent.js"></script>
-    <script src="scripts/directive/constituencySearch.js"></script>
+    <script src="scripts/directive/wardSearch.js"></script>
     <script src="scripts/service/wardService.js"></script>
     <script src="scripts/service/constituencyService.js"></script>
     <script src="scripts/service/healthService.js"></script>
@@ -211,5 +213,6 @@
     <script src="scripts/common/ringBuffer.js"></script>
     <script src="scripts/common/util.js"></script>
     <!-- endbuild -->
+
 </body>
 </html>
