@@ -42,7 +42,7 @@ public class UserService {
 
     public Try<User> getByID(User user, UUID id) {
         if (!user.isAdmin()) {
-            log.error("Non admin tried to retrieve user. User={}, userToFind={}", user, id);
+            log.warn("Non admin tried to retrieve user. User={}, userToFind={}", user, id);
             return Try.failure(new NotAuthorizedFailure("Forbidden"));
         }
 
@@ -56,7 +56,7 @@ public class UserService {
     @Transactional
     public Try<Void> delete(User user, UUID userToDelete) {
         if (!user.isAdmin()) {
-            log.error("Non admin tried to delete a user!. User={}, userToDelete={}", user, userToDelete);
+            log.warn("Non admin tried to delete a user!. User={}, userToDelete={}", user, userToDelete);
             return Try.failure(new NotAuthorizedFailure("Not authorized"));
         }
         if (userRepository.findOne(userToDelete) == null) {
@@ -64,14 +64,15 @@ public class UserService {
             return Try.failure(new NotFoundFailure("No user with ID=" + userToDelete));
         }
         userRepository.delete(userToDelete);
-        log.debug("Deleted user={}", userToDelete);
+
+        log.info("Deleted user={}", userToDelete);
         return Try.success(null);
     }
 
     @Transactional
     public Try<User> update(User user, UUID userToUpdate, UpdateUserRequest request) {
         if (!user.isAdmin()) {
-            log.error("Non admin tried to update a user!. User={}, userToUpdate={}", user, userToUpdate);
+            log.warn("Non admin tried to update a user!. User={}, userToUpdate={}", user, userToUpdate);
             return Try.failure(new NotAuthorizedFailure("Not authorized"));
         }
 
@@ -102,7 +103,7 @@ public class UserService {
     @Transactional
     public Try<User> create(Permissible user, CreateUserRequest request) {
         if (!user.isAdmin()) {
-            log.error("Non admin tried to create user!. User={}, request={}", user, request);
+            log.warn("Non admin tried to create user!. User={}, request={}", user, request);
             return Try.failure(new NotAuthorizedFailure("Not authorized"));
         }
 

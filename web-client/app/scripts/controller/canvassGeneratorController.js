@@ -28,7 +28,7 @@ angular
       $scope.errorLoadingData = false;
       reloadWardsByConstituency();
     };
-
+  
     function reloadWardsByConstituency() {
       $scope.errorLoadingData = false;
       wardService.findWardsWithinConstituency($scope.constituencySearchModel.id)

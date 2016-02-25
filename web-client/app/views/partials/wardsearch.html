@@ -1,0 +1,9 @@
+<input type="text"
+       id="wardInputID"
+       ng-model="directiveModel.ward"
+       placeholder="Type a ward name"
+       typeahead="w as w.name for w in wards | filter:$viewValue | limitTo:10"
+       typeahead-on-select="onSelectInternal(data)"
+       typeahead-loading="true"
+       class="form-control">
+</div>

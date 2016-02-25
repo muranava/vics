@@ -47,15 +47,6 @@ public class ElectorsController {
     }
 
     @PreAuthorize("isAuthenticated()")
-    @RequestMapping(value = "/{ern}", method = GET)
-    public ResponseEntity<?> getElectorByErn(@PathVariable("ern") String ern,
-                                             Principal principal) throws DocumentException {
-        return sessionService.extractUserFromPrincipal(principal)
-                .flatMap(user -> electorsService.electorByErn(ern))
-                .fold(errorHandler::mapToResponseEntity, ResponseEntity::ok);
-    }
-
-    @PreAuthorize("isAuthenticated()")
     @RequestMapping(method = GET)
     public ResponseEntity<?> searchByAttributes(
             @RequestParam(required = false, name = "wardCode") String wardCode,
@@ -101,7 +92,7 @@ public class ElectorsController {
 
     @PreAuthorize("isAuthenticated()")
     @RequestMapping(method = POST, value = "/voted")
-    public ResponseEntity<?> recordVote(@RequestBody() RecordVote ern,
+    public ResponseEntity<?> recordVote(@RequestBody RecordVote ern,
                                         Principal principal) {
         return sessionService.extractUserFromPrincipal(principal)
                 .flatMap(user -> voteService.recordVote(user, ern))

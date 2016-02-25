@@ -56,7 +56,7 @@
             <div class="form-group">
               <div class="input-group">
                 <div class="input-group-btn">
-                  <button class="btn btn-default" type="button" ng-click="onAddConstituency()">
+                  <button class="btn btn-success btn-sm raised" type="button" ng-click="onAddConstituency()">
                     ADD
                   </button>
                 </div>
@@ -92,7 +92,7 @@
                 <td>{{$index}}</td>
                 <td>{{c.name}}</td>
                 <td>{{c.code}}</td>
-                <td><button type="button" class="btn btn-sm btn-danger" tabindex="-1" ng-click="onDeleteConstituency(c.id)">DELETE</button></td>
+                <td><button type="button" class="btn btn-sm btn-danger raised" tabindex="-1" ng-click="onDeleteConstituency(c.id)">DELETE</button></td>
               </tr>
               </tbody>
             </table>
@@ -119,7 +119,7 @@
             <div class="form-group">
               <div class="input-group">
                 <div class="input-group-btn">
-                  <button class="btn btn-default" type="button" ng-click="onAddWard()">
+                  <button class="btn btn-success btn-sm raised" type="button" ng-click="onAddWard()">
                     ADD
                   </button>
                 </div>
@@ -159,7 +159,7 @@
                 <td>{{c.name}}</td>
                 <td>{{c.code}}</td>
                 <td>{{c.constituency.name}} ({{c.constituency.code}})</td>
-                <td><button type="button" class="btn btn-sm btn-danger" tabindex="-1" ng-click="onDeleteWard(c.id)">DELETE</button></td>
+                <td><button type="button" class="btn btn-sm btn-danger raised" tabindex="-1" ng-click="onDeleteWard(c.id)">DELETE</button></td>
 
               </tr>
               </tbody>

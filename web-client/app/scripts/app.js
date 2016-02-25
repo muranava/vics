@@ -33,6 +33,7 @@ angular
       {route: '/canvass', role: 'USER'},
       {route: '/profile', role: 'USER'},
       {route: '/recordvote', role: 'USER'},
+      {route: '/gotv', role: 'USER'},
       {route: '/admin', role: 'ADMIN'},
       {route: '/associations', role: 'ADMIN'},
       {route: '/users', role: 'ADMIN'}
@@ -96,6 +97,13 @@ angular
       .when('/users', {
         templateUrl: 'views/users.html',
         controller: 'adminUserController',
+        resolve: {
+          auth: userAuth
+        }
+      })
+      .when('/gotv', {
+        templateUrl: 'views/gotv.html',
+        controller: 'gotvController',
         resolve: {
           auth: userAuth
         }

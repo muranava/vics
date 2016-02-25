@@ -147,7 +147,32 @@ public class UserTest extends WebApplicationTest {
     }
 
     @Test
-    public void returns400IfIdNotUUID() throws Exception {
+    public void deleteUserReturns404IfUserNotFound() throws Exception {
+        when(sessionService.extractUserFromPrincipal(any(Principal.class)))
+                .thenReturn(Try.success(admin()));
+
+        mockMvc.perform(delete("/user/ed24e8fd-8a15-41b2-9808-fe8f6d7cdd49")
+                .accept(APPLICATION_JSON))
+                .andDo(print())
+                .andExpect(status().isNotFound());
+    }
+
+    @Test
+    public void deleteUserReturnsNotAuthorizedIfNonAdmin() throws Exception {
+        when(sessionService.extractUserFromPrincipal(any(Principal.class)))
+                .thenReturn(Try.success(covs()));
+
+        mockMvc.perform(delete("/user/ed24e8fd-8a15-41b2-9808-fe8f6d7cdd49")
+                .accept(APPLICATION_JSON))
+                .andDo(print())
+                .andExpect(status().isUnauthorized());
+    }
+
+    @Test
+    public void deleteUserReturns400IfUserIdInvalidFormat() throws Exception {
+        when(sessionService.extractUserFromPrincipal(any(Principal.class)))
+                .thenReturn(Try.success(admin()));
+
         mockMvc.perform(delete("/user/not_a_uuid")
                 .accept(APPLICATION_JSON))
                 .andDo(print())

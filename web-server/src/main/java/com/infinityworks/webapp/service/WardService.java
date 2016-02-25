@@ -90,7 +90,8 @@ public class WardService {
         if (user.isAdmin()) {
             return Try.success(wardRepository.findByNameIgnoreCaseContainingOrderByNameAsc(name, new PageRequest(0, limit)));
         } else {
-            return Try.failure(new NotAuthorizedFailure("Forbidden content"));
+            log.warn("Non-admin user={} tried to get all wards", user);
+            return Try.failure(new NotAuthorizedFailure("Forbidden"));
         }
     }
 
@@ -106,7 +107,7 @@ public class WardService {
     @Transactional
     public Try<User> associateToUser(User user, UUID wardID, UUID userID) {
         if (!user.isAdmin()) {
-            log.error("Non admin attempted to associate user={} to ward={}. user={}", userID, wardID, user);
+            log.warn("Non admin attempted to associate user={} to ward={}. user={}", userID, wardID, user);
             return Try.failure(new NotAuthorizedFailure("Forbidden content"));
         }
 
@@ -119,20 +120,22 @@ public class WardService {
 
         User foundUser = userRepository.findOne(userID);
         if (foundUser == null) {
-            return Try.failure(new NotFoundFailure("No user with ID " + userID));
+            String msg = "No user=" + userID;
+            log.debug(msg);
+            return Try.failure(new NotFoundFailure(msg));
         }
 
         foundUser.getWards().add(ward);
         User updatedUser = userRepository.save(foundUser);
 
-        log.debug("Added association ward={}, user={}", wardID, userID);
+        log.info("Added association ward={}, user={}", wardID, userID);
         return Try.success(updatedUser);
     }
 
     @Transactional
     public Try<User> removeUserAssociation(User user, UUID wardID, UUID userID) {
         if (!user.isAdmin()) {
-            log.error("Non admin attempted to remove association of user={} to ward={}. user={}", userID, wardID, user);
+            log.warn("Non admin attempted to remove association of user={} to ward={}. user={}", userID, wardID, user);
             return Try.failure(new NotAuthorizedFailure("Forbidden content"));
         }
 
@@ -153,7 +156,7 @@ public class WardService {
         foundUser.removeWard(ward);
         User updatedUser = userRepository.save(foundUser);
 
-        log.debug("Removed association ward={}, user={}", wardID, userID);
+        log.info("Removed association ward={}, user={}", wardID, userID);
         return Try.success(updatedUser);
     }
 }

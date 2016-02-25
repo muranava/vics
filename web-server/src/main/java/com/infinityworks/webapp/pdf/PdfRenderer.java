@@ -31,17 +31,19 @@ public class PdfRenderer {
      */
     public List<GeneratedPdfTable> generatePDF(List<VotersByStreet> voters, String wardCode, String wardName, String constituencyName) {
         return voters.stream()
-                .map(street -> {
-                    String mainStreetName = street.getMainStreetName();
-                    List<ElectorRow> electors = street.getProperties()
-                            .stream()
-                            .map(property -> propertyToRowConverter.apply(wardCode, property))
-                            .flatMap(Collection::stream)
-                            .collect(toList());
-                    return tableBuilder.generateTableRows(electors, mainStreetName, wardName, wardCode, constituencyName);
-                })
+                .map(street -> createTableFromStreet(street, wardCode, wardName, constituencyName))
                 .filter(Optional::isPresent)
                 .map(Optional::get)
                 .collect(toList());
+    }
+
+    private Optional<GeneratedPdfTable> createTableFromStreet(VotersByStreet street, String wardCode, String wardName, String constituencyName) {
+        String mainStreetName = street.getMainStreetName();
+        List<ElectorRow> electors = street.getProperties()
+                .stream()
+                .map(property -> propertyToRowConverter.apply(wardCode, property))
+                .flatMap(Collection::stream)
+                .collect(toList());
+        return tableBuilder.generateTableRows(electors, mainStreetName, wardName, wardCode, constituencyName);
     }
 }

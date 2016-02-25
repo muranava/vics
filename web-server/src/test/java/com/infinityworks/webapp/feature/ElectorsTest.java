@@ -8,6 +8,7 @@ import com.infinityworks.webapp.rest.dto.TownStreets;
 import com.infinityworks.webapp.service.ElectorsService;
 import com.infinityworks.webapp.service.SessionService;
 import com.infinityworks.webapp.service.VoteService;
+import com.infinityworks.webapp.service.client.RecordVote;
 import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
@@ -183,5 +184,26 @@ public class ElectorsTest extends WebApplicationTest {
                 .accept(APPLICATION_JSON))
                 .andDo(print())
                 .andExpect(status().isNotFound());
+    }
+
+    @Test
+    public void recordsVoted() throws Exception {
+        when(sessionService.extractUserFromPrincipal(any(Principal.class)))
+                .thenReturn(Try.success(covs()));
+        pafApiStub.willRecordVoterVoted("ADD-1313-1");
+
+        RecordVote request = new RecordVote("E05001221", "Earlsdon", "ADD-1313-1", true);
+        String requestBody = objectMapper.writeValueAsString(request);
+
+        mockMvc.perform(post("/elector/voted")
+                .content(requestBody)
+                .contentType(APPLICATION_JSON)
+                .accept(APPLICATION_JSON))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("wardCode", is("E05001221")))
+                .andExpect(jsonPath("wardName", is("Earlsdon")))
+                .andExpect(jsonPath("ern", is("ADD-1313-1")))
+                .andExpect(jsonPath("success", is(true)));
     }
 }

@@ -88,7 +88,7 @@
           </div>
           <div class="card-actionbar">
             <div class="card-actionbar-row">
-              <button class="btn ink-reaction btn-danger" type="submit">Search</button>
+              <button class="btn btn-danger btn-sm raised" type="submit">Search</button>
             </div>
           </div>
           </form>
@@ -150,8 +150,8 @@
                 <div class="card">
                   <div class="card-actionbar">
                     <div class="card-actionbar-row">
-                      <a class="btn ink-reaction btn-default pull-left" ng-click="onPrintSelected()" ng-disabled="numStreetsSelected === 0">Print Selected</a>
-                      <a class="btn ink-reaction btn-danger pull-left button-group-spacing" data-toggle="modal" data-target="#simpleModal">Print All</a>
+                      <button type="button" class="btn btn-primary btn-sm raised pull-left" ng-click="onPrintSelected()" ng-disabled="numStreetsSelected === 0">Print Selected</button>
+                      <a class="btn btn-danger btn-sm raised pull-left button-group-spacing" data-toggle="modal" data-target="#simpleModal">Print All</a>
                     </div>
                   </div>
                   <div class="card-body no-padding">
@@ -192,8 +192,8 @@
         </div>
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
-        <button type="button" class="btn btn-danger" data-dismiss="modal" ng-click="onPrintAll()">Continue</button>
+        <button type="button" class="btn raised btn-sm btn-primary" data-dismiss="modal">Cancel</button>
+        <button type="button" class="btn raised btn-sm btn-danger" data-dismiss="modal" ng-click="onPrintAll()">Continue</button>
       </div>
     </div>
   </div>

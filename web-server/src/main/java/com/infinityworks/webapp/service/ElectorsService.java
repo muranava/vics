@@ -11,7 +11,6 @@ import com.infinityworks.webapp.domain.Ward;
 import com.infinityworks.webapp.error.NotAuthorizedFailure;
 import com.infinityworks.webapp.error.NotFoundFailure;
 import com.infinityworks.webapp.pdf.PdfRenderer;
-import com.infinityworks.webapp.rest.dto.ElectorSummary;
 import com.infinityworks.webapp.rest.dto.RecordContactRequest;
 import com.infinityworks.webapp.rest.dto.SearchElectors;
 import com.infinityworks.webapp.rest.dto.TownStreets;
@@ -46,11 +45,6 @@ public class ElectorsService {
         this.wardService = wardService;
         this.pdfRenderer = pdfRenderer;
         this.documentBuilder = documentBuilder;
-    }
-
-    // FIXME remove canned data
-    public Try<ElectorSummary> electorByErn(String ern) {
-        return Try.success(new ElectorSummary(ern, "Jon", "Smith", "25 Boswell Drive, CV2 2DH"));
     }
 
     /**
@@ -112,7 +106,14 @@ public class ElectorsService {
             return Try.failure(new NotAuthorizedFailure("Forbidden"));
         }
 
-        // FIXME check ward permission
+        Optional<Ward> byCode = wardService.findByCode(contactRequest.getWardCode()).stream().findFirst();
+        if (!byCode.isPresent()) {
+            return Try.failure(new NotFoundFailure("No ward with code " + contactRequest.getWardCode()));
+        }
+
+        if (user.hasWardPermission(byCode.get())) {
+            return Try.failure(new NotAuthorizedFailure("Forbidden"));
+        }
 
         return pafClient.recordContact(ern, contactRequest);
     }

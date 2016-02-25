@@ -11,6 +11,13 @@ angular
     $scope.searchResults = [];
     $scope.logs = RingBuffer.newInstance(logSize);
 
+    $scope.searchForm = {
+      firstName: '',
+      lastName: '',
+      address: '',
+      postCode: ''
+    };
+
     function initForm() {
       var prevWard = $scope.inputRecordModel && $scope.inputRecordModel.ward;
       $scope.inputRecordModel = {
@@ -32,15 +39,7 @@ angular
         $scope.inputRecordModel.ward = prevWard;
       }
     }
-
     initForm();
-
-    $scope.searchForm = {
-      firstName: '',
-      lastName: '',
-      address: '',
-      postCode: ''
-    };
 
     wardService.findAllSummarized()
       .success(function (response) {

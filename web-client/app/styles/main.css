@@ -71,3 +71,19 @@ input:-webkit-autofill {
 .list .tile > a:hover {
   color: black !important;
 }
+
+/* Override push buttons */
+.btn.raised {
+  border-radius: 6px !important;
+}
+
+/* Change the white to any color ;) */
+input:-webkit-autofill {
+  -webkit-box-shadow: 0 0 0px 1000px #e5e6e6 inset;
+}
+input:-webkit-autofill:hover {
+  -webkit-box-shadow: 0 0 0px 1000px #e5e6e6 inset;
+}
+input:-webkit-autofill:focus {
+  -webkit-box-shadow: 0 0 0px 1000px #e5e6e6 inset;
+}
