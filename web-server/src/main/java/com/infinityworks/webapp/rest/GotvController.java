@@ -40,7 +40,9 @@ public class GotvController {
     }
 
     @PreAuthorize("isAuthenticated()")
-    @RequestMapping(value = "/ward/{wardCode}/pdf", method = POST, produces = "application/pdf")
+    @RequestMapping(value = "/ward/{wardCode}/street/pdf",
+            method = POST,
+            produces = "application/pdf")
     public ResponseEntity<?> getPdfOfElectorsByTownStreet(
             @RequestBody @Valid GenerateGotvCardRequest request,
             @PathVariable("wardCode") String wardCode,
@@ -48,6 +50,7 @@ public class GotvController {
         return requestValidator.validate(request)
                 .flatMap(req -> sessionService.extractUserFromPrincipal(principal))
                 .flatMap(user -> gotvService.generateElectorsByStreet(wardCode, user, request))
-                .fold(restErrorHandler::mapToResponseEntity, ResponseEntity::ok);
+                .fold(restErrorHandler::mapToResponseEntity,
+                      pdfData -> ResponseEntity.ok(pdfData.toByteArray()));
     }
 }

@@ -141,13 +141,13 @@ angular
         redirectTo: '/dashboard'
       });
 
-    var interceptor = ['$rootScope', '$q', function (scope, $q) {
+    var interceptor = ['$rootScope', '$q', '$location', function (scope, $q, $location) {
       function success(response) {
         return response;
       }
       function error(response) {
         var status = response.status;
-        if (status == 401) {
+        if (status === 401) {
           return $location.path('/login');
         } else {
           return $q.reject(response);
@@ -155,7 +155,7 @@ angular
       }
       return function (promise) {
         return promise.then(success, error);
-      }
+      };
     }];
     $httpProvider.interceptors.push(interceptor);
   });

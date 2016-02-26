@@ -1,8 +1,9 @@
 package com.infinityworks.webapp.service.client;
 
-import com.infinityworks.commondto.VotersByStreet;
 import com.infinityworks.common.lang.Try;
+import com.infinityworks.commondto.VotersByStreet;
 import com.infinityworks.webapp.config.CanvassConfig;
+import com.infinityworks.webapp.converter.PafToStreetConverter;
 import com.infinityworks.webapp.rest.dto.Street;
 import com.infinityworks.webapp.rest.dto.TownStreets;
 import com.infinityworks.webapp.testsupport.stub.PafServerStub;
@@ -30,7 +31,7 @@ public class PafClientTest {
     @Before
     public void setUp() throws Exception {
         when(canvassConfig.getPafApiBaseUrl()).thenReturn("http://localhost:9002/v1");
-        pafClient = new PafClient(new RestTemplate(), canvassConfig, new StreetConverter());
+        pafClient = new PafClient(new PafToStreetConverter(), new RestTemplate(), canvassConfig, new StreetToPafConverter());
         pafApiStub.start();
     }
 

@@ -8,6 +8,7 @@ import com.infinityworks.commondto.Property;
 import com.infinityworks.commondto.Voter;
 import com.infinityworks.commondto.VotersByStreet;
 import com.infinityworks.webapp.config.CanvassConfig;
+import com.infinityworks.webapp.converter.PafToStreetConverter;
 import com.infinityworks.webapp.error.NotFoundFailure;
 import com.infinityworks.webapp.error.PafApiFailure;
 import com.infinityworks.webapp.error.ServerFailure;
@@ -49,11 +50,13 @@ public class PafClient {
     private final String CONTACT_ENDPOINT;
 
     private final RestTemplate restTemplate;
-    private final StreetConverter streetConverter;
+    private final StreetToPafConverter streetConverter;
+    private final PafToStreetConverter pafToStreetConverter;
     private final String pafApiBaseUrl;
 
     @Autowired
-    public PafClient(RestTemplate restTemplate, CanvassConfig canvassConfig, StreetConverter streetConverter) {
+    public PafClient(PafToStreetConverter pafStreetConverter, RestTemplate restTemplate, CanvassConfig canvassConfig, StreetToPafConverter streetConverter) {
+        pafToStreetConverter = pafStreetConverter;
         this.restTemplate = restTemplate;
         this.streetConverter = streetConverter;
         pafApiBaseUrl = canvassConfig.getPafApiBaseUrl();
@@ -77,17 +80,20 @@ public class PafClient {
         headers.set("X-Authorization", API_TOKEN);
         headers.setContentType(MediaType.APPLICATION_JSON);
         HttpEntity httpEntity = new HttpEntity(headers);
-        ResponseEntity<Street[]> pafResponse;
+        ResponseEntity<PafStreet[]> pafResponse;
 
         try {
-            pafResponse = restTemplate.exchange(url, GET, httpEntity, Street[].class);
+            pafResponse = restTemplate.exchange(url, GET, httpEntity, PafStreet[].class);
         } catch (HttpClientErrorException e) {
             String msg = String.format(STREETS_BY_WARD_ERROR_MESSAGE, wardCode, "");
             log.error(msg, e);
             return Try.failure(new PafApiFailure(DOWNSTREAM_ERROR_MESSAGE));
         }
 
-        List<Street> records = asList(pafResponse.getBody());
+        List<Street> records = asList(pafResponse.getBody())
+                .stream()
+                .map(pafToStreetConverter)
+                .collect(toList());
         return Try.success(records);
     }
 
@@ -97,7 +103,7 @@ public class PafClient {
         ResponseEntity<VotersByStreet[]> pafResponse;
         HttpHeaders headers = new HttpHeaders();
         headers.set("X-Authorization", API_TOKEN);
-        List<StreetRequest> streets = street.getStreets()
+        List<PafStreet> streets = street.getStreets()
                 .stream()
                 .map(streetConverter)
                 .collect(toList());
@@ -106,7 +112,7 @@ public class PafClient {
         } catch (JsonProcessingException e) {
             e.printStackTrace();
         }
-        HttpEntity<List<StreetRequest>> entity = new HttpEntity<>(streets, headers);
+        HttpEntity<List<PafStreet>> entity = new HttpEntity<>(streets, headers);
 
         try {
             pafResponse = restTemplate.exchange(url, HttpMethod.POST, entity, VotersByStreet[].class);

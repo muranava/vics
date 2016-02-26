@@ -1,6 +1,7 @@
+
 angular
   .module('canvass')
-  .function('gotvService', function(config) {
+  .service('gotvService', function(config, $http) {
     var api = {}, apiUrl = config.apiUrl;
 
     /**
@@ -15,9 +16,7 @@ angular
           accept: 'application/pdf'
         },
         withCredentials: true,
-        data: {
-          streets: data
-        }
+        data: data
       });
     };
 

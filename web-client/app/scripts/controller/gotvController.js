@@ -1,9 +1,13 @@
 
 angular
   .module('canvass')
-  .controller('gotvController', function($scope, wardService, electorService) {
+  .controller('gotvController', function($scope, wardService, gotvService) {
 
     $scope.numStreetsSelected = 0;
+
+    $scope.radio = {
+      pv: 'BOTH'
+    };
 
     function defaultSliderOptions() {
       return {
@@ -70,11 +74,23 @@ angular
     };
 
     function doPrint(wardCode, streets) {
-      electorService.retrievePdfOfElectorsByStreets(wardCode, streets)
+      var data = buildRequest(streets);
+      gotvService.retrievePdfOfElectorsByStreets(wardCode, data)
         .success(function (response) {
           var file = new Blob([response], {type: 'application/pdf'});
           saveAs(file, $scope.ward.code + '.pdf');
         })
         .error(handleDownloadPdfError);
+    }
+
+    function buildRequest(streets) {
+      return {
+        townStreets: {streets: streets},
+        intentionFrom: $scope.intentionSlider.minValue,
+        intentionTo: $scope.intentionSlider.maxValue,
+        likelihoodFrom: $scope.likelihoodSlider.minValue,
+        likelihoodTo: $scope.likelihoodSlider.maxValue,
+        postalVote: $scope.radio.pv
+      };
     }
   });

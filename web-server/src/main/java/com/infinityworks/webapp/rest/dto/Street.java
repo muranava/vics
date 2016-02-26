@@ -13,10 +13,10 @@ public class Street {
     private final String dependentLocality;
 
     @JsonCreator
-    public Street(@JsonProperty("main_street") String mainStreet,
-                  @JsonProperty("post_town") String postTown,
-                  @JsonProperty("dependent_street") String dependentStreet,
-                  @JsonProperty("dependent_locality") String dependentLocality) {
+    public Street(@JsonProperty("mainStreet") String mainStreet,
+                  @JsonProperty("postTown") String postTown,
+                  @JsonProperty("dependentStreet") String dependentStreet,
+                  @JsonProperty("dependentLocality") String dependentLocality) {
         this.mainStreet = mainStreet;
         this.postTown = postTown;
         this.dependentStreet = dependentStreet;

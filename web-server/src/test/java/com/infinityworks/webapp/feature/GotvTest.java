@@ -136,19 +136,4 @@ public class GotvTest extends WebApplicationTest {
                 .andDo(print())
                 .andExpect(status().isBadRequest());
     }
-
-    @Test
-    public void returnsTheVotersData() throws Exception {
-        when(sessionService.extractUserFromPrincipal(any(Principal.class)))
-                .thenReturn(Try.success(admin()));
-
-        GenerateGotvCardRequest request = gotvCardRequest().build();
-
-        mockMvc.perform(post("/gotv/ward/E05001221/pdf")
-                .accept("application/pdf")
-                .contentType(APPLICATION_JSON)
-                .content(objectMapper.writeValueAsString(request)))
-                .andDo(print())
-                .andExpect(status().isOk());
-    }
 }

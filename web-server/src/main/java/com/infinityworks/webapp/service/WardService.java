@@ -60,8 +60,6 @@ public class WardService {
         }
     }
 
-    // TODO user the version that checks permissions. Remove this after refactor
-    @Deprecated
     public List<Ward> findByCode(String code) {
         return wardRepository.findByCodeOrderByNameAsc(code);
     }
