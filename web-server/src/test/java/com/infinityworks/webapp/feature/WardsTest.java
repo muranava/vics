@@ -11,6 +11,7 @@ import com.infinityworks.webapp.rest.dto.Street;
 import com.infinityworks.webapp.rest.dto.UserRestrictedWards;
 import com.infinityworks.webapp.rest.dto.WardSummary;
 import com.infinityworks.webapp.service.*;
+import org.hamcrest.Matchers;
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.http.MediaType;
@@ -37,6 +38,7 @@ import static org.junit.Assert.assertTrue;
 import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
+import static org.springframework.http.MediaType.APPLICATION_JSON;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -50,7 +52,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
                         "classpath:drop-create.sql",
                         "classpath:constituencies.sql",
                         "classpath:wards.sql",
-                        "classpath:users.sql"})
+                        "classpath:users.sql"
+                })
 })
 public class WardsTest extends WebApplicationTest {
     private SessionService sessionService;
@@ -232,7 +235,26 @@ public class WardsTest extends WebApplicationTest {
     }
 
     @Test
-    public void returnsBadRequestIfNoUserWardAssociationWhenDeletingAssociation() throws Exception {
+    public void checksUserHasNoAssociations() throws Exception {
+        when(sessionService.extractUserFromPrincipal(any(Principal.class)))
+                .thenReturn(Try.success(admin()));
 
+        mockMvc.perform(get("/ward/test")
+                .accept(APPLICATION_JSON))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("hasAssociation", Matchers.is(false)));
+    }
+
+    @Test
+    public void checksUserHasAssociations() throws Exception {
+        when(sessionService.extractUserFromPrincipal(any(Principal.class)))
+                .thenReturn(Try.success(covs()));
+
+        mockMvc.perform(get("/ward/test")
+                .accept(APPLICATION_JSON))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("hasAssociation", Matchers.is(true)));
     }
 }

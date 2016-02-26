@@ -50,7 +50,6 @@ public class DocumentBuilder {
                 pageInfoRenderer.setStreet(table.getMainStreetName());
                 pageInfoRenderer.setConstituencyName(table.getConstituencyName());
                 pageInfoRenderer.setWardName(table.getWardName());
-                pageInfoRenderer.setWardCode(table.getWardCode());
                 document.add(table.getTable());
             } catch (DocumentException e) {
                 log.error("Failed to add page to document", e);

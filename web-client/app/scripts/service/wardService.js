@@ -39,6 +39,14 @@ angular
       });
     };
 
+    api.userHasAssociationsTest = function() {
+      return $http({
+        method: 'GET',
+        url: apiUrl + '/ward/test',
+        withCredentials: true
+      });
+    };
+
     /**
      * Finds all wards in short format without associated objects like constituency
      * (the server will restrict the result set to

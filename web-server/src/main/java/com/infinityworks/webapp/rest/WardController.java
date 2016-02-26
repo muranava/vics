@@ -69,6 +69,14 @@ public class WardController {
     }
 
     @PreAuthorize("isAuthenticated()")
+    @RequestMapping(method = GET, value = "/test")
+    public ResponseEntity<?> userHasWardsTest(Principal principal) {
+        return sessionService.extractUserFromPrincipal(principal)
+                .flatMap(wardAssociationService::userHasAssociations)
+                .fold(errorHandler::mapToResponseEntity, ResponseEntity::ok);
+    }
+
+    @PreAuthorize("isAuthenticated()")
     @RequestMapping(method = GET, value = "/{wardCode}/street")
     public ResponseEntity<?> streetsByWard(Principal principal,
                                            @PathVariable("wardCode") String wardCode) {

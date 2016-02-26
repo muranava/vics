@@ -1,5 +1,6 @@
 package com.infinityworks.testsupport.builder;
 
+
 import com.infinityworks.commondto.Property;
 import com.infinityworks.commondto.Voter;
 

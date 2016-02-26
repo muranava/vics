@@ -10,15 +10,18 @@ angular
       templateUrl: 'views/partials/wardsearch.html',
       restrict: 'EA',
       scope: {
-        onSelect: '&'
+        onSelect: '&',
+        onLoadedConstituencies: '&'
       },
       link: function (scope) {
         scope.onSelect = scope.onSelect();
+        scope.onLoadedConstituencies = scope.onLoadedConstituencies();
 
         // preload the constituencies associated to the active user
         constituencyService.retrieveByUser()
           .success(function (response) {
             scope.constituencies = response.constituencies;
+            scope.onLoadedConstituencies(scope.constituencies);
           });
 
         /**

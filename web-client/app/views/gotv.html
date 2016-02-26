@@ -1,4 +1,4 @@
-<section>
+<section ng-show="contentLoaded">
   <br>
   <div class="section-body contain-lg">
     <div class="row">
@@ -12,73 +12,27 @@
       </div>
     </div>
 
-    <ward-search on-select="onSelectWard"></ward-search>
-
-    <!-- Download Cards -->
-    <!--<div class="row" ng-if="ward">-->
-    <div class="card" ng-if="ward">
-      <div class="card-head">
-        <header>3. Target Voters</header>
-      </div>
-      <div class="card-body tab-content style-default-bright">
-        <div class="row">
-
-          <div class="form-group">
-            <label class="col-sm-3 control-label">Voting Intention</label>
-            <div class="col-sm-9 form-control-no-border">
-              <rzslider rz-slider-model="intentionSlider.minValue"
-                        rz-slider-high="intentionSlider.maxValue"
-                        rz-slider-options="intentionSlider.options">
-              </rzslider>
-            </div>
-          </div>
-        </div>
-        <div class="row" style="margin-top: 25px">
-          <div class="form-group">
-            <label class="col-sm-3 control-label">Voting Likelihood</label>
-            <div class="col-sm-9 form-control-no-border">
-              <rzslider
-                rz-slider-model="likelihoodSlider.minValue"
-                rz-slider-high="likelihoodSlider.maxValue"
-                rz-slider-options="likelihoodSlider.options">
-              </rzslider>
-            </div>
-          </div>
-        </div>
-        <div class="row" style="margin-top: 25px">
-
-          <div class="form-group">
-            <label class="col-sm-3 control-label">Postal Vote (PV)</label>
-            <div class="col-sm-9">
-              <label class="radio-inline radio-styled">
-                <input type="radio" name="inlineRadioOptions" value="option1"><span>Has PV</span>
-              </label>
-              <label class="radio-inline radio-styled">
-                <input type="radio" name="inlineRadioOptions" value="option2"><span>Wants PV</span>
-              </label>
-              <label class="radio-inline radio-styled">
-                <input type="radio" name="inlineRadioOptions" value="option3" checked><span>Both</span>
-              </label>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div class="card-actionbar">
-        <div class="card-actionbar-row">
-          <button type="submit" class="btn btn-sm btn-danger raised" ng-click="onSearch()">Search</button>
+    <!-- No data warning -->
+    <div class="row" ng-if="userHasNoAssociations">
+      <div class="col-sm-12">
+        <div class="alert alert-callout alert-warning" role="alert">
+          <strong>Warning!</strong> You do not have any wards associated with your account. This will prevent
+          you from submitting canvass data. Please contact <a href="mailto:{{supportEmail}}">{{supportEmail}}</a> to
+          request access.
         </div>
       </div>
     </div>
 
+    <ward-search ng-show="contentLoaded && !userHasNoAssociations" on-select="onSelectWard"
+                 on-loaded-constituencies="onLoadedConstituencies"></ward-search>
 
-    <!-- 4. Select Streets -->
+    <!-- 3. Select Streets -->
     <!-- Download Cards -->
     <div class="row" ng-if="streets">
       <div class="col-md-12">
         <div class="card">
           <div class="card-head">
-            <header>4. Download Canvass Cards</header>
+            <header>3. Download Canvass Cards</header>
           </div>
           <div class="card-body tab-content style-default-bright">
             <div class="row">
@@ -113,17 +67,74 @@
                   </div>
                 </div>
                 <br>
+
+                <div class="row">
+                  <div class="col-lg-12">
+                    <h4>Filter voters by intention and postal vote</h4>
+                    <br>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="form-group">
+                    <label class="col-sm-3 control-label">Voting Intention</label>
+                    <div class="col-sm-9 form-control-no-border">
+                      <rzslider rz-slider-model="intentionSlider.minValue"
+                                rz-slider-high="intentionSlider.maxValue"
+                                rz-slider-options="intentionSlider.options">
+                      </rzslider>
+                    </div>
+                  </div>
+                </div>
+                <div class="row" style="margin-top: 25px">
+                  <div class="form-group">
+                    <label class="col-sm-3 control-label">Voting Likelihood</label>
+                    <div class="col-sm-9 form-control-no-border">
+                      <rzslider
+                        rz-slider-model="likelihoodSlider.minValue"
+                        rz-slider-high="likelihoodSlider.maxValue"
+                        rz-slider-options="likelihoodSlider.options">
+                      </rzslider>
+                    </div>
+                  </div>
+                </div>
+                <div class="row" style="margin-top: 25px">
+
+                  <div class="form-group">
+                    <label class="col-sm-3 control-label">Postal Vote (PV)</label>
+                    <div class="col-sm-9">
+                      <label class="radio-inline radio-styled">
+                        <input type="radio" name="inlineRadioOptions" value="option1"><span>Has PV</span>
+                      </label>
+                      <label class="radio-inline radio-styled">
+                        <input type="radio" name="inlineRadioOptions" value="option2"><span>Wants PV</span>
+                      </label>
+                      <label class="radio-inline radio-styled">
+                        <input type="radio" name="inlineRadioOptions" value="option3" checked><span>Both</span>
+                      </label>
+                    </div>
+                  </div>
+                </div>
+
+                <br><br>
                 <div class="row">
                   <div class="col-lg-12">
                     <h4>Select individual streets or download all</h4>
                   </div>
                 </div>
                 <em class="text-caption">{{numStreetsSelected}} of {{streets.length}} streets selected</em>
+
+                <div class="alert alert-callout alert-warning" ng-if="errorLoadingData" role="alert">
+                  <strong>Error!</strong> Failed to download electors.
+                </div>
+
                 <div class="card">
                   <div class="card-actionbar">
                     <div class="card-actionbar-row">
-                      <button type="button" class="btn btn-primary btn-sm raised pull-left" ng-click="onPrintSelected()" ng-disabled="numStreetsSelected === 0">Print Selected</button>
-                      <a class="btn btn-danger btn-sm raised pull-left button-group-spacing" data-toggle="modal" data-target="#simpleModal">Print All</a>
+                      <button type="button" class="btn btn-primary btn-sm raised pull-left" ng-click="onPrintSelected()"
+                              ng-disabled="numStreetsSelected === 0">Print Selected
+                      </button>
+                      <a class="btn btn-danger btn-sm raised pull-left button-group-spacing" data-toggle="modal"
+                         data-target="#simpleModal">Print All</a>
                     </div>
                   </div>
                   <div class="card-body no-padding">

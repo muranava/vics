@@ -1,4 +1,4 @@
-<section>
+<section ng-show="contentLoaded">
   <br>
 
   <!-- Choose Constituency -->
@@ -29,7 +29,7 @@
       </div>
     </div>
 
-    <ward-search on-select="onSelectWard"></ward-search>
+    <ward-search ng-show="contentLoaded && !userHasNoAssociations" on-select="onSelectWard" on-loaded-constituencies="onLoadedConstituencies"></ward-search>
 
     <!-- Download Cards -->
     <div class="row" ng-if="streets">

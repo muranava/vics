@@ -7,6 +7,7 @@ import com.infinityworks.webapp.error.NotAuthorizedFailure;
 import com.infinityworks.webapp.error.NotFoundFailure;
 import com.infinityworks.webapp.repository.UserRepository;
 import com.infinityworks.webapp.repository.WardRepository;
+import com.infinityworks.webapp.rest.dto.AssociationTest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,6 +26,10 @@ public class WardAssociationService {
     public WardAssociationService(WardRepository wardRepository, UserRepository userRepository) {
         this.wardRepository = wardRepository;
         this.userRepository = userRepository;
+    }
+
+    public Try<AssociationTest> userHasAssociations(User user) {
+        return Try.success(AssociationTest.of(user));
     }
 
     @Transactional

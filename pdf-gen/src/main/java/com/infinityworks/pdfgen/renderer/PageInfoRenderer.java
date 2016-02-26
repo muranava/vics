@@ -30,11 +30,10 @@ public class PageInfoRenderer extends PdfPageEventHelper {
             "\n4 Probably Leave" +
             "\n5 Definitely Leave";
 
-    private static final String META_TEMPLATE = "Constituency: %s\nWard: %s \nStreet: %s";
+    private static final String META_TEMPLATE = "Constituency: %s\nWard: %s \nAddress: %s";
 
     private String constituencyName = "";
     private String wardName = "";
-    private String wardCode = "";
     private String street = "";
 
     @Override
@@ -119,10 +118,6 @@ public class PageInfoRenderer extends PdfPageEventHelper {
 
     public void setWardName(String wardName) {
         this.wardName = wardName;
-    }
-
-    public void setWardCode(String wardCode) {
-        this.wardCode = wardCode;
     }
 
     public void setStreet(String street) {

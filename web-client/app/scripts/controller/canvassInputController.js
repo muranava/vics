@@ -46,6 +46,9 @@ angular
         $scope.wards = response;
         $scope.userHasNoAssociations = _.isEmpty($scope.wards);
         $scope.inputRecordModel.ward = $scope.wards[0];
+      })
+      .finally(function() {
+        $scope.contentLoaded = true;
       });
 
     $scope.onSearchVoter = function () {

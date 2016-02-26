@@ -13,19 +13,19 @@ public class TableConfig {
     static final int NUM_HEADER_ROWS = 1;
 
     static final int[] COLUMN_WIDTHS = {
-            40, // house
-            89, // name
-            65, // tel
+            70, // house
+            90, // name
+            55, // tel
             40, // likelihood
-            28, // iss 1
+            24, // iss 1
             45, // iss 2
             28, // iss 3
-            40, // intention
-            18, // has pv
-            18, // wants pv
-            18, // needs lift
-            18, // poster
-            18, // dead
+            37, // intention
+            15, // has pv
+            15, // wants pv
+            15, // needs lift
+            15, // poster
+            15, // dead
             85  // ERN
     };
     static final int NUM_COLUMNS = COLUMN_WIDTHS.length;

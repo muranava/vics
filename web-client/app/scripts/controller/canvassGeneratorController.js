@@ -15,6 +15,13 @@ angular
       $scope.constituencySearchModel = constituency;
     };
 
+    $scope.onLoadedConstituencies = function(constituencies) {
+      if (_.isEmpty(constituencies)) {
+        $scope.userHasNoAssociations = true;
+      }
+      $scope.contentLoaded = true;
+    };
+
     $scope.onSelectWard = function (model) {
       $scope.wardSearchModel = model.ward;
       $scope.constituencySearchModel = model.constituency;
@@ -23,6 +30,10 @@ angular
         .success(function (streets) {
           $scope.streets = streets;
         });
+    };
+
+    $scope.onNoAssociations = function() {
+      $scope.userHasNoAssociations = true;
     };
 
     $scope.getNumStreetsSelected = function () {

@@ -26,6 +26,9 @@ angular
         $scope.wards = response;
         $scope.userHasNoAssociations = _.isEmpty($scope.wards);
         $scope.formModel.selectedWard = $scope.wards[0];
+      })
+      .finally(function() {
+        $scope.contentLoaded = true;
       });
 
     _.times(logSize, function () {

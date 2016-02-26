@@ -27,7 +27,7 @@ angular
   .run(function($rootScope, config) {
     $rootScope.supportEmail = config.supportEmail;
   })
-  .config(function ($routeProvider) {
+  .config(function ($routeProvider, $httpProvider) {
 
     var authByRoute = [
       {route: '/dashboard', role: 'USER'},
@@ -140,4 +140,22 @@ angular
       .otherwise({
         redirectTo: '/dashboard'
       });
+
+    var interceptor = ['$rootScope', '$q', function (scope, $q) {
+      function success(response) {
+        return response;
+      }
+      function error(response) {
+        var status = response.status;
+        if (status == 401) {
+          return $location.path('/login');
+        } else {
+          return $q.reject(response);
+        }
+      }
+      return function (promise) {
+        return promise.then(success, error);
+      }
+    }];
+    $httpProvider.interceptors.push(interceptor);
   });

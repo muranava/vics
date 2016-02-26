@@ -13,6 +13,8 @@ public class GotvService {
     public Try<ByteArrayOutputStream> generateElectorsByStreet(String wardCode,
                                                                User user,
                                                                GenerateGotvCardRequest request) {
+
+
         return null;
     }
 }

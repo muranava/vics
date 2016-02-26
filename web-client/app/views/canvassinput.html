@@ -1,4 +1,4 @@
-<section>
+<section ng-show="contentLoaded">
   <br>
   <div class="section-body contain-lg">
     <div class="row">
@@ -13,6 +13,8 @@
         </article>
       </div>
     </div>
+
+    <!-- No data warning -->
     <div class="row" ng-if="userHasNoAssociations">
       <div class="col-sm-12">
         <div class="alert alert-callout alert-warning" role="alert">
@@ -21,6 +23,7 @@
         </div>
       </div>
     </div>
+
     <div class="row" ng-if="!userHasNoAssociations">
       <div class="col-lg-6 col-md-6 col-sm-12">
         <div class="card">
@@ -140,14 +143,14 @@
                   </div>
                   <div class="checkbox checkbox-styled">
                     <label>
-                      <input type="checkbox" ng-model="inputRecordModel.poster" value="">
-                      <span>Will Display Poster</span>
+                      <input type="checkbox" ng-model="inputRecordModel.lift" value="">
+                      <span>Needs Lift</span>
                     </label>
                   </div>
                   <div class="checkbox checkbox-styled">
                     <label>
-                      <input type="checkbox" ng-model="inputRecordModel.lift" value="">
-                      <span>Needs Lift</span>
+                      <input type="checkbox" ng-model="inputRecordModel.poster" value="">
+                      <span>Will Display Poster</span>
                     </label>
                   </div>
                   <div class="checkbox checkbox-styled">
