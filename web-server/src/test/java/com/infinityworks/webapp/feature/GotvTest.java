@@ -58,7 +58,7 @@ public class GotvTest extends WebApplicationTest {
                 .withIntentionTo(3)
                 .build();
 
-        mockMvc.perform(post("/gotv/ward/E05001221/pdf")
+        mockMvc.perform(post("/gotv/ward/E05001221/street/pdf")
                 .accept("application/pdf")
                 .contentType(APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(request)))
@@ -76,7 +76,7 @@ public class GotvTest extends WebApplicationTest {
                 .withLikelihoodTo(6)
                 .build();
 
-        mockMvc.perform(post("/gotv/ward/E05001221/pdf")
+        mockMvc.perform(post("/gotv/ward/E05001221/street/pdf")
                 .accept("application/pdf")
                 .contentType(APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(request)))
@@ -94,7 +94,7 @@ public class GotvTest extends WebApplicationTest {
                 .withIntentionTo(4)
                 .build();
 
-        mockMvc.perform(post("/gotv/ward/E05001221/pdf")
+        mockMvc.perform(post("/gotv/ward/E05001221/street/pdf")
                 .accept("application/pdf")
                 .contentType(APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(request)))
@@ -112,7 +112,7 @@ public class GotvTest extends WebApplicationTest {
                 .withIntentionTo(null)
                 .build();
 
-        mockMvc.perform(post("/gotv/ward/E05001221/pdf")
+        mockMvc.perform(post("/gotv/ward/E05001221/street/pdf")
                 .accept("application/pdf")
                 .contentType(APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(request)))
@@ -129,7 +129,7 @@ public class GotvTest extends WebApplicationTest {
                 .withPostalVote(null)
                 .build();
 
-        mockMvc.perform(post("/gotv/ward/E05001221/pdf")
+        mockMvc.perform(post("/gotv/ward/E05001221/street/pdf")
                 .accept("application/pdf")
                 .contentType(APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(request)))
