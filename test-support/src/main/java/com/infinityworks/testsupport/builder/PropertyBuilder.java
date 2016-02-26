@@ -8,11 +8,16 @@ import java.util.List;
 
 public class PropertyBuilder {
     private String buildingNumber;
+    private String subBuildingNumber;
     private String mainStreet;
     private String postTown;
     private String dependentLocality;
     private String dependentStreet;
     private List<Voter> voters;
+    private String organisationName;
+    private String departmentName;
+    private String premise;
+    private String postCode;
 
     public static PropertyBuilder property() {
         return new PropertyBuilder().withDefaults();
@@ -24,6 +29,11 @@ public class PropertyBuilder {
                 .withDependentStreet("Highfield Road")
                 .withMainStreet("Mortimer Crescent")
                 .withPostTown("Coventry")
+                .withPremise("")
+                .withDepartmentName("")
+                .withPostCode("CV2 3ER")
+                .withOrganisationName("")
+                .withSubBuildingNumber("")
                 .withVoters(Collections.emptyList());
         return this;
     }
@@ -58,7 +68,32 @@ public class PropertyBuilder {
         return this;
     }
 
+    public PropertyBuilder withPostCode(String postCode) {
+        this.postCode = postCode;
+        return this;
+    }
+
+    public PropertyBuilder withPremise(String premise) {
+        this.premise = premise;
+        return this;
+    }
+
+    public PropertyBuilder withDepartmentName(String dept) {
+        this.departmentName = dept;
+        return this;
+    }
+
+    public PropertyBuilder withOrganisationName(String orgName) {
+        this.organisationName = orgName;
+        return this;
+    }
+
+    public PropertyBuilder withSubBuildingNumber(String sbNumber) {
+        this.subBuildingNumber = sbNumber;
+        return this;
+    }
+
     public Property build() {
-        return new Property(buildingNumber, mainStreet, postTown, dependentLocality, dependentStreet, voters);
+        return new Property(buildingNumber, subBuildingNumber, mainStreet, postTown, dependentLocality, dependentStreet, voters, postCode, premise, departmentName, organisationName);
     }
 }

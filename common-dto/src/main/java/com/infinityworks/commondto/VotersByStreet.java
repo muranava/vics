@@ -26,4 +26,11 @@ public class VotersByStreet {
                 .map(Property::getMainStreet)
                 .orElse("");
     }
+
+    public String getPostCode() {
+        return properties.stream()
+                .findFirst()
+                .map(Property::getPostCode)
+                .orElse("");
+    }
 }

@@ -1,5 +1,7 @@
 package com.infinityworks.webapp.service.client;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.infinityworks.common.lang.StringExtras;
 import com.infinityworks.common.lang.Try;
 import com.infinityworks.commondto.Property;
@@ -99,7 +101,11 @@ public class PafClient {
                 .stream()
                 .map(streetConverter)
                 .collect(toList());
-
+        try {
+            System.out.println(new ObjectMapper().writeValueAsString(streets));
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+        }
         HttpEntity<List<StreetRequest>> entity = new HttpEntity<>(streets, headers);
 
         try {

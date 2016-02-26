@@ -36,10 +36,11 @@ public class TableBuilder {
     }
 
     private PdfPCell createDataCell(String content) {
-        PdfPCell like = new PdfPCell(new Phrase(content, dataFont));
-        like.setVerticalAlignment(Element.ALIGN_MIDDLE);
-        like.setHorizontalAlignment(Element.ALIGN_CENTER);
-        return like;
+        PdfPCell cell = new PdfPCell(new Phrase(content, dataFont));
+        cell.setPadding(3);
+        cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
+        cell.setHorizontalAlignment(Element.ALIGN_LEFT);
+        return cell;
     }
 
     private void generateTableHeaders(PdfPTable table) {

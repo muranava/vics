@@ -38,7 +38,7 @@ public class PdfRenderer {
     }
 
     private Optional<GeneratedPdfTable> createTableFromStreet(VotersByStreet street, String wardCode, String wardName, String constituencyName) {
-        String mainStreetName = street.getMainStreetName();
+        String mainStreetName = street.getMainStreetName() + ", " + street.getPostCode();
         List<ElectorRow> electors = street.getProperties()
                 .stream()
                 .map(property -> propertyToRowConverter.apply(wardCode, property))
