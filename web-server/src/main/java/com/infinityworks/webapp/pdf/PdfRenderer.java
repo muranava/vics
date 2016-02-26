@@ -1,5 +1,7 @@
 package com.infinityworks.webapp.pdf;
 
+import com.google.common.base.Joiner;
+import com.infinityworks.common.lang.StringExtras;
 import com.infinityworks.commondto.VotersByStreet;
 import com.infinityworks.pdfgen.model.ElectorRow;
 import com.infinityworks.pdfgen.model.GeneratedPdfTable;
@@ -11,7 +13,10 @@ import org.springframework.stereotype.Component;
 import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Stream;
 
+import static java.util.Arrays.asList;
+import static java.util.stream.Collectors.joining;
 import static java.util.stream.Collectors.toList;
 
 @Component
@@ -38,7 +43,10 @@ public class PdfRenderer {
     }
 
     private Optional<GeneratedPdfTable> createTableFromStreet(VotersByStreet street, String wardCode, String wardName, String constituencyName) {
-        String mainStreetName = street.getMainStreetName() + ", " + street.getPostCode();
+        String mainStreetName = asList(street.getMainStreetName(), street.getPostCode())
+                .stream()
+                .filter(str -> !StringExtras.isNullOrEmpty(str))
+                .collect(joining(", "));
         List<ElectorRow> electors = street.getProperties()
                 .stream()
                 .map(property -> propertyToRowConverter.apply(wardCode, property))
