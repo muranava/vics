@@ -34,17 +34,17 @@ public class PropertyToRowConverterTest {
         assertThat(electorRows.get(0).getName(), is("Benz, Andy"));
         assertThat(electorRows.get(0).getErn(), is("PD1-1235-1"));
         assertThat(electorRows.get(0).getHouse(), is("10"));
-        assertThat(electorRows.get(0).getStreet(), is("Highland Close, Glen Avenue, Amber, Bournemouth"));
+        assertThat(electorRows.get(0).getStreet(), is("Highland Close, Glen Avenue, Amber, Bournemouth, CV2 3ER"));
 
         assertThat(electorRows.get(1).getName(), is("Benz, Mike"));
         assertThat(electorRows.get(1).getErn(), is("PD1-1236-1"));
         assertThat(electorRows.get(1).getHouse(), is("10"));
-        assertThat(electorRows.get(1).getStreet(), is("Highland Close, Glen Avenue, Amber, Bournemouth"));
+        assertThat(electorRows.get(1).getStreet(), is("Highland Close, Glen Avenue, Amber, Bournemouth, CV2 3ER"));
 
         assertThat(electorRows.get(2).getName(), is("Benz, Samo"));
         assertThat(electorRows.get(2).getErn(), is("PD1-1237-1"));
         assertThat(electorRows.get(2).getHouse(), is("10"));
-        assertThat(electorRows.get(2).getStreet(), is("Highland Close, Glen Avenue, Amber, Bournemouth"));
+        assertThat(electorRows.get(2).getStreet(), is("Highland Close, Glen Avenue, Amber, Bournemouth, CV2 3ER"));
 
     }
 }

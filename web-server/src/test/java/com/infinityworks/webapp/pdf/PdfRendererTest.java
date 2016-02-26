@@ -28,8 +28,8 @@ public class PdfRendererTest {
                 votersByStreets, "E0900134", "Henley", "Coventry South");
 
         assertThat(tables.size(), is(2));
-        assertThat(tables.get(0).getMainStreetName(), is("Street1"));
-        assertThat(tables.get(1).getMainStreetName(), is("Street2"));
+        assertThat(tables.get(0).getMainStreetName(), is("Street1, CV2 3ER"));
+        assertThat(tables.get(1).getMainStreetName(), is("Street2, CV2 3ER"));
 
         assertThat(tables.get(0).getConstituencyName(), is("Coventry South"));
         assertThat(tables.get(1).getConstituencyName(), is("Coventry South"));

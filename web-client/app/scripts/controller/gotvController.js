@@ -4,8 +4,6 @@ angular
   .controller('gotvController', function($scope, wardService, electorService) {
 
     $scope.numStreetsSelected = 0;
-    $scope.intentionSlider = defaultSliderOptions();
-    $scope.likelihoodSlider = defaultSliderOptions();
 
     function defaultSliderOptions() {
       return {
@@ -19,6 +17,8 @@ angular
         }
       };
     }
+    $scope.intentionSlider = defaultSliderOptions();
+    $scope.likelihoodSlider = defaultSliderOptions();
 
     $scope.onSearch = function () {
       wardService.findStreetsByWard($scope.ward.code)
