@@ -74,20 +74,12 @@
                     <br>
                   </div>
                 </div>
-                <div class="row">
-                  <div class="form-group">
-                    <label class="col-sm-3 control-label">Voting Intention</label>
-                    <div class="col-sm-9 form-control-no-border">
-                      <rzslider rz-slider-model="intentionSlider.minValue"
-                                rz-slider-high="intentionSlider.maxValue"
-                                rz-slider-options="intentionSlider.options">
-                      </rzslider>
-                    </div>
-                  </div>
-                </div>
-                <div class="row" style="margin-top: 25px">
-                  <div class="form-group">
-                    <label class="col-sm-3 control-label">Voting Likelihood</label>
+                <div class="row" >
+                  <div class="form-group" style="margin-top: 25px">
+                    <label class="col-sm-3 control-label">Voting Likelihood <a class="btn btn-icon-toggle btn-refresh"
+                                                                               data-toggle="modal"
+                                                                               data-target="#lhoodModal"><i
+                      class="fa fa-question"></i></a></label>
                     <div class="col-sm-9 form-control-no-border">
                       <rzslider
                         rz-slider-model="likelihoodSlider.minValue"
@@ -98,12 +90,27 @@
                   </div>
                 </div>
                 <div class="row" style="margin-top: 25px">
+                  <div class="form-group">
+                    <label class="col-sm-3 control-label">Voting Intention <a class="btn btn-icon-toggle btn-refresh"
+                                                                              data-toggle="modal"
+                                                                              data-target="#simpleModal"><i
+                      class="fa fa-question"></i></a></label>
+                    <div class="col-sm-9 form-control-no-border">
+                      <rzslider rz-slider-model="intentionSlider.minValue"
+                                rz-slider-high="intentionSlider.maxValue"
+                                rz-slider-options="intentionSlider.options">
+                      </rzslider>
+                    </div>
+                  </div>
+                </div>
+                <div class="row" style="margin-top: 25px">
 
                   <div class="form-group">
                     <label class="col-sm-3 control-label">Postal Vote (PV)</label>
                     <div class="col-sm-9">
                       <label class="radio-inline radio-styled">
-                        <input type="radio" name="inlineRadioOptions" ng-model="radio.pv" value="HAS_PV"><span>Has PV</span>
+                        <input type="radio" name="inlineRadioOptions" ng-model="radio.pv"
+                               value="HAS_PV"><span>Has PV</span>
                       </label>
                       <label class="radio-inline radio-styled">
                         <input type="radio" name="inlineRadioOptions" ng-model="radio.pv" value="WANTS_PV"><span>Wants PV</span>
@@ -160,4 +167,67 @@
     </div>
   </div>
 </section>
+
+
+<!-- intention modal -->
+<div class="modal fade" id="simpleModal" tabindex="-1" role="dialog" aria-labelledby="simpleModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        <h4 class="modal-title" id="simpleModalLabel">Voting Intention</h4>
+      </div>
+      <div class="modal-body">
+        <dl class="dl-horizontal">
+          <dt>1</dt>
+          <dd>Definitely remain</dd>
+
+          <dt>2</dt>
+          <dd>Probably remain</dd>
+
+          <dt>3</dt>
+          <dd>Undecided</dd>
+
+          <dt>4</dt>
+          <dd>Probably leave</dd>
+
+          <dt>5</dt>
+          <dd>Definitely leave</dd>
+        </dl>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- intention modal -->
+<div class="modal fade" id="lhoodModal" tabindex="-1" role="dialog" aria-labelledby="lhoodModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        <h4 class="modal-title" id="lhoodModalLabel">Voting Likelihood</h4>
+      </div>
+      <div class="modal-body">
+        <dl class="dl-horizontal">
+          <dt>1</dt>
+          <dd>Definitely won't vote</dd>
+
+          <dt>2</dt>
+          <dd>Probably won't vote</dd>
+
+          <dt>3</dt>
+          <dd>Undecided</dd>
+
+          <dt>4</dt>
+          <dd>Probably will vote</dd>
+
+          <dt>5</dt>
+          <dd>Definitely will vote</dd>
+        </dl>
+      </div>
+    </div>
+  </div>
+</div>
 
