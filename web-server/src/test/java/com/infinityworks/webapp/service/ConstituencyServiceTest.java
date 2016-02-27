@@ -5,6 +5,8 @@ import com.infinityworks.webapp.domain.Constituency;
 import com.infinityworks.webapp.domain.Role;
 import com.infinityworks.webapp.domain.User;
 import com.infinityworks.webapp.domain.Ward;
+import com.infinityworks.webapp.error.NotAuthorizedFailure;
+import com.infinityworks.webapp.error.NotFoundFailure;
 import com.infinityworks.webapp.repository.ConstituencyRepository;
 import com.infinityworks.webapp.repository.UserRepository;
 import com.infinityworks.webapp.rest.dto.UserRestrictedConstituencies;
@@ -21,6 +23,7 @@ import static com.infinityworks.webapp.testsupport.builder.UserBuilder.user;
 import static com.infinityworks.webapp.testsupport.builder.WardBuilder.ward;
 import static java.util.Collections.emptySet;
 import static org.hamcrest.CoreMatchers.hasItem;
+import static org.hamcrest.CoreMatchers.instanceOf;
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertThat;
 import static org.mockito.BDDMockito.given;
@@ -75,6 +78,48 @@ public class ConstituencyServiceTest {
     }
 
     @Test
+    public void returnsNotFoundIfUserNotFoundWhenAssociateConstituencyToUser() throws Exception {
+        User admin = user().withRole(Role.ADMIN).build();
+        User user = user().withConstituencies(new HashSet<>()).build();
+        Constituency constituency = constituency().build();
+        given(constituencyRepository.findOne(constituency.getId())).willReturn(constituency);
+        given(userRepository.findOne(user.getId())).willReturn(null);
+
+        Try<User> userTry = underTest.associateToUser(admin, constituency.getId(), user.getId());
+
+        assertThat(userTry.isSuccess(), is(false));
+        assertThat(userTry.getFailure(), is(instanceOf(NotFoundFailure.class)));
+    }
+
+    @Test
+    public void returnsNotFoundIfConstituencyNotFoundWhenAssociateConstituencyToUser() throws Exception {
+        User admin = user().withRole(Role.ADMIN).build();
+        User user = user().withConstituencies(new HashSet<>()).build();
+        Constituency constituency = constituency().build();
+        given(constituencyRepository.findOne(constituency.getId())).willReturn(null);
+        given(userRepository.findOne(user.getId())).willReturn(user);
+
+        Try<User> userTry = underTest.associateToUser(admin, constituency.getId(), user.getId());
+
+        assertThat(userTry.isSuccess(), is(false));
+        assertThat(userTry.getFailure(), is(instanceOf(NotFoundFailure.class)));
+    }
+
+    @Test
+    public void returnsNotAuthorizedIfNonAdminWhenAssociateConstituencyToUser() throws Exception {
+        User admin = user().withRole(Role.USER).build();
+        User user = user().withConstituencies(new HashSet<>()).build();
+        Constituency constituency = constituency().build();
+        given(constituencyRepository.findOne(constituency.getId())).willReturn(constituency);
+        given(userRepository.findOne(user.getId())).willReturn(user);
+
+        Try<User> userTry = underTest.associateToUser(admin, constituency.getId(), user.getId());
+
+        assertThat(userTry.isSuccess(), is(false));
+        assertThat(userTry.getFailure(), is(instanceOf(NotAuthorizedFailure.class)));
+    }
+
+    @Test
     public void removesAssociationOfConstituencyToUser() throws Exception {
         User admin = user().withRole(Role.ADMIN).build();
         Constituency constituency = constituency().build();
@@ -88,4 +133,48 @@ public class ConstituencyServiceTest {
         assertThat(userTry.isSuccess(), is(true));
         assertThat(userTry.get().getConstituencies(), is(emptySet()));
     }
+
+
+    @Test
+    public void returnsNotFoundIfUserNotFoundWhenRemoveConstituencyFromUser() throws Exception {
+        User admin = user().withRole(Role.ADMIN).build();
+        User user = user().withConstituencies(new HashSet<>()).build();
+        Constituency constituency = constituency().build();
+        given(constituencyRepository.findOne(constituency.getId())).willReturn(constituency);
+        given(userRepository.findOne(user.getId())).willReturn(null);
+
+        Try<User> userTry = underTest.removeUserAssociation(admin, constituency.getId(), user.getId());
+
+        assertThat(userTry.isSuccess(), is(false));
+        assertThat(userTry.getFailure(), is(instanceOf(NotFoundFailure.class)));
+    }
+
+    @Test
+    public void returnsNotFoundIfConstituencyNotFoundWhenRemoveConstituencyFromUser() throws Exception {
+        User admin = user().withRole(Role.ADMIN).build();
+        User user = user().withConstituencies(new HashSet<>()).build();
+        Constituency constituency = constituency().build();
+        given(constituencyRepository.findOne(constituency.getId())).willReturn(null);
+        given(userRepository.findOne(user.getId())).willReturn(user);
+
+        Try<User> userTry = underTest.removeUserAssociation(admin, constituency.getId(), user.getId());
+
+        assertThat(userTry.isSuccess(), is(false));
+        assertThat(userTry.getFailure(), is(instanceOf(NotFoundFailure.class)));
+    }
+
+    @Test
+    public void returnsNotAuthorizedIfNonAdminWhenRemoveConstituencyFromUser() throws Exception {
+        User admin = user().withRole(Role.USER).build();
+        User user = user().withConstituencies(new HashSet<>()).build();
+        Constituency constituency = constituency().build();
+        given(constituencyRepository.findOne(constituency.getId())).willReturn(constituency);
+        given(userRepository.findOne(user.getId())).willReturn(user);
+
+        Try<User> userTry = underTest.removeUserAssociation(admin, constituency.getId(), user.getId());
+
+        assertThat(userTry.isSuccess(), is(false));
+        assertThat(userTry.getFailure(), is(instanceOf(NotAuthorizedFailure.class)));
+    }
+
 }
