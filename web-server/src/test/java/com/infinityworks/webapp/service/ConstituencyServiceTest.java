@@ -1,5 +1,6 @@
 package com.infinityworks.webapp.service;
 
+import com.infinityworks.common.lang.Try;
 import com.infinityworks.webapp.domain.Constituency;
 import com.infinityworks.webapp.domain.Role;
 import com.infinityworks.webapp.domain.User;
@@ -7,15 +8,22 @@ import com.infinityworks.webapp.domain.Ward;
 import com.infinityworks.webapp.repository.ConstituencyRepository;
 import com.infinityworks.webapp.repository.UserRepository;
 import com.infinityworks.webapp.rest.dto.UserRestrictedConstituencies;
+import org.hamcrest.CoreMatchers;
 import org.junit.Before;
 import org.junit.Test;
+
+import java.util.Collections;
+import java.util.HashSet;
 
 import static com.google.common.collect.Sets.newHashSet;
 import static com.infinityworks.webapp.testsupport.builder.ConstituencyBuilder.constituency;
 import static com.infinityworks.webapp.testsupport.builder.UserBuilder.user;
 import static com.infinityworks.webapp.testsupport.builder.WardBuilder.ward;
+import static java.util.Collections.emptySet;
 import static org.hamcrest.CoreMatchers.hasItem;
+import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertThat;
+import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verifyZeroInteractions;
 
@@ -23,11 +31,12 @@ public class ConstituencyServiceTest {
 
     private ConstituencyRepository constituencyRepository;
     private ConstituencyService underTest;
+    private UserRepository userRepository;
 
     @Before
     public void setUp() throws Exception {
         constituencyRepository = mock(ConstituencyRepository.class);
-        UserRepository userRepository = mock(UserRepository.class);
+        userRepository = mock(UserRepository.class);
         underTest = new ConstituencyService(constituencyRepository, userRepository);
     }
 
@@ -48,5 +57,35 @@ public class ConstituencyServiceTest {
         assertThat(constituencies.getConstituencies(), hasItem(covSouth));
         assertThat(constituencies.getConstituencies(), hasItem(rugby));
         verifyZeroInteractions(constituencyRepository);
+    }
+
+    @Test
+    public void associatesConstituencyToUser() throws Exception {
+        User admin = user().withRole(Role.ADMIN).build();
+        User user = user().withConstituencies(new HashSet<>()).build();
+        Constituency constituency = constituency().build();
+        given(constituencyRepository.findOne(constituency.getId())).willReturn(constituency);
+        given(userRepository.findOne(user.getId())).willReturn(user);
+        given(userRepository.save(user)).willReturn(user);
+
+        Try<User> userTry = underTest.associateToUser(admin, constituency.getId(), user.getId());
+
+        assertThat(userTry.isSuccess(), is(true));
+        assertThat(userTry.get().getConstituencies(), hasItem(constituency));
+    }
+
+    @Test
+    public void removesAssociationOfConstituencyToUser() throws Exception {
+        User admin = user().withRole(Role.ADMIN).build();
+        Constituency constituency = constituency().build();
+        User user = user().withConstituencies(newHashSet(constituency)).build();
+        given(constituencyRepository.findOne(constituency.getId())).willReturn(constituency);
+        given(userRepository.findOne(user.getId())).willReturn(user);
+        given(userRepository.save(user)).willReturn(user);
+
+        Try<User> userTry = underTest.removeUserAssociation(admin, constituency.getId(), user.getId());
+
+        assertThat(userTry.isSuccess(), is(true));
+        assertThat(userTry.get().getConstituencies(), is(emptySet()));
     }
 }
