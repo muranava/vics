@@ -124,6 +124,22 @@ public class TryTest {
         assertThat(failure.getFailure().getMessage(), is(equalTo("hello")));
     }
 
+    @Test
+    public void containsResultWhenSuccess() {
+        Try<String> of = Try.of(() -> "hello");
+
+        assertThat(of.get(), is("hello"));
+    }
+
+    @Test
+    public void containsErrorWhenFailure() {
+        Try<String> of = Try.of(() -> {
+            throw new IllegalArgumentException("failed");
+        });
+
+        assertThat(of.isSuccess(), is(false));
+    }
+
     @Test(expected = UnsupportedOperationException.class)
     public void getFailureThrowsExceptionIfIsSuccess() {
         Try.success("wibble").getFailure();

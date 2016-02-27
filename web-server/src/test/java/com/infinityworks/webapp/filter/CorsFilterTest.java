@@ -13,9 +13,9 @@ import static org.mockito.Mockito.*;
 
 public class CorsFilterTest {
 
-    HttpServletRequest req;
-    HttpServletResponse res;
-    FilterChain chain;
+    private HttpServletRequest req;
+    private HttpServletResponse res;
+    private FilterChain chain;
 
     @Before
     public void setUp() throws Exception {
