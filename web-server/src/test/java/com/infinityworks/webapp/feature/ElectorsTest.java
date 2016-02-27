@@ -13,7 +13,6 @@ import org.junit.Before;
 import org.junit.Test;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.context.jdbc.SqlGroup;
-import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
@@ -23,9 +22,6 @@ import org.springframework.web.util.UriComponentsBuilder;
 import java.security.Principal;
 
 import static com.infinityworks.webapp.common.Json.objectMapper;
-import static com.infinityworks.webapp.testsupport.Fixtures.abbotRoad;
-import static com.infinityworks.webapp.testsupport.Fixtures.kirbyRoad;
-import static java.util.Arrays.asList;
 import static java.util.Collections.emptyList;
 import static org.hamcrest.CoreMatchers.is;
 import static org.mockito.Matchers.any;
@@ -61,25 +57,6 @@ public class ElectorsTest extends WebApplicationTest {
                 .standaloneSetup(wardController)
                 .build();
         pafApiStub.start();
-    }
-
-    @Test
-    public void returnsTheElectorsByStreetAndTown() throws Exception {
-        String wardCode = "E05001221";
-        String town = "Coventry";
-        pafApiStub.willReturnVotersByWardByTownAndByStreet(wardCode, town);
-        when(sessionService.extractUserFromPrincipal(any(Principal.class)))
-                .thenReturn(Try.success(earlsdon()));
-
-        TownStreets townStreets = new TownStreets(asList(kirbyRoad(), abbotRoad()));
-        String url = "/elector/ward/" + wardCode + "/street/pdf";
-
-        ResultActions response = mockMvc.perform(post(url)
-                .accept("application/pdf")
-                .contentType(APPLICATION_JSON)
-                .content(objectMapper.writeValueAsString(townStreets)));
-
-        response.andExpect(status().isOk());
     }
 
     @Test
