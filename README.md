@@ -13,7 +13,7 @@ returned to the client as byte arrays.
 A security system is implemented using Spring security and Redis for session state persistence.
 The application should be deployed using TLS.
 
-PostgreSQL is used for persistence
+PostgreSQL is used for persistence.
 
 ## Build & Test
 
