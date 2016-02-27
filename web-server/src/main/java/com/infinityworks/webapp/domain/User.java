@@ -74,12 +74,6 @@ public class User extends BaseEntity implements Permissible {
         return role == Role.ADMIN;
     }
 
-    @JsonIgnore
-    @Override
-    public boolean hasWardPermission(Ward ward) {
-        return isAdmin() || wards.contains(ward) || constituencies.contains(ward.getConstituency());
-    }
-
     public String getUsername() {
         return username;
     }

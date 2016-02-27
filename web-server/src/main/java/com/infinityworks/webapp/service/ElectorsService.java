@@ -99,7 +99,7 @@ public class ElectorsService {
             return Try.failure(new NotFoundFailure("No ward with code " + contactRequest.getWardCode()));
         }
 
-        if (user.hasWardPermission(byCode.get())) {
+        if (!user.hasWardPermission(byCode.get())) {
             return Try.failure(new NotAuthorizedFailure("Forbidden"));
         }
 

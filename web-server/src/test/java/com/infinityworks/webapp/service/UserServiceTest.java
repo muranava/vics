@@ -6,7 +6,6 @@ import com.infinityworks.webapp.domain.User;
 import com.infinityworks.webapp.error.NotAuthorizedFailure;
 import com.infinityworks.webapp.repository.UserRepository;
 import com.infinityworks.webapp.rest.dto.UpdateUserRequest;
-import org.hibernate.sql.Update;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.ArgumentCaptor;
