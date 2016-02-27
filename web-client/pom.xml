@@ -91,7 +91,7 @@
             <phase>prepare-package</phase>
             <configuration>
               <tasks>
-                <replace token="http://localhost:8080/api/canvass" value="/api/canvass" dir="${project.basedir}/../dist/static/scripts">
+                <replace token="http://localhost:8080/api/canvass" value="/api/canvass" dir="${project.basedir}/../dist/client/scripts">
                   <include name="scripts.*.js"/>
                 </replace>
               </tasks>
