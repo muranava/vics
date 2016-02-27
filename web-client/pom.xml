@@ -75,7 +75,7 @@
             <phase>process-resources</phase>
             <configuration>
               <tasks>
-                <copy todir="${project.basedir}/../dist/static">
+                <copy todir="${project.basedir}/../dist/client">
                   <fileset dir="${project.basedir}/dist/">
                     <include name="**/*"/>
                   </fileset>

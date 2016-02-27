@@ -46,9 +46,12 @@
                             <tasks>
                                 <copy todir="${project.basedir}/../dist">
                                     <fileset dir="${project.basedir}/">
-                                        <include name="db/*.sql"/>
-                                        <include name="server/run-web-server.sh"/>
-                                        <include name="db/install-db.sh"/>
+                                        <include name="db/*"/>
+                                    </fileset>
+                                </copy>
+                                <copy todir="${project.basedir}/../dist/server">
+                                    <fileset dir="${project.basedir}/">
+                                        <include name="run-web-server.sh"/>
                                     </fileset>
                                 </copy>
                             </tasks>
