@@ -47,14 +47,14 @@
                                 <copy todir="${project.basedir}/../dist">
                                     <fileset dir="${project.basedir}/">
                                         <include name="db/*.sql"/>
-                                        <include name="run-web-server.sh"/>
-                                        <include name="install-db.sh"/>
+                                        <include name="server/run-web-server.sh"/>
+                                        <include name="db/install-db.sh"/>
                                     </fileset>
                                 </copy>
                             </tasks>
                             <target>
-                                <chmod file="${project.basedir}/../dist/run-web-server.sh" perm="755"/>
-                                <chmod file="${project.basedir}/../dist/install-db.sh" perm="755"/>
+                                <chmod file="${project.basedir}/../dist/server/run-web-server.sh" perm="755"/>
+                                <chmod file="${project.basedir}/../dist/db/install-db.sh" perm="755"/>
                             </target>
                         </configuration>
                         <goals>
