@@ -108,13 +108,4 @@ public class WardService {
             return Try.failure(new NotAuthorizedFailure("Forbidden"));
         }
     }
-
-    public Try<UserRestrictedWards> searchByUserAndName(User user, String wardName, int limit) {
-        log.debug("Getting wards by user={}, wardName={} limit={}", user, wardName, limit);
-
-        Set<Ward> wards = wardRepository.searchByUsernameAndWardName(user.getUsername(), wardName.toUpperCase(), limit);
-
-        log.debug("Found {} wards for user={}", wards, user);
-        return Try.success(new UserRestrictedWards(new ArrayList<>(wards)));
-    }
 }
