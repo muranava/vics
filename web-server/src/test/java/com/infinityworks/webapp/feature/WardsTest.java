@@ -113,7 +113,7 @@ public class WardsTest extends WebApplicationTest {
         String endpoint = "/ward/" + wardCode + "/street";
         pafApiStub.willReturnStreetsByWard(wardCode);
         when(sessionService.extractUserFromPrincipal(any(Principal.class)))
-                .thenReturn(Try.success(admin()));
+                .thenReturn(Try.success(earlsdon()));
 
         ResultActions resultActions = mockMvc.perform(get(endpoint)
                 .accept(MediaType.APPLICATION_JSON))

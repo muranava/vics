@@ -10,7 +10,6 @@ import com.infinityworks.webapp.service.SessionService;
 import com.infinityworks.webapp.service.VoteService;
 import com.infinityworks.webapp.service.client.RecordVote;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.context.jdbc.SqlGroup;
@@ -65,13 +64,12 @@ public class ElectorsTest extends WebApplicationTest {
     }
 
     @Test
-    @Ignore
     public void returnsTheElectorsByStreetAndTown() throws Exception {
         String wardCode = "E05001221";
         String town = "Coventry";
         pafApiStub.willReturnVotersByWardByTownAndByStreet(wardCode, town);
         when(sessionService.extractUserFromPrincipal(any(Principal.class)))
-                .thenReturn(Try.success(admin()));
+                .thenReturn(Try.success(earlsdon()));
 
         TownStreets townStreets = new TownStreets(asList(kirbyRoad(), abbotRoad()));
         String url = "/elector/ward/" + wardCode + "/street/pdf";
@@ -119,7 +117,7 @@ public class ElectorsTest extends WebApplicationTest {
     @Test
     public void returnsTheElectorsWhenSearchingByAttributes() throws Exception {
         when(sessionService.extractUserFromPrincipal(any(Principal.class)))
-                .thenReturn(Try.success(covs()));
+                .thenReturn(Try.success(earlsdon()));
         pafApiStub.willSearchVoters("McCall", "KT25BU");
 
         MultiValueMap<String, String> params = new LinkedMultiValueMap<>();

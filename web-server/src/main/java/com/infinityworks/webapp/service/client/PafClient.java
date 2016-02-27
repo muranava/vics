@@ -107,11 +107,7 @@ public class PafClient {
                 .stream()
                 .map(streetConverter)
                 .collect(toList());
-        try {
-            System.out.println(new ObjectMapper().writeValueAsString(streets));
-        } catch (JsonProcessingException e) {
-            e.printStackTrace();
-        }
+
         HttpEntity<List<PafStreet>> entity = new HttpEntity<>(streets, headers);
 
         try {

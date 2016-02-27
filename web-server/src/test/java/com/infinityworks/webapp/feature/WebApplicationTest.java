@@ -46,6 +46,11 @@ public abstract class WebApplicationTest {
         return userService.getByEmail("cov@south.cov").get();
     }
 
+    protected User earlsdon() {
+        UserService userService = getBean(UserService.class);
+        return userService.getByEmail("earlsdon@cov.uk").get();
+    }
+
     protected <T> T getBean(Class<T> clazz) {
         return applicationContext.getBean(clazz);
     }
