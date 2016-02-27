@@ -21,8 +21,7 @@ Install maven 3 and Java 8, then test and build the entire project from the root
 
     mvn clean install
 
-This will generate a ```/dist``` folder that contains all artefacts for deployment - minified javascript/html/css, java server as a fat jar
-and the database installation scripts that contain reference data
+This will generate a ```/dist``` folder that contains all artefacts for deployment - minified javascript/html/css, java server as a fat jar and the database installation scripts that contain reference data
 
 ## Project Modules
 
