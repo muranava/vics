@@ -75,6 +75,8 @@ angular
         electorService.submitCanvassInput(mapFormToRequest($scope.inputRecordModel))
           .success(handleSubmitEntrySuccess)
           .error(handleSubmitEntryFailure);
+
+        $('#electorId').focus();
       }
     };
 

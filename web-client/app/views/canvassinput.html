@@ -48,7 +48,7 @@
 
               <!-- Ward select -->
               <div class="form-group">
-                <label for="groupbutton17" class="col-sm-3 control-label">Ward</label>
+                <label for="selectWard" class="col-sm-3 control-label">Ward</label>
                 <div class="col-sm-9">
                   <select id="selectWard" class="form-control"
                           ng-model="inputRecordModel.ward"
@@ -59,10 +59,10 @@
 
               <!-- Elector details -->
               <div class="form-group">
-                <label for="groupbutton17" class="col-sm-3 control-label">Elector ID</label>
+                <label for="electorId" class="col-sm-3 control-label">Elector ID</label>
                 <div class="col-sm-9">
                   <input type="text" class="form-control" ng-model="inputRecordModel.ern"
-                         placeholder="Enter the electoral roll number" id="groupbutton17">
+                         placeholder="Enter the elector ID" id="electorId">
                 </div>
               </div>
 
@@ -71,7 +71,7 @@
                 <label class="col-sm-3 control-label">Voting Likelihood</label>
                 <div class="col-sm-9">
                   <select name="likelihood"
-                          class="form-control"
+                          class="form-control hl-focus"
                           ng-options="item for item in [
                           '1 - Definitely won\'t vote',
                           '2 - Probably won\'t vote',
@@ -101,7 +101,7 @@
                   </div>
                   <div class="checkbox checkbox-styled">
                     <label>
-                      <input type="checkbox" ng-model="inputRecordModel.border" value="">
+                      <input class="checkbox-focus" type="checkbox" ng-model="inputRecordModel.border" value="">
                       <span>Border</span>
                     </label>
                   </div>
@@ -113,7 +113,7 @@
                 <label class="col-sm-3 control-label">Intention to Vote</label>
                 <div class="col-sm-9">
                   <select name="intention"
-                          class="form-control"
+                          class="form-control hl-focus"
                           ng-options="item for item in [
                           '1 - Definitely remain',
                           '2 - Probably remain',
