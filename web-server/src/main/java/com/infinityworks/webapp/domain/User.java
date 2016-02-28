@@ -18,7 +18,7 @@ import static java.util.stream.Collectors.toSet;
  * 2) Privileges - determines what a user can DO, e.g. read/write access
  * 3) Application restrictions - determines what type of data the user can access, e.g.
  * which wards, which constituencies
- *
+ * <p>
  * Note: modifying this class will invalidate all current user sessions,
  * since spring session serializes this entity by default.
  * To change this behaviour we would need to override the spring session methods
@@ -51,7 +51,7 @@ public class User extends BaseEntity implements Permissible {
             name = "users_privileges",
             joinColumns = @JoinColumn(name = "users_id", referencedColumnName = "id"),
             inverseJoinColumns = @JoinColumn(name = "privileges_id", referencedColumnName = "id"),
-            uniqueConstraints = @UniqueConstraint(columnNames={"users_id", "privileges_id"})
+            uniqueConstraints = @UniqueConstraint(columnNames = {"users_id", "privileges_id"})
     )
     private Set<Privilege> permissions;
 
@@ -60,7 +60,7 @@ public class User extends BaseEntity implements Permissible {
             name = "users_constituencies",
             joinColumns = @JoinColumn(name = "users_id", referencedColumnName = "id"),
             inverseJoinColumns = @JoinColumn(name = "constituencies_id", referencedColumnName = "id"),
-            uniqueConstraints = @UniqueConstraint(columnNames={"users_id", "constituencies_id"}))
+            uniqueConstraints = @UniqueConstraint(columnNames = {"users_id", "constituencies_id"}))
     private Set<Constituency> constituencies;
 
     @ManyToMany(fetch = FetchType.EAGER)
@@ -68,7 +68,7 @@ public class User extends BaseEntity implements Permissible {
             name = "users_wards",
             joinColumns = @JoinColumn(name = "users_id", referencedColumnName = "id"),
             inverseJoinColumns = @JoinColumn(name = "wards_id", referencedColumnName = "id"),
-            uniqueConstraints = @UniqueConstraint(columnNames={"users_id", "wards_id"}))
+            uniqueConstraints = @UniqueConstraint(columnNames = {"users_id", "wards_id"}))
     private Set<Ward> wards;
 
     @JsonIgnore
@@ -176,21 +176,20 @@ public class User extends BaseEntity implements Permissible {
     }
 
     @Override
-    public boolean equals(Object o) {
+    public final boolean equals(Object o) {
         if (this == o) return true;
         if (!(o instanceof User)) return false;
         User user = (User) o;
         return Objects.equal(username, user.username) &&
                 Objects.equal(firstName, user.firstName) &&
                 Objects.equal(lastName, user.lastName) &&
-                Objects.equal(passwordHash, user.passwordHash) &&
                 Objects.equal(writeAccess, user.writeAccess) &&
                 role == user.role;
     }
 
     @Override
-    public int hashCode() {
-        return Objects.hashCode(username, firstName, lastName, passwordHash, writeAccess, role);
+    public final int hashCode() {
+        return Objects.hashCode(username, firstName, lastName, writeAccess, role);
     }
 
     @Override

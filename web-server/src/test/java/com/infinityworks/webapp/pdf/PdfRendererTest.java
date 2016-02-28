@@ -18,7 +18,7 @@ import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.assertThat;
 
 public class PdfRendererTest {
-    private PdfRenderer underTest = new PdfRenderer(new PropertyToRowConverter(), new TableBuilder());
+    private PDFRenderer underTest = new ITextPDFRenderer(new PropertyToRowConverter(), new TableBuilder());
 
     @Test
     public void generatesTablesFromVoters() throws Exception {

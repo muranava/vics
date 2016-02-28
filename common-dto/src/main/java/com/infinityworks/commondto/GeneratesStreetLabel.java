@@ -5,6 +5,8 @@ import java.util.StringJoiner;
 public interface GeneratesStreetLabel {
     String getPostTown();
 
+    String getPostCode();
+
     String getDependentLocality();
 
     String getDependentStreet();
@@ -19,6 +21,7 @@ public interface GeneratesStreetLabel {
                 .add(getMainStreet())
                 .add(getDependentLocality())
                 .add(getPostTown())
+                .add(getPostCode())
                 .toString();
     }
 }

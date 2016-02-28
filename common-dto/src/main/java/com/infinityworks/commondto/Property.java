@@ -81,6 +81,7 @@ public class Property implements GeneratesStreetLabel, GeneratesHouseNumber {
         return voters;
     }
 
+    @Override
     public String getPostCode() {
         return postCode;
     }

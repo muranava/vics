@@ -26,7 +26,7 @@
 
         <apache-http-client.version>4.5.1</apache-http-client.version>
         <db-setup.version>1.6.0</db-setup.version>
-        <equals-verifier.version>1.0.2</equals-verifier.version>
+        <equals-verifier.version>1.7.8</equals-verifier.version>
         <guava.version>18.0</guava.version>
         <hamcrest.version>1.3</hamcrest.version>
         <hibernate-annotations.version>3.5.6-Final</hibernate-annotations.version>

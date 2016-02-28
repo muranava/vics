@@ -5,13 +5,12 @@ import com.infinityworks.commondto.Voter;
 import com.infinityworks.commondto.VotersByStreet;
 import com.infinityworks.pdfgen.DocumentBuilder;
 import com.infinityworks.pdfgen.model.GeneratedPdfTable;
-import com.infinityworks.webapp.domain.Constituency;
 import com.infinityworks.webapp.domain.Permissible;
 import com.infinityworks.webapp.domain.User;
 import com.infinityworks.webapp.domain.Ward;
 import com.infinityworks.webapp.error.NotAuthorizedFailure;
 import com.infinityworks.webapp.error.NotFoundFailure;
-import com.infinityworks.webapp.pdf.PdfRenderer;
+import com.infinityworks.webapp.pdf.PDFRenderer;
 import com.infinityworks.webapp.rest.dto.RecordContactRequest;
 import com.infinityworks.webapp.rest.dto.SearchElectors;
 import com.infinityworks.webapp.rest.dto.TownStreets;
@@ -34,13 +33,13 @@ public class ElectorsService {
     private final Logger log = LoggerFactory.getLogger(ElectorsService.class);
     private final PafClient pafClient;
     private final WardService wardService;
-    private final PdfRenderer pdfRenderer;
+    private final PDFRenderer pdfRenderer;
     private final DocumentBuilder documentBuilder;
 
     @Autowired
     public ElectorsService(PafClient pafClient,
                            WardService wardService,
-                           PdfRenderer pdfRenderer,
+                           PDFRenderer pdfRenderer,
                            DocumentBuilder documentBuilder) {
         this.pafClient = pafClient;
         this.wardService = wardService;

@@ -1,31 +1,29 @@
 package com.infinityworks.webapp.pdf;
 
-import com.google.common.base.Joiner;
 import com.infinityworks.common.lang.StringExtras;
 import com.infinityworks.commondto.VotersByStreet;
-import com.infinityworks.pdfgen.model.ElectorRow;
-import com.infinityworks.pdfgen.model.GeneratedPdfTable;
 import com.infinityworks.pdfgen.TableBuilder;
 import com.infinityworks.pdfgen.converter.PropertyToRowConverter;
+import com.infinityworks.pdfgen.model.ElectorRow;
+import com.infinityworks.pdfgen.model.GeneratedPdfTable;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Stream;
 
 import static java.util.Arrays.asList;
 import static java.util.stream.Collectors.joining;
 import static java.util.stream.Collectors.toList;
 
 @Component
-public class PdfRenderer {
+public class ITextPDFRenderer implements PDFRenderer {
     private final PropertyToRowConverter propertyToRowConverter;
     private final TableBuilder tableBuilder;
 
     @Autowired
-    public PdfRenderer(PropertyToRowConverter propertyToRowConverter, TableBuilder tableBuilder) {
+    public ITextPDFRenderer(PropertyToRowConverter propertyToRowConverter, TableBuilder tableBuilder) {
         this.propertyToRowConverter = propertyToRowConverter;
         this.tableBuilder = tableBuilder;
     }

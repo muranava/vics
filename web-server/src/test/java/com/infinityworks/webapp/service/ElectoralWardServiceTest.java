@@ -3,23 +3,27 @@ package com.infinityworks.webapp.service;
 import com.infinityworks.common.lang.Try;
 import com.infinityworks.webapp.converter.WardSummaryConverter;
 import com.infinityworks.webapp.domain.Constituency;
+import com.infinityworks.webapp.domain.Role;
 import com.infinityworks.webapp.domain.User;
 import com.infinityworks.webapp.domain.Ward;
+import com.infinityworks.webapp.error.NotAuthorizedFailure;
+import com.infinityworks.webapp.error.NotFoundFailure;
 import com.infinityworks.webapp.repository.ConstituencyRepository;
 import com.infinityworks.webapp.repository.WardRepository;
 import com.infinityworks.webapp.rest.dto.UserRestrictedWards;
 import org.junit.Before;
 import org.junit.Test;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 import static com.google.common.collect.Sets.newHashSet;
 import static com.infinityworks.webapp.testsupport.builder.ConstituencyBuilder.constituency;
 import static com.infinityworks.webapp.testsupport.builder.UserBuilder.user;
 import static com.infinityworks.webapp.testsupport.builder.WardBuilder.ward;
+import static com.infinityworks.webapp.testsupport.matcher.TryFailureMatcher.isFailure;
+import static com.infinityworks.webapp.testsupport.matcher.TrySuccessMatcher.isSuccess;
+import static org.hamcrest.Matchers.equalTo;
+import static org.hamcrest.Matchers.instanceOf;
 import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.assertThat;
 import static org.mockito.BDDMockito.given;
@@ -28,12 +32,46 @@ import static org.mockito.Mockito.mock;
 public class ElectoralWardServiceTest {
     private ConstituencyRepository constituencyRepository;
     private WardService underTest;
+    private WardRepository wardRepository;
 
     @Before
     public void setUp() throws Exception {
-        WardRepository wardRepository = mock(WardRepository.class);
+        wardRepository = mock(WardRepository.class);
         constituencyRepository = mock(ConstituencyRepository.class);
         underTest = new WardService(new WardSummaryConverter(), wardRepository, constituencyRepository);
+    }
+
+    @Test
+    public void returnsFailureIfUserDoesNotHavePermissionWhenGettingWardByCode() throws Exception {
+        Ward w = ward().build();
+        User user = user().withRole(Role.USER).build();
+        given(wardRepository.findByCode(w.getCode())).willReturn(Optional.of(w));
+
+        Try<Ward> result = underTest.getByCode(w.getCode(), user);
+
+        assertThat(result, isFailure(instanceOf(NotAuthorizedFailure.class)));
+    }
+
+    @Test
+    public void returnsFailureIfWardNotFoundWhenGettingWardByCode() throws Exception {
+        Ward w = ward().build();
+        User user = user().withRole(Role.USER).withWards(newHashSet(w)).build();
+        given(wardRepository.findByCode(w.getCode())).willReturn(Optional.empty());
+
+        Try<Ward> result = underTest.getByCode(w.getCode(), user);
+
+        assertThat(result, isFailure(instanceOf(NotFoundFailure.class)));
+    }
+
+    @Test
+    public void returnsTheWardByCode() throws Exception {
+        Ward w = ward().build();
+        User user = user().withRole(Role.USER).withWards(newHashSet(w)).build();
+        given(wardRepository.findByCode(w.getCode())).willReturn(Optional.of(w));
+
+        Try<Ward> result = underTest.getByCode(w.getCode(), user);
+
+        assertThat(result, isSuccess(equalTo(w)));
     }
 
     @Test

@@ -22,6 +22,7 @@ public class PropertyToRowConverterTest {
                 .withDependentLocality("Amber")
                 .withDependentStreet("Highland Close")
                 .withPostTown("Bournemouth")
+                .withPostCode("CV2 3ER")
                 .withMainStreet("Glen Avenue")
                 .withVoters(asList(
                         voter().withFirstName("Andy").withElectorId("1").withElectorSuffix("11").withTelephone("0987654321").withLastName("Benz").withErn("PD1-1235-1").build(),
