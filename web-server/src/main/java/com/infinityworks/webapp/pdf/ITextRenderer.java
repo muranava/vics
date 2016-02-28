@@ -18,12 +18,12 @@ import static java.util.stream.Collectors.joining;
 import static java.util.stream.Collectors.toList;
 
 @Component
-public class ITextPDFRenderer implements PDFRenderer {
+public class ITextRenderer implements PDFRenderer {
     private final PropertyToRowConverter propertyToRowConverter;
     private final TableBuilder tableBuilder;
 
     @Autowired
-    public ITextPDFRenderer(PropertyToRowConverter propertyToRowConverter, TableBuilder tableBuilder) {
+    public ITextRenderer(PropertyToRowConverter propertyToRowConverter, TableBuilder tableBuilder) {
         this.propertyToRowConverter = propertyToRowConverter;
         this.tableBuilder = tableBuilder;
     }
