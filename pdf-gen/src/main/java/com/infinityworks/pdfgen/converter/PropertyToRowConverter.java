@@ -35,7 +35,7 @@ public class PropertyToRowConverter implements BiFunction<String, Property, List
                         .withNeedsLift("")
                         .withPoster("")
                         .withDeceased("")
-                        .withStreet(property.getStreetLabel() + ", " + property.getPostCode())
+                        .withStreet(property.getStreetLabel())
                         .withErn(voter.getErn())
                         .build())
                 .collect(toList());
