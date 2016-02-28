@@ -20,17 +20,10 @@ public class VotersByStreet {
         return properties;
     }
 
-    public String getMainStreetName() {
+    public String getStreetLabel() {
         return properties.stream()
                 .findFirst()
-                .map(Property::getMainStreet)
-                .orElse("");
-    }
-
-    public String getPostCode() {
-        return properties.stream()
-                .findFirst()
-                .map(Property::getPostCode)
+                .map(Property::getStreetLabel)
                 .orElse("");
     }
 }

@@ -50,15 +50,15 @@ public class PdfRendererTest {
 
     public VotersByStreet street1() {
         return new VotersByStreet(asList(
-                property().withBuildingNumber("1").withMainStreet("Street1").withVoters(asList(
+                property().withBuildingNumber("1").withMainStreet("Street1").withDependentStreet("").withVoters(asList(
                         voter().withFirstName("David").build(),
                         voter().withFirstName("Sam").build()
                 )).build(),
-                property().withBuildingNumber("2").withMainStreet("Street1").withVoters(asList(
+                property().withBuildingNumber("2").withMainStreet("Street1").withDependentStreet("").withVoters(asList(
                         voter().withFirstName("Amy").build(),
                         voter().withFirstName("Paul").build()
                 )).build(),
-                property().withBuildingNumber("3").withMainStreet("Street1").withVoters(singletonList(
+                property().withBuildingNumber("3").withMainStreet("Street1").withDependentStreet("").withVoters(singletonList(
                         voter().withFirstName("Abdul").build()
                 )).build()
         ));
@@ -66,15 +66,15 @@ public class PdfRendererTest {
 
     public VotersByStreet street2() {
         return new VotersByStreet(asList(
-                property().withBuildingNumber("111").withMainStreet("Street2").withVoters(asList(
+                property().withBuildingNumber("111").withMainStreet("Street2").withDependentStreet("").withVoters(asList(
                         voter().withFirstName("Javier").build(),
                         voter().withFirstName("Marti").build()
                 )).build(),
-                property().withBuildingNumber("222").withMainStreet("Street2").withVoters(asList(
+                property().withBuildingNumber("222").withMainStreet("Street2").withDependentStreet("").withVoters(asList(
                         voter().withFirstName("Selina").build(),
                         voter().withFirstName("Pedro").build()
                 )).build(),
-                property().withBuildingNumber("333").withMainStreet("Street2").withVoters(singletonList(
+                property().withBuildingNumber("333").withMainStreet("Street2").withDependentStreet("").withVoters(singletonList(
                         voter().withFirstName("Carlos").build()
                 )).build()
         ));

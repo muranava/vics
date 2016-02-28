@@ -1,6 +1,5 @@
 package com.infinityworks.webapp.pdf;
 
-import com.infinityworks.common.lang.StringExtras;
 import com.infinityworks.commondto.VotersByStreet;
 import com.infinityworks.pdfgen.TableBuilder;
 import com.infinityworks.pdfgen.converter.PropertyToRowConverter;
@@ -13,8 +12,6 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 
-import static java.util.Arrays.asList;
-import static java.util.stream.Collectors.joining;
 import static java.util.stream.Collectors.toList;
 
 @Component
@@ -41,15 +38,11 @@ public class ITextRenderer implements PDFRenderer {
     }
 
     private Optional<GeneratedPdfTable> createTableFromStreet(VotersByStreet street, String wardCode, String wardName, String constituencyName) {
-        String mainStreetName = asList(street.getMainStreetName(), street.getPostCode())
-                .stream()
-                .filter(str -> !StringExtras.isNullOrEmpty(str))
-                .collect(joining(", "));
         List<ElectorRow> electors = street.getProperties()
                 .stream()
                 .map(property -> propertyToRowConverter.apply(wardCode, property))
                 .flatMap(Collection::stream)
                 .collect(toList());
-        return tableBuilder.generateTableRows(electors, mainStreetName, wardName, wardCode, constituencyName);
+        return tableBuilder.generateTableRows(electors, street.getStreetLabel(), wardName, wardCode, constituencyName);
     }
 }

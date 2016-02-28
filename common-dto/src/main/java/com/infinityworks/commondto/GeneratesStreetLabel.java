@@ -1,6 +1,10 @@
 package com.infinityworks.commondto;
 
-import java.util.StringJoiner;
+import com.infinityworks.common.lang.StringExtras;
+
+import static com.google.common.collect.Sets.newLinkedHashSet;
+import static java.util.Arrays.asList;
+import static java.util.stream.Collectors.joining;
 
 public interface GeneratesStreetLabel {
     String getPostTown();
@@ -16,12 +20,9 @@ public interface GeneratesStreetLabel {
     String getMainStreet();
 
     default String getStreetLabel() {
-        return new StringJoiner(", ")
-                .add(getDependentStreet())
-                .add(getMainStreet())
-                .add(getDependentLocality())
-                .add(getPostTown())
-                .add(getPostCode())
-                .toString();
+        return newLinkedHashSet(asList(getDependentStreet(), getMainStreet(), getDependentLocality(), getPostCode()))
+                .stream()
+                .filter(elem -> !StringExtras.isNullOrEmpty(elem))
+                .collect(joining(", "));
     }
 }

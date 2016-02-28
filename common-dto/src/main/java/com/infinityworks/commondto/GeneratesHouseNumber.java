@@ -2,7 +2,8 @@ package com.infinityworks.commondto;
 
 import com.infinityworks.common.lang.StringExtras;
 
-import static com.google.common.collect.Sets.newHashSet;
+import static com.google.common.collect.Sets.newLinkedHashSet;
+import static java.util.Arrays.asList;
 import static java.util.stream.Collectors.joining;
 
 public interface GeneratesHouseNumber {
@@ -15,7 +16,7 @@ public interface GeneratesHouseNumber {
     String getSubBuildingName();
 
     default String getHouseNumber() {
-        return newHashSet(getBuildingNumber(), getSubBuildingName(), getPremise(), getOrganisationName())
+        return newLinkedHashSet(asList(getBuildingNumber(), getSubBuildingName(), getPremise(), getOrganisationName()))
                 .stream()
                 .filter(elem -> !StringExtras.isNullOrEmpty(elem))
                 .collect(joining(", "));
