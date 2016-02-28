@@ -5,7 +5,10 @@ import com.google.common.base.MoreObjects;
 import com.google.common.base.Objects;
 
 import javax.persistence.*;
+import java.util.Collection;
 import java.util.Set;
+
+import static java.util.stream.Collectors.toSet;
 
 /**
  * Main user domain model. From a security aspect, there are 3 orthogonal concepts bound to
@@ -154,6 +157,22 @@ public class User extends BaseEntity implements Permissible {
 
     public void setLastName(String lastName) {
         this.lastName = lastName;
+    }
+
+    /**
+     * Gets the wards available to a user. This includes the directly allocated wards
+     * and the wards contained within a constituency.
+     *
+     * @return unique set of wards a user has access to
+     */
+    @JsonIgnore
+    public Set<Ward> getAccessibleWards() {
+        Set<Ward> wards = getConstituencies().stream()
+                .map(Constituency::getWards)
+                .flatMap(Collection::stream)
+                .collect(toSet());
+        wards.addAll(getWards());
+        return wards;
     }
 
     @Override

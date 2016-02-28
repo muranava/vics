@@ -2,7 +2,6 @@ package com.infinityworks.webapp.service;
 
 import com.infinityworks.common.lang.Try;
 import com.infinityworks.webapp.converter.WardSummaryConverter;
-import com.infinityworks.webapp.domain.Constituency;
 import com.infinityworks.webapp.domain.Permissible;
 import com.infinityworks.webapp.domain.User;
 import com.infinityworks.webapp.domain.Ward;
@@ -21,7 +20,6 @@ import org.springframework.stereotype.Service;
 import java.util.*;
 
 import static java.util.stream.Collectors.toList;
-import static java.util.stream.Collectors.toSet;
 
 /**
  * Services to supply electoral wards and constituencies (static data)
@@ -64,25 +62,30 @@ public class WardService {
         return wardRepository.findByCodeOrderByNameAsc(code);
     }
 
-    public Try<UserRestrictedWards> findByConstituency(UUID id, User user) {
-        log.debug("Finding constituency={} for user={}", id, user);
+    /**
+     * Finds the wards a user has access to (directly allocated wards including wards contained by allocated
+     * constituencies), filtered by the given constituency. It would be more optimal to implement this at
+     * the repository level.
+     *
+     * @param constituencyID constituency to filter accessible wards by
+     * @param user           the current user
+     * @return unique wards available to the user filtered by the given constituency
+     */
+    public Try<UserRestrictedWards> findByConstituency(UUID constituencyID, User user) {
+        log.debug("Finding accessible wards for constituency={} user={}", constituencyID, user);
 
-        Optional<Constituency> constituency = Optional.ofNullable(constituencyRepository.findOne(id));
-        if (!constituency.isPresent()) {
-            log.warn("Could not find constituency={} for user={}", id, user);
-            return Try.failure(new NotFoundFailure("No constituency with ID " + id));
-        }
-
-        Set<Ward> wards = user.getConstituencies().stream()
-                .map(Constituency::getWards)
-                .flatMap(Collection::stream)
-                .collect(toSet());
-        wards.addAll(user.getWards());
-
-        UserRestrictedWards userRestrictedWards = new UserRestrictedWards(wards.stream()
-                .filter(ward -> Objects.equals(ward.getConstituency(), constituency.get()))
-                .collect(toList()));
-        return Try.success(userRestrictedWards);
+        return Optional.ofNullable(constituencyRepository.findOne(constituencyID))
+                .map(constituency -> {
+                    Set<Ward> wards = user.getAccessibleWards();
+                    List<Ward> collect = wards.stream()
+                            .filter(ward -> Objects.equals(ward.getConstituency(), constituency))
+                            .collect(toList());
+                    UserRestrictedWards userRestrictedWards = new UserRestrictedWards(collect);
+                    return Try.success(userRestrictedWards);
+                }).orElseGet(() -> {
+                    log.warn("Could not find constituency={} for user={}", constituencyID, user);
+                    return Try.failure(new NotFoundFailure("No constituency with ID " + constituencyID));
+                });
     }
 
     public UserRestrictedWards getByUser(User user) {
@@ -95,6 +98,7 @@ public class WardService {
 
     public List<WardSummary> getSummaryByUser(User user) {
         log.debug("Getting wards summary by user={}", user);
+
         Set<Ward> wards = wardRepository.findByConstituencyIn(user.getConstituencies());
         wards.addAll(user.getWards());
         return wards.stream().map(wardSummaryConverter).collect(toList());
@@ -102,7 +106,8 @@ public class WardService {
 
     public Try<List<Ward>> getAllByName(User user, String name, int limit) {
         if (user.isAdmin()) {
-            return Try.success(wardRepository.findByNameIgnoreCaseContainingOrderByNameAsc(name, new PageRequest(0, limit)));
+            List<Ward> wards = wardRepository.findByNameIgnoreCaseContainingOrderByNameAsc(name, new PageRequest(0, limit));
+            return Try.success(wards);
         } else {
             log.warn("Non-admin user={} tried to get all wards", user);
             return Try.failure(new NotAuthorizedFailure("Forbidden"));

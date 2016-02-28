@@ -12,10 +12,13 @@ import org.junit.Before;
 import org.junit.Test;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import static com.google.common.collect.Sets.newHashSet;
 import static com.infinityworks.webapp.testsupport.builder.ConstituencyBuilder.constituency;
+import static com.infinityworks.webapp.testsupport.builder.UserBuilder.user;
 import static com.infinityworks.webapp.testsupport.builder.WardBuilder.ward;
 import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.assertThat;
@@ -35,18 +38,20 @@ public class ElectoralWardServiceTest {
 
     @Test
     public void returnsTheWards() throws Exception {
-        User user = mock(User.class);
         Constituency c = constituency().build();
-        given(constituencyRepository.findOne(c.getId())).willReturn(c);
-        given(user.getWards()).willReturn(newHashSet(
+        Set<Ward> wards = newHashSet(
                 ward().withWardName("Willenhall").withConstituency(c).build(),
-                ward().withWardName("Binley").withConstituency(c).build()));
+                ward().withWardName("Binley").withConstituency(c).build());
+        c.setWards(wards);
+        User u = user().withWards(wards).withConstituencies(newHashSet(c))
+                .build();
+        given(constituencyRepository.findOne(c.getId())).willReturn(c);
 
-        Try<UserRestrictedWards> result = underTest.findByConstituency(c.getId(), user);
+        Try<UserRestrictedWards> result = underTest.findByConstituency(c.getId(), u);
 
-        List<Ward> wards = new ArrayList<>(result.get().getWards());
-        assertThat(wards.get(0).getName(), is("Willenhall"));
-        assertThat(wards.get(1).getName(), is("Binley"));
+        List<Ward> restrictedWards = new ArrayList<>(result.get().getWards());
+        assertThat(restrictedWards.get(0).getName(), is("Willenhall"));
+        assertThat(restrictedWards.get(1).getName(), is("Binley"));
     }
 
     @Test

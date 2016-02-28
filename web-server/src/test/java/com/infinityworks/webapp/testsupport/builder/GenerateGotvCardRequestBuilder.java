@@ -1,10 +1,8 @@
 package com.infinityworks.webapp.testsupport.builder;
 
-import com.infinityworks.webapp.rest.dto.GenerateGotvCardRequest;
-import com.infinityworks.webapp.rest.dto.PostalVote;
-import com.infinityworks.webapp.rest.dto.Street;
-import com.infinityworks.webapp.rest.dto.TownStreets;
+import com.infinityworks.webapp.rest.dto.*;
 
+import static com.infinityworks.webapp.testsupport.builder.StreetBuilder.street;
 import static java.util.Collections.singletonList;
 
 public class GenerateGotvCardRequestBuilder {
@@ -22,7 +20,7 @@ public class GenerateGotvCardRequestBuilder {
                 .withLikelihoodTo(4)
                 .withPostalVote(PostalVote.WANTS_PV)
                 .withTownStreets(new TownStreets(singletonList(
-                        new Street("Highfield Road", "Coventry", "", "")
+                        street().withMainStreet("Highfield Road").withPostTown("Coventry").build()
                 )));
         return this;
     }

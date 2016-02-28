@@ -90,7 +90,7 @@ public class WardController {
     public ResponseEntity<?> wardsSearch(
             Principal principal,
             @RequestParam(defaultValue = "10", name = "limit") int limit,
-            @RequestParam(required = true, name = "name") @NotEmpty String name) {
+            @RequestParam(name = "name") @NotEmpty String name) {
         return sessionService.extractUserFromPrincipal(principal)
                 .flatMap(user -> wardService.getAllByName(user, name, limit))
                 .fold(errorHandler::mapToResponseEntity, ResponseEntity::ok);

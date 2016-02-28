@@ -2,6 +2,7 @@ package com.infinityworks.webapp.service;
 
 import com.infinityworks.common.lang.Try;
 import com.infinityworks.commondto.Voter;
+import com.infinityworks.commondto.VotersByStreet;
 import com.infinityworks.pdfgen.DocumentBuilder;
 import com.infinityworks.pdfgen.model.GeneratedPdfTable;
 import com.infinityworks.webapp.domain.Constituency;
@@ -59,25 +60,21 @@ public class ElectorsService {
         log.debug("Finding electors by streets={} for permissible={}", townStreets, permissible);
 
         return wardService.getByCode(wardCode, permissible)
-                .flatMap(ward -> {
-                    Constituency constituency = ward.getConstituency();
-                    log.debug("Generating PDF... ward={} constituency={}", wardCode, constituency.getCode());
-                    Try<ByteArrayOutputStream> pdfContent = pafClient.findElectorsByStreet(townStreets, wardCode)
-                            .flatMap(electors -> {
-                                List<GeneratedPdfTable> generatedPdfTables = pdfRenderer.generatePDF(
-                                        electors, ward.getCode(), ward.getName(), constituency.getName());
+                .flatMap(ward -> pafClient.findElectorsByStreet(townStreets, ward.getCode())
+                .flatMap(electors -> getByteArrayOutputStreamTry(townStreets, ward, electors)));
+    }
 
-                                if (generatedPdfTables.isEmpty()) {
-                                    log.debug("No voters found for ward={} streets={}", ward, townStreets);
-                                    return Try.failure(new NotFoundFailure("No voters found"));
-                                } else {
-                                    ByteArrayOutputStream content = documentBuilder.buildPages(generatedPdfTables);
-                                    return Try.success(content);
-                                }
-                            });
-                    log.debug("Finished generating PDF... ward={} constituency={}", wardCode, constituency.getCode());
-                    return pdfContent;
-                });
+    private Try<ByteArrayOutputStream> getByteArrayOutputStreamTry(TownStreets townStreets, Ward ward, List<VotersByStreet> electors) {
+        List<GeneratedPdfTable> generatedPdfTables = pdfRenderer.generatePDF(
+                electors, ward.getCode(), ward.getName(), ward.getConstituency().getName());
+
+        if (generatedPdfTables.isEmpty()) {
+            log.debug("No voters found for ward={} streets={}", ward, townStreets);
+            return Try.failure(new NotFoundFailure("No voters found"));
+        } else {
+            ByteArrayOutputStream content = documentBuilder.buildPages(generatedPdfTables);
+            return Try.success(content);
+        }
     }
 
     /**
@@ -106,15 +103,22 @@ public class ElectorsService {
         return pafClient.recordContact(ern, contactRequest);
     }
 
+    /**
+     * Searches for electors by attributes.
+     *
+     * @param permissible the current user
+     * @param searchElectors the search criteria
+     * @return a list of voters for the given search criteria
+     */
     public Try<List<Voter>> search(Permissible permissible, SearchElectors searchElectors) {
         String wardCode = searchElectors.getWardCode();
-        Optional<Ward> byWard = wardService.findByCode(wardCode).stream().findFirst();
-        if (!byWard.isPresent()) {
+        Optional<Ward> wardByCode = wardService.findByCode(wardCode).stream().findFirst();
+        if (!wardByCode.isPresent()) {
             String msg = String.format("No ward with code=%s", wardCode);
             log.warn(msg);
             return Try.failure(new NotFoundFailure(msg));
         } else {
-            Ward ward = byWard.get();
+            Ward ward = wardByCode.get();
             if (!permissible.hasWardPermission(ward)) {
                 String msg = String.format("User=%s tried to access ward=%s without permission", permissible, wardCode);
                 log.warn(msg);

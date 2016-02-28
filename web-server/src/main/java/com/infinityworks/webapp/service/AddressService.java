@@ -29,14 +29,7 @@ public class AddressService {
     }
 
     public Try<List<Street>> getTownStreetsByWardCode(String wardCode, Permissible permissible) {
-        Optional<Ward> ward = wardService.findByCode(wardCode).stream().findFirst();
-        if (!ward.isPresent()) {
-            return Try.failure(new NotFoundFailure("No ward with code=" + wardCode));
-        }
-        if (!permissible.hasWardPermission(ward.get())) {
-            log.error("User={} tried to access towns by wardCode={}", permissible, wardCode);
-            return Try.failure(new NotAuthorizedFailure("Content forbidden"));
-        }
-        return pafClient.findStreetsByWardCode(wardCode);
+        return wardService.getByCode(wardCode, permissible)
+                .flatMap(ward -> pafClient.findStreetsByWardCode(wardCode));
     }
 }

@@ -25,6 +25,19 @@ public class PermissibleTest {
     }
 
     @Test
+    public void validatesHasWardPermissionViaConstituencyWard() throws Exception {
+        Constituency covSouth = constituency().withName("Coventry South").build();
+        Ward henley = ward().withWardName("Henley").withConstituency(covSouth).build();
+        covSouth.setWards(newHashSet(henley));
+        User user = user()
+                .withRole(Role.USER)
+                .withConstituencies(newHashSet(covSouth))
+                .build();
+
+        assertThat(user.hasWardPermission(henley), is(true));
+    }
+
+    @Test
     public void validatesHasConstituencyPermission() throws Exception {
         Constituency rugby = constituency().withName("Rugby").build();
         Constituency covSouth = constituency().withName("Coventry South").build();

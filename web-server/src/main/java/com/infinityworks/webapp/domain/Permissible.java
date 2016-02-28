@@ -4,7 +4,8 @@ import java.util.Set;
 
 public interface Permissible {
     default boolean hasWardPermission(Ward ward) {
-        return getWards().contains(ward);
+        return getWards().contains(ward) ||
+               getConstituencies().contains(ward.getConstituency());
     }
 
     default boolean hasConstituencyPermission(Constituency constituency) {

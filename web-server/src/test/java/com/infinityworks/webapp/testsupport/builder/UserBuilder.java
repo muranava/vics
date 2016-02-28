@@ -5,6 +5,8 @@ import org.springframework.security.crypto.bcrypt.BCrypt;
 
 import java.util.Set;
 
+import static com.google.common.collect.Sets.newHashSet;
+
 public class UserBuilder {
     private String username;
     private String firstName;
@@ -23,6 +25,8 @@ public class UserBuilder {
     public UserBuilder withDefaults() {
         return withFirstName("Jane")
                 .withLastName("Doe")
+                .withWards(newHashSet())
+                .withConstituencies(newHashSet())
                 .withPasswordHash(BCrypt.hashpw("password", BCrypt.gensalt()))
                 .withRole(Role.USER)
                 .withUsername("jane@doe.com");
