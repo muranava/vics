@@ -1,4 +1,6 @@
-package com.infinityworks.commondto;
+package com.infinityworks.testsupport.builder;
+
+import com.infinityworks.commondto.RecordVote;
 
 public class RecordVoteBuilder {
     private String wardCode;

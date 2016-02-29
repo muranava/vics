@@ -3,6 +3,7 @@ package com.infinityworks.webapp.service.client;
 import com.infinityworks.common.lang.StringExtras;
 import com.infinityworks.common.lang.Try;
 import com.infinityworks.commondto.*;
+import com.infinityworks.testsupport.builder.RecordVoteBuilder;
 import com.infinityworks.webapp.config.CanvassConfig;
 import com.infinityworks.webapp.converter.PafToStreetConverter;
 import com.infinityworks.webapp.error.NotFoundFailure;

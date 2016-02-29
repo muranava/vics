@@ -5,7 +5,9 @@ import com.infinityworks.commondto.Property;
 import com.infinityworks.commondto.VotersByStreet;
 import org.junit.Test;
 
+import static com.infinityworks.testsupport.builder.PropertyBuilder.property;
 import static com.infinityworks.webapp.common.Json.objectMapper;
+import static java.util.Arrays.asList;
 import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.assertThat;
 
@@ -20,5 +22,15 @@ public class VotersByStreetTest {
         assertThat(property.getDependentStreet(), is(""));
         assertThat(property.getMainStreet(), is("Kirby Road"));
         assertThat(property.getPostTown(), is("COVENTRY"));
+    }
+
+    @Test
+    public void generatesStreetLabel() throws Exception {
+        VotersByStreet underTest = new VotersByStreet(asList(
+                property().withBuildingNumber("31b").withMainStreet("A").withDependentStreet("C").withPostCode("VB1 9UY").build(),
+                property().withBuildingNumber("31a").withMainStreet("A").withDependentStreet("C").withPostCode("VB1 9UY").build()
+        ));
+
+        assertThat(underTest.getStreetLabel(), is("C, A, VB1 9UY"));
     }
 }

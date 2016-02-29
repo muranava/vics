@@ -51,7 +51,6 @@ public class Property implements GeneratesStreetLabel, GeneratesHouseNumber {
         this.voters = firstNonNull(voters, new ArrayList<>());
     }
 
-    @Override
     public String getPostTown() {
         return postTown;
     }

@@ -9,7 +9,7 @@ import com.infinityworks.webapp.service.client.PafClient;
 import org.junit.Before;
 import org.junit.Test;
 
-import static com.infinityworks.commondto.RecordVoteBuilder.recordVote;
+import static com.infinityworks.testsupport.builder.RecordVoteBuilder.recordVote;
 import static com.infinityworks.webapp.testsupport.builder.UserBuilder.user;
 import static com.infinityworks.webapp.testsupport.builder.WardBuilder.ward;
 import static com.infinityworks.webapp.testsupport.matcher.TryFailureMatcher.isFailure;

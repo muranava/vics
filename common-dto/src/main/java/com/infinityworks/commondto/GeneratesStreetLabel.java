@@ -7,15 +7,11 @@ import static java.util.Arrays.asList;
 import static java.util.stream.Collectors.joining;
 
 public interface GeneratesStreetLabel {
-    String getPostTown();
-
     String getPostCode();
 
     String getDependentLocality();
 
     String getDependentStreet();
-
-    String getBuildingNumber();
 
     String getMainStreet();
 

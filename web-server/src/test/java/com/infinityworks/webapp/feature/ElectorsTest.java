@@ -2,7 +2,7 @@ package com.infinityworks.webapp.feature;
 
 import com.infinityworks.common.lang.Try;
 import com.infinityworks.commondto.RecordVote;
-import com.infinityworks.commondto.RecordVoteBuilder;
+import com.infinityworks.testsupport.builder.RecordVoteBuilder;
 import com.infinityworks.webapp.common.RequestValidator;
 import com.infinityworks.webapp.error.RestErrorHandler;
 import com.infinityworks.webapp.rest.ElectorsController;
