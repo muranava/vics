@@ -10,7 +10,6 @@ import com.infinityworks.webapp.domain.User;
 import com.infinityworks.webapp.domain.Ward;
 import com.infinityworks.webapp.pdf.PDFRenderer;
 import com.infinityworks.webapp.rest.dto.ElectorsByStreetsRequest;
-import com.infinityworks.webapp.testsupport.builder.ElectorsByStreetsRequestBuilder;
 import com.infinityworks.webapp.rest.dto.Street;
 import com.infinityworks.webapp.service.client.PafClient;
 import com.lowagie.text.pdf.PdfPTable;
@@ -33,6 +32,9 @@ import static org.junit.Assert.assertThat;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.mock;
 
+/**
+ * TODO This test needs to be reworked and cover error scenarios
+ */
 public class ElectorsServiceTest {
 
     private ElectorsService underTest;

@@ -7,7 +7,7 @@ public class ConstituencyBuilder {
     private String name;
 
     public static ConstituencyBuilder constituency() {
-        return new ConstituencyBuilder();
+        return new ConstituencyBuilder().withDefaults();
     }
 
     public ConstituencyBuilder withDefaults() {
