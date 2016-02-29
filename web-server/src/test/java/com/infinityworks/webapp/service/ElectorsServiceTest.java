@@ -80,24 +80,4 @@ public class ElectorsServiceTest {
 
         assertThat(byStreets.isSuccess(), is(true));
     }
-
-    @Test
-    public void recordsContact() throws Exception {
-        underTest = new ElectorsService(pafClient, wardService, mock(PDFRenderer.class), mock(DocumentBuilder.class));
-
-        Ward earlsdon = ward().withWardCode("E05001221").build();
-        RecordContactRequest request = new RecordContactRequestBuilder()
-                .withWardCode(earlsdon.getCode()).build();
-        String ern = "PD-123-1";
-        User user = user()
-                .withWriteAccess(true)
-                .withWards(newHashSet(earlsdon))
-                .build();
-        given(wardService.findByCode("E05001221")).willReturn(singletonList(earlsdon));
-        given(pafClient.recordContact(ern, request)).willReturn(Try.success(request));
-
-        Try<RecordContactRequest> contact = underTest.recordContact(user, ern, request);
-
-        assertThat(contact.isSuccess(), is(true));
-    }
 }

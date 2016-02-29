@@ -1,12 +1,17 @@
-package com.infinityworks.webapp.service.client;
+package com.infinityworks.commondto;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.google.common.base.MoreObjects;
+import com.google.common.base.Objects;
+import org.hibernate.validator.constraints.NotEmpty;
 
 public class RecordVote {
+    @NotEmpty
     private final String wardCode;
+    @NotEmpty
     private final String wardName;
+    @NotEmpty
     private final String ern;
     private final Boolean success;
 
@@ -35,6 +40,22 @@ public class RecordVote {
 
     public Boolean getSuccess() {
         return success;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof RecordVote)) return false;
+        RecordVote that = (RecordVote) o;
+        return Objects.equal(wardCode, that.wardCode) &&
+                Objects.equal(wardName, that.wardName) &&
+                Objects.equal(ern, that.ern) &&
+                Objects.equal(success, that.success);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hashCode(wardCode, wardName, ern, success);
     }
 
     @Override

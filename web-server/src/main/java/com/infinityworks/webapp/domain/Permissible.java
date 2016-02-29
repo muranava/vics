@@ -1,5 +1,8 @@
 package com.infinityworks.webapp.domain;
 
+import com.infinityworks.common.lang.Try;
+import com.infinityworks.webapp.error.NotAuthorizedFailure;
+
 import java.util.Set;
 
 public interface Permissible {
@@ -18,6 +21,14 @@ public interface Permissible {
 
     default Boolean hasWriteAccess() {
         return getWriteAccess();
+    }
+
+    default Try<Permissible> ensureWriteAccess() {
+        if (getWriteAccess()) {
+            return Try.success(this);
+        } else {
+            return Try.failure(new NotAuthorizedFailure("User does not have write access"));
+        }
     }
 
     default boolean isAdmin() {

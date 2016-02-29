@@ -1,14 +1,16 @@
 package com.infinityworks.webapp.feature;
 
 import com.infinityworks.common.lang.Try;
+import com.infinityworks.commondto.RecordVote;
+import com.infinityworks.commondto.RecordVoteBuilder;
 import com.infinityworks.webapp.common.RequestValidator;
 import com.infinityworks.webapp.error.RestErrorHandler;
 import com.infinityworks.webapp.rest.ElectorsController;
 import com.infinityworks.webapp.rest.dto.TownStreets;
 import com.infinityworks.webapp.service.ElectorsService;
+import com.infinityworks.webapp.service.RecordContactService;
+import com.infinityworks.webapp.service.RecordVoteService;
 import com.infinityworks.webapp.service.SessionService;
-import com.infinityworks.webapp.service.VoteService;
-import com.infinityworks.webapp.service.client.RecordVote;
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.test.context.jdbc.Sql;
@@ -50,8 +52,9 @@ public class ElectorsTest extends WebApplicationTest {
         sessionService = mock(SessionService.class);
         ElectorsService electorsService = getBean(ElectorsService.class);
         RequestValidator requestValidator = getBean(RequestValidator.class);
-        VoteService voteService = getBean(VoteService.class);
-        ElectorsController wardController = new ElectorsController(electorsService, requestValidator, voteService, sessionService, new RestErrorHandler());
+        RecordVoteService recordVoteService = getBean(RecordVoteService.class);
+        RecordContactService recordContactService = getBean(RecordContactService.class);
+        ElectorsController wardController = new ElectorsController(electorsService, requestValidator, recordVoteService, recordContactService, sessionService, new RestErrorHandler());
 
         mockMvc = MockMvcBuilders
                 .standaloneSetup(wardController)
@@ -167,7 +170,7 @@ public class ElectorsTest extends WebApplicationTest {
                 .thenReturn(Try.success(covs()));
         pafApiStub.willRecordVoterVoted("ADD-1313-1");
 
-        RecordVote request = new RecordVote("E05001221", "Earlsdon", "ADD-1313-1", true);
+        RecordVote request = new RecordVoteBuilder().withWardCode("E05001221").withWardName("Earlsdon").withErn("ADD-1313-1").withSuccess(true).build();
         String requestBody = objectMapper.writeValueAsString(request);
 
         mockMvc.perform(post("/elector/voted")

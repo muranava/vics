@@ -1,5 +1,6 @@
 package com.infinityworks.webapp.rest;
 
+import com.infinityworks.commondto.RecordVote;
 import com.infinityworks.webapp.common.RequestValidator;
 import com.infinityworks.webapp.error.NotFoundFailure;
 import com.infinityworks.webapp.error.RestErrorHandler;
@@ -7,9 +8,9 @@ import com.infinityworks.webapp.rest.dto.RecordContactRequest;
 import com.infinityworks.webapp.rest.dto.SearchElectors;
 import com.infinityworks.webapp.rest.dto.TownStreets;
 import com.infinityworks.webapp.service.ElectorsService;
+import com.infinityworks.webapp.service.RecordContactService;
+import com.infinityworks.webapp.service.RecordVoteService;
 import com.infinityworks.webapp.service.SessionService;
-import com.infinityworks.webapp.service.VoteService;
-import com.infinityworks.webapp.service.client.RecordVote;
 import com.lowagie.text.DocumentException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -29,19 +30,22 @@ public class ElectorsController {
 
     private final ElectorsService electorsService;
     private final RequestValidator requestValidator;
-    private final VoteService voteService;
+    private final RecordVoteService recordVoteService;
+    private final RecordContactService recordContactService;
     private final SessionService sessionService;
     private final RestErrorHandler errorHandler;
 
     @Autowired
     public ElectorsController(ElectorsService electorsService,
                               RequestValidator requestValidator,
-                              VoteService voteService,
+                              RecordVoteService recordVoteService,
+                              RecordContactService recordContactService,
                               SessionService sessionService,
                               RestErrorHandler errorHandler) {
         this.electorsService = electorsService;
         this.requestValidator = requestValidator;
-        this.voteService = voteService;
+        this.recordVoteService = recordVoteService;
+        this.recordContactService = recordContactService;
         this.sessionService = sessionService;
         this.errorHandler = errorHandler;
     }
@@ -68,7 +72,7 @@ public class ElectorsController {
                                            Principal principal,
                                            @Valid @RequestBody RecordContactRequest contactRequest) throws DocumentException {
         return sessionService.extractUserFromPrincipal(principal)
-                .flatMap(user -> electorsService.recordContact(user, ern, contactRequest))
+                .flatMap(user -> recordContactService.recordContact(user, ern, contactRequest))
                 .fold(errorHandler::mapToResponseEntity, ResponseEntity::ok);
     }
 
@@ -92,10 +96,10 @@ public class ElectorsController {
 
     @PreAuthorize("isAuthenticated()")
     @RequestMapping(method = POST, value = "/voted")
-    public ResponseEntity<?> recordVote(@RequestBody RecordVote ern,
+    public ResponseEntity<?> recordVote(@RequestBody @Valid RecordVote ern,
                                         Principal principal) {
         return sessionService.extractUserFromPrincipal(principal)
-                .flatMap(user -> voteService.recordVote(user, ern))
+                .flatMap(user -> recordVoteService.recordVote(user, ern))
                 .fold(errorHandler::mapToResponseEntity, ResponseEntity::ok);
     }
 }

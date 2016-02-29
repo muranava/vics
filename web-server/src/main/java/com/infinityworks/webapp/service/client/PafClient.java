@@ -2,9 +2,7 @@ package com.infinityworks.webapp.service.client;
 
 import com.infinityworks.common.lang.StringExtras;
 import com.infinityworks.common.lang.Try;
-import com.infinityworks.commondto.Property;
-import com.infinityworks.commondto.Voter;
-import com.infinityworks.commondto.VotersByStreet;
+import com.infinityworks.commondto.*;
 import com.infinityworks.webapp.config.CanvassConfig;
 import com.infinityworks.webapp.converter.PafToStreetConverter;
 import com.infinityworks.webapp.error.NotFoundFailure;
@@ -145,10 +143,22 @@ public class PafClient {
         try {
             restTemplate.exchange(url, HttpMethod.PUT, entity, String.class);
             log.debug("Recorded voter voted PUT {}", url);
-            return Try.success(new RecordVote(recordVote.getWardCode(), recordVote.getWardName(), ern, true));
+            RecordVote vote = new RecordVoteBuilder()
+                    .withWardCode(recordVote.getWardCode())
+                    .withWardName(recordVote.getWardName())
+                    .withErn(ern)
+                    .withSuccess(true)
+                    .build();
+            return Try.success(vote);
         } catch (HttpClientErrorException e) {
             if (e.getStatusCode().value() == 404) {
-                return Try.success(new RecordVote(recordVote.getWardCode(), recordVote.getWardName(), ern, false));
+                RecordVote vote = new RecordVoteBuilder()
+                        .withWardCode(recordVote.getWardCode())
+                        .withWardName(recordVote.getWardName())
+                        .withErn(ern)
+                        .withSuccess(false)
+                        .build();
+                return Try.success(vote);
             } else {
                 return Try.failure(new ServerFailure(String.format(RECORD_VOTE_ERROR_MESSAGE, ern, e.getStatusCode().getReasonPhrase())));
             }
