@@ -5,7 +5,6 @@ import com.infinityworks.commondto.VotersByStreet;
 import com.infinityworks.webapp.config.CanvassConfig;
 import com.infinityworks.webapp.converter.PafToStreetConverter;
 import com.infinityworks.webapp.rest.dto.Street;
-import com.infinityworks.webapp.rest.dto.TownStreets;
 import com.infinityworks.webapp.testsupport.stub.PafServerStub;
 import org.junit.After;
 import org.junit.Before;
@@ -53,7 +52,7 @@ public class PafClientTest {
     @Test
     public void returnsTheVotersByWardAndStreet() throws Exception {
         pafApiStub.willReturnVotersByWardByTownAndByStreet("E05001221", "Coventry");
-        TownStreets townStreets = new TownStreets(asList(kirbyRoad(), abbotRoad()));
+        List<Street> townStreets = asList(kirbyRoad(), abbotRoad());
 
         Try<List<VotersByStreet>> electorsByStreet = pafClient.findElectorsByStreet(townStreets, "E05001221");
 

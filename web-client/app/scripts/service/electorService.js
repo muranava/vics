@@ -17,7 +17,7 @@ angular
       });
     };
 
-    api.retrieveElectorByErn = function(ern) {
+    api.retrieveElectorByErn = function (ern) {
       return $http({
         url: apiUrl + '/elector/' + ern,
         method: 'GET',
@@ -25,7 +25,7 @@ angular
       });
     };
 
-    api.submitCanvassInput = function(inputModel) {
+    api.submitCanvassInput = function (inputModel) {
       return $http({
         url: apiUrl + '/elector/' + inputModel.ern + '/contact',
         method: 'POST',
@@ -34,7 +34,7 @@ angular
       });
     };
 
-    api.search = function(searchParams, limit) {
+    api.search = function (searchParams, limit) {
       var params = {};
       if (util.notEmpty(searchParams.firstName)) {
         params.firstName = searchParams.firstName;
@@ -63,19 +63,16 @@ angular
      */
     api.retrievePdfOfElectorsByStreets = function (wardCode, data) {
       return $http({
-        url: apiUrl + '/elector/ward/' + wardCode + '/street/pdf',
-        method: 'POST',
-        responseType: 'arraybuffer',
-        headers: {
-          accept: 'application/pdf'
-        },
-        withCredentials: true,
-        data: {
-          townStreets : {
-            streets: data
-          }
+          url: apiUrl + '/elector/ward/' + wardCode + '/street/pdf',
+          method: 'POST',
+          responseType: 'arraybuffer',
+          headers: {
+            accept: 'application/pdf'
+          },
+          withCredentials: true,
+          data: data
         }
-      });
+      );
     };
 
     return api;

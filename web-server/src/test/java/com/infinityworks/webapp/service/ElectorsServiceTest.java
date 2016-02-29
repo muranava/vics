@@ -10,10 +10,9 @@ import com.infinityworks.webapp.domain.User;
 import com.infinityworks.webapp.domain.Ward;
 import com.infinityworks.webapp.pdf.PDFRenderer;
 import com.infinityworks.webapp.rest.dto.ElectorsByStreetsRequest;
-import com.infinityworks.webapp.rest.dto.RecordContactRequest;
-import com.infinityworks.webapp.rest.dto.TownStreets;
+import com.infinityworks.webapp.testsupport.builder.ElectorsByStreetsRequestBuilder;
+import com.infinityworks.webapp.rest.dto.Street;
 import com.infinityworks.webapp.service.client.PafClient;
-import com.infinityworks.webapp.testsupport.builder.RecordContactRequestBuilder;
 import com.lowagie.text.pdf.PdfPTable;
 import org.junit.Before;
 import org.junit.Test;
@@ -21,17 +20,15 @@ import org.junit.Test;
 import java.io.ByteArrayOutputStream;
 import java.util.List;
 
-import static com.google.common.collect.Sets.newHashSet;
 import static com.infinityworks.testsupport.builder.PropertyBuilder.property;
 import static com.infinityworks.webapp.testsupport.builder.ConstituencyBuilder.constituency;
+import static com.infinityworks.webapp.testsupport.builder.ElectorsByStreetsRequestBuilder.electorsByStreets;
 import static com.infinityworks.webapp.testsupport.builder.StreetBuilder.street;
 import static com.infinityworks.webapp.testsupport.builder.UserBuilder.user;
 import static com.infinityworks.webapp.testsupport.builder.WardBuilder.ward;
-import static com.infinityworks.webapp.testsupport.matcher.TrySuccessMatcher.isSuccess;
 import static java.util.Arrays.asList;
 import static java.util.Collections.singletonList;
 import static org.hamcrest.core.Is.is;
-import static org.hamcrest.core.IsEqual.equalTo;
 import static org.junit.Assert.assertThat;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.mock;
@@ -61,11 +58,11 @@ public class ElectorsServiceTest {
 
         User user = user().withRole(Role.USER).build();
 
-        TownStreets streets = new TownStreets(asList(
+        List<Street> streets = asList(
                 street().withMainStreet("Low Road").build(),
                 street().withMainStreet("High Road").build()
-        ));
-        ElectorsByStreetsRequest request = new ElectorsByStreetsRequest(streets, null, null, null, null, null);
+        );
+        ElectorsByStreetsRequest request = electorsByStreets().withStreets(streets).withFlags(null).build();
         List<VotersByStreet> voters = singletonList(new VotersByStreet(asList(
                 property().withBuildingNumber("1").build(),
                 property().withBuildingNumber("2").build(),

@@ -85,12 +85,15 @@ angular
 
     function buildRequest(streets) {
       return {
-        townStreets: {streets: streets},
-        intentionFrom: $scope.intentionSlider.minValue,
-        intentionTo: $scope.intentionSlider.maxValue,
-        likelihoodFrom: $scope.likelihoodSlider.minValue,
-        likelihoodTo: $scope.likelihoodSlider.maxValue,
-        postalVote: $scope.radio.pv
+        streets: streets,
+        flags: {
+          intentionFrom: $scope.intentionSlider.minValue,
+          intentionTo: $scope.intentionSlider.maxValue,
+          likelihoodFrom: $scope.likelihoodSlider.minValue,
+          likelihoodTo: $scope.likelihoodSlider.maxValue,
+          hasPV: false,
+          wantsPV: false
+        }
       };
     }
   });

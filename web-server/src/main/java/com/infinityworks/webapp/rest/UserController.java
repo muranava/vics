@@ -129,7 +129,10 @@ public class UserController {
                         .collect(toList());
                 return new AuthenticationToken(details.getUsername(), roles, session.getId());
             });
-        }).fold(errorHandler::mapToResponseEntity, ResponseEntity::ok);
+        }).fold(errorHandler::mapToResponseEntity, token -> {
+            log.info("User={} logged in", token);
+            return ResponseEntity.ok(token);
+        });
     }
 
     @RequestMapping(value = "/logout", method = POST)
@@ -139,7 +142,7 @@ public class UserController {
 
     @PreAuthorize("isAuthenticated()")
     @RequestMapping(value = "/login/test", method = GET)
-    public ResponseEntity<?> test(Principal userPrincipal, @RequestParam(value = "role", required = true) String role) {
+    public ResponseEntity<?> test(Principal userPrincipal, @RequestParam(value = "role") String role) {
         return Role.of(role).flatMap(r -> {
             Object principal = ((UsernamePasswordAuthenticationToken) userPrincipal).getPrincipal();
             CurrentUser user = (CurrentUser) principal;

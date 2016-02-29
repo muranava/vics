@@ -1,72 +1,38 @@
 package com.infinityworks.webapp.rest.dto;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.infinityworks.commondto.Flags;
 
 import javax.validation.Valid;
-import javax.validation.constraints.Max;
-import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
+import java.util.List;
 
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class ElectorsByStreetsRequest {
     @Valid
     @NotNull
-    private final TownStreets townStreets;
+    @Size(min = 1)
+    private final List<Street> streets;
 
-    @Min(1)
-    @Max(5)
-    private final Integer intentionFrom;
-
-    @Min(1)
-    @Max(5)
-    private final Integer intentionTo;
-
-    @Min(1)
-    @Max(5)
-    private final Integer likelihoodFrom;
-
-    @Min(1)
-    @Max(5)
-    private final Integer likelihoodTo;
-
-    private final PostalVote postalVote;
+    // optional (used for gotv requests)
+    @Valid
+    private final Flags flags;
 
     @JsonCreator
-    public ElectorsByStreetsRequest(@JsonProperty("townStreets") TownStreets townStreets,
-                                    @JsonProperty("intentionFrom") Integer intentionFrom,
-                                    @JsonProperty("intentionTo") Integer intentionTo,
-                                    @JsonProperty("likelihoodFrom") Integer likelihoodFrom,
-                                    @JsonProperty("likelihoodTo") Integer likelihoodTo,
-                                    @JsonProperty("postalVote") PostalVote postalVote) {
-        this.townStreets = townStreets;
-        this.intentionFrom = intentionFrom;
-        this.intentionTo = intentionTo;
-        this.likelihoodFrom = likelihoodFrom;
-        this.likelihoodTo = likelihoodTo;
-        this.postalVote = postalVote;
+    public ElectorsByStreetsRequest(@JsonProperty("streets") List<Street> streets,
+                                    @JsonProperty("flags") Flags flags) {
+        this.streets = streets;
+        this.flags = flags;
     }
 
-    public TownStreets getTownStreets() {
-        return townStreets;
+    public List<Street> getStreets() {
+        return streets;
     }
 
-    public Integer getIntentionFrom() {
-        return intentionFrom;
-    }
-
-    public Integer getIntentionTo() {
-        return intentionTo;
-    }
-
-    public Integer getLikelihoodFrom() {
-        return likelihoodFrom;
-    }
-
-    public Integer getLikelihoodTo() {
-        return likelihoodTo;
-    }
-
-    public PostalVote getPostalVote() {
-        return postalVote;
+    public Flags getFlags() {
+        return flags;
     }
 }

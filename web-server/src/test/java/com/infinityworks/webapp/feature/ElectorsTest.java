@@ -6,7 +6,8 @@ import com.infinityworks.commondto.RecordVoteBuilder;
 import com.infinityworks.webapp.common.RequestValidator;
 import com.infinityworks.webapp.error.RestErrorHandler;
 import com.infinityworks.webapp.rest.ElectorsController;
-import com.infinityworks.webapp.rest.dto.TownStreets;
+import com.infinityworks.webapp.rest.dto.ElectorsByStreetsRequest;
+import com.infinityworks.webapp.rest.dto.Street;
 import com.infinityworks.webapp.service.ElectorsService;
 import com.infinityworks.webapp.service.RecordContactService;
 import com.infinityworks.webapp.service.RecordVoteService;
@@ -22,8 +23,10 @@ import org.springframework.web.util.UriComponents;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import java.security.Principal;
+import java.util.List;
 
 import static com.infinityworks.webapp.common.Json.objectMapper;
+import static com.infinityworks.webapp.testsupport.builder.ElectorsByStreetsRequestBuilder.electorsByStreets;
 import static java.util.Collections.emptyList;
 import static org.hamcrest.CoreMatchers.is;
 import static org.mockito.Matchers.any;
@@ -66,16 +69,19 @@ public class ElectorsTest extends WebApplicationTest {
     public void returnsBadRequestIfStreetsIsEmpty() throws Exception {
         String wardCode = "E05001221";
         when(sessionService.extractUserFromPrincipal(any(Principal.class)))
-                .thenReturn(Try.success(admin()));
+                .thenReturn(Try.success(earlsdon()));
+        pafApiStub.willReturnVotersByWardByTownAndByStreet(wardCode, "Coventry");
 
-        TownStreets townStreets = new TownStreets(emptyList());
+        List<Street> townStreets = emptyList();
+        ElectorsByStreetsRequest request = electorsByStreets().withStreets(townStreets).build();
         String url = "/elector/ward/" + wardCode + "/street/pdf";
 
         mockMvc.perform(post(url)
                 .accept("application/pdf")
                 .contentType(APPLICATION_JSON)
-                .content(objectMapper.writeValueAsString(townStreets)))
-                .andDo(print()).andExpect(status().isBadRequest()).andReturn();
+                .content(objectMapper.writeValueAsString(request)))
+                .andDo(print())
+                .andExpect(status().isBadRequest());
     }
 
     @Test
@@ -84,7 +90,7 @@ public class ElectorsTest extends WebApplicationTest {
         when(sessionService.extractUserFromPrincipal(any(Principal.class)))
                 .thenReturn(Try.success(admin()));
 
-        TownStreets townStreets = null;
+        List<Street> townStreets = null;
         String url = "/elector/ward/" + wardCode + "/street/pdf";
 
         mockMvc.perform(post(url)

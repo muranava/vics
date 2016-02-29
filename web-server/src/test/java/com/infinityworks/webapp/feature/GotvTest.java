@@ -1,6 +1,7 @@
 package com.infinityworks.webapp.feature;
 
 import com.infinityworks.common.lang.Try;
+import com.infinityworks.commondto.Flags;
 import com.infinityworks.webapp.common.RequestValidator;
 import com.infinityworks.webapp.error.RestErrorHandler;
 import com.infinityworks.webapp.rest.GotvController;
@@ -15,8 +16,9 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 import java.security.Principal;
 
+import static com.infinityworks.testsupport.builder.FlagsBuilder.flags;
 import static com.infinityworks.webapp.common.Json.objectMapper;
-import static com.infinityworks.webapp.testsupport.builder.GenerateGotvCardRequestBuilder.gotvCardRequest;
+import static com.infinityworks.webapp.testsupport.builder.ElectorsByStreetsRequestBuilder.electorsByStreets;
 import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
@@ -53,9 +55,9 @@ public class GotvTest extends WebApplicationTest {
         when(sessionService.extractUserFromPrincipal(any(Principal.class)))
                 .thenReturn(Try.success(admin()));
 
-        ElectorsByStreetsRequest request = gotvCardRequest()
-                .withIntentionFrom(0)
-                .withIntentionTo(3)
+        Flags flags = flags().withIntentionFrom(0).withIntentionTo(3).build();
+        ElectorsByStreetsRequest request = electorsByStreets()
+                .withFlags(flags)
                 .build();
 
         mockMvc.perform(post("/gotv/ward/E05001221/street/pdf")
@@ -71,9 +73,9 @@ public class GotvTest extends WebApplicationTest {
         when(sessionService.extractUserFromPrincipal(any(Principal.class)))
                 .thenReturn(Try.success(admin()));
 
-        ElectorsByStreetsRequest request = gotvCardRequest()
-                .withLikelihoodFrom(2)
-                .withLikelihoodTo(6)
+        Flags flags = flags().withLikelihoodFrom(2).withLikelihoodTo(6).build();
+        ElectorsByStreetsRequest request = electorsByStreets()
+                .withFlags(flags)
                 .build();
 
         mockMvc.perform(post("/gotv/ward/E05001221/street/pdf")

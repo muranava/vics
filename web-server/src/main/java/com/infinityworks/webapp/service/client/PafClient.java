@@ -11,7 +11,6 @@ import com.infinityworks.webapp.error.ServerFailure;
 import com.infinityworks.webapp.rest.dto.RecordContactRequest;
 import com.infinityworks.webapp.rest.dto.SearchElectors;
 import com.infinityworks.webapp.rest.dto.Street;
-import com.infinityworks.webapp.rest.dto.TownStreets;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -93,23 +92,23 @@ public class PafClient {
         return Try.success(records);
     }
 
-    public Try<List<VotersByStreet>> findElectorsByStreet(TownStreets street, String wardCode) {
+    public Try<List<VotersByStreet>> findElectorsByStreet(List<Street> streets, String wardCode) {
         String url = String.format(ELECTORS_BY_STREET_ENDPOINT, wardCode);
 
         ResponseEntity<VotersByStreet[]> pafResponse;
         HttpHeaders headers = new HttpHeaders();
         headers.set("X-Authorization", API_TOKEN);
-        List<PafStreet> streets = street.getStreets()
+        List<PafStreet> pafStreets = streets
                 .stream()
                 .map(streetConverter)
                 .collect(toList());
 
-        HttpEntity<List<PafStreet>> entity = new HttpEntity<>(streets, headers);
+        HttpEntity<List<PafStreet>> entity = new HttpEntity<>(pafStreets, headers);
 
         try {
             pafResponse = restTemplate.exchange(url, HttpMethod.POST, entity, VotersByStreet[].class);
         } catch (HttpClientErrorException e) {
-            String msg = String.format(ELECTORS_BY_STREET_ERROR_MESSAGE, street, " Paf responded with " + e.getStatusText());
+            String msg = String.format(ELECTORS_BY_STREET_ERROR_MESSAGE, pafStreets, " Paf responded with " + e.getStatusText());
             log.error(msg);
             return Try.failure(new PafApiFailure(DOWNSTREAM_ERROR_MESSAGE));
         }

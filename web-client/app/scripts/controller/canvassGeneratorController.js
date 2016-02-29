@@ -49,7 +49,7 @@ angular
       var selected = _.filter($scope.streets, function (s) {
         return s.selected;
       });
-      electorService.retrievePdfOfElectorsByStreets($scope.wardSearchModel.code, selected)
+      electorService.retrievePdfOfElectorsByStreets($scope.wardSearchModel.code, {streets: selected})
         .success(function (response) {
           var file = new Blob([response], {type: 'application/pdf'});
           saveAs(file, $scope.wardSearchModel.code + '.pdf');
@@ -61,7 +61,7 @@ angular
 
     $scope.onPrintAll = function () {
       $scope.errorLoadingData = false;
-      electorService.retrievePdfOfElectorsByStreets($scope.wardSearchModel.code, $scope.streets)
+      electorService.retrievePdfOfElectorsByStreets($scope.wardSearchModel.code, {streets: $scope.streets})
         .success(function (response) {
           var file = new Blob([response], {type: 'application/pdf'});
           saveAs(file, $scope.wardSearchModel.code + '.pdf');
