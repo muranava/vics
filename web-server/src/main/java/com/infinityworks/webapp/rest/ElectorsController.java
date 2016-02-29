@@ -4,6 +4,7 @@ import com.infinityworks.commondto.RecordVote;
 import com.infinityworks.webapp.common.RequestValidator;
 import com.infinityworks.webapp.error.NotFoundFailure;
 import com.infinityworks.webapp.error.RestErrorHandler;
+import com.infinityworks.webapp.rest.dto.ElectorsByStreetsRequest;
 import com.infinityworks.webapp.rest.dto.RecordContactRequest;
 import com.infinityworks.webapp.rest.dto.SearchElectors;
 import com.infinityworks.webapp.rest.dto.TownStreets;
@@ -79,12 +80,12 @@ public class ElectorsController {
     @PreAuthorize("isAuthenticated()")
     @RequestMapping(value = "/ward/{wardCode}/street/pdf", method = POST, produces = "application/pdf")
     public ResponseEntity<?> getPdfOfElectorsByTownStreet(
-            @RequestBody @Valid TownStreets townStreets,
+            @RequestBody @Valid ElectorsByStreetsRequest electorsByStreetsRequest,
             @PathVariable("wardCode") String wardCode,
             Principal principal) throws DocumentException {
-        return requestValidator.validate(townStreets)
+        return requestValidator.validate(electorsByStreetsRequest)
                 .flatMap(streets -> sessionService.extractUserFromPrincipal(principal))
-                .flatMap(user -> electorsService.electorsByStreets(townStreets, wardCode, user))
+                .flatMap(user -> electorsService.electorsByStreets(electorsByStreetsRequest, wardCode, user))
                 .fold(error -> {
                     if (error instanceof NotFoundFailure) {
                         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(error);

@@ -2,7 +2,7 @@ package com.infinityworks.webapp.rest;
 
 import com.infinityworks.webapp.common.RequestValidator;
 import com.infinityworks.webapp.error.RestErrorHandler;
-import com.infinityworks.webapp.rest.dto.GenerateGotvCardRequest;
+import com.infinityworks.webapp.rest.dto.ElectorsByStreetsRequest;
 import com.infinityworks.webapp.service.GotvService;
 import com.infinityworks.webapp.service.SessionService;
 import com.lowagie.text.DocumentException;
@@ -44,7 +44,7 @@ public class GotvController {
             method = POST,
             produces = "application/pdf")
     public ResponseEntity<?> getPdfOfElectorsByTownStreet(
-            @RequestBody @Valid GenerateGotvCardRequest request,
+            @RequestBody @Valid ElectorsByStreetsRequest request,
             @PathVariable("wardCode") String wardCode,
             Principal principal) throws DocumentException {
         return requestValidator.validate(request)

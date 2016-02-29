@@ -59,7 +59,7 @@ public class GenerateGotvCardRequestBuilder {
         return this;
     }
 
-    public GenerateGotvCardRequest build() {
-        return new GenerateGotvCardRequest(townStreets, intentionFrom, intentionTo, likelihoodFrom, likelihoodTo, postalVote);
+    public ElectorsByStreetsRequest build() {
+        return new ElectorsByStreetsRequest(townStreets, intentionFrom, intentionTo, likelihoodFrom, likelihoodTo, postalVote);
     }
 }

@@ -10,8 +10,8 @@ import com.infinityworks.webapp.domain.Ward;
 import com.infinityworks.webapp.error.NotAuthorizedFailure;
 import com.infinityworks.webapp.error.NotFoundFailure;
 import com.infinityworks.webapp.pdf.PDFRenderer;
+import com.infinityworks.webapp.rest.dto.ElectorsByStreetsRequest;
 import com.infinityworks.webapp.rest.dto.SearchElectors;
-import com.infinityworks.webapp.rest.dto.TownStreets;
 import com.infinityworks.webapp.service.client.PafClient;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -47,27 +47,28 @@ public class ElectorsService {
     /**
      * Generates a PDF with the electors grouped by the given streets.
      *
-     * @param townStreets the streets to search for electors for
+     * @param request     the streets and filter criteria to search electors for
      * @param wardCode    the ward code associated with the streets
      * @param permissible the permissible making the request. Must have permission for the given ward
      * @return the PDF contents as a byte stream
      */
-    public Try<ByteArrayOutputStream> electorsByStreets(TownStreets townStreets, String wardCode, Permissible permissible) {
-        log.debug("Finding electors by streets={} for permissible={}", townStreets, permissible);
+    public Try<ByteArrayOutputStream> electorsByStreets(ElectorsByStreetsRequest request, String wardCode, Permissible permissible) {
+        log.debug("Finding electors by streets={} for permissible={}", request, permissible);
 
         return wardService.getByCode(wardCode, permissible)
-                .flatMap(ward -> pafClient.findElectorsByStreet(townStreets, ward.getCode())
-                        .flatMap(electors -> getByteArrayOutputStreamTry(townStreets, ward, electors)));
+                .flatMap(ward -> pafClient.findElectorsByStreet(request.getTownStreets(), ward.getCode())
+                .flatMap(electors -> renderPdfOfElectorsByStreets(request, ward, electors)));
     }
 
-    private Try<ByteArrayOutputStream> getByteArrayOutputStreamTry(TownStreets townStreets, Ward ward, List<VotersByStreet> electors) {
+    private Try<ByteArrayOutputStream> renderPdfOfElectorsByStreets(ElectorsByStreetsRequest request, Ward ward, List<VotersByStreet> electors) {
         List<GeneratedPdfTable> generatedPdfTables = pdfRenderer.generatePDF(
                 electors, ward.getCode(), ward.getName(), ward.getConstituency().getName());
 
         if (generatedPdfTables.isEmpty()) {
-            log.debug("No voters found for ward={} streets={}", ward, townStreets);
+            log.debug("No voters found for ward={} streets={}", ward, request);
             return Try.failure(new NotFoundFailure("No voters found"));
         } else {
+            // TODO pass in filter attributes
             ByteArrayOutputStream content = documentBuilder.buildPages(generatedPdfTables);
             return Try.success(content);
         }

@@ -9,6 +9,7 @@ import com.infinityworks.webapp.domain.Role;
 import com.infinityworks.webapp.domain.User;
 import com.infinityworks.webapp.domain.Ward;
 import com.infinityworks.webapp.pdf.PDFRenderer;
+import com.infinityworks.webapp.rest.dto.ElectorsByStreetsRequest;
 import com.infinityworks.webapp.rest.dto.RecordContactRequest;
 import com.infinityworks.webapp.rest.dto.TownStreets;
 import com.infinityworks.webapp.service.client.PafClient;
@@ -64,6 +65,7 @@ public class ElectorsServiceTest {
                 street().withMainStreet("Low Road").build(),
                 street().withMainStreet("High Road").build()
         ));
+        ElectorsByStreetsRequest request = new ElectorsByStreetsRequest(streets, null, null, null, null, null);
         List<VotersByStreet> voters = singletonList(new VotersByStreet(asList(
                 property().withBuildingNumber("1").build(),
                 property().withBuildingNumber("2").build(),
@@ -76,7 +78,7 @@ public class ElectorsServiceTest {
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream(4);
         given(documentBuilder.buildPages(tables)).willReturn(outputStream);
 
-        Try<ByteArrayOutputStream> byStreets = underTest.electorsByStreets(streets, w.getCode(), user);
+        Try<ByteArrayOutputStream> byStreets = underTest.electorsByStreets(request, w.getCode(), user);
 
         assertThat(byStreets.isSuccess(), is(true));
     }

@@ -17,20 +17,6 @@ angular
       });
     };
 
-    /**
-     * Retrieves the households and electors in the given streets
-     */
-    api.retrieveElectorsByStreets = function (wardCode, data) {
-      return $http({
-        url: apiUrl + '/elector/ward/' + wardCode + '/street',
-        method: 'POST',
-        withCredentials: true,
-        data: {
-          streets: data
-        }
-      });
-    };
-
     api.retrieveElectorByErn = function(ern) {
       return $http({
         url: apiUrl + '/elector/' + ern,
@@ -85,7 +71,9 @@ angular
         },
         withCredentials: true,
         data: {
-          streets: data
+          townStreets : {
+            streets: data
+          }
         }
       });
     };
