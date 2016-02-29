@@ -6,12 +6,10 @@ import com.infinityworks.commondto.VotersByStreet;
 import com.infinityworks.pdfgen.DocumentBuilder;
 import com.infinityworks.pdfgen.model.GeneratedPdfTable;
 import com.infinityworks.webapp.domain.Permissible;
-import com.infinityworks.webapp.domain.User;
 import com.infinityworks.webapp.domain.Ward;
 import com.infinityworks.webapp.error.NotAuthorizedFailure;
 import com.infinityworks.webapp.error.NotFoundFailure;
 import com.infinityworks.webapp.pdf.PDFRenderer;
-import com.infinityworks.webapp.rest.dto.RecordContactRequest;
 import com.infinityworks.webapp.rest.dto.SearchElectors;
 import com.infinityworks.webapp.rest.dto.TownStreets;
 import com.infinityworks.webapp.service.client.PafClient;
@@ -22,7 +20,6 @@ import org.springframework.stereotype.Service;
 
 import java.io.ByteArrayOutputStream;
 import java.util.List;
-import java.util.Optional;
 
 /**
  * Searches for electors within the given ward.
@@ -60,7 +57,7 @@ public class ElectorsService {
 
         return wardService.getByCode(wardCode, permissible)
                 .flatMap(ward -> pafClient.findElectorsByStreet(townStreets, ward.getCode())
-                .flatMap(electors -> getByteArrayOutputStreamTry(townStreets, ward, electors)));
+                        .flatMap(electors -> getByteArrayOutputStreamTry(townStreets, ward, electors)));
     }
 
     private Try<ByteArrayOutputStream> getByteArrayOutputStreamTry(TownStreets townStreets, Ward ward, List<VotersByStreet> electors) {
@@ -79,25 +76,20 @@ public class ElectorsService {
     /**
      * Searches for electors by attributes.
      *
-     * @param permissible the current user
+     * @param permissible    the current user
      * @param searchElectors the search criteria
      * @return a list of voters for the given search criteria
      */
     public Try<List<Voter>> search(Permissible permissible, SearchElectors searchElectors) {
         String wardCode = searchElectors.getWardCode();
-        Optional<Ward> wardByCode = wardService.findByCode(wardCode).stream().findFirst();
-        if (!wardByCode.isPresent()) {
-            String msg = String.format("No ward with code=%s", wardCode);
-            log.warn(msg);
-            return Try.failure(new NotFoundFailure(msg));
-        } else {
-            Ward ward = wardByCode.get();
-            if (!permissible.hasWardPermission(ward)) {
-                String msg = String.format("User=%s tried to access ward=%s without permission", permissible, wardCode);
-                log.warn(msg);
-                return Try.failure(new NotAuthorizedFailure("Not Authorized"));
-            }
-            return pafClient.searchElectors(searchElectors);
-        }
+        return wardService.getByCode(wardCode, permissible)
+                .flatMap(ward -> {
+                    if (!permissible.hasWardPermission(ward)) {
+                        String msg = String.format("User=%s tried to access ward=%s without permission", permissible, wardCode);
+                        log.warn(msg);
+                        return Try.failure(new NotAuthorizedFailure("Not Authorized"));
+                    }
+                    return pafClient.searchElectors(searchElectors);
+                });
     }
 }

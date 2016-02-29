@@ -1,20 +1,14 @@
 package com.infinityworks.webapp.service;
 
 import com.infinityworks.common.lang.Try;
-import com.infinityworks.pdfgen.DocumentBuilder;
 import com.infinityworks.webapp.domain.User;
-import com.infinityworks.webapp.domain.Ward;
 import com.infinityworks.webapp.error.NotAuthorizedFailure;
-import com.infinityworks.webapp.error.NotFoundFailure;
-import com.infinityworks.webapp.pdf.PDFRenderer;
 import com.infinityworks.webapp.rest.dto.RecordContactRequest;
 import com.infinityworks.webapp.service.client.PafClient;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import java.util.Optional;
 
 @Service
 public class RecordContactService {
@@ -43,16 +37,7 @@ public class RecordContactService {
             log.warn("User={} tried to add contact for ern={} but does not have write access", user, ern);
             return Try.failure(new NotAuthorizedFailure("Forbidden"));
         }
-
-        Optional<Ward> byCode = wardService.findByCode(contactRequest.getWardCode()).stream().findFirst();
-        if (!byCode.isPresent()) {
-            return Try.failure(new NotFoundFailure("No ward with code " + contactRequest.getWardCode()));
-        }
-
-        if (!user.hasWardPermission(byCode.get())) {
-            return Try.failure(new NotAuthorizedFailure("Forbidden"));
-        }
-
-        return pafClient.recordContact(ern, contactRequest);
+        return wardService.getByCode(contactRequest.getWardCode(), user)
+                .flatMap(ward -> pafClient.recordContact(ern, contactRequest));
     }
 }
