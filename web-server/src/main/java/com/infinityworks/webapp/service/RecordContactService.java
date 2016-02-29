@@ -37,7 +37,8 @@ public class RecordContactService {
             log.warn("User={} tried to add contact for ern={} but does not have write access", user, ern);
             return Try.failure(new NotAuthorizedFailure("Forbidden"));
         }
-        return wardService.getByCode(contactRequest.getWardCode(), user)
+        return wardService
+                .getByCode(contactRequest.getWardCode(), user)
                 .flatMap(ward -> pafClient.recordContact(ern, contactRequest));
     }
 }

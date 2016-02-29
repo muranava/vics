@@ -44,7 +44,7 @@ public class WardService {
         Optional<Ward> byWard = wardRepository.findByCode(wardCode);
         if (!byWard.isPresent()) {
             String msg = String.format("No ward with code=%s", wardCode);
-            log.warn(msg);
+            log.debug(msg);
             return Try.failure(new NotFoundFailure(msg));
         } else {
             Ward ward = byWard.get();
@@ -56,10 +56,6 @@ public class WardService {
                 return Try.success(ward);
             }
         }
-    }
-
-    public List<Ward> findByCode(String code) {
-        return wardRepository.findByCodeOrderByNameAsc(code);
     }
 
     /**
@@ -83,7 +79,7 @@ public class WardService {
                     UserRestrictedWards userRestrictedWards = new UserRestrictedWards(collect);
                     return Try.success(userRestrictedWards);
                 }).orElseGet(() -> {
-                    log.warn("Could not find constituency={} for user={}", constituencyID, user);
+                    log.debug("Could not find constituency={} for user={}", constituencyID, user);
                     return Try.failure(new NotFoundFailure("No constituency with ID " + constituencyID));
                 });
     }
