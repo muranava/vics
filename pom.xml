@@ -11,9 +11,7 @@
 
     <modules>
         <module>common</module>
-        <module>common-dto</module>
         <module>pdf-gen</module>
-        <module>test-support</module>
         <module>tools</module>
         <module>web-client</module>
         <module>web-server</module>
@@ -32,6 +30,7 @@
         <hibernate-annotations.version>3.5.6-Final</hibernate-annotations.version>
         <hibernate-validator.version>5.2.2.Final</hibernate-validator.version>
         <hikaricp.version>2.4.3</hikaricp.version>
+        <immutables-version>2.1.12</immutables-version>
         <itext.version>2.1.7</itext.version>
         <javax-persistence-api.version>1.0.2</javax-persistence-api.version>
         <jackson.version>2.6.3</jackson.version>
@@ -169,6 +168,12 @@
                 <version>${spring-session.version}</version>
             </dependency>
             <dependency>
+                <groupId>org.immutables</groupId>
+                <artifactId>value</artifactId>
+                <version>${immutables-version}</version>
+                <scope>provided</scope>
+            </dependency>
+            <dependency>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-dependencies</artifactId>
                 <version>${spring-boot.version}</version>
@@ -187,6 +192,7 @@
                 <configuration>
                     <source>${java.version}</source>
                     <target>${java.version}</target>
+                    <useIncrementalCompilation>false</useIncrementalCompilation>
                 </configuration>
             </plugin>
             <plugin>

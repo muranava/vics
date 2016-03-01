@@ -35,11 +35,11 @@ public class TableBuilder {
         return header;
     }
 
-    private PdfPCell createDataCell(String content) {
+    private PdfPCell createDataCell(String content, int alignment) {
         PdfPCell cell = new PdfPCell(new Phrase(content, dataFont));
         cell.setPadding(3);
         cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
-        cell.setHorizontalAlignment(Element.ALIGN_LEFT);
+        cell.setHorizontalAlignment(alignment);
         return cell;
     }
 
@@ -104,28 +104,30 @@ public class TableBuilder {
             addChangeRow(table);
         }
 
-        table.addCell(createDataCell(row.getHouse()));
-        table.addCell(createDataCell(row.getName()));
-        table.addCell(createDataCell(row.getTelephone()));
+        table.addCell(createDataCell(row.getHouse(), Element.ALIGN_LEFT));
+        table.addCell(createDataCell(row.getName(), Element.ALIGN_LEFT));
+        table.addCell(createDataCell(row.getTelephone(), Element.ALIGN_LEFT));
 
         PdfPCell likelihood = new PdfPCell(new Phrase(row.getLikelihood()));
         likelihood.setBackgroundColor(LIGHT_GREY);
+        likelihood.setHorizontalAlignment(Element.ALIGN_CENTER);
         table.addCell(likelihood);
 
-        table.addCell(createDataCell(row.getIssue1()));
-        table.addCell(createDataCell(row.getIssue2()));
-        table.addCell(createDataCell(row.getIssue3()));
+        table.addCell(createDataCell(row.getIssue1(), Element.ALIGN_CENTER));
+        table.addCell(createDataCell(row.getIssue2(), Element.ALIGN_CENTER));
+        table.addCell(createDataCell(row.getIssue3(), Element.ALIGN_CENTER));
 
         PdfPCell support = new PdfPCell(new Phrase(row.getSupport()));
         support.setBackgroundColor(LIGHT_GREY);
+        support.setHorizontalAlignment(Element.ALIGN_CENTER);
         table.addCell(support);
 
-        table.addCell(createDataCell(row.getHasPV()));
-        table.addCell(createDataCell(row.getWantsPV()));
-        table.addCell(createDataCell(row.getNeedsLift()));
-        table.addCell(createDataCell(row.getPoster()));
-        table.addCell(createDataCell(row.getDeceased()));
-        table.addCell(createDataCell(row.getErn()));
+        table.addCell(createDataCell(row.getHasPV(), Element.ALIGN_CENTER));
+        table.addCell(createDataCell(row.getWantsPV(), Element.ALIGN_CENTER));
+        table.addCell(createDataCell(row.getNeedsLift(), Element.ALIGN_CENTER));
+        table.addCell(createDataCell(row.getPoster(), Element.ALIGN_CENTER));
+        table.addCell(createDataCell(row.getDeceased(), Element.ALIGN_CENTER));
+        table.addCell(createDataCell(row.getErn(), Element.ALIGN_LEFT));
         return prevHouse;
     }
 

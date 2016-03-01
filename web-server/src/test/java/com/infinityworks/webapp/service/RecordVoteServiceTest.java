@@ -1,15 +1,15 @@
 package com.infinityworks.webapp.service;
 
 import com.infinityworks.common.lang.Try;
-import com.infinityworks.commondto.RecordVote;
+import com.infinityworks.webapp.paf.dto.RecordVote;
 import com.infinityworks.webapp.domain.User;
 import com.infinityworks.webapp.domain.Ward;
 import com.infinityworks.webapp.error.NotAuthorizedFailure;
-import com.infinityworks.webapp.service.client.PafClient;
+import com.infinityworks.webapp.paf.client.PafClient;
 import org.junit.Before;
 import org.junit.Test;
 
-import static com.infinityworks.testsupport.builder.RecordVoteBuilder.recordVote;
+import static com.infinityworks.webapp.testsupport.builder.downstream.RecordVoteBuilder.recordVote;
 import static com.infinityworks.webapp.testsupport.builder.UserBuilder.user;
 import static com.infinityworks.webapp.testsupport.builder.WardBuilder.ward;
 import static com.infinityworks.webapp.testsupport.matcher.TryFailureMatcher.isFailure;

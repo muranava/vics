@@ -1,8 +1,8 @@
 package com.infinityworks.webapp.feature;
 
 import com.infinityworks.common.lang.Try;
-import com.infinityworks.commondto.RecordVote;
-import com.infinityworks.testsupport.builder.RecordVoteBuilder;
+import com.infinityworks.webapp.paf.dto.RecordVote;
+import com.infinityworks.webapp.testsupport.builder.downstream.RecordVoteBuilder;
 import com.infinityworks.webapp.common.RequestValidator;
 import com.infinityworks.webapp.error.RestErrorHandler;
 import com.infinityworks.webapp.rest.ElectorsController;
@@ -26,7 +26,7 @@ import java.security.Principal;
 import java.util.List;
 
 import static com.infinityworks.webapp.common.Json.objectMapper;
-import static com.infinityworks.webapp.testsupport.builder.ElectorsByStreetsRequestBuilder.electorsByStreets;
+import static com.infinityworks.webapp.testsupport.builder.downstream.ElectorsByStreetsRequestBuilder.electorsByStreets;
 import static java.util.Collections.emptyList;
 import static org.hamcrest.CoreMatchers.is;
 import static org.mockito.Matchers.any;
@@ -120,8 +120,6 @@ public class ElectorsTest extends WebApplicationTest {
                 .accept(APPLICATION_JSON))
                 .andDo(print())
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$[0].pollingDistrict", is("AB")))
-                .andExpect(jsonPath("$[0].electorId", is("22217bf4")))
                 .andExpect(jsonPath("$[0].firstName", is("John")))
                 .andExpect(jsonPath("$[0].lastName", is("McCall")));
     }

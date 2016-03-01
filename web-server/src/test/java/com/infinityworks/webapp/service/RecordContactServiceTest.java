@@ -5,12 +5,12 @@ import com.infinityworks.webapp.domain.User;
 import com.infinityworks.webapp.domain.Ward;
 import com.infinityworks.webapp.error.NotAuthorizedFailure;
 import com.infinityworks.webapp.rest.dto.RecordContactRequest;
-import com.infinityworks.webapp.service.client.PafClient;
+import com.infinityworks.webapp.paf.client.PafClient;
 import org.junit.Before;
 import org.junit.Test;
 
 import static com.google.common.collect.Sets.newHashSet;
-import static com.infinityworks.webapp.testsupport.builder.RecordContactRequestBuilder.recordContactRequest;
+import static com.infinityworks.webapp.testsupport.builder.downstream.RecordContactRequestBuilder.recordContactRequest;
 import static com.infinityworks.webapp.testsupport.builder.UserBuilder.user;
 import static com.infinityworks.webapp.testsupport.builder.WardBuilder.ward;
 import static com.infinityworks.webapp.testsupport.matcher.TryFailureMatcher.isFailure;

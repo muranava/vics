@@ -13,9 +13,9 @@ public class TableConfig {
     static final int NUM_HEADER_ROWS = 1;
 
     static final int[] COLUMN_WIDTHS = {
-            70, // house
+            75, // house
             90, // name
-            55, // tel
+            70, // tel
             40, // likelihood
             24, // iss 1
             45, // iss 2
@@ -26,7 +26,7 @@ public class TableConfig {
             15, // needs lift
             15, // poster
             15, // dead
-            85  // ERN
+            65  // ERN
     };
     static final int NUM_COLUMNS = COLUMN_WIDTHS.length;
 }

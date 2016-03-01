@@ -6,8 +6,6 @@ angular
     $scope.credentials = {};
 
     $scope.login = function () {
-      $scope.badCredentials = false;
-      $scope.networkError = false;
       authService.login($scope.credentials.username, $scope.credentials.password)
         .success(function () {
           $location.path('/dashboard');

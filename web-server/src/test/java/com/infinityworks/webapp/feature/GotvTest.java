@@ -1,7 +1,7 @@
 package com.infinityworks.webapp.feature;
 
 import com.infinityworks.common.lang.Try;
-import com.infinityworks.commondto.Flags;
+import com.infinityworks.webapp.rest.dto.Flags;
 import com.infinityworks.webapp.common.RequestValidator;
 import com.infinityworks.webapp.error.RestErrorHandler;
 import com.infinityworks.webapp.rest.GotvController;
@@ -16,9 +16,9 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 import java.security.Principal;
 
-import static com.infinityworks.testsupport.builder.FlagsBuilder.flags;
+import static com.infinityworks.webapp.testsupport.builder.downstream.FlagsBuilder.flags;
 import static com.infinityworks.webapp.common.Json.objectMapper;
-import static com.infinityworks.webapp.testsupport.builder.ElectorsByStreetsRequestBuilder.electorsByStreets;
+import static com.infinityworks.webapp.testsupport.builder.downstream.ElectorsByStreetsRequestBuilder.electorsByStreets;
 import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;

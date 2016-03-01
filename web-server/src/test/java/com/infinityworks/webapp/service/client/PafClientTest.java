@@ -1,9 +1,12 @@
 package com.infinityworks.webapp.service.client;
 
 import com.infinityworks.common.lang.Try;
-import com.infinityworks.commondto.VotersByStreet;
+import com.infinityworks.webapp.paf.dto.Property;
+import com.infinityworks.webapp.paf.dto.VotersByStreet;
 import com.infinityworks.webapp.config.CanvassConfig;
 import com.infinityworks.webapp.converter.PafToStreetConverter;
+import com.infinityworks.webapp.paf.client.PafClient;
+import com.infinityworks.webapp.paf.dto.StreetToPafConverter;
 import com.infinityworks.webapp.rest.dto.Street;
 import com.infinityworks.webapp.testsupport.stub.PafServerStub;
 import org.junit.After;
@@ -54,10 +57,10 @@ public class PafClientTest {
         pafApiStub.willReturnVotersByWardByTownAndByStreet("E05001221", "Coventry");
         List<Street> townStreets = asList(kirbyRoad(), abbotRoad());
 
-        Try<List<VotersByStreet>> electorsByStreet = pafClient.findElectorsByStreet(townStreets, "E05001221");
+        Try<List<List<Property>>> electorsByStreet = pafClient.findElectorsByStreet(townStreets, "E05001221");
 
         assertThat(electorsByStreet.isSuccess(), is(true));
-        List<VotersByStreet> properties = electorsByStreet.get();
-        assertThat(properties.get(0).getProperties().get(0).getVoters().get(0).getLastName(), is("Deaux"));
+        List<List<Property>> properties = electorsByStreet.get();
+        assertThat(properties.get(0).get(0).getVoters().get(0).getLastName(), is("Deaux"));
     }
 }

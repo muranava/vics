@@ -1,7 +1,7 @@
 package com.infinityworks.webapp.converter;
 
 import com.infinityworks.webapp.rest.dto.Street;
-import com.infinityworks.webapp.service.client.PafStreet;
+import com.infinityworks.webapp.paf.dto.PafStreet;
 import org.springframework.stereotype.Component;
 
 import java.util.function.Function;

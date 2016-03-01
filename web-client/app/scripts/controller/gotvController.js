@@ -5,9 +5,13 @@ angular
 
     $scope.numStreetsSelected = 0;
 
-    $scope.radio = {
-      pv: 'BOTH'
-    };
+    $scope.toggleFilters = [
+      {label: 'Wants PV', modelName: 'wantsPV', enabled: false, value: false},
+      {label: 'Has PV', modelName: 'wantsPV', enabled: false, value: false},
+      {label: 'Needs Lift', modelName: 'lift', enabled: false, value: false},
+      {label: 'Inaccessible', modelName: 'inaccessible', enabled: false, value: false},
+      {label: 'Dead', modelName: 'dead', enabled: false, value: false}
+    ];
 
     function defaultSliderOptions() {
       return {

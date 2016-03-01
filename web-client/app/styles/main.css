@@ -108,3 +108,13 @@ rzslider .rz-ticks .tick.selected {
 .hl-focus:focus {
   background: #e4e0e2;
 }
+
+.switch.checked {
+  background: #ff9798;
+  border-color: #ff9798;
+}
+/* Override user agent default select autofill (login) */
+input:-webkit-autofill, textarea:-webkit-autofill, select:-webkit-autofill {
+  background-color: #DFE0E0 !important;
+  border-bottom: #DFE0E0 solid 1px;
+}

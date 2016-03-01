@@ -1,18 +1,19 @@
 package com.infinityworks.webapp.service;
 
 import com.infinityworks.common.lang.Try;
-import com.infinityworks.commondto.Voter;
-import com.infinityworks.commondto.VotersByStreet;
 import com.infinityworks.pdfgen.DocumentBuilder;
 import com.infinityworks.pdfgen.model.GeneratedPdfTable;
 import com.infinityworks.webapp.domain.Permissible;
 import com.infinityworks.webapp.domain.Ward;
 import com.infinityworks.webapp.error.NotAuthorizedFailure;
 import com.infinityworks.webapp.error.NotFoundFailure;
-import com.infinityworks.webapp.pdf.PDFRenderer;
+import com.infinityworks.webapp.paf.client.PafClient;
+import com.infinityworks.webapp.paf.dto.Property;
+import com.infinityworks.webapp.paf.dto.Voter;
+import com.infinityworks.webapp.paf.dto.VotersByStreet;
+import com.infinityworks.webapp.pdf.PDFTableGenerator;
 import com.infinityworks.webapp.rest.dto.ElectorsByStreetsRequest;
 import com.infinityworks.webapp.rest.dto.SearchElectors;
-import com.infinityworks.webapp.service.client.PafClient;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,17 +31,17 @@ public class ElectorsService {
     private final Logger log = LoggerFactory.getLogger(ElectorsService.class);
     private final PafClient pafClient;
     private final WardService wardService;
-    private final PDFRenderer pdfRenderer;
+    private final PDFTableGenerator pdfTableGenerator;
     private final DocumentBuilder documentBuilder;
 
     @Autowired
     public ElectorsService(PafClient pafClient,
                            WardService wardService,
-                           PDFRenderer pdfRenderer,
+                           PDFTableGenerator pdfTableGenerator,
                            DocumentBuilder documentBuilder) {
         this.pafClient = pafClient;
         this.wardService = wardService;
-        this.pdfRenderer = pdfRenderer;
+        this.pdfTableGenerator = pdfTableGenerator;
         this.documentBuilder = documentBuilder;
     }
 
@@ -60,15 +61,14 @@ public class ElectorsService {
                 .flatMap(electors -> renderPdfOfElectorsByStreets(request, ward, electors)));
     }
 
-    private Try<ByteArrayOutputStream> renderPdfOfElectorsByStreets(ElectorsByStreetsRequest request, Ward ward, List<VotersByStreet> electors) {
-        List<GeneratedPdfTable> generatedPdfTables = pdfRenderer.generatePDF(
+    private Try<ByteArrayOutputStream> renderPdfOfElectorsByStreets(ElectorsByStreetsRequest request, Ward ward, List<List<Property>> electors) {
+        List<GeneratedPdfTable> generatedPdfTables = pdfTableGenerator.generateTables(
                 electors, ward.getCode(), ward.getName(), ward.getConstituency().getName());
 
         if (generatedPdfTables.isEmpty()) {
             log.debug("No voters found for ward={} streets={}", ward, request);
             return Try.failure(new NotFoundFailure("No voters found"));
         } else {
-            // TODO pass in filter attributes
             ByteArrayOutputStream content = documentBuilder.buildPages(generatedPdfTables);
             return Try.success(content);
         }

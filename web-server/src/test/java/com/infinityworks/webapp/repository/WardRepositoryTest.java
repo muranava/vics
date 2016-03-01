@@ -8,7 +8,6 @@ import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.context.jdbc.SqlGroup;
 
 import java.util.List;
-import java.util.Set;
 import java.util.UUID;
 
 import static com.infinityworks.webapp.testsupport.builder.WardBuilder.ward;
@@ -30,9 +29,6 @@ public class WardRepositoryTest extends RepositoryTest {
 
     @Autowired
     private ConstituencyRepository constituencyRepository;
-
-    @Autowired
-    private UserRepository userRepository;
 
     @Test
     public void returnsTheWards() throws Exception {

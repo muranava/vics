@@ -103,20 +103,23 @@
                     </div>
                   </div>
                 </div>
-                <div class="row" style="margin-top: 25px">
+
+                <br>
+
+                <!-- Toggle filters -->
+                <div class="row" ng-repeat="filter in toggleFilters">
 
                   <div class="form-group">
-                    <label class="col-sm-3 control-label">Postal Vote (PV)</label>
-                    <div class="col-sm-9">
+                    <label class="col-sm-3 control-label">{{filter.label}}</label>
+                    <div class="col-sm-3">
+                      <switch id="toggle{{$index}}" name="toggle{{$index}}" ng-model="filter.enabled" class="red"></switch>
+                    </div>
+                    <div class="col-sm-6" ng-show="filter.enabled">
                       <label class="radio-inline radio-styled">
-                        <input type="radio" name="inlineRadioOptions" ng-model="radio.pv"
-                               value="HAS_PV"><span>Has PV</span>
+                        <input type="radio" name="{{filter.modelName}}" ng-model="filter.value" value="YES"><span>Yes</span>
                       </label>
                       <label class="radio-inline radio-styled">
-                        <input type="radio" name="inlineRadioOptions" ng-model="radio.pv" value="WANTS_PV"><span>Wants PV</span>
-                      </label>
-                      <label class="radio-inline radio-styled">
-                        <input type="radio" name="inlineRadioOptions" ng-model="radio.pv" value="BOTH" checked><span>Both</span>
+                        <input type="radio" name="{{filter.modelName}}" ng-model="filter.value" value="NO"><span>No</span>
                       </label>
                     </div>
                   </div>

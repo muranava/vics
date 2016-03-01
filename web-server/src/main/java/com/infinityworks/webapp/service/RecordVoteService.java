@@ -1,9 +1,9 @@
 package com.infinityworks.webapp.service;
 
 import com.infinityworks.common.lang.Try;
-import com.infinityworks.commondto.RecordVote;
+import com.infinityworks.webapp.paf.dto.RecordVote;
 import com.infinityworks.webapp.domain.Permissible;
-import com.infinityworks.webapp.service.client.PafClient;
+import com.infinityworks.webapp.paf.client.PafClient;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

@@ -6,7 +6,7 @@ import com.fasterxml.jackson.datatype.jdk8.Jdk8Module;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.google.common.io.Resources;
 import com.infinityworks.pdfgen.DocumentBuilder;
-import com.infinityworks.pdfgen.converter.PropertyToRowConverter;
+import com.infinityworks.webapp.converter.PropertyToRowConverter;
 import com.infinityworks.pdfgen.renderer.LogoRenderer;
 import com.infinityworks.pdfgen.TableBuilder;
 import com.infinityworks.webapp.common.RequestValidator;

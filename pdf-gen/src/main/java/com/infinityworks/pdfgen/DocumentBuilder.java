@@ -47,7 +47,7 @@ public class DocumentBuilder {
 
         for (GeneratedPdfTable table : pdfTables) {
             try {
-                pageInfoRenderer.setStreet(table.getMainStreetName());
+                pageInfoRenderer.setStreet(table.getStreet());
                 pageInfoRenderer.setConstituencyName(table.getConstituencyName());
                 pageInfoRenderer.setWardName(table.getWardName());
                 document.add(table.getTable());

@@ -81,7 +81,7 @@ public class PageInfoRenderer extends PdfPageEventHelper {
     private void createLikelihoodKey(PdfContentByte cb) {
         ColumnText ct = new ColumnText(cb);
         ct.setText(new Phrase(LIKELIHOOD_KEY, font));
-        ct.setSimpleColumn(350, 100, 700, 590);
+        ct.setSimpleColumn(374, 100, 700, 590);
         try {
             ct.go();
         } catch (DocumentException e) {
@@ -92,7 +92,7 @@ public class PageInfoRenderer extends PdfPageEventHelper {
     private void createIntentionKey(PdfContentByte cb) {
         ColumnText ct = new ColumnText(cb);
         ct.setText(new Phrase(INTENTION_KEY, font));
-        ct.setSimpleColumn(540, 0, 700, 590);
+        ct.setSimpleColumn(565, 0, 700, 590);
         try {
             ct.go();
         } catch (DocumentException e) {

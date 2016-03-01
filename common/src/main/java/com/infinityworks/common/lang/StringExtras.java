@@ -9,4 +9,15 @@ public final class StringExtras {
     private StringExtras() {
         throw new UnsupportedOperationException("Do not instantiate");
     }
+
+    /**
+     * Added because {@link String#valueOf} produces "null" string for null values
+     */
+    public static String nullToEmpty(Object o) {
+        if (o == null) {
+            return "";
+        } else {
+            return String.valueOf(o);
+        }
+    }
 }

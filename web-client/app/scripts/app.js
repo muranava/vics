@@ -18,6 +18,7 @@ angular
     'ngTouch',
     'ui.bootstrap',
     'angular-loading-bar',
+    'uiSwitch',
     'rzModule'
   ])
   .constant('config', {

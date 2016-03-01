@@ -14,7 +14,7 @@
     <link rel="stylesheet" href="bower_components/multiselect/css/multi-select.css" />
     <link rel="stylesheet" href="bower_components/angular-loading-bar/build/loading-bar.css" />
     <link rel="stylesheet" href="bower_components/angularjs-slider/dist/rzslider.css" />
-    <link rel="stylesheet" href="bower_components/nz-toggle/dist/nz-toggle.css" />
+    <link rel="stylesheet" href="bower_components/angular-ui-switch/angular-ui-switch.css" />
     <!-- endbower -->
     <!-- endbuild -->
     <!-- build:css(.tmp) styles/main.css -->
@@ -28,7 +28,25 @@
     <link rel="stylesheet" href="styles/push-buttons.css">
     <link rel="stylesheet" href="styles/main.css">
     <!-- endbuild -->
+
+    <!--Start of Zopim Live Chat Script-->
+    <script type="text/javascript">
+      window.$zopim||(function(d,s){var z=$zopim=function(c){z._.push(c)},$=z.s=
+        d.createElement(s),e=d.getElementsByTagName(s)[0];z.set=function(o){z.set.
+      _.push(o)};z._=[];z.set._=[];$.async=!0;$.setAttribute("charset","utf-8");
+        $.src="//v2.zopim.com/?3jRQtBrX5rVlCNRAfBGHW1D3c1oAgK1Q";z.t=+new Date;$.
+          type="text/javascript";e.parentNode.insertBefore($,e)})(document,"script");
+
+      $zopim(function() {
+        $zopim.livechat.badge.setImage('images/chat.png');
+        $zopim.livechat.badge.setText('We\'re Online Chat with us');
+        $zopim.livechat.badge.show();
+        $zopim.livechat.theme.reload(); // apply new theme settings
+      });
+
+    </script>
   </head>
+  <!--End of Zopim Live Chat Script-->
   <body  class="menubar-hoverable header-fixed menubar-pin" ng-controller="parentController" ng-cloak>
     <!--[if lte IE 8]>
       <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
@@ -181,7 +199,7 @@
     <script src="bower_components/multiselect/js/jquery.multi-select.js"></script>
     <script src="bower_components/angular-loading-bar/build/loading-bar.js"></script>
     <script src="bower_components/angularjs-slider/dist/rzslider.js"></script>
-    <script src="bower_components/nz-toggle/dist/nz-toggle.js"></script>
+    <script src="bower_components/angular-ui-switch/angular-ui-switch.js"></script>
     <!-- endbower -->
     <!-- endbuild -->
 
