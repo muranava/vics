@@ -16,12 +16,12 @@ import static com.infinityworks.common.lang.StringExtras.isNullOrEmpty;
 import static java.util.stream.Collectors.toList;
 
 @Component
-public class ITextTableGenerator implements PDFTableGenerator {
+public class PdfJetTableGenerator implements PDFTableGenerator {
     private final PropertyToRowConverter propertyToRowConverter;
     private final TableBuilder tableBuilder;
 
     @Autowired
-    public ITextTableGenerator(PropertyToRowConverter propertyToRowConverter, TableBuilder tableBuilder) {
+    public PdfJetTableGenerator(PropertyToRowConverter propertyToRowConverter, TableBuilder tableBuilder) {
         this.propertyToRowConverter = propertyToRowConverter;
         this.tableBuilder = tableBuilder;
     }

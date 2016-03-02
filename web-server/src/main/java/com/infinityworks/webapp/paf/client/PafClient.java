@@ -7,6 +7,7 @@ import com.infinityworks.webapp.converter.PafToStreetConverter;
 import com.infinityworks.webapp.error.NotFoundFailure;
 import com.infinityworks.webapp.error.PafApiFailure;
 import com.infinityworks.webapp.error.ServerFailure;
+import com.infinityworks.webapp.paf.converter.StreetToPafConverter;
 import com.infinityworks.webapp.paf.dto.*;
 import com.infinityworks.webapp.rest.dto.RecordContactRequest;
 import com.infinityworks.webapp.rest.dto.SearchElectors;
@@ -14,7 +15,6 @@ import com.infinityworks.webapp.rest.dto.Street;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.*;
 import org.springframework.stereotype.Component;
 import org.springframework.util.LinkedMultiValueMap;
@@ -53,7 +53,6 @@ public class PafClient {
     private final StreetToPafConverter streetConverter;
     private final PafToStreetConverter pafToStreetConverter;
     private final String pafApiBaseUrl;
-    private static final ParameterizedTypeReference<List<List<Property>>> votersByStreetType = new ParameterizedTypeReference<List<List<Property>>>() {};
 
     @Autowired
     public PafClient(PafToStreetConverter pafStreetConverter, RestTemplate restTemplate, CanvassConfig canvassConfig, StreetToPafConverter streetConverter) {
@@ -81,17 +80,17 @@ public class PafClient {
         headers.set("X-Authorization", API_TOKEN);
         headers.setContentType(MediaType.APPLICATION_JSON);
         HttpEntity httpEntity = new HttpEntity(headers);
-        ResponseEntity<PafStreet[]> pafResponse;
+        ResponseEntity<StreetsResponse> pafResponse;
 
         try {
-            pafResponse = restTemplate.exchange(url, GET, httpEntity, PafStreet[].class);
+            pafResponse = restTemplate.exchange(url, GET, httpEntity, StreetsResponse.class);
         } catch (HttpClientErrorException e) {
             String msg = String.format(STREETS_BY_WARD_ERROR_MESSAGE, wardCode, "");
             log.error(msg, e);
             return Try.failure(new PafApiFailure(DOWNSTREAM_ERROR_MESSAGE));
         }
 
-        List<Street> records = asList(pafResponse.getBody())
+        List<Street> records = pafResponse.getBody().response()
                 .stream()
                 .map(pafToStreetConverter)
                 .collect(toList());
@@ -101,7 +100,7 @@ public class PafClient {
     public Try<List<List<Property>>> findElectorsByStreet(List<Street> streets, String wardCode) {
         String url = String.format(ELECTORS_BY_STREET_ENDPOINT, wardCode);
 
-        ResponseEntity<List<List<Property>>> pafResponse;
+        ResponseEntity<PropertyResponse> pafResponse;
         HttpHeaders headers = new HttpHeaders();
         headers.set("X-Authorization", API_TOKEN);
         List<PafStreet> pafStreets = streets
@@ -112,14 +111,14 @@ public class PafClient {
         HttpEntity<List<PafStreet>> entity = new HttpEntity<>(pafStreets, headers);
 
         try {
-            pafResponse = restTemplate.exchange(url, HttpMethod.POST, entity, votersByStreetType);
+            pafResponse = restTemplate.exchange(url, HttpMethod.POST, entity, PropertyResponse.class);
         } catch (HttpClientErrorException | HttpServerErrorException e) {
             String msg = String.format(ELECTORS_BY_STREET_ERROR_MESSAGE, " Paf responded with " + e.getStatusText());
             log.error(msg);
             return Try.failure(new PafApiFailure(DOWNSTREAM_ERROR_MESSAGE));
         }
 
-        return Try.success(pafResponse.getBody());
+        return Try.success(pafResponse.getBody().response());
     }
 
     /**

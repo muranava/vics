@@ -6,14 +6,13 @@ import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import org.immutables.value.Value;
 
-import javax.annotation.Nullable;
+import java.util.List;
 
 @Value.Immutable
 @JsonIgnoreProperties(ignoreUnknown = true)
 @Value.Style(init = "with*")
-@JsonDeserialize(as = ImmutableVoting.class)
-@JsonSerialize(as = ImmutableVoting.class)
-public interface Voting {
-    @Nullable Integer intention();
-    @Nullable Integer likelihood();
+@JsonDeserialize(as = ImmutableStreetsResponse.class)
+@JsonSerialize(as = ImmutableStreetsResponse.class)
+public interface StreetsResponse {
+    @JsonProperty("response") List<PafStreet> response();
 }

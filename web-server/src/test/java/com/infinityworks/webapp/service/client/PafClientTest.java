@@ -5,7 +5,7 @@ import com.infinityworks.webapp.config.CanvassConfig;
 import com.infinityworks.webapp.converter.PafToStreetConverter;
 import com.infinityworks.webapp.paf.client.PafClient;
 import com.infinityworks.webapp.paf.dto.Property;
-import com.infinityworks.webapp.paf.dto.StreetToPafConverter;
+import com.infinityworks.webapp.paf.converter.StreetToPafConverter;
 import com.infinityworks.webapp.rest.dto.Street;
 import com.infinityworks.webapp.testsupport.stub.PafServerStub;
 import org.junit.After;

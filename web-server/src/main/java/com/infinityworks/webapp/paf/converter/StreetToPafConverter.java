@@ -1,5 +1,7 @@
-package com.infinityworks.webapp.paf.dto;
+package com.infinityworks.webapp.paf.converter;
 
+import com.infinityworks.webapp.paf.dto.ImmutablePafStreet;
+import com.infinityworks.webapp.paf.dto.PafStreet;
 import com.infinityworks.webapp.rest.dto.Street;
 import org.springframework.stereotype.Component;
 
