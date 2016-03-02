@@ -3,15 +3,12 @@ package com.infinityworks.webapp.pdf;
 import com.infinityworks.pdfgen.TableBuilder;
 import com.infinityworks.pdfgen.model.GeneratedPdfTable;
 import com.infinityworks.webapp.converter.PropertyToRowConverter;
+import com.infinityworks.webapp.paf.dto.ImmutableProperty;
 import com.infinityworks.webapp.paf.dto.Property;
-import com.infinityworks.webapp.paf.dto.VotersByStreet;
 import org.junit.Test;
 
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
-import static com.infinityworks.webapp.testsupport.builder.upstream.PropertyBuilder.property;
 import static com.infinityworks.webapp.testsupport.builder.upstream.VoterBuilder.voter;
 import static java.util.Arrays.asList;
 import static java.util.Collections.emptyList;
@@ -53,15 +50,15 @@ public class PdfRendererTest {
 
     public List<Property> street1() {
         return asList(
-                property().withStreet("Street1").withPostCode("CV2 3ER").withVoters(asList(
+                ImmutableProperty.builder().withStreet("Street1").withPostCode("CV2 3ER").withVoters(asList(
                         voter().withFirstName("David").build(),
                         voter().withFirstName("Sam").build()
                 )).build(),
-                property().withStreet("Street1").withPostCode("CV2 3ER").withVoters(asList(
+                ImmutableProperty.builder().withStreet("Street1").withPostCode("CV2 3ER").withVoters(asList(
                         voter().withFirstName("Amy").build(),
                         voter().withFirstName("Paul").build()
                 )).build(),
-                property().withStreet("Street1").withPostCode("CV2 3ER").withVoters(singletonList(
+                ImmutableProperty.builder().withStreet("Street1").withPostCode("CV2 3ER").withVoters(singletonList(
                         voter().withFirstName("Abdul").build()
                 )).build()
         );
@@ -69,15 +66,15 @@ public class PdfRendererTest {
 
     public List<Property> street2() {
         return asList(
-                property().withStreet("Street2").withPostCode("CV2 3ER").withVoters(asList(
+                ImmutableProperty.builder().withStreet("Street2").withPostCode("CV2 3ER").withVoters(asList(
                         voter().withFirstName("Javier").build(),
                         voter().withFirstName("Marti").build()
                 )).build(),
-                property().withStreet("Street2").withPostCode("CV2 3ER").withVoters(asList(
+                ImmutableProperty.builder().withStreet("Street2").withPostCode("CV2 3ER").withVoters(asList(
                         voter().withFirstName("Selina").build(),
                         voter().withFirstName("Pedro").build()
                 )).build(),
-                property().withStreet("Street2").withPostCode("CV2 3ER").withVoters(singletonList(
+                ImmutableProperty.builder().withStreet("Street2").withPostCode("CV2 3ER").withVoters(singletonList(
                         voter().withFirstName("Carlos").build()
                 )).build()
         );

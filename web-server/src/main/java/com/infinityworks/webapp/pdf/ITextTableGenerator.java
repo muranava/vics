@@ -53,8 +53,8 @@ public class ITextTableGenerator implements PDFTableGenerator {
             return properties.stream()
                     .findFirst()
                     .map(property -> {
-                        String street = property.getStreet();
-                        String postCode = property.getPostCode();
+                        String street = property.street();
+                        String postCode = property.postCode();
                         return isNullOrEmpty(street)
                                 ? postCode
                                 : street + ", " + postCode;

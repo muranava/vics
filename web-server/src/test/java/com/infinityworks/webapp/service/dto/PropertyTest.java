@@ -14,9 +14,10 @@ public class PropertyTest {
         Property property = objectMapper.readValue(
                 Resources.getResource("json/paf-property.json"), Property.class);
 
-        assertThat(property.getPostCode(), is("NE61 6PG"));
-        assertThat(property.getPostTown(), is("Morpeth"));
-        assertThat(property.getStreet(), is("Tranwell Court"));
-        assertThat(property.getHouse(), is("1"));
+        assertThat(property.postTown(), is("Morpeth"));
+        assertThat(property.street(), is("Tranwell Court"));
+        assertThat(property.house(), is("1"));
+        assertThat(property.postCode(), is("NE61 6PG"));
+        assertThat(property.voters().get(0).getFirstName(), is("John"));
     }
 }

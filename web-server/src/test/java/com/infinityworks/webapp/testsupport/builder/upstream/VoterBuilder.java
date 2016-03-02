@@ -1,8 +1,6 @@
 package com.infinityworks.webapp.testsupport.builder.upstream;
 
 import com.infinityworks.webapp.paf.dto.*;
-import static com.infinityworks.webapp.testsupport.builder.upstream.FlagsBuilder.flags;
-import static com.infinityworks.webapp.testsupport.builder.upstream.IssuesBuilder.issues;
 
 public class VoterBuilder {
     private String pollingDistrict;
@@ -19,6 +17,20 @@ public class VoterBuilder {
     private Volunteer volunteer;
 
     public VoterBuilder withDefaults() {
+        ImmutableFlags flags = ImmutableFlags.builder()
+                .withDeceased(false)
+                .withWantsPV(false)
+                .withHasPV(true)
+                .withInaccessible(false)
+                .withLift(false)
+                .build();
+
+        ImmutableIssues issues = ImmutableIssues.builder()
+                .withControl(false)
+                .withCost(false)
+                .withSafety(false)
+                .build();
+
         withElectorNumber("PD-123-4")
                 .withPollingDistrict("PD")
                 .withElectorNumber("123")
@@ -27,8 +39,9 @@ public class VoterBuilder {
                 .withTitle("")
                 .withFirstName("Alan")
                 .withLastName("Donald")
-                .withFlags(flags().build())
-                .withIssues(issues().build());
+                .withFlags(flags)
+                .withIssues(issues);
+
         return this;
     }
 

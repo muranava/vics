@@ -1,18 +1,18 @@
 package com.infinityworks.webapp.service;
 
 import com.infinityworks.common.lang.Try;
-import com.infinityworks.webapp.paf.dto.Property;
-import com.infinityworks.webapp.paf.dto.VotersByStreet;
 import com.infinityworks.pdfgen.DocumentBuilder;
 import com.infinityworks.pdfgen.model.GeneratedPdfTable;
 import com.infinityworks.webapp.domain.Constituency;
 import com.infinityworks.webapp.domain.Role;
 import com.infinityworks.webapp.domain.User;
 import com.infinityworks.webapp.domain.Ward;
+import com.infinityworks.webapp.paf.client.PafClient;
+import com.infinityworks.webapp.paf.dto.ImmutableProperty;
+import com.infinityworks.webapp.paf.dto.Property;
 import com.infinityworks.webapp.pdf.PDFTableGenerator;
 import com.infinityworks.webapp.rest.dto.ElectorsByStreetsRequest;
 import com.infinityworks.webapp.rest.dto.Street;
-import com.infinityworks.webapp.paf.client.PafClient;
 import com.lowagie.text.pdf.PdfPTable;
 import org.junit.Before;
 import org.junit.Test;
@@ -20,13 +20,13 @@ import org.junit.Test;
 import java.io.ByteArrayOutputStream;
 import java.util.List;
 
-import static com.infinityworks.webapp.testsupport.builder.upstream.PropertyBuilder.property;
 import static com.infinityworks.webapp.testsupport.builder.ConstituencyBuilder.constituency;
-import static com.infinityworks.webapp.testsupport.builder.downstream.ElectorsByStreetsRequestBuilder.electorsByStreets;
-import static com.infinityworks.webapp.testsupport.builder.downstream.StreetBuilder.street;
 import static com.infinityworks.webapp.testsupport.builder.UserBuilder.user;
 import static com.infinityworks.webapp.testsupport.builder.WardBuilder.ward;
+import static com.infinityworks.webapp.testsupport.builder.downstream.ElectorsByStreetsRequestBuilder.electorsByStreets;
+import static com.infinityworks.webapp.testsupport.builder.downstream.StreetBuilder.street;
 import static java.util.Arrays.asList;
+import static java.util.Collections.emptyList;
 import static java.util.Collections.singletonList;
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertThat;
@@ -67,9 +67,9 @@ public class ElectorsServiceTest {
         );
         ElectorsByStreetsRequest request = electorsByStreets().withStreets(streets).withFlags(null).build();
         List<List<Property>> voters = singletonList(asList(
-                property().withStreet("1").build(),
-                property().withStreet("2").build(),
-                property().withStreet("3").build()
+                ImmutableProperty.builder().withStreet("1").withHouse("1").withPostCode("CV2 2DH").withPostTown("Coventry").withVoters(emptyList()).build(),
+                ImmutableProperty.builder().withStreet("1").withHouse("2").withPostCode("CV2 2DH").withPostTown("Coventry").withVoters(emptyList()).build(),
+                ImmutableProperty.builder().withStreet("1").withHouse("3").withPostCode("CV2 2DH").withPostTown("Coventry").withVoters(emptyList()).build()
         ));
 
         given(wardService.getByCode(w.getCode(), user)).willReturn(Try.success(w));

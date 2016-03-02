@@ -2,12 +2,12 @@ package com.infinityworks.webapp.service.dto;
 
 import com.infinityworks.pdfgen.model.ElectorRow;
 import com.infinityworks.webapp.converter.PropertyToRowConverter;
+import com.infinityworks.webapp.paf.dto.ImmutableProperty;
 import com.infinityworks.webapp.paf.dto.Property;
 import org.junit.Test;
 
 import java.util.List;
 
-import static com.infinityworks.webapp.testsupport.builder.upstream.PropertyBuilder.property;
 import static com.infinityworks.webapp.testsupport.builder.upstream.VoterBuilder.voter;
 import static java.util.Arrays.asList;
 import static org.hamcrest.CoreMatchers.is;
@@ -18,7 +18,7 @@ public class PropertyToRowConverterTest {
 
     @Test
     public void convertsAPropertyToATableRow() throws Exception {
-        Property property = property()
+        Property property = ImmutableProperty.builder()
                 .withPostTown("Bournemouth")
                 .withPostCode("CV2 3ER")
                 .withHouse("10")

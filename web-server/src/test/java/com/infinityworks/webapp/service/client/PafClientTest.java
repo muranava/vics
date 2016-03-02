@@ -1,11 +1,10 @@
 package com.infinityworks.webapp.service.client;
 
 import com.infinityworks.common.lang.Try;
-import com.infinityworks.webapp.paf.dto.Property;
-import com.infinityworks.webapp.paf.dto.VotersByStreet;
 import com.infinityworks.webapp.config.CanvassConfig;
 import com.infinityworks.webapp.converter.PafToStreetConverter;
 import com.infinityworks.webapp.paf.client.PafClient;
+import com.infinityworks.webapp.paf.dto.Property;
 import com.infinityworks.webapp.paf.dto.StreetToPafConverter;
 import com.infinityworks.webapp.rest.dto.Street;
 import com.infinityworks.webapp.testsupport.stub.PafServerStub;
@@ -61,6 +60,6 @@ public class PafClientTest {
 
         assertThat(electorsByStreet.isSuccess(), is(true));
         List<List<Property>> properties = electorsByStreet.get();
-        assertThat(properties.get(0).get(0).getVoters().get(0).getLastName(), is("Deaux"));
+        assertThat(properties.get(0).get(0).voters().get(0).getLastName(), is("Deaux"));
     }
 }

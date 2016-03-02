@@ -3,9 +3,6 @@ package com.infinityworks.webapp.paf.dto;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.google.common.base.MoreObjects;
-
-import static com.google.common.base.Strings.nullToEmpty;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class Voter {

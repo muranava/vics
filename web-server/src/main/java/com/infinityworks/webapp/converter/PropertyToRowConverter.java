@@ -22,7 +22,7 @@ public class PropertyToRowConverter implements BiFunction<String, Property, List
     public List<ElectorRow> apply(String wardCode, Property property) {
         log.debug("Property: {}", property);
 
-        return property.getVoters().stream()
+        return property.voters().stream()
                 .map(voter -> {
                     Issues issues = voter.getIssues();
                     Volunteer volunteer = voter.getVolunteer();
@@ -30,7 +30,7 @@ public class PropertyToRowConverter implements BiFunction<String, Property, List
                     Flags flags = voter.getFlags();
 
                     ElectorRowBuilder row = electorRow()
-                            .withHouse(property.getHouse()) // TODO
+                            .withHouse(property.house())
                             .withName(voter.getLastName() + ", " + voter.getFirstName())
                             .withTelephone(voter.getTelephone());
 
@@ -40,23 +40,23 @@ public class PropertyToRowConverter implements BiFunction<String, Property, List
                     }
 
                     if (issues != null) {
-                        row.withIssue1(createCheckBox(issues.getCost()))
-                                .withIssue2(createCheckBox(issues.getControl()))
-                                .withIssue3(createCheckBox(issues.getSafety()));
+                        row.withIssue1(createCheckBox(issues.cost()))
+                                .withIssue2(createCheckBox(issues.control()))
+                                .withIssue3(createCheckBox(issues.safety()));
                     }
 
                     if (flags != null) {
-                        row.withHasPV(createCheckBox(flags.getHasPV()))
-                                .withWantsPV(createCheckBox(flags.getWantsPV()))
-                                .withNeedsLift(createCheckBox(flags.getLift()))
-                                .withDeceased(createCheckBox(flags.getDeceased()));
+                        row.withHasPV(createCheckBox(flags.hasPV()))
+                                .withWantsPV(createCheckBox(flags.wantsPV()))
+                                .withNeedsLift(createCheckBox(flags.lift()))
+                                .withDeceased(createCheckBox(flags.deceased()));
                     }
 
                     if (volunteer != null) {
                         row.withPoster(createCheckBox(volunteer.getPoster()));
                     }
 
-                    return row.withStreet(property.getStreet()) // TODO
+                    return row.withStreet(property.street())
                             .withErn(createRollNum(voter))
                             .build();
                 })

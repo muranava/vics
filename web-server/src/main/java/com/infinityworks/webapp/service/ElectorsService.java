@@ -10,7 +10,6 @@ import com.infinityworks.webapp.error.NotFoundFailure;
 import com.infinityworks.webapp.paf.client.PafClient;
 import com.infinityworks.webapp.paf.dto.Property;
 import com.infinityworks.webapp.paf.dto.Voter;
-import com.infinityworks.webapp.paf.dto.VotersByStreet;
 import com.infinityworks.webapp.pdf.PDFTableGenerator;
 import com.infinityworks.webapp.rest.dto.ElectorsByStreetsRequest;
 import com.infinityworks.webapp.rest.dto.SearchElectors;
@@ -23,7 +22,7 @@ import java.io.ByteArrayOutputStream;
 import java.util.List;
 
 /**
- * Searches for electors within the given ward.
+ * Searches for electorsByStreet within the given ward.
  * The elector data is retrieve from the PAF api.
  */
 @Service
@@ -46,19 +45,19 @@ public class ElectorsService {
     }
 
     /**
-     * Generates a PDF with the electors grouped by the given streets.
+     * Generates a PDF with the electorsByStreet grouped by the given streets.
      *
-     * @param request     the streets and filter criteria to search electors for
+     * @param request     the streets and filter criteria to search electorsByStreet for
      * @param wardCode    the ward code associated with the streets
      * @param permissible the permissible making the request. Must have permission for the given ward
      * @return the PDF contents as a byte stream
      */
     public Try<ByteArrayOutputStream> electorsByStreets(ElectorsByStreetsRequest request, String wardCode, Permissible permissible) {
-        log.debug("Finding electors by streets={} for permissible={}", request, permissible);
+        log.debug("Finding electorsByStreet by streets={} for permissible={}", request, permissible);
 
         return wardService.getByCode(wardCode, permissible)
                 .flatMap(ward -> pafClient.findElectorsByStreet(request.getStreets(), ward.getCode())
-                .flatMap(electors -> renderPdfOfElectorsByStreets(request, ward, electors)));
+                .flatMap(electorsByStreet -> renderPdfOfElectorsByStreets(request, ward, electorsByStreet)));
     }
 
     private Try<ByteArrayOutputStream> renderPdfOfElectorsByStreets(ElectorsByStreetsRequest request, Ward ward, List<List<Property>> electors) {
