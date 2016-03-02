@@ -20,7 +20,6 @@ import org.springframework.stereotype.Component;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.HttpClientErrorException;
-import org.springframework.web.client.HttpServerErrorException;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
 
@@ -32,7 +31,8 @@ import static java.util.stream.Collectors.toList;
 import static org.springframework.http.HttpMethod.GET;
 
 /**
- * TODO split this client up into separate functional classes
+ * TODO split this client up into separate functional classes.
+ * TODO Rework exception handling
  */
 @Component
 public class PafClient {
@@ -70,6 +70,7 @@ public class PafClient {
 
     /**
      * Finds all the streets in a given ward.
+     *
      * @param wardCode the ward code to retrieve streets by, e.g. E09000125
      * @return
      */
@@ -112,8 +113,8 @@ public class PafClient {
 
         try {
             pafResponse = restTemplate.exchange(url, HttpMethod.POST, entity, PropertyResponse.class);
-        } catch (HttpClientErrorException | HttpServerErrorException e) {
-            String msg = String.format(ELECTORS_BY_STREET_ERROR_MESSAGE, " Paf responded with " + e.getStatusText());
+        } catch (Exception e) {
+            String msg = String.format(ELECTORS_BY_STREET_ERROR_MESSAGE, " Paf responded with " + e.getMessage());
             log.error(msg);
             return Try.failure(new PafApiFailure(DOWNSTREAM_ERROR_MESSAGE));
         }
@@ -125,6 +126,7 @@ public class PafClient {
      * Records that an elector has voted.  Not found responses from PAF are treated as
      * success in the context of the application (users will type ids at a fast rate and
      * erroneous inputs are expected) and we set a failure flag in the return entity.
+     *
      * @param recordVote the details of the voter to record
      */
     public Try<RecordVote> recordVoted(RecordVote recordVote) {
@@ -140,15 +142,16 @@ public class PafClient {
             log.debug("Recorded voter voted PUT {}", url);
             RecordVote vote = new RecordVote(recordVote.getWardCode(), recordVote.getWardName(), ern, true);
             return Try.success(vote);
-        } catch (HttpClientErrorException e) {
-            if (e.getStatusCode().value() == 404) {
-                RecordVote vote = new RecordVote(recordVote.getWardCode(), recordVote.getWardName(), ern, false);
-                return Try.success(vote);
-            } else {
-                String message = String.format("Paf call to record vote failed. ern=%s. Paf responded with %s", ern, e.getStatusCode().getReasonPhrase());
-                log.error(message);
-                return Try.failure(new ServerFailure(String.format(RECORD_VOTE_ERROR_MESSAGE, ern, e.getStatusCode().getReasonPhrase())));
+        } catch (Exception e) {
+            if (e instanceof HttpClientErrorException) {
+                if (((HttpClientErrorException) e).getStatusCode().value() == 404) {
+                    RecordVote vote = new RecordVote(recordVote.getWardCode(), recordVote.getWardName(), ern, false);
+                    return Try.success(vote);
+                }
             }
+            String message = String.format("Paf call to record vote failed. ern=%s. Paf responded with %s", ern, e.getMessage());
+            log.error(message);
+            return Try.failure(new ServerFailure(String.format(RECORD_VOTE_ERROR_MESSAGE, ern, e.getMessage())));
         }
     }
 

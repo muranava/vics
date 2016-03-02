@@ -14,6 +14,6 @@ import javax.annotation.Nullable;
 @JsonSerialize(as = ImmutableIssues.class)
 public interface Issues {
     @Nullable Boolean cost();
-    @Nullable Boolean control();
-    @Nullable Boolean safety();
+    @Nullable Boolean sovereignty();
+    @Nullable Boolean border();
 }

@@ -41,8 +41,8 @@ public class PropertyToRowConverter implements BiFunction<String, Property, List
 
                     if (issues != null) {
                         row.withIssue1(createCheckBox(issues.cost()))
-                                .withIssue2(createCheckBox(issues.control()))
-                                .withIssue3(createCheckBox(issues.safety()));
+                                .withIssue2(createCheckBox(issues.sovereignty()))
+                                .withIssue3(createCheckBox(issues.border()));
                     }
 
                     if (flags != null) {

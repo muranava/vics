@@ -43,9 +43,9 @@ public class Fixtures {
 
     public static ImmutableIssues.Builder issuesWithDefaults() {
         return ImmutableIssues.builder()
-                .withControl(false)
+                .withSovereignty(false)
                 .withCost(false)
-                .withSafety(false);
+                .withBorder(false);
     }
 
     public static Street kirbyRoad() {
