@@ -13,6 +13,7 @@ import com.infinityworks.webapp.service.RecordContactService;
 import com.infinityworks.webapp.service.RecordVoteService;
 import com.infinityworks.webapp.service.SessionService;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.context.jdbc.SqlGroup;
@@ -101,6 +102,7 @@ public class ElectorsTest extends WebApplicationTest {
     }
 
     @Test
+    @Ignore(value = "Implement when we know the API")
     public void returnsTheElectorsWhenSearchingByAttributes() throws Exception {
         when(sessionService.extractUserFromPrincipal(any(Principal.class)))
                 .thenReturn(Try.success(earlsdon()));

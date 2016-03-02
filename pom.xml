@@ -180,6 +180,12 @@
             </dependency>
             <dependency>
                 <groupId>org.immutables</groupId>
+                <artifactId>builder</artifactId>
+                <version>${immutables-version}</version>
+                <scope>provided</scope>
+            </dependency>
+            <dependency>
+                <groupId>org.immutables</groupId>
                 <artifactId>value</artifactId>
                 <version>${immutables-version}</version>
                 <scope>provided</scope>

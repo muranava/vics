@@ -1,11 +1,13 @@
 package com.infinityworks.webapp.paf.dto;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.google.common.base.MoreObjects;
 import com.google.common.base.Objects;
 import org.hibernate.validator.constraints.NotEmpty;
 
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class RecordVote {
     @NotEmpty
     private final String wardCode;

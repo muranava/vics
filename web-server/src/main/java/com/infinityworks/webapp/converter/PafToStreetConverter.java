@@ -11,9 +11,9 @@ public class PafToStreetConverter implements Function<PafStreet, Street> {
     @Override
     public Street apply(PafStreet pafStreet) {
         return new Street(
-                pafStreet.getMainStreet(),
-                pafStreet.getPostTown(),
-                pafStreet.getDependentStreet(),
-                pafStreet.getDependentLocality());
+                pafStreet.mainStreet(),
+                pafStreet.postTown(),
+                pafStreet.dependentStreet(),
+                pafStreet.dependentLocality());
     }
 }

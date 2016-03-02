@@ -24,19 +24,19 @@ public class PropertyToRowConverter implements BiFunction<String, Property, List
 
         return property.voters().stream()
                 .map(voter -> {
-                    Issues issues = voter.getIssues();
-                    Volunteer volunteer = voter.getVolunteer();
-                    Voting voting = voter.getVoting();
-                    Flags flags = voter.getFlags();
+                    Issues issues = voter.issues();
+                    Volunteer volunteer = voter.volunteer();
+                    Voting voting = voter.voting();
+                    Flags flags = voter.flags();
 
                     ElectorRowBuilder row = electorRow()
                             .withHouse(property.house())
-                            .withName(voter.getLastName() + ", " + voter.getFirstName())
-                            .withTelephone(voter.getTelephone());
+                            .withName(voter.lastName() + ", " + voter.firstName())
+                            .withTelephone(voter.telephone());
 
                     if (voting != null) {
-                        row.withLikelihood(nullToEmpty(voting.getLikelihood()))
-                                .withSupport(nullToEmpty(voting.getIntention()));
+                        row.withLikelihood(nullToEmpty(voting.likelihood()))
+                                .withSupport(nullToEmpty(voting.intention()));
                     }
 
                     if (issues != null) {
@@ -53,7 +53,7 @@ public class PropertyToRowConverter implements BiFunction<String, Property, List
                     }
 
                     if (volunteer != null) {
-                        row.withPoster(createCheckBox(volunteer.getPoster()));
+                        row.withPoster(createCheckBox(volunteer.poster()));
                     }
 
                     return row.withStreet(property.street())
@@ -65,7 +65,7 @@ public class PropertyToRowConverter implements BiFunction<String, Property, List
 
     private String createRollNum(Voter voter) {
         return String.format("%s-%s-%s",
-                voter.getPollingDistrict(), voter.getElectorNumber(), voter.getElectorSuffix());
+                voter.pollingDistrict(), voter.electorNumber(), voter.electorSuffix());
     }
 
     private String createCheckBox(Boolean value) {

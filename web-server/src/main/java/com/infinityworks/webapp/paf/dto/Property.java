@@ -19,5 +19,5 @@ public interface Property {
     @Nullable @JsonProperty("roll_house") String house();
     @Nullable @JsonProperty("post_town") String postTown();
     @Nullable @JsonProperty("postcode") String postCode();
-    @Nullable List<Voter> voters();
+    List<Voter> voters();
 }

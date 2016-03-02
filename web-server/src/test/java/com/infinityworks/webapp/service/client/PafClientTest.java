@@ -60,6 +60,6 @@ public class PafClientTest {
 
         assertThat(electorsByStreet.isSuccess(), is(true));
         List<List<Property>> properties = electorsByStreet.get();
-        assertThat(properties.get(0).get(0).voters().get(0).getLastName(), is("Deaux"));
+        assertThat(properties.get(0).get(0).voters().get(0).lastName(), is("Deaux"));
     }
 }

@@ -15,18 +15,18 @@ public class VoterTest {
         Voter voter = objectMapper.readValue(
                 Resources.getResource("json/paf-voter.json"), Voter.class);
 
-        assertThat(voter.getFirstName(), is("John"));
-        assertThat(voter.getLastName(), is("Deaux"));
-        assertThat(voter.getPollingDistrict(), is("AB"));
-        assertThat(voter.getElectorNumber(), is("01"));
-        assertThat(voter.getElectorSuffix(), is("1"));
-        assertThat(voter.getLastName(), is("Deaux"));
-        assertThat(voter.getFlags().deceased(), is(false));
-        assertThat(voter.getFlags().inaccessible(), is(false));
-        assertThat(voter.getFlags().hasPV(), is(false));
-        assertThat(voter.getFlags().wantsPV(), is(false));
-        assertThat(voter.getIssues().cost(), is(false));
-        assertThat(voter.getIssues().control(), is(true));
-        assertThat(voter.getIssues().safety(), is(nullValue()));
+        assertThat(voter.firstName(), is("John"));
+        assertThat(voter.lastName(), is("Deaux"));
+        assertThat(voter.pollingDistrict(), is("AB"));
+        assertThat(voter.electorNumber(), is("01"));
+        assertThat(voter.electorSuffix(), is("1"));
+        assertThat(voter.lastName(), is("Deaux"));
+        assertThat(voter.flags().deceased(), is(false));
+        assertThat(voter.flags().inaccessible(), is(false));
+        assertThat(voter.flags().hasPV(), is(false));
+        assertThat(voter.flags().wantsPV(), is(false));
+        assertThat(voter.issues().cost(), is(false));
+        assertThat(voter.issues().control(), is(true));
+        assertThat(voter.issues().safety(), is(nullValue()));
     }
 }

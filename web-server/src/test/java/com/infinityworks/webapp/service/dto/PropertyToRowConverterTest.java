@@ -8,7 +8,7 @@ import org.junit.Test;
 
 import java.util.List;
 
-import static com.infinityworks.webapp.testsupport.builder.upstream.VoterBuilder.voter;
+import static com.infinityworks.webapp.testsupport.Fixtures.voterWithDefaults;
 import static java.util.Arrays.asList;
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
@@ -24,9 +24,9 @@ public class PropertyToRowConverterTest {
                 .withHouse("10")
                 .withStreet("Glen Avenue")
                 .withVoters(asList(
-                        voter().withFirstName("Andy").withPollingDistrict("PD").withElectorNumber("11").withElectorSuffix("1").withTelephone("0987654321").withLastName("Benz").build(),
-                        voter().withFirstName("Mike").withPollingDistrict("PD").withElectorNumber("22").withElectorSuffix("2").withTelephone("0987654321").withLastName("Benz").build(),
-                        voter().withFirstName("Samo").withPollingDistrict("PD").withElectorNumber("33").withElectorSuffix("3").withTelephone("0987654321").withLastName("Benz").build()
+                        voterWithDefaults().withFirstName("Andy").withPollingDistrict("PD").withElectorNumber("11").withElectorSuffix("1").withTelephone("0987654321").withLastName("Benz").build(),
+                        voterWithDefaults().withFirstName("Mike").withPollingDistrict("PD").withElectorNumber("22").withElectorSuffix("2").withTelephone("0987654321").withLastName("Benz").build(),
+                        voterWithDefaults().withFirstName("Samo").withPollingDistrict("PD").withElectorNumber("33").withElectorSuffix("3").withTelephone("0987654321").withLastName("Benz").build()
                 )).build();
 
         List<ElectorRow> electorRows = underTest.apply("E0123456", property);

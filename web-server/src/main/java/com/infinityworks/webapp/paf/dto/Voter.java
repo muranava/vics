@@ -1,99 +1,29 @@
 package com.infinityworks.webapp.paf.dto;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import org.immutables.value.Value;
 
+import javax.annotation.Nullable;
+
+@Value.Immutable
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class Voter {
-
-    private final String pollingDistrict;
-    private final String electorNumber;
-    private final String electorSuffix;
-    private final String telephone;
-    private final String title;
-    private final String firstName;
-    private final String initial;
-    private final String lastName;
-    private final Voting voting;
-    private final Flags flags;
-    private final Issues issues;
-    private final Volunteer volunteer;
-
-    @JsonCreator
-    public Voter(
-            @JsonProperty("polling_district") String pollingDistrict,
-            @JsonProperty("elector_number") String electorNumber,
-            @JsonProperty("elector_suffix") String electorSuffix,
-            @JsonProperty("telephone") String telephone,
-            @JsonProperty("title") String title,
-            @JsonProperty("first_name") String firstName,
-            @JsonProperty("initial") String initial,
-            @JsonProperty("last_name") String lastName,
-            @JsonProperty("voting") Voting voting,
-            @JsonProperty("flags") Flags flags,
-            @JsonProperty("issues") Issues issues,
-            @JsonProperty("volunteer") Volunteer volunteer) {
-
-        this.pollingDistrict = pollingDistrict;
-        this.electorNumber = electorNumber;
-        this.electorSuffix = electorSuffix;
-        this.telephone = telephone;
-        this.title = title;
-        this.firstName = firstName;
-        this.initial = initial;
-        this.lastName = lastName;
-        this.voting = voting;
-        this.flags = flags;
-        this.issues = issues;
-        this.volunteer = volunteer;
-    }
-
-    public String getPollingDistrict() {
-        return pollingDistrict;
-    }
-
-    public String getElectorNumber() {
-        return electorNumber;
-    }
-
-    public String getElectorSuffix() {
-        return electorSuffix;
-    }
-
-    public String getTelephone() {
-        return telephone;
-    }
-
-    public String getTitle() {
-        return title;
-    }
-
-    public String getFirstName() {
-        return firstName;
-    }
-
-    public String getInitial() {
-        return initial;
-    }
-
-    public String getLastName() {
-        return lastName;
-    }
-
-    public Voting getVoting() {
-        return voting;
-    }
-
-    public Flags getFlags() {
-        return flags;
-    }
-
-    public Issues getIssues() {
-        return issues;
-    }
-
-    public Volunteer getVolunteer() {
-        return volunteer;
-    }
+@Value.Style(init = "with*")
+@JsonDeserialize(as = ImmutableVoter.class)
+@JsonSerialize(as = ImmutableVoter.class)
+public interface Voter {
+    @Nullable @JsonProperty("polling_district") String pollingDistrict();
+    @Nullable @JsonProperty("elector_number") String electorNumber();
+    @Nullable @JsonProperty("elector_suffix") String electorSuffix();
+    @Nullable @JsonProperty("telephone") String telephone();
+    @Nullable @JsonProperty("title") String title();
+    @Nullable @JsonProperty("first_name") String firstName();
+    @Nullable @JsonProperty("initial") String initial();
+    @Nullable @JsonProperty("last_name") String lastName();
+    @Nullable @JsonProperty("voting") Voting voting();
+    @Nullable @JsonProperty("flags") Flags flags();
+    @Nullable @JsonProperty("issues") Issues issues();
+    @Nullable @JsonProperty("volunteer") Volunteer volunteer();
 }

@@ -18,6 +18,6 @@ public class PropertyTest {
         assertThat(property.street(), is("Tranwell Court"));
         assertThat(property.house(), is("1"));
         assertThat(property.postCode(), is("NE61 6PG"));
-        assertThat(property.voters().get(0).getFirstName(), is("John"));
+        assertThat(property.voters().get(0).firstName(), is("John"));
     }
 }
