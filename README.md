@@ -28,8 +28,6 @@ This will generate a ```/dist``` folder that contains all artefacts for deployme
     * web-server - the main web application that provides data to the UI and manages users (Java/Spring Boot)
     * web-client - the user interface (AngularJS app)
     * common - utilities and language extensions that can be reused across all modules
-    * common-dto - data transfer objects that can be shared between modules
-    * test-support - test related utilities, matchers and builders
     * pdf-gen - code to generate PDFs from elector data
     * tools - scripts and tools for managing data and deploying the application
 
