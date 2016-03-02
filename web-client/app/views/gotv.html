@@ -74,7 +74,7 @@
                     <br>
                   </div>
                 </div>
-                <div class="row" >
+                <div class="row">
                   <div class="form-group" style="margin-top: 25px">
                     <label class="col-sm-3 control-label">Voting Likelihood <a class="btn btn-icon-toggle btn-refresh"
                                                                                data-toggle="modal"
@@ -106,20 +106,81 @@
 
                 <br>
 
-                <!-- Toggle filters -->
-                <div class="row" ng-repeat="filter in toggleFilters">
-
+                <!-- Wants PV filter -->
+                <div class="row">
                   <div class="form-group">
-                    <label class="col-sm-3 control-label">{{filter.label}}</label>
+                    <label class="col-sm-3 control-label">Wants PV</label>
                     <div class="col-sm-3">
-                      <switch id="toggle{{$index}}" name="toggle{{$index}}" ng-model="filter.enabled" class="red"></switch>
+                      <switch id="wantsPVSwitch" name="wantsPVSwitch" ng-model="radios[0].enabled" class="red"></switch>
                     </div>
-                    <div class="col-sm-6" ng-show="filter.enabled">
-                      <label class="radio-inline radio-styled">
-                        <input type="radio" name="{{filter.modelName}}" ng-model="filter.value" value="filter"><span>Yes</span>
+                    <div class="col-sm-6" ng-show="radios[0].enabled">
+                      <label for="wantsPVYes" class="radio-inline radio-styled">
+                        <input ng-click="radios[0].handler(true)" name="wantsPVRadioValue" id="wantsPVYes" type="radio"
+                               ng-model="wantsPVRadioValue" value="true"><span>Yes</span>
                       </label>
-                      <label class="radio-inline radio-styled">
-                        <input type="radio" name="{{filter.modelName}}" ng-model="filter.value" value="filter"><span>No</span>
+                      <label for="wantsPVNo" class="radio-inline radio-styled">
+                        <input ng-click="radios[0].handler(false)" name="wantsPVRadioValue" id="wantsPVNo" type="radio"
+                               ng-model="wantsPVRadioValue" ng-value="false"><span>No</span>
+                      </label>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Has PV filter -->
+                <div class="row">
+                  <div class="form-group">
+                    <label class="col-sm-3 control-label">Has Postal Vote</label>
+                    <div class="col-sm-3">
+                      <switch id="hasPVSwitch" name="hasPVSwitch" ng-model="radios[1].enabled" class="red"></switch>
+                    </div>
+                    <div class="col-sm-6" ng-show="radios[1].enabled">
+                      <label for="hasPVYes" class="radio-inline radio-styled">
+                        <input ng-click="radios[1].handler(true)" name="hasPVRadioValue" id="hasPVYes" type="radio"
+                               ng-model="hasPVValue" value="true"><span>Yes</span>
+                      </label>
+                      <label for="hasPVNo" class="radio-inline radio-styled">
+                        <input ng-click="radios[1].handler(false)" name="hasPVRadioValue" id="hasPVNo" type="radio"
+                               ng-model="hasPVValue" ng-value="false"><span>No</span>
+                      </label>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Lift filter -->
+                <div class="row">
+                  <div class="form-group">
+                    <label class="col-sm-3 control-label">Needs Lift</label>
+                    <div class="col-sm-3">
+                      <switch id="liftSwitch" name="liftSwitch" ng-model="radios[2].enabled" class="red"></switch>
+                    </div>
+                    <div class="col-sm-6" ng-show="radios[2].enabled">
+                      <label for="liftYes" class="radio-inline radio-styled">
+                        <input ng-click="radios[2].handler(true)" name="liftRadioValue" id="liftYes" type="radio"
+                               ng-model="liftRadioValue" value="true"><span>Yes</span>
+                      </label>
+                      <label for="liftNo" class="radio-inline radio-styled">
+                        <input ng-click="radios[2].handler(false)" name="liftRadioValue" id="liftNo" type="radio"
+                               ng-model="liftRadioValue" ng-value="false"><span>No</span>
+                      </label>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Poster filter -->
+                <div class="row">
+                  <div class="form-group">
+                    <label class="col-sm-3 control-label">Display Poster</label>
+                    <div class="col-sm-3">
+                      <switch id="posterSwitch" name="posterSwitch" ng-model="radios[3].enabled" class="red"></switch>
+                    </div>
+                    <div class="col-sm-6" ng-show="radios[3].enabled">
+                      <label for="posterYes" class="radio-inline radio-styled">
+                        <input ng-click="radios[3].handler(true)" name="posterRadioValue" id="posterYes" type="radio"
+                               ng-model="posterRadioValue" value="true"><span>Yes</span>
+                      </label>
+                      <label for="posterNo" class="radio-inline radio-styled">
+                        <input ng-click="radios[3].handler(false)" ame="posterRadioValue" id="posterNo" type="radio"
+                               ng-model="posterRadioValue" ng-value="false"><span>No</span>
                       </label>
                     </div>
                   </div>
@@ -136,6 +197,11 @@
                 <div class="alert alert-callout alert-warning" ng-if="errorLoadingData" role="alert">
                   <strong>Error!</strong> Failed to download electors.
                 </div>
+                <div class="alert alert-callout alert-warning" ng-if="validationErrors.length" role="alert">
+                  <p ng-repeat="error in validationErrors">
+                    <i class="fa fa-warning"></i> &nbsp;{{error}}
+                  </p>
+                </div>
 
                 <div class="card">
                   <div class="card-actionbar">
@@ -144,12 +210,23 @@
                               ng-disabled="numStreetsSelected === 0">Print Selected
                       </button>
                       <a class="btn btn-danger btn-sm raised pull-left button-group-spacing" data-toggle="modal"
-                         data-target="#simpleModal">Print All</a>
+                         data-target="#confirmPrintAllModal">Print All</a>
                     </div>
                   </div>
-                  <div class="card-body no-padding">
+                  <div class="card-body">
+                    <div class="form">
+                      <div class="form-group">
+                        <div class="input-group">
+                          <div class="input-group-content">
+                            <input type="text" class="form-control" id="filter" placeholder="Filter streets"
+                                   ng-model="streetFilter">
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
                     <ul class="list" data-sortable="true">
-                      <li class="tile" ng-repeat="street in streets">
+                      <li class="tile" ng-repeat="street in streets | filter:streetFilter">
                         <div class="checkbox checkbox-styled tile-text">
                           <label>
                             <input ng-change="getNumStreetsSelected()" type="checkbox" ng-model="street.selected">
@@ -234,3 +311,28 @@
   </div>
 </div>
 
+<!-- Confirm Save All modal -->
+<div class="modal fade" id="confirmPrintAllModal" tabindex="-1" role="dialog"
+     aria-labelledby="confirmPrintAllModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        <h4 class="modal-title" id="confirmPrintAllModalLabel">Download Canvass Card</h4>
+      </div>
+      <div class="modal-body">
+        <div class="alert alert-callout alert-danger" role="alert">
+          <strong>Warning</strong> Downloading a large number of streets may take several minutes depending on the speed
+          of your internet connection
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn raised btn-sm btn-primary" data-dismiss="modal">Cancel</button>
+        <button type="button" class="btn raised btn-sm btn-danger" data-dismiss="modal" ng-click="onPrintAll()">
+          Continue
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

@@ -64,9 +64,9 @@ public class DocumentBuilder {
 
     private Document createDocument() {
         return new Document(PageSize.A4.rotate(),
-                    TableConfig.PAGE_MARGIN_LEFT,
-                    TableConfig.PAGE_MARGIN_RIGHT,
-                    TableConfig.PAGE_MARGIN_TOP,
-                    TableConfig.PAGE_MARGIN_BOTTOM);
+                    CanvassTableConfig.PAGE_MARGIN_LEFT,
+                    CanvassTableConfig.PAGE_MARGIN_RIGHT,
+                    CanvassTableConfig.PAGE_MARGIN_TOP,
+                    CanvassTableConfig.PAGE_MARGIN_BOTTOM);
     }
 }

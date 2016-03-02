@@ -36,7 +36,7 @@ input:-webkit-autofill {
 
 /* Spinner overrides */
 #loading-bar .bar {
-  background: #C5443B;
+  background: #D92C27;
 }
 
 /* Fancy blur effect */
@@ -86,7 +86,7 @@ input:-webkit-autofill:focus {
 
 /* Range slider overrides */
 rzslider .rz-pointer {
-  background-color: #d43335;
+  background-color: #D92C27;
 }
 rzslider .rz-pointer.rz-active:after {
   background-color: #fff9ff;

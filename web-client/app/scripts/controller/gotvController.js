@@ -1,17 +1,61 @@
-
 angular
   .module('canvass')
-  .controller('gotvController', function($scope, wardService, gotvService) {
+  .controller('gotvController', function ($scope, wardService, gotvService) {
 
     $scope.numStreetsSelected = 0;
+    $scope.validationErrors = [];
 
-    $scope.toggleFilters = [
-      {label: 'Wants PV', modelName: 'wantsPV', enabled: false, isYes: false, isNo: false},
-      {label: 'Has PV', modelName: 'wantsPV', enabled: false, isYes: false, isNo: false},
-      {label: 'Needs Lift', modelName: 'lift', enabled: false, isYes: false, isNo: false},
-      {label: 'Inaccessible', modelName: 'inaccessible', enabled: false, isYes: false, isNo: false},
-      {label: 'Dead', modelName: 'dead', enabled: false, isYes: false, isNo: false}
+    /**
+     * Model for radio buttons (it should be easier than this.
+     * I was able to almost render the UI dynamically from a model, but wan't able to
+     * get it to work with default values, so I went back to the primitive version - time).
+     */
+    $scope.radios = [
+      {
+        name: 'wantsPV',
+        enabled: false,
+        value: null,
+        handler: function (newValue) {
+          this.value = newValue;
+        }
+      },
+      {
+        name: 'hasPV',
+        enabled: false,
+        value: null,
+        handler: function (newValue) {
+          this.value = newValue;
+        }
+      },
+      {
+        name: 'lift',
+        enabled: false,
+        value: null,
+        handler: function (newValue) {
+          this.value = newValue;
+        }
+      },
+      {
+        name: 'poster',
+        enabled: false,
+        value: null,
+        handler: function (newValue) {
+          this.value = newValue;
+        }
+      }
     ];
+
+    function validateFlagsRadios() {
+      var errors = [];
+
+      $scope.radios.map(function (radio) {
+        if (radio.enabled && radio.value === null) {
+          errors.push("Radio For " + radio.name + " is not selected");
+        }
+      });
+
+      return errors;
+    }
 
     function defaultSliderOptions() {
       return {
@@ -25,6 +69,7 @@ angular
         }
       };
     }
+
     $scope.intentionSlider = defaultSliderOptions();
     $scope.likelihoodSlider = defaultSliderOptions();
 
@@ -35,14 +80,14 @@ angular
         });
     };
 
-    $scope.onLoadedConstituencies = function(constituencies) {
+    $scope.onLoadedConstituencies = function (constituencies) {
       if (_.isEmpty(constituencies)) {
         $scope.userHasNoAssociations = true;
       }
       $scope.contentLoaded = true;
     };
 
-    $scope.onSelectWard = function(directiveModel) {
+    $scope.onSelectWard = function (directiveModel) {
       $scope.ward = directiveModel.ward;
       $scope.constituency = directiveModel.constituency;
 
@@ -78,26 +123,37 @@ angular
     };
 
     function doPrint(wardCode, streets) {
-      var data = buildRequest(streets);
-      gotvService.retrievePdfOfElectorsByStreets(wardCode, data)
-        .success(function (response) {
-          var file = new Blob([response], {type: 'application/pdf'});
-          saveAs(file, $scope.ward.code + '.pdf');
-        })
-        .error(handleDownloadPdfError);
+      $scope.validationErrors = validateFlagsRadios();
+      if (_.isEmpty($scope.validationErrors)) {
+        var data = buildRequest(streets);
+        gotvService.retrievePdfOfElectorsByStreets(wardCode, data)
+          .success(function (response) {
+            var file = new Blob([response], {type: 'application/pdf'});
+            saveAs(file, $scope.ward.code + '.pdf');
+          })
+          .error(handleDownloadPdfError);
+      }
     }
 
     function buildRequest(streets) {
+      var flags = getActiveOptionalFlags();
+      flags.intentionFrom = $scope.intentionSlider.minValue;
+      flags.intentionTo = $scope.intentionSlider.maxValue;
+      flags.likelihoodFrom = $scope.likelihoodSlider.minValue;
+      flags.likelihoodTo = $scope.likelihoodSlider.maxValue;
       return {
         streets: streets,
-        flags: {
-          intentionFrom: $scope.intentionSlider.minValue,
-          intentionTo: $scope.intentionSlider.maxValue,
-          likelihoodFrom: $scope.likelihoodSlider.minValue,
-          likelihoodTo: $scope.likelihoodSlider.maxValue,
-          hasPV: false,
-          wantsPV: false
-        }
+        flags: flags
       };
+    }
+
+    function getActiveOptionalFlags() {
+      var flags = {};
+      $scope.radios.map(function (radio) {
+        if (radio.enabled && radio.value !== null) {
+          flags[radio.name] = radio.value;
+        }
+      });
+      return flags;
     }
   });

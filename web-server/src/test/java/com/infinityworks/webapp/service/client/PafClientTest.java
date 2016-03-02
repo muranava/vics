@@ -26,7 +26,7 @@ import static org.mockito.Mockito.when;
 public class PafClientTest {
 
     private final PafServerStub pafApiStub = new PafServerStub();
-    private CanvassConfig canvassConfig = mock(CanvassConfig.class);
+    private final CanvassConfig canvassConfig = mock(CanvassConfig.class);
     private PafClient pafClient;
 
     @Before
