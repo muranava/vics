@@ -10,7 +10,7 @@ import java.util.List;
 
 @Value.Immutable
 @JsonIgnoreProperties(ignoreUnknown = true)
-@Value.Style(init = "with*")
+@Value.Style(init = "with*", jdkOnly = true)
 @JsonDeserialize(as = ImmutablePropertyResponse.class)
 @JsonSerialize(as = ImmutablePropertyResponse.class)
 public interface PropertyResponse {
