@@ -34,7 +34,9 @@ public class PermissibleTest {
                 .withConstituencies(newHashSet(covSouth))
                 .build();
 
-        assertThat(user.hasWardPermission(henley), is(true));
+        boolean actual = user.hasWardPermission(henley);
+
+        assertThat(actual, is(true));
     }
 
     @Test
