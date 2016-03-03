@@ -1,8 +1,6 @@
 package com.infinityworks.webapp.service;
 
 import com.infinityworks.common.lang.Try;
-import com.infinityworks.pdfgen.DocumentBuilder;
-import com.infinityworks.pdfgen.model.GeneratedPdfTable;
 import com.infinityworks.webapp.domain.Constituency;
 import com.infinityworks.webapp.domain.Role;
 import com.infinityworks.webapp.domain.User;
@@ -10,7 +8,11 @@ import com.infinityworks.webapp.domain.Ward;
 import com.infinityworks.webapp.paf.client.PafClient;
 import com.infinityworks.webapp.paf.dto.ImmutableProperty;
 import com.infinityworks.webapp.paf.dto.Property;
+import com.infinityworks.webapp.pdf.CanvassTableConfig;
+import com.infinityworks.webapp.pdf.DocumentBuilder;
 import com.infinityworks.webapp.pdf.PDFTableGenerator;
+import com.infinityworks.webapp.pdf.TableBuilder;
+import com.infinityworks.webapp.pdf.model.GeneratedPdfTable;
 import com.infinityworks.webapp.rest.dto.ElectorsByStreetsRequest;
 import com.infinityworks.webapp.rest.dto.Street;
 import com.lowagie.text.pdf.PdfPTable;
@@ -42,6 +44,7 @@ public class ElectorsServiceTest {
     private PafClient pafClient;
     private DocumentBuilder documentBuilder;
     private WardService wardService;
+    private TableBuilder tableBuilder = new TableBuilder(new CanvassTableConfig());
 
     @Before
     public void setUp() throws Exception {
@@ -56,8 +59,8 @@ public class ElectorsServiceTest {
         Ward w = ward().withWardCode("E0911334").withConstituency(c).build();
         GeneratedPdfTable table1 = new GeneratedPdfTable(new PdfPTable(1), "Low Road", w.getName(), w.getCode(), w.getConstituency().getName());
         GeneratedPdfTable table2 = new GeneratedPdfTable(new PdfPTable(1), "High Road", w.getName(), w.getCode(), w.getConstituency().getName());
-        PDFTableGenerator pdfTableGenerator = (voters1, wardCode, wardName, constituencyName) -> asList(table1, table2);
-        underTest = new ElectorsService(pafClient, wardService, pdfTableGenerator, mock(DocumentBuilder.class));
+        PDFTableGenerator pdfTableGenerator = (tableBuilder, voters1, wardCode, wardName, constituencyName) -> asList(table1, table2);
+        underTest = new ElectorsService(pafClient, wardService, pdfTableGenerator);
 
         User user = user().withRole(Role.USER).build();
 
@@ -78,7 +81,7 @@ public class ElectorsServiceTest {
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream(4);
         given(documentBuilder.buildPages(tables)).willReturn(outputStream);
 
-        Try<ByteArrayOutputStream> byStreets = underTest.electorsByStreets(request, w.getCode(), user);
+        Try<ByteArrayOutputStream> byStreets = underTest.getPdfOfElectorsByStreet(tableBuilder, documentBuilder, request, w.getCode(), user);
 
         assertThat(byStreets.isSuccess(), is(true));
     }

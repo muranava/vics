@@ -1,9 +1,12 @@
 package com.infinityworks.webapp.feature;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.infinityworks.common.lang.Try;
 import com.infinityworks.webapp.common.RequestValidator;
 import com.infinityworks.webapp.domain.User;
 import com.infinityworks.webapp.error.RestErrorHandler;
+import com.infinityworks.webapp.paf.dto.ImmutableRecordContactRequest;
+import com.infinityworks.webapp.paf.dto.RecordContactRequest;
 import com.infinityworks.webapp.repository.UserRepository;
 import com.infinityworks.webapp.rest.UserController;
 import com.infinityworks.webapp.rest.WardController;
@@ -28,6 +31,9 @@ import java.util.List;
 import java.util.UUID;
 
 import static com.infinityworks.webapp.common.Json.objectMapper;
+import static com.infinityworks.webapp.testsupport.Fixtures.flagsWithDefaults;
+import static com.infinityworks.webapp.testsupport.Fixtures.issuesWithDefaults;
+import static com.infinityworks.webapp.testsupport.Fixtures.votingWithDefaults;
 import static java.util.Arrays.asList;
 import static java.util.Collections.singletonList;
 import static org.hamcrest.CoreMatchers.hasItem;
@@ -256,5 +262,18 @@ public class WardsTest extends WebApplicationTest {
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("hasAssociation", Matchers.is(true)));
+    }
+
+    public static void main(String... args) throws JsonProcessingException {
+
+        RecordContactRequest request = ImmutableRecordContactRequest.builder()
+                .withContactType("canvass")
+                .withUserId(UUID.randomUUID().toString())
+                .withFlags(flagsWithDefaults().build())
+                .withIssues(issuesWithDefaults().build())
+                .withVoting(votingWithDefaults().build())
+                .build();
+
+        System.out.println(objectMapper.writeValueAsString(request));
     }
 }

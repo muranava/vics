@@ -27,6 +27,6 @@ public class VoterTest {
         assertThat(voter.flags().wantsPV(), is(false));
         assertThat(voter.issues().cost(), is(false));
         assertThat(voter.issues().sovereignty(), is(true));
-        assertThat(voter.issues().border(), is(nullValue()));
+        assertThat(voter.issues().border(), is(false));
     }
 }

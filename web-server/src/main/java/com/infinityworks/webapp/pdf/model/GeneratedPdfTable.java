@@ -1,4 +1,4 @@
-package com.infinityworks.pdfgen.model;
+package com.infinityworks.webapp.pdf.model;
 
 import com.lowagie.text.pdf.PdfPTable;
 

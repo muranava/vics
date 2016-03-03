@@ -1,9 +1,11 @@
 package com.infinityworks.webapp.rest;
 
-import com.infinityworks.webapp.paf.dto.RecordVote;
 import com.infinityworks.webapp.common.RequestValidator;
 import com.infinityworks.webapp.error.NotFoundFailure;
 import com.infinityworks.webapp.error.RestErrorHandler;
+import com.infinityworks.webapp.paf.dto.RecordVote;
+import com.infinityworks.webapp.pdf.DocumentBuilder;
+import com.infinityworks.webapp.pdf.TableBuilder;
 import com.infinityworks.webapp.rest.dto.ElectorsByStreetsRequest;
 import com.infinityworks.webapp.rest.dto.RecordContactRequest;
 import com.infinityworks.webapp.rest.dto.SearchElectors;
@@ -13,6 +15,7 @@ import com.infinityworks.webapp.service.RecordVoteService;
 import com.infinityworks.webapp.service.SessionService;
 import com.lowagie.text.DocumentException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -26,8 +29,10 @@ import static org.springframework.web.bind.annotation.RequestMethod.POST;
 
 @RestController
 @RequestMapping("/elector")
-public class ElectorsController {
+public class VoterController {
 
+    private final TableBuilder tableBuilder;
+    private final DocumentBuilder documentBuilder;
     private final ElectorsService electorsService;
     private final RequestValidator requestValidator;
     private final RecordVoteService recordVoteService;
@@ -36,12 +41,16 @@ public class ElectorsController {
     private final RestErrorHandler errorHandler;
 
     @Autowired
-    public ElectorsController(ElectorsService electorsService,
-                              RequestValidator requestValidator,
-                              RecordVoteService recordVoteService,
-                              RecordContactService recordContactService,
-                              SessionService sessionService,
-                              RestErrorHandler errorHandler) {
+    public VoterController(@Qualifier("canvass") TableBuilder tableBuilder,
+                           @Qualifier("canvass") DocumentBuilder documentBuilder,
+                           ElectorsService electorsService,
+                           RequestValidator requestValidator,
+                           RecordVoteService recordVoteService,
+                           RecordContactService recordContactService,
+                           SessionService sessionService,
+                           RestErrorHandler errorHandler) {
+        this.tableBuilder = tableBuilder;
+        this.documentBuilder = documentBuilder;
         this.electorsService = electorsService;
         this.requestValidator = requestValidator;
         this.recordVoteService = recordVoteService;
@@ -84,7 +93,7 @@ public class ElectorsController {
             Principal principal) throws DocumentException {
         return requestValidator.validate(electorsByStreetsRequest)
                 .flatMap(streets -> sessionService.extractUserFromPrincipal(principal))
-                .flatMap(user -> electorsService.electorsByStreets(electorsByStreetsRequest, wardCode, user))
+                .flatMap(user -> electorsService.getPdfOfElectorsByStreet(tableBuilder, documentBuilder, electorsByStreetsRequest, wardCode, user))
                 .fold(error -> {
                     if (error instanceof NotFoundFailure) {
                         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(error);

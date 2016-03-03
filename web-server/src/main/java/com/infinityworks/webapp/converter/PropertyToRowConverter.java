@@ -1,7 +1,7 @@
 package com.infinityworks.webapp.converter;
 
-import com.infinityworks.pdfgen.model.ElectorRow;
-import com.infinityworks.pdfgen.model.ElectorRowBuilder;
+import com.infinityworks.webapp.pdf.model.ElectorRow;
+import com.infinityworks.webapp.pdf.model.ElectorRowBuilder;
 import com.infinityworks.webapp.paf.dto.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.function.BiFunction;
 
 import static com.infinityworks.common.lang.StringExtras.nullToEmpty;
-import static com.infinityworks.pdfgen.model.ElectorRowBuilder.electorRow;
+import static com.infinityworks.webapp.pdf.model.ElectorRowBuilder.electorRow;
 import static java.util.stream.Collectors.toList;
 
 @Component
@@ -49,6 +49,7 @@ public class PropertyToRowConverter implements BiFunction<String, Property, List
                         row.withHasPV(createCheckBox(flags.hasPV()))
                                 .withWantsPV(createCheckBox(flags.wantsPV()))
                                 .withNeedsLift(createCheckBox(flags.lift()))
+                                .withInaccessible(createCheckBox(flags.inaccessible()))
                                 .withDeceased(createCheckBox(flags.deceased()));
                     }
 

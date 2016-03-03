@@ -1,13 +1,12 @@
 package com.infinityworks.webapp.rest;
 
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.infinityworks.webapp.common.RequestValidator;
 import com.infinityworks.common.lang.Try;
 import com.infinityworks.webapp.domain.CurrentUser;
 import com.infinityworks.webapp.domain.Role;
 import com.infinityworks.webapp.error.RestErrorHandler;
-import com.infinityworks.webapp.rest.dto.AuthenticationToken;
-import com.infinityworks.webapp.rest.dto.CreateUserRequest;
-import com.infinityworks.webapp.rest.dto.UpdateUserRequest;
+import com.infinityworks.webapp.rest.dto.*;
 import com.infinityworks.webapp.security.SecurityUtils;
 import com.infinityworks.webapp.service.SessionService;
 import com.infinityworks.webapp.service.UserService;

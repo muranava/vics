@@ -3,8 +3,9 @@ package com.infinityworks.webapp.service;
 import com.infinityworks.common.lang.Try;
 import com.infinityworks.webapp.domain.User;
 import com.infinityworks.webapp.error.NotAuthorizedFailure;
-import com.infinityworks.webapp.rest.dto.RecordContactRequest;
 import com.infinityworks.webapp.paf.client.PafClient;
+import com.infinityworks.webapp.paf.converter.RecordContactToPafConverter;
+import com.infinityworks.webapp.rest.dto.RecordContactRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,12 +17,15 @@ public class RecordContactService {
     private final Logger log = LoggerFactory.getLogger(ElectorsService.class);
     private final PafClient pafClient;
     private final WardService wardService;
+    private final RecordContactToPafConverter recordContactToPafConverter;
 
     @Autowired
     public RecordContactService(PafClient pafClient,
-                                WardService wardService) {
+                                WardService wardService,
+                                RecordContactToPafConverter recordContactToPafConverter) {
         this.pafClient = pafClient;
         this.wardService = wardService;
+        this.recordContactToPafConverter = recordContactToPafConverter;
     }
 
     /**
@@ -39,6 +43,8 @@ public class RecordContactService {
         }
         return wardService
                 .getByCode(contactRequest.getWardCode(), user)
-                .flatMap(ward -> pafClient.recordContact(ern, contactRequest));
+                .flatMap(ward -> pafClient.recordContact(ern, recordContactToPafConverter.apply(user, contactRequest)))
+                .map(response -> contactRequest);
+
     }
 }

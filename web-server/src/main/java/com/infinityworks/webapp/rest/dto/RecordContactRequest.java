@@ -12,8 +12,6 @@ import javax.validation.constraints.NotNull;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class RecordContactRequest {
 
-    @NotEmpty
-    private final String ern;
     @NotNull
     @Min(1)
     @Max(5)
@@ -40,10 +38,11 @@ public class RecordContactRequest {
     private final Boolean poster;
     @NotEmpty
     private final String wardCode;
+    @NotNull
+    private final Boolean inaccessible;
 
     @JsonCreator
-    public RecordContactRequest(@JsonProperty("ern") String ern,
-                                @JsonProperty("intention") Integer intention,
+    public RecordContactRequest(@JsonProperty("intention") Integer intention,
                                 @JsonProperty("likelihood") Integer likelihood,
                                 @JsonProperty("cost") Boolean cost,
                                 @JsonProperty("sovereignty") Boolean sovereignty,
@@ -53,8 +52,8 @@ public class RecordContactRequest {
                                 @JsonProperty("wantsPV") Boolean wantsPV,
                                 @JsonProperty("deceased") Boolean deceased,
                                 @JsonProperty("poster") Boolean poster,
-                                @JsonProperty("wardCode") String wardCode) {
-        this.ern = ern;
+                                @JsonProperty("wardCode") String wardCode,
+                                @JsonProperty("inaccessible") Boolean inaccessible) {
         this.intention = intention;
         this.likelihood = likelihood;
         this.cost = cost;
@@ -66,10 +65,7 @@ public class RecordContactRequest {
         this.deceased = deceased;
         this.poster = poster;
         this.wardCode = wardCode;
-    }
-
-    public String getErn() {
-        return ern;
+        this.inaccessible = inaccessible;
     }
 
     public Integer getIntention() {
@@ -114,5 +110,9 @@ public class RecordContactRequest {
 
     public String getWardCode() {
         return wardCode;
+    }
+
+    public Boolean getInaccessible() {
+        return inaccessible;
     }
 }

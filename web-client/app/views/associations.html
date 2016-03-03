@@ -29,7 +29,8 @@
           <div class="card-body">
             <div class="input-group">
               <div class="input-group-content">
-                <input type="text" class="form-control" id="readonly5" value="Readonly input" ng-model="user.username" readonly="">
+                <input type="text" class="form-control" id="readonly5" value="Readonly input" ng-model="user.username"
+                       readonly="">
                 <label for="readonly5">username</label>
               </div>
             </div>
@@ -53,27 +54,29 @@
           </div>
           <div class="card-body">
 
-            <div class="form-group">
-              <div class="input-group">
-                <div class="input-group-btn">
-                  <button class="btn btn-success btn-sm raised" type="button" ng-click="onAddConstituency()">
-                    ADD
-                  </button>
-                </div>
-                <div class="input-group-content">
-                  <input type="text"
-                         ng-change="onConstituencyInputKeypress()"
-                         ng-readonly="readOnlyConstituency"
-                         id="constituencyInputID"
-                         placeholder="Type a constituency name"
-                         ng-model="constituencySearchModel"
-                         typeahead="c as c.name + ' (' + c.code + ')' for c in constituencies | filter:$viewValue | limitTo:8"
-                         typeahead-on-select="onSelectConstituency()"
-                         typeahead-loading="true"
-                         class="form-control" id="pw1">
+            <form class="form" ng-submit="onAddConstituency()">
+              <div class="form-group">
+                <div class="input-group">
+                  <div class="input-group-btn">
+                    <button class="btn btn-success btn-sm raised" type="submit">
+                      ADD
+                    </button>
+                  </div>
+                  <div class="input-group-content">
+                    <input type="text"
+                           ng-change="onConstituencyInputKeypress()"
+                           ng-readonly="readOnlyConstituency"
+                           id="constituencyInputID"
+                           placeholder="Type a constituency name"
+                           ng-model="constituencySearchModel"
+                           typeahead="c as c.name + ' (' + c.code + ')' for c in constituencies | filter:$viewValue | limitTo:8"
+                           typeahead-on-select="onSelectConstituency()"
+                           typeahead-loading="true"
+                           class="form-control" id="pw1">
+                  </div>
                 </div>
               </div>
-            </div>
+            </form>
             <div class="alert alert-callout alert-danger" role="alert" ng-show="invalidConstituency">
               <strong>{{constituencySearchModel}} is not a valid constituency</strong>
             </div>
@@ -92,7 +95,11 @@
                 <td>{{$index}}</td>
                 <td>{{c.name}}</td>
                 <td>{{c.code}}</td>
-                <td><button type="button" class="btn btn-sm btn-danger raised" tabindex="-1" ng-click="onDeleteConstituency(c.id)">DELETE</button></td>
+                <td>
+                  <button type="button" class="btn btn-sm btn-danger raised" tabindex="-1"
+                          ng-click="onDeleteConstituency(c.id)">DELETE
+                  </button>
+                </td>
               </tr>
               </tbody>
             </table>
@@ -116,29 +123,31 @@
           </div>
           <div class="card-body">
 
-            <div class="form-group">
-              <div class="input-group">
-                <div class="input-group-btn">
-                  <button class="btn btn-success btn-sm raised" type="button" ng-click="onAddWard()">
-                    ADD
-                  </button>
-                </div>
-                <div class="input-group-content">
+            <form class="form" ng-submit="onAddWard()">
+              <div class="form-group">
+                <div class="input-group">
+                  <div class="input-group-btn">
+                    <button class="btn btn-success btn-sm raised" type="submit">
+                      ADD
+                    </button>
+                  </div>
+                  <div class="input-group-content">
 
-                  <input type="text"
-                         ng-change="onWardInputKeypress()"
-                         ng-readonly="readOnlyConstituency"
-                         placeholder="Type a ward name"
-                         id="wardInputID"
-                         ng-model="wardSearchModel"
-                         typeahead="w as w.name + ' (' + w.code + ') in ' + w.constituency.name for w in wards | filter:$viewValue | limitTo:50"
-                         typeahead-on-select="onSelectConstituency()"
-                         typeahead-loading="true"
-                         class="form-control">
+                    <input type="text"
+                           ng-change="onWardInputKeypress()"
+                           ng-readonly="readOnlyConstituency"
+                           placeholder="Type a ward name"
+                           id="wardInputID"
+                           ng-model="wardSearchModel"
+                           typeahead="w as w.name + ' (' + w.code + ') in ' + w.constituency.name for w in wards | filter:$viewValue | limitTo:50"
+                           typeahead-on-select="onSelectConstituency()"
+                           typeahead-loading="true"
+                           class="form-control">
+                  </div>
                 </div>
+
               </div>
-
-            </div>
+            </form>
             <div class="alert alert-callout alert-danger" role="alert" ng-show="invalidWard">
               <strong>{{wardSearchModel}} is not a valid ward</strong>
             </div>
@@ -155,18 +164,23 @@
               </thead>
               <tbody>
               <tr ng-repeat="c in user.wards">
-                <td>{{$index}}</td>
+                <td>{{$index + 1}}</td>
                 <td>{{c.name}}</td>
                 <td>{{c.code}}</td>
                 <td>{{c.constituency.name}} ({{c.constituency.code}})</td>
-                <td><button type="button" class="btn btn-sm btn-danger raised" tabindex="-1" ng-click="onDeleteWard(c.id)">DELETE</button></td>
+                <td>
+                  <button type="button" class="btn btn-sm btn-danger raised" tabindex="-1"
+                          ng-click="onDeleteWard(c.id)">DELETE
+                  </button>
+                </td>
 
               </tr>
               </tbody>
             </table>
           </div>
         </div>
-        <em class="text-caption">Grants access to the given wards  in addition to any wards associated by the above constituencies</em>
+        <em class="text-caption">Grants access to the given wards in addition to any wards associated by the above
+          constituencies</em>
       </div>
     </div>
 

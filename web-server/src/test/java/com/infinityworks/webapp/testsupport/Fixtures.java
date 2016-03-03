@@ -48,6 +48,35 @@ public class Fixtures {
                 .withBorder(false);
     }
 
+    public static RecordContactRequest recordContactRequestWithDefaults() {
+        Voting voting = ImmutableVoting.builder()
+                .withIntention(3)
+                .withLikelihood(3)
+                .build();
+
+        Issues issues = ImmutableIssues.builder()
+                .withBorder(true)
+                .withCost(false)
+                .withSovereignty(false)
+                .build();
+
+        Flags flags = ImmutableFlags.builder()
+                .withLift(false)
+                .withHasPV(true)
+                .withWantsPV(false)
+                .withDeceased(false)
+                .withPoster(false)
+                .withInaccessible(false)
+                .build();
+
+        return ImmutableRecordContactRequest.builder()
+                .withContactType("canvass")
+                .withVoting(voting)
+                .withIssues(issues)
+                .withFlags(flags)
+                .build();
+    }
+
     public static Street kirbyRoad() {
         return new Street("Kirby Road", "Coventry", "Northern Quarter", "");
     }

@@ -1,4 +1,4 @@
-package com.infinityworks.pdfgen.renderer;
+package com.infinityworks.webapp.pdf.renderer;
 
 import com.lowagie.text.*;
 import com.lowagie.text.pdf.*;
@@ -35,6 +35,7 @@ public class PageInfoRenderer extends PdfPageEventHelper {
     private String constituencyName = "";
     private String wardName = "";
     private String street = "";
+    private boolean renderLikelihoodLegend = false;
 
     @Override
     public void onEndPage(PdfWriter writer, Document document) {
@@ -42,7 +43,9 @@ public class PageInfoRenderer extends PdfPageEventHelper {
         createFooter(cb, document);
         createLogo(cb);
         createIntentionKey(cb);
-        createLikelihoodKey(cb);
+        if (renderLikelihoodLegend) {
+            createLikelihoodKey(cb);
+        }
         createPageNumber(cb, document, writer);
         createMetaSection(cb);
     }
@@ -90,9 +93,10 @@ public class PageInfoRenderer extends PdfPageEventHelper {
     }
 
     private void createIntentionKey(PdfContentByte cb) {
+        int xOffset = renderLikelihoodLegend ? 565 : 535;
         ColumnText ct = new ColumnText(cb);
         ct.setText(new Phrase(INTENTION_KEY, font));
-        ct.setSimpleColumn(565, 0, 700, 590);
+        ct.setSimpleColumn(xOffset, 0, 700, 590);
         try {
             ct.go();
         } catch (DocumentException e) {
@@ -122,5 +126,9 @@ public class PageInfoRenderer extends PdfPageEventHelper {
 
     public void setStreet(String street) {
         this.street = street;
+    }
+
+    public void setRenderLikelihoodLegend(boolean renderLikelihoodLegend) {
+        this.renderLikelihoodLegend = renderLikelihoodLegend;
     }
 }

@@ -3,7 +3,6 @@ package com.infinityworks.webapp.testsupport.builder.downstream;
 import com.infinityworks.webapp.rest.dto.RecordContactRequest;
 
 public class RecordContactRequestBuilder {
-    private String ern;
     private Integer intention;
     private Integer likelihood;
     private Boolean cost;
@@ -15,14 +14,14 @@ public class RecordContactRequestBuilder {
     private Boolean deceased;
     private Boolean poster;
     private String wardCode;
+    private Boolean inaccessible;
 
     public static RecordContactRequestBuilder recordContactRequest() {
         return new RecordContactRequestBuilder().withDefaults();
     }
 
     public RecordContactRequestBuilder withDefaults() {
-        withErn("PD-123-1")
-                .withIntention(3)
+        withIntention(3)
                 .withLikelihood(3)
                 .withCost(false)
                 .withSovereignty(false)
@@ -32,12 +31,8 @@ public class RecordContactRequestBuilder {
                 .withWantsPV(false)
                 .withDeceased(false)
                 .withPoster(false)
+                .withInaccessible(false)
                 .withWardCode("E05001221");
-        return this;
-    }
-
-    public RecordContactRequestBuilder withErn(String ern) {
-        this.ern = ern;
         return this;
     }
 
@@ -96,7 +91,12 @@ public class RecordContactRequestBuilder {
         return this;
     }
 
+    public RecordContactRequestBuilder withInaccessible(Boolean inaccessible) {
+        this.inaccessible = inaccessible;
+        return this;
+    }
+
     public RecordContactRequest build() {
-        return new RecordContactRequest(ern, intention, likelihood, cost, sovereignty, border, lift, hasPV, wantsPV, deceased, poster, wardCode);
+        return new RecordContactRequest(intention, likelihood, cost, sovereignty, border, lift, hasPV, wantsPV, deceased, poster, wardCode, inaccessible);
     }
 }

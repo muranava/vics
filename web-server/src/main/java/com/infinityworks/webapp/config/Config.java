@@ -6,10 +6,12 @@ import com.fasterxml.jackson.datatype.guava.GuavaModule;
 import com.fasterxml.jackson.datatype.jdk8.Jdk8Module;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.google.common.io.Resources;
-import com.infinityworks.pdfgen.DocumentBuilder;
+import com.infinityworks.webapp.pdf.CanvassTableConfig;
+import com.infinityworks.webapp.pdf.DocumentBuilder;
 import com.infinityworks.webapp.converter.PropertyToRowConverter;
-import com.infinityworks.pdfgen.renderer.LogoRenderer;
-import com.infinityworks.pdfgen.TableBuilder;
+import com.infinityworks.webapp.pdf.GotvTableConfig;
+import com.infinityworks.webapp.pdf.renderer.LogoRenderer;
+import com.infinityworks.webapp.pdf.TableBuilder;
 import com.infinityworks.webapp.common.RequestValidator;
 import com.infinityworks.webapp.error.RestErrorHandler;
 import com.infinityworks.webapp.filter.CorsConfig;
@@ -18,6 +20,7 @@ import com.zaxxer.hikari.HikariDataSource;
 import org.apache.http.client.HttpClient;
 import org.apache.http.impl.client.HttpClientBuilder;
 import org.apache.http.impl.conn.PoolingHttpClientConnectionManager;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.orm.jpa.EntityScan;
 import org.springframework.context.annotation.Bean;
@@ -111,13 +114,27 @@ public class Config {
     }
 
     @Bean
-    public TableBuilder tableBuilder() {
-        return new TableBuilder();
+    @Qualifier("canvass")
+    public TableBuilder canvassTableBuilder() {
+        return new TableBuilder(new CanvassTableConfig());
     }
 
     @Bean
-    public DocumentBuilder documentBuilder(LogoRenderer logoRenderer) {
-        return new DocumentBuilder(logoRenderer);
+    @Qualifier("gotv")
+    public TableBuilder gotvTableBuilder() {
+        return new TableBuilder(new GotvTableConfig());
+    }
+
+    @Bean
+    @Qualifier("canvass")
+    public DocumentBuilder canvassDocumentBuilder(LogoRenderer logoRenderer) {
+        return new DocumentBuilder(logoRenderer, new CanvassTableConfig());
+    }
+
+    @Bean
+    @Qualifier("gotv")
+    public DocumentBuilder gotvDocumentBuilder(LogoRenderer logoRenderer) {
+        return new DocumentBuilder(logoRenderer, new GotvTableConfig());
     }
 
     @Bean

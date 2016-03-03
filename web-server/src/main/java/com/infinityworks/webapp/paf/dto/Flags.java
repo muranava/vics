@@ -6,7 +6,6 @@ import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import org.immutables.value.Value;
 
-import javax.annotation.Nullable;
 
 @Value.Immutable
 @JsonIgnoreProperties(ignoreUnknown = true)
@@ -14,9 +13,28 @@ import javax.annotation.Nullable;
 @JsonDeserialize(as = ImmutableFlags.class)
 @JsonSerialize(as = ImmutableFlags.class)
 public interface Flags {
-    @Nullable @JsonProperty("has_postal") Boolean hasPV();
-    @Nullable @JsonProperty("wants_postal") Boolean wantsPV();
-    @Nullable Boolean lift();
-    @Nullable Boolean deceased();
-    @Nullable Boolean inaccessible();
+    @Value.Default @JsonProperty("has_postal")
+    default Boolean hasPV() {
+        return false;
+    }
+    @Value.Default @JsonProperty("wants_postal")
+    default Boolean wantsPV() {
+        return false;
+    }
+    @Value.Default
+    default Boolean lift() {
+        return false;
+    }
+    @Value.Default
+    default Boolean deceased() {
+        return false;
+    }
+    @Value.Default
+    default Boolean inaccessible() {
+        return false;
+    }
+    @Value.Default
+    default Boolean poster() {
+        return false;
+    }
 }

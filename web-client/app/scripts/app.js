@@ -23,7 +23,7 @@ angular
   ])
   .constant('config', {
     apiUrl: 'http://localhost:8080/api/canvass',
-    supportEmail: 'canvassappsupport@voteleave.uk'
+    supportEmail: 'vicssupport@voteleave.uk'
   })
   .run(function($rootScope, config) {
     $rootScope.supportEmail = config.supportEmail;

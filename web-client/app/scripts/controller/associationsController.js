@@ -9,62 +9,59 @@ angular
 
     function loadUser() {
       userService.findByID($routeParams.id)
-        .success(function(response) {
+        .success(function (response) {
           $scope.user = response;
         })
-        .error(function() {
+        .error(function () {
           $location.path("/dashboard");
         });
     }
+
     loadUser();
 
-    $scope.onConstituencyInputKeypress = function() {
+    $scope.onConstituencyInputKeypress = function () {
       $scope.invalidConstituency = false;
       constituencyService.search($scope.constituencySearchModel, searchLimit)
-        .success(function(response) {
+        .success(function (response) {
           $scope.constituencies = response;
         });
     };
 
-    $scope.onWardInputKeypress = function() {
+    $scope.onWardInputKeypress = function () {
       $scope.invalidWard = false;
       wardService.search($scope.wardSearchModel, searchLimit)
-        .success(function(response) {
+        .success(function (response) {
           $scope.wards = response;
         });
     };
 
-    $scope.onAddConstituency = function() {
+    $scope.onAddConstituency = function () {
       clearMessages();
 
-      var selected = _.find($scope.constituencies, function(c) {
-        return c.id === $scope.constituencySearchModel.id;
-      });
-
-      if (selected) {
-        constituencyService.associateToUser(selected.id, $scope.user.id)
-          .success(function() {
+      if ($scope.constituencySearchModel && $scope.constituencySearchModel.id) {
+        constituencyService.associateToUser($scope.constituencySearchModel.id, $scope.user.id)
+          .success(function () {
             $scope.constituencySearchModel = "";
             loadUser();
           })
-          .error(function() {
+          .error(function () {
             $scope.failedToAssociateUser = true;
           });
       } else {
-        $scope.invalidConstituency = true;
+        $scope.invalidWard = true;
       }
     };
 
-    $scope.onAddWard = function() {
+    $scope.onAddWard = function () {
       clearMessages();
 
       if ($scope.wardSearchModel && $scope.wardSearchModel.id) {
         wardService.associateToUser($scope.wardSearchModel.id, $scope.user.id)
-          .success(function() {
+          .success(function () {
             $scope.wardSearchModel = "";
             loadUser();
           })
-          .error(function() {
+          .error(function () {
             $scope.failedToAssociateWard = true;
           });
       } else {
@@ -72,24 +69,24 @@ angular
       }
     };
 
-    $scope.onDeleteConstituency = function(id) {
+    $scope.onDeleteConstituency = function (id) {
       clearMessages();
       constituencyService.removeUserAssociation(id, $scope.user.id)
-        .success(function() {
+        .success(function () {
           loadUser();
         })
-        .error(function() {
+        .error(function () {
           $scope.failedToDeleteConstituency = true;
         });
     };
 
-    $scope.onDeleteWard = function(id) {
+    $scope.onDeleteWard = function (id) {
       clearMessages();
       wardService.removeUserAssociation(id, $scope.user.id)
-        .success(function() {
+        .success(function () {
           loadUser();
         })
-        .error(function() {
+        .error(function () {
           $scope.failedToDeleteWard = true;
         });
     };

@@ -1,4 +1,4 @@
-package com.infinityworks.pdfgen.renderer;
+package com.infinityworks.webapp.pdf.renderer;
 
 import com.lowagie.text.BadElementException;
 import com.lowagie.text.Document;

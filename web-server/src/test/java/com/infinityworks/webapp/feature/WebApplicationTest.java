@@ -7,6 +7,7 @@ import com.infinityworks.webapp.security.SecurityConfig;
 import com.infinityworks.webapp.service.UserService;
 import com.infinityworks.webapp.testsupport.stub.PafServerStub;
 import org.junit.After;
+import org.junit.Before;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.SpringApplicationConfiguration;
@@ -53,6 +54,11 @@ public abstract class WebApplicationTest {
 
     protected <T> T getBean(Class<T> clazz) {
         return applicationContext.getBean(clazz);
+    }
+
+    @Before
+    public void setUp() {
+        pafApiStub.start();
     }
 
     @After

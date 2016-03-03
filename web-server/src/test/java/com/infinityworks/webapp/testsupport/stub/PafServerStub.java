@@ -31,6 +31,7 @@ public class PafServerStub {
         files.put("E05001221,Coventry", "json/paf-voters-multiple-streets.json");
         files.put("voted,ADD-1313-1", "json/paf-record-voted.json");
         files.put("search,McCall,KT25BU", "json/paf-search-voter.json");
+        files.put("postContact,E05001221-PD-123-4", "json/paf-record-contact.json");
     }
 
     public void start() {
@@ -75,6 +76,20 @@ public class PafServerStub {
                 .willReturn(aResponse()
                         .withStatus(200)
                         .withBody(jsonData)));
+    }
+
+    public void willCreateANewContactRecord(String ern) throws IOException {
+        String fileName = String.format("postContact,%s", ern);
+        String file = requireNonNull(files.get(fileName),
+                String.format("No json file for POST contact request ern=%s", ern));
+        String stubResponse = Resources.toString(getResource(file), UTF_8);
+
+        String urlPath = String.format("/v1/voter/%s", ern);
+        wireMock.register(post(urlPathMatching(urlPath))
+                .willReturn(aResponse()
+                        .withBody(stubResponse)
+                        .withStatus(200)
+                        .withHeader(CONTENT_TYPE, APPLICATION_JSON_VALUE)));
     }
 
     public void willSearchVoters(String lastName, String postCode) throws IOException {

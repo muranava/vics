@@ -1,6 +1,6 @@
 package com.infinityworks.webapp.service.dto;
 
-import com.infinityworks.pdfgen.model.ElectorRow;
+import com.infinityworks.webapp.pdf.model.ElectorRow;
 import com.infinityworks.webapp.converter.PropertyToRowConverter;
 import com.infinityworks.webapp.paf.dto.ImmutableProperty;
 import com.infinityworks.webapp.paf.dto.Property;

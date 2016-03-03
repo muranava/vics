@@ -1,13 +1,16 @@
-package com.infinityworks.pdfgen;
+package com.infinityworks.webapp.pdf;
 
-import com.infinityworks.pdfgen.model.ElectorRow;
-import com.infinityworks.pdfgen.model.GeneratedPdfTable;
-import com.lowagie.text.*;
+import com.infinityworks.webapp.pdf.model.ElectorRow;
+import com.infinityworks.webapp.pdf.model.GeneratedPdfTable;
+import com.lowagie.text.DocumentException;
+import com.lowagie.text.Element;
 import com.lowagie.text.Font;
+import com.lowagie.text.Phrase;
 import com.lowagie.text.pdf.PdfPCell;
 import com.lowagie.text.pdf.PdfPTable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.awt.*;
@@ -25,6 +28,12 @@ public class TableBuilder {
     private static final Font headerFont = new Font(HELVETICA, 10);
     private static final Color LIGHT_GREY = new Color(215, 215, 215);
     private static final Color LIGHTER_GREY = new Color(235, 235, 235);
+    private final PdfTableConfig columnDefinition;
+
+    @Autowired
+    public TableBuilder(PdfTableConfig columnDefinition) {
+        this.columnDefinition = columnDefinition;
+    }
 
     private PdfPCell createHeaderCell(String content, int rotation) {
         PdfPCell header = new PdfPCell(new Phrase(content, headerFont));
@@ -44,28 +53,29 @@ public class TableBuilder {
     }
 
     private void generateTableHeaders(PdfPTable table) {
-        table.addCell(createHeaderCell("House #", CanvassTableConfig.HORIZONTAL_TEXT_ANGLE));
-        table.addCell(createHeaderCell("Name", CanvassTableConfig.HORIZONTAL_TEXT_ANGLE));
-        table.addCell(createHeaderCell("Tel No.", CanvassTableConfig.HORIZONTAL_TEXT_ANGLE));
+        table.addCell(createHeaderCell("House #", TableProperties.HORIZONTAL_TEXT_ANGLE));
+        table.addCell(createHeaderCell("Name", TableProperties.HORIZONTAL_TEXT_ANGLE));
+        table.addCell(createHeaderCell("Tel No.", TableProperties.HORIZONTAL_TEXT_ANGLE));
 
-        PdfPCell likelihood = createHeaderCell("Voting\nLikelihood", CanvassTableConfig.HORIZONTAL_TEXT_ANGLE);
+        PdfPCell likelihood = createHeaderCell("Voting\nLikelihood", TableProperties.HORIZONTAL_TEXT_ANGLE);
         likelihood.setBackgroundColor(LIGHT_GREY);
 
         table.addCell(likelihood);
-        table.addCell(createHeaderCell("Cost", CanvassTableConfig.HORIZONTAL_TEXT_ANGLE));
-        table.addCell(createHeaderCell("Sovereignty", CanvassTableConfig.HORIZONTAL_TEXT_ANGLE));
-        table.addCell(createHeaderCell("Border", CanvassTableConfig.HORIZONTAL_TEXT_ANGLE));
+        table.addCell(createHeaderCell("Cost", TableProperties.HORIZONTAL_TEXT_ANGLE));
+        table.addCell(createHeaderCell("Sovereignty", TableProperties.HORIZONTAL_TEXT_ANGLE));
+        table.addCell(createHeaderCell("Border", TableProperties.HORIZONTAL_TEXT_ANGLE));
 
-        PdfPCell intention = createHeaderCell("Voting\nIntention", CanvassTableConfig.HORIZONTAL_TEXT_ANGLE);
+        PdfPCell intention = createHeaderCell("Voting\nIntention", TableProperties.HORIZONTAL_TEXT_ANGLE);
         intention.setBackgroundColor(LIGHT_GREY);
 
         table.addCell(intention);
-        table.addCell(createHeaderCell("Has PV", CanvassTableConfig.VERTICAL_TEXT_ANGLE));
-        table.addCell(createHeaderCell("Wants PV", CanvassTableConfig.VERTICAL_TEXT_ANGLE));
-        table.addCell(createHeaderCell("Needs Lift", CanvassTableConfig.VERTICAL_TEXT_ANGLE));
-        table.addCell(createHeaderCell("Poster", CanvassTableConfig.VERTICAL_TEXT_ANGLE));
-        table.addCell(createHeaderCell("Dead", CanvassTableConfig.VERTICAL_TEXT_ANGLE));
-        table.addCell(createHeaderCell("Roll #", CanvassTableConfig.HORIZONTAL_TEXT_ANGLE));
+        table.addCell(createHeaderCell("Has PV", TableProperties.VERTICAL_TEXT_ANGLE));
+        table.addCell(createHeaderCell("Wants PV", TableProperties.VERTICAL_TEXT_ANGLE));
+        table.addCell(createHeaderCell("Needs Lift", TableProperties.VERTICAL_TEXT_ANGLE));
+        table.addCell(createHeaderCell("Poster", TableProperties.VERTICAL_TEXT_ANGLE));
+        table.addCell(createHeaderCell("No Access", TableProperties.VERTICAL_TEXT_ANGLE));
+        table.addCell(createHeaderCell("Dead", TableProperties.VERTICAL_TEXT_ANGLE));
+        table.addCell(createHeaderCell("Roll #", TableProperties.HORIZONTAL_TEXT_ANGLE));
     }
 
     public Optional<GeneratedPdfTable> generateTableRows(List<ElectorRow> rows, String mainStreetName, String wardName, String wardCode, String constituencyName) {
@@ -73,15 +83,15 @@ public class TableBuilder {
             return Optional.empty();
         }
 
-        PdfPTable table = new PdfPTable(CanvassTableConfig.NUM_COLUMNS);
-        table.setWidthPercentage(CanvassTableConfig.TABLE_WIDTH_PERCENTAGE);
+        PdfPTable table = new PdfPTable(columnDefinition.getNumColumns());
+        table.setWidthPercentage(TableProperties.TABLE_WIDTH_PERCENTAGE);
         try {
-            table.setWidths(CanvassTableConfig.COLUMN_WIDTHS);
+            table.setWidths(columnDefinition.getColumnWidths());
         } catch (DocumentException e) {
             log.error("Incorrect table configuration");
             throw new IllegalStateException(e);
         }
-        table.setHeaderRows(CanvassTableConfig.NUM_HEADER_ROWS);
+        table.setHeaderRows(TableProperties.NUM_HEADER_ROWS);
         generateTableHeaders(table);
 
         String prevHouse = null;
@@ -126,6 +136,7 @@ public class TableBuilder {
         table.addCell(createDataCell(row.getWantsPV(), Element.ALIGN_CENTER));
         table.addCell(createDataCell(row.getNeedsLift(), Element.ALIGN_CENTER));
         table.addCell(createDataCell(row.getPoster(), Element.ALIGN_CENTER));
+        table.addCell(createDataCell(row.getInaccessible(), Element.ALIGN_CENTER));
         table.addCell(createDataCell(row.getDeceased(), Element.ALIGN_CENTER));
         table.addCell(createDataCell(row.getErn(), Element.ALIGN_LEFT));
         return prevHouse;
@@ -135,7 +146,7 @@ public class TableBuilder {
      * Adds an empty black row to signify that the house has changed
      */
     private void addChangeRow(PdfPTable table) {
-        IntStream.range(0, CanvassTableConfig.NUM_COLUMNS)
+        IntStream.range(0, columnDefinition.getNumColumns())
                 .forEach(i -> {
                     PdfPCell cell = new PdfPCell();
                     cell.setFixedHeight(0.15f);

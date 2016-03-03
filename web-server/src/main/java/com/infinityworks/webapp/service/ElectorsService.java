@@ -1,8 +1,6 @@
 package com.infinityworks.webapp.service;
 
 import com.infinityworks.common.lang.Try;
-import com.infinityworks.pdfgen.DocumentBuilder;
-import com.infinityworks.pdfgen.model.GeneratedPdfTable;
 import com.infinityworks.webapp.domain.Permissible;
 import com.infinityworks.webapp.domain.Ward;
 import com.infinityworks.webapp.error.NotAuthorizedFailure;
@@ -10,7 +8,10 @@ import com.infinityworks.webapp.error.NotFoundFailure;
 import com.infinityworks.webapp.paf.client.PafClient;
 import com.infinityworks.webapp.paf.dto.Property;
 import com.infinityworks.webapp.paf.dto.Voter;
+import com.infinityworks.webapp.pdf.DocumentBuilder;
 import com.infinityworks.webapp.pdf.PDFTableGenerator;
+import com.infinityworks.webapp.pdf.TableBuilder;
+import com.infinityworks.webapp.pdf.model.GeneratedPdfTable;
 import com.infinityworks.webapp.rest.dto.ElectorsByStreetsRequest;
 import com.infinityworks.webapp.rest.dto.SearchElectors;
 import org.slf4j.Logger;
@@ -31,37 +32,40 @@ public class ElectorsService {
     private final PafClient pafClient;
     private final WardService wardService;
     private final PDFTableGenerator pdfTableGenerator;
-    private final DocumentBuilder documentBuilder;
 
     @Autowired
     public ElectorsService(PafClient pafClient,
                            WardService wardService,
-                           PDFTableGenerator pdfTableGenerator,
-                           DocumentBuilder documentBuilder) {
+                           PDFTableGenerator pdfTableGenerator) {
         this.pafClient = pafClient;
         this.wardService = wardService;
         this.pdfTableGenerator = pdfTableGenerator;
-        this.documentBuilder = documentBuilder;
     }
 
     /**
      * Generates a PDF with the electorsByStreet grouped by the given streets.
      *
+     *
+     * @param tableBuilder
      * @param request     the streets and filter criteria to search electorsByStreet for
      * @param wardCode    the ward code associated with the streets
      * @param permissible the permissible making the request. Must have permission for the given ward
      * @return the PDF contents as a byte stream
      */
-    public Try<ByteArrayOutputStream> electorsByStreets(ElectorsByStreetsRequest request, String wardCode, Permissible permissible) {
+    public Try<ByteArrayOutputStream> getPdfOfElectorsByStreet(TableBuilder tableBuilder,
+                                                               DocumentBuilder documentBuilder,
+                                                               ElectorsByStreetsRequest request,
+                                                               String wardCode,
+                                                               Permissible permissible) {
         log.debug("Finding electorsByStreet by streets={} for permissible={}", request, permissible);
 
         return wardService.getByCode(wardCode, permissible)
                 .flatMap(ward -> pafClient.findElectorsByStreet(request.getStreets(), ward.getCode())
-                .flatMap(electorsByStreet -> renderPdfOfElectorsByStreets(request, ward, electorsByStreet)));
+                .flatMap(electorsByStreet -> renderPdfOfElectorsByStreets(tableBuilder, documentBuilder, request, ward, electorsByStreet)));
     }
 
-    private Try<ByteArrayOutputStream> renderPdfOfElectorsByStreets(ElectorsByStreetsRequest request, Ward ward, List<List<Property>> electors) {
-        List<GeneratedPdfTable> generatedPdfTables = pdfTableGenerator.generateTables(
+    private Try<ByteArrayOutputStream> renderPdfOfElectorsByStreets(TableBuilder tableBuilder, DocumentBuilder documentBuilder, ElectorsByStreetsRequest request, Ward ward, List<List<Property>> electors) {
+        List<GeneratedPdfTable> generatedPdfTables = pdfTableGenerator.generateTables(tableBuilder,
                 electors, ward.getCode(), ward.getName(), ward.getConstituency().getName());
 
         if (generatedPdfTables.isEmpty()) {

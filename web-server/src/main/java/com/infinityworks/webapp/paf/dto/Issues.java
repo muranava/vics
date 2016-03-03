@@ -5,15 +5,22 @@ import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import org.immutables.value.Value;
 
-import javax.annotation.Nullable;
-
 @Value.Immutable
 @JsonIgnoreProperties(ignoreUnknown = true)
 @Value.Style(init = "with*")
 @JsonDeserialize(as = ImmutableIssues.class)
 @JsonSerialize(as = ImmutableIssues.class)
 public interface Issues {
-    @Nullable Boolean cost();
-    @Nullable Boolean sovereignty();
-    @Nullable Boolean border();
+    @Value.Default
+    default Boolean cost() {
+        return false;
+    }
+    @Value.Default
+    default Boolean sovereignty() {
+        return false;
+    }
+    @Value.Default
+    default Boolean border() {
+        return false;
+    }
 }

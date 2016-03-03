@@ -1,8 +1,8 @@
-package com.infinityworks.pdfgen;
+package com.infinityworks.webapp.pdf;
 
-import com.infinityworks.pdfgen.model.GeneratedPdfTable;
-import com.infinityworks.pdfgen.renderer.LogoRenderer;
-import com.infinityworks.pdfgen.renderer.PageInfoRenderer;
+import com.infinityworks.webapp.pdf.model.GeneratedPdfTable;
+import com.infinityworks.webapp.pdf.renderer.LogoRenderer;
+import com.infinityworks.webapp.pdf.renderer.PageInfoRenderer;
 import com.lowagie.text.Document;
 import com.lowagie.text.DocumentException;
 import com.lowagie.text.PageSize;
@@ -20,13 +20,16 @@ import java.util.List;
 public class DocumentBuilder {
     private final Logger log = LoggerFactory.getLogger(DocumentBuilder.class);
     private final LogoRenderer logoRenderer;
+    private final PdfTableConfig tableConfig;
 
-    public DocumentBuilder(LogoRenderer logoRenderer) {
+    public DocumentBuilder(LogoRenderer logoRenderer, PdfTableConfig tableConfig) {
         this.logoRenderer = logoRenderer;
+        this.tableConfig = tableConfig;
     }
 
     /**
      * Builds a PDF as a byte stream from the given tables
+     *
      * @param pdfTables the contents of the data tables
      * @return the generated PDF document as a byte stream
      */
@@ -41,6 +44,7 @@ public class DocumentBuilder {
             throw new IllegalStateException(e);
         }
         PageInfoRenderer pageInfoRenderer = new PageInfoRenderer();
+        pageInfoRenderer.setRenderLikelihoodLegend(tableConfig.showLikelihoodLegend());
         writer.setPageEvent(pageInfoRenderer);
         writer.setPageEvent(logoRenderer);
         document.open();
@@ -64,9 +68,9 @@ public class DocumentBuilder {
 
     private Document createDocument() {
         return new Document(PageSize.A4.rotate(),
-                    CanvassTableConfig.PAGE_MARGIN_LEFT,
-                    CanvassTableConfig.PAGE_MARGIN_RIGHT,
-                    CanvassTableConfig.PAGE_MARGIN_TOP,
-                    CanvassTableConfig.PAGE_MARGIN_BOTTOM);
+                TableProperties.PAGE_MARGIN_LEFT,
+                TableProperties.PAGE_MARGIN_RIGHT,
+                TableProperties.PAGE_MARGIN_TOP,
+                TableProperties.PAGE_MARGIN_BOTTOM);
     }
 }

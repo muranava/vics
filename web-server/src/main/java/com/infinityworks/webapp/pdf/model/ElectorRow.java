@@ -1,4 +1,4 @@
-package com.infinityworks.pdfgen.model;
+package com.infinityworks.webapp.pdf.model;
 
 public class ElectorRow {
     private final String house;
@@ -16,8 +16,9 @@ public class ElectorRow {
     private final String poster;
     private final String deceased;
     private final String ern;
+    private final String inaccessible;
 
-    public ElectorRow(String house, String street, String name, String telephone, String likelihood, String issue1, String issue2, String issue3, String support, String hasPV, String wantsPV, String needsLift, String poster, String deceased, String ern) {
+    public ElectorRow(String house, String street, String name, String telephone, String likelihood, String issue1, String issue2, String issue3, String support, String hasPV, String wantsPV, String needsLift, String poster, String deceased, String ern, String inaccessible) {
         this.house = house;
         this.street = street;
         this.name = name;
@@ -33,6 +34,7 @@ public class ElectorRow {
         this.poster = poster;
         this.deceased = deceased;
         this.ern = ern;
+        this.inaccessible = inaccessible;
     }
 
     public String getHouse() {
@@ -93,5 +95,8 @@ public class ElectorRow {
 
     public String getErn() {
         return ern;
+    }
+    public String getInaccessible() {
+        return inaccessible;
     }
 }

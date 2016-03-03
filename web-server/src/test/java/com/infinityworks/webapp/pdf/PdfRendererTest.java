@@ -1,10 +1,9 @@
 package com.infinityworks.webapp.pdf;
 
-import com.infinityworks.pdfgen.TableBuilder;
-import com.infinityworks.pdfgen.model.GeneratedPdfTable;
 import com.infinityworks.webapp.converter.PropertyToRowConverter;
 import com.infinityworks.webapp.paf.dto.ImmutableProperty;
 import com.infinityworks.webapp.paf.dto.Property;
+import com.infinityworks.webapp.pdf.model.GeneratedPdfTable;
 import org.junit.Test;
 
 import java.util.List;
@@ -18,13 +17,14 @@ import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.assertThat;
 
 public class PdfRendererTest {
-    private PDFTableGenerator underTest = new PdfJetTableGenerator(new PropertyToRowConverter(), new TableBuilder());
+    private TableBuilder tableBuilder = new TableBuilder(new CanvassTableConfig());
+    private PDFTableGenerator underTest = new PdfJetTableGenerator(new PropertyToRowConverter());
 
     @Test
     public void generatesTablesFromVoters() throws Exception {
         List<List<Property>> votersByStreets = asList(street1(), street2());
 
-        List<GeneratedPdfTable> tables = underTest.generateTables(
+        List<GeneratedPdfTable> tables = underTest.generateTables(tableBuilder,
                 votersByStreets, "E0900134", "Henley", "Coventry South");
 
         assertThat(tables.size(), is(2));
@@ -42,7 +42,7 @@ public class PdfRendererTest {
     public void handlesEmptyVotersByStreets() throws Exception {
         List<List<Property>> votersByStreets = emptyList();
 
-        List<GeneratedPdfTable> tables = underTest.generateTables(votersByStreets, "E0900134",
+        List<GeneratedPdfTable> tables = underTest.generateTables(tableBuilder, votersByStreets, "E0900134",
                 "Henley", "Coventry South");
 
         assertThat(tables, is(empty()));

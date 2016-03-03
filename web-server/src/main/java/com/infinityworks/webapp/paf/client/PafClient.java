@@ -9,7 +9,6 @@ import com.infinityworks.webapp.error.PafApiFailure;
 import com.infinityworks.webapp.error.ServerFailure;
 import com.infinityworks.webapp.paf.converter.StreetToPafConverter;
 import com.infinityworks.webapp.paf.dto.*;
-import com.infinityworks.webapp.rest.dto.RecordContactRequest;
 import com.infinityworks.webapp.rest.dto.SearchElectors;
 import com.infinityworks.webapp.rest.dto.Street;
 import org.slf4j.Logger;
@@ -163,19 +162,22 @@ public class PafClient {
         HttpEntity<RecordContactRequest> entity = new HttpEntity<>(contactRecord, headers);
 
         try {
-            ResponseEntity<RecordContactRequest> response = restTemplate.exchange(url, HttpMethod.PUT, entity, RecordContactRequest.class);
+            ResponseEntity<String> r = restTemplate.exchange(url, HttpMethod.POST, entity, String.class);
+            ResponseEntity<RecordContactRequest> response = restTemplate.exchange(url, HttpMethod.POST, entity, RecordContactRequest.class);
             log.debug("Recorded voter voted PUT {}", url);
             return Try.success(response.getBody());
-        } catch (HttpClientErrorException e) {
-            if (e.getStatusCode().value() == 404) {
-                String message = String.format("No voter with ern=%s. PAF returned %s", ern, e.getStatusCode().getReasonPhrase());
-                log.debug(message);
-                return Try.failure(new NotFoundFailure(message, ern));
-            } else {
-                String message = String.format("Paf call to record contact for ern=%s failed. PAF returned %s", ern, e.getStatusCode().getReasonPhrase());
-                log.error(message);
-                return Try.failure(new ServerFailure(String.format(ADD_CONTACT_ERROR_MESSAGE, ern, e.getStatusCode().getReasonPhrase())));
+        } catch (Exception e) {
+            if (e instanceof HttpClientErrorException) {
+                HttpStatus statusCode = ((HttpClientErrorException) e).getStatusCode();
+                if (statusCode.value() == 404) {
+                    String message = String.format("No voter with ern=%s. PAF returned %s", ern, statusCode.getReasonPhrase());
+                    log.debug(message);
+                    return Try.failure(new NotFoundFailure(message, ern));
+                }
             }
+            String message = String.format("Paf call to record contact for ern=%s failed. PAF returned %s", ern, e.getMessage());
+            log.error(message);
+            return Try.failure(new ServerFailure(String.format(ADD_CONTACT_ERROR_MESSAGE, ern, e.getMessage())));
         }
     }
 
