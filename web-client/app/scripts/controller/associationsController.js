@@ -37,11 +37,9 @@ angular
 
     $scope.onAddConstituency = function () {
       clearMessages();
-
       if ($scope.constituencySearchModel && $scope.constituencySearchModel.id) {
         constituencyService.associateToUser($scope.constituencySearchModel.id, $scope.user.id)
           .success(function () {
-            $scope.constituencySearchModel = "";
             loadUser();
           })
           .error(function () {
@@ -50,6 +48,7 @@ angular
       } else {
         $scope.invalidWard = true;
       }
+      $scope.constituencySearchModel = "";
     };
 
     $scope.onAddWard = function () {
