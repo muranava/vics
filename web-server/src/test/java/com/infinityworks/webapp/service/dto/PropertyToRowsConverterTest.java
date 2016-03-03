@@ -1,7 +1,7 @@
 package com.infinityworks.webapp.service.dto;
 
 import com.infinityworks.webapp.pdf.model.ElectorRow;
-import com.infinityworks.webapp.converter.PropertyToRowConverter;
+import com.infinityworks.webapp.converter.PropertyToRowsConverter;
 import com.infinityworks.webapp.paf.dto.ImmutableProperty;
 import com.infinityworks.webapp.paf.dto.Property;
 import org.junit.Test;
@@ -13,8 +13,8 @@ import static java.util.Arrays.asList;
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
 
-public class PropertyToRowConverterTest {
-    private final PropertyToRowConverter underTest = new PropertyToRowConverter();
+public class PropertyToRowsConverterTest {
+    private final PropertyToRowsConverter underTest = new PropertyToRowsConverter();
 
     @Test
     public void convertsAPropertyToATableRow() throws Exception {

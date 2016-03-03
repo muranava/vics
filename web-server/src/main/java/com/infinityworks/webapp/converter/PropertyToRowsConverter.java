@@ -15,8 +15,8 @@ import static com.infinityworks.webapp.pdf.model.ElectorRowBuilder.electorRow;
 import static java.util.stream.Collectors.toList;
 
 @Component
-public class PropertyToRowConverter implements BiFunction<String, Property, List<ElectorRow>> {
-    private static final Logger log = LoggerFactory.getLogger(PropertyToRowConverter.class);
+public class PropertyToRowsConverter implements BiFunction<String, Property, List<ElectorRow>> {
+    private static final Logger log = LoggerFactory.getLogger(PropertyToRowsConverter.class);
 
     @Override
     public List<ElectorRow> apply(String wardCode, Property property) {

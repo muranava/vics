@@ -8,7 +8,7 @@ import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.google.common.io.Resources;
 import com.infinityworks.webapp.pdf.CanvassTableConfig;
 import com.infinityworks.webapp.pdf.DocumentBuilder;
-import com.infinityworks.webapp.converter.PropertyToRowConverter;
+import com.infinityworks.webapp.converter.PropertyToRowsConverter;
 import com.infinityworks.webapp.pdf.GotvTableConfig;
 import com.infinityworks.webapp.pdf.renderer.LogoRenderer;
 import com.infinityworks.webapp.pdf.TableBuilder;
@@ -144,8 +144,8 @@ public class Config {
     }
 
     @Bean
-    public PropertyToRowConverter propertyToRowConverter() {
-        return new PropertyToRowConverter();
+    public PropertyToRowsConverter propertyToRowConverter() {
+        return new PropertyToRowsConverter();
     }
 
     @Bean

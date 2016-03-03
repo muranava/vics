@@ -89,7 +89,7 @@
                 <div class="col-sm-9">
                   <div class="checkbox checkbox-styled">
                     <label>
-                      <input type="checkbox" ng-model="inputRecordModel.cost" value="">
+                      <input id="costCheckbox" ng-click="setCheckboxFocus()" type="checkbox" ng-model="inputRecordModel.cost" value="">
                       <span>Cost</span>
                     </label>
                   </div>
@@ -127,7 +127,7 @@
 
               <!-- key issues checkboxes -->
               <div class="form-group">
-                <label class="col-sm-3 control-label">Key Issues</label>
+                <label class="col-sm-3 control-label">Flags</label>
                 <div class="col-sm-9">
                   <div class="checkbox checkbox-styled">
                     <label>
@@ -157,6 +157,12 @@
                     <label>
                       <input type="checkbox" ng-model="inputRecordModel.deceased" value="">
                       <span>Deceased</span>
+                    </label>
+                  </div>
+                  <div class="checkbox checkbox-styled">
+                    <label>
+                      <input type="checkbox" ng-model="inputRecordModel.inaccessible" value="">
+                      <span>Inaccessible</span>
                     </label>
                   </div>
                 </div>

@@ -32,6 +32,7 @@ angular
         poster: false,
         lift: false,
         deceased: false,
+        inaccessible: false,
         ward: null
       };
 

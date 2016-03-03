@@ -1,6 +1,6 @@
 package com.infinityworks.webapp.pdf;
 
-import com.infinityworks.webapp.converter.PropertyToRowConverter;
+import com.infinityworks.webapp.converter.PropertyToRowsConverter;
 import com.infinityworks.webapp.paf.dto.Property;
 import com.infinityworks.webapp.pdf.model.ElectorRow;
 import com.infinityworks.webapp.pdf.model.GeneratedPdfTable;
@@ -16,11 +16,11 @@ import static java.util.stream.Collectors.toList;
 
 @Component
 public class PdfJetTableGenerator implements PDFTableGenerator {
-    private final PropertyToRowConverter propertyToRowConverter;
+    private final PropertyToRowsConverter propertyToRowsConverter;
 
     @Autowired
-    public PdfJetTableGenerator(PropertyToRowConverter propertyToRowConverter) {
-        this.propertyToRowConverter = propertyToRowConverter;
+    public PdfJetTableGenerator(PropertyToRowsConverter propertyToRowsConverter) {
+        this.propertyToRowsConverter = propertyToRowsConverter;
     }
 
     /**
@@ -39,7 +39,8 @@ public class PdfJetTableGenerator implements PDFTableGenerator {
     private Optional<GeneratedPdfTable> createTableFromStreet(TableBuilder tableBuilder, List<Property> properties, String wardCode, String wardName, String constituencyName) {
         List<ElectorRow> electors = properties
                 .stream()
-                .map(property -> propertyToRowConverter.apply(wardCode, property))
+                .map(property -> propertyToRowsConverter.apply(wardCode, property))
+                .filter(row -> !row.isEmpty())
                 .flatMap(Collection::stream)
                 .collect(toList());
 
