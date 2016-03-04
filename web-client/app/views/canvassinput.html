@@ -180,7 +180,36 @@
         </div>
       </div>
       <div class="col-lg-6 col-md-6 col-sm-12">
+        <div class="row">
+          <div class="card">
+            <div class="card-head card-head-xs style-primary">
+              <header>Log</header>
+            </div>
+            <div class="card-body">
 
+              <table class="table no-margin table-hover">
+                <thead>
+                <tr>
+                  <th>Roll #</th>
+                  <th>Reason</th>
+                  <th>Result</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr ng-repeat="log in logs.elements.slice().reverse()"
+                    ng-class="{danger: !log.success, success: log.success}">
+                  <td>{{log.ern}}</td>
+                  <td>{{log.reason}}</td>
+                  <td ng-show="log.success">SUCCESS</td>
+                  <td ng-show="!log.success">FAILED</td>
+                </tr>
+                </tbody>
+              </table>
+
+            </div>
+          </div>
+
+        </div>
         <div class="row">
           <!-- SEARCH -->
           <div class="card">
@@ -256,37 +285,6 @@
             </div>
           </div>
         </div>
-        <div class="row">
-          <div class="card">
-            <div class="card-head card-head-xs style-primary">
-              <header>Log</header>
-            </div>
-            <div class="card-body">
-
-              <table class="table no-margin table-hover">
-                <thead>
-                <tr>
-                  <th>Roll #</th>
-                  <th>Reason</th>
-                  <th>Result</th>
-                </tr>
-                </thead>
-                <tbody>
-                <tr ng-repeat="log in logs.elements.slice().reverse()"
-                    ng-class="{danger: !log.success, success: log.success}">
-                  <td>{{log.ern}}</td>
-                  <td>{{log.reason}}</td>
-                  <td ng-show="log.success">SUCCESS</td>
-                  <td ng-show="!log.success">FAILED</td>
-                </tr>
-                </tbody>
-              </table>
-
-            </div>
-          </div>
-
-        </div>
-
 
       </div>
     </div>

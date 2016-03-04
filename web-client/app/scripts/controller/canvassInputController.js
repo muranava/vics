@@ -73,9 +73,25 @@ angular
       $scope.errors = validateForm();
 
       if (_.isEmpty($scope.errors)) {
-        electorService.submitCanvassInput(mapFormToRequest($scope.inputRecordModel))
+        var request = mapFormToRequest($scope.inputRecordModel);
+        electorService.submitCanvassInput(request)
           .success(handleSubmitEntrySuccess)
-          .error(handleSubmitEntryFailure);
+          .error(function(err) {
+            resetForm();
+            if (err && err.type === 'PafApiNotFoundFailure') {
+              $scope.logs.push({
+                ern: request.ern,
+                reason: 'Voter not found',
+                success: false
+              });
+            } else {
+              $scope.logs.push({
+                ern: request.ern,
+                reason: 'Failed to record contact',
+                success: false
+              });
+            }
+          });
 
         $('#electorId').focus();
       }
@@ -105,23 +121,6 @@ angular
       var prefix = util.extractErnPrefix($scope.inputRecordModel.ern);
       initForm();
       $scope.inputRecordModel.ern = prefix;
-    }
-
-    function handleSubmitEntryFailure(err) {
-      resetForm();
-      if (err && err.type === 'NotFoundFailure') {
-        $scope.logs.push({
-          ern: err.custom,
-          reason: 'Invalid roll number',
-          success: false
-        });
-      } else {
-        $scope.logs.push({
-          ern: err.custom,
-          reason: 'Failed to contact server',
-          success: false
-        });
-      }
     }
 
     function validateForm() {

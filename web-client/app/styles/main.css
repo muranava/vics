@@ -118,3 +118,7 @@ input:-webkit-autofill, textarea:-webkit-autofill, select:-webkit-autofill {
   background-color: #DFE0E0 !important;
   border-bottom: #DFE0E0 solid 1px;
 }
+
+.text-danger {
+  color: #D92C27;
+}
