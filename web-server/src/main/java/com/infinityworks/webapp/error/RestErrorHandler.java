@@ -74,6 +74,7 @@ public final class RestErrorHandler {
         }
 
         if (exception instanceof PafApiFailure) {
+            log.error(exception.getMessage());
             ErrorEntity errorEntity = new ErrorEntity(PafApiFailure.class.getSimpleName(), VAGUE_ERROR_RESPONSE, "");
             return new ResponseEntity<>(errorEntity, headers, HttpStatus.INTERNAL_SERVER_ERROR);
         }

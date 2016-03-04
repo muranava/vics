@@ -4,7 +4,6 @@ import com.infinityworks.common.lang.StringExtras;
 import com.infinityworks.common.lang.Try;
 import com.infinityworks.webapp.config.CanvassConfig;
 import com.infinityworks.webapp.converter.PafToStreetConverter;
-import com.infinityworks.webapp.error.NotFoundFailure;
 import com.infinityworks.webapp.error.PafApiFailure;
 import com.infinityworks.webapp.error.ServerFailure;
 import com.infinityworks.webapp.paf.converter.StreetToPafConverter;
@@ -37,7 +36,6 @@ import static org.springframework.http.HttpMethod.GET;
 public class PafClient {
     private static final Logger log = LoggerFactory.getLogger(PafClient.class);
     private static final String DOWNSTREAM_ERROR_MESSAGE = "PAF api failure. Contact your system administrator";
-    private static final String STREETS_BY_WARD_ERROR_MESSAGE = "PAF request failed when getting streets by wardCode=%s. %s";
     private static final String RECORD_VOTE_ERROR_MESSAGE = "PAF request failed when recording vote ern=%s. Paf responded with %s";
     private static final String ADD_CONTACT_ERROR_MESSAGE = "PAF request failed when adding contact record ern=%s. Paf responded with %s";
     private static final String ELECTORS_BY_STREET_ERROR_MESSAGE = "PAF request failed when getting electors by streets. %s";
@@ -49,14 +47,20 @@ public class PafClient {
     private final String CONTACT_ENDPOINT;
 
     private final RestTemplate restTemplate;
+    private final Http http;
     private final StreetToPafConverter streetConverter;
     private final PafToStreetConverter pafToStreetConverter;
     private final String pafApiBaseUrl;
 
     @Autowired
-    public PafClient(PafToStreetConverter pafStreetConverter, RestTemplate restTemplate, CanvassConfig canvassConfig, StreetToPafConverter streetConverter) {
+    public PafClient(PafToStreetConverter pafStreetConverter,
+                     RestTemplate restTemplate,
+                     Http http,
+                     CanvassConfig canvassConfig,
+                     StreetToPafConverter streetConverter) {
         pafToStreetConverter = pafStreetConverter;
         this.restTemplate = restTemplate;
+        this.http = http;
         this.streetConverter = streetConverter;
         pafApiBaseUrl = canvassConfig.getPafApiBaseUrl();
 
@@ -71,54 +75,38 @@ public class PafClient {
      * Finds all the streets in a given ward.
      *
      * @param wardCode the ward code to retrieve streets by, e.g. E09000125
-     * @return
+     * @return a collection of streets
      */
     public Try<List<Street>> findStreetsByWardCode(String wardCode) {
         String url = String.format(STREETS_BY_WARD_ENDPOINT, wardCode);
-
-        HttpHeaders headers = new HttpHeaders();
-        headers.set("X-Authorization", API_TOKEN);
-        headers.setContentType(MediaType.APPLICATION_JSON);
-        HttpEntity httpEntity = new HttpEntity(headers);
-        ResponseEntity<StreetsResponse> pafResponse;
-
-        try {
-            pafResponse = restTemplate.exchange(url, GET, httpEntity, StreetsResponse.class);
-        } catch (HttpClientErrorException e) {
-            String msg = String.format(STREETS_BY_WARD_ERROR_MESSAGE, wardCode, "");
-            log.error(msg, e);
-            return Try.failure(new PafApiFailure(DOWNSTREAM_ERROR_MESSAGE));
-        }
-
-        List<Street> records = pafResponse.getBody().response()
-                .stream()
-                .map(pafToStreetConverter)
-                .collect(toList());
-        return Try.success(records);
+        return http
+                .get(url, StreetsResponse.class)
+                .map(streets -> streets.response().stream()
+                        .map(pafToStreetConverter)
+                        .collect(toList()));
     }
 
-    public Try<List<List<Property>>> findElectorsByStreet(List<Street> streets, String wardCode) {
+    /**
+     * Finds the voters in a given street.
+     *
+     * @param streets  the street where voters are contained
+     * @param wardCode the ward code to restrict the result set by
+     * @return A collection of properties grouped by street
+     */
+    public Try<PropertyResponse> findVotersByStreet(List<Street> streets, String wardCode) {
         String url = String.format(ELECTORS_BY_STREET_ENDPOINT, wardCode);
 
-        ResponseEntity<PropertyResponse> pafResponse;
-        HttpHeaders headers = new HttpHeaders();
-        headers.set("X-Authorization", API_TOKEN);
         List<PafStreet> pafStreets = streets
                 .stream()
                 .map(streetConverter)
                 .collect(toList());
 
-        HttpEntity<List<PafStreet>> entity = new HttpEntity<>(pafStreets, headers);
+        return http.post(url, pafStreets, PropertyResponse.class);
+    }
 
-        try {
-            pafResponse = restTemplate.exchange(url, HttpMethod.POST, entity, PropertyResponse.class);
-        } catch (Exception e) {
-            String msg = String.format(ELECTORS_BY_STREET_ERROR_MESSAGE, " Paf responded with " + e.getMessage());
-            log.error(msg);
-            return Try.failure(new PafApiFailure(DOWNSTREAM_ERROR_MESSAGE));
-        }
-
-        return Try.success(pafResponse.getBody().response());
+    public Try<RecordContactRequest> recordContact(String ern, RecordContactRequest contactRecord) {
+        String url = String.format(CONTACT_ENDPOINT, ern);
+        return http.post(url, contactRecord, RecordContactRequest.class);
     }
 
     /**
@@ -151,33 +139,6 @@ public class PafClient {
             String message = String.format("Paf call to record vote failed. ern=%s. Paf responded with %s", ern, e.getMessage());
             log.error(message);
             return Try.failure(new ServerFailure(String.format(RECORD_VOTE_ERROR_MESSAGE, ern, e.getMessage())));
-        }
-    }
-
-    public Try<RecordContactRequest> recordContact(String ern, RecordContactRequest contactRecord) {
-        String url = String.format(CONTACT_ENDPOINT, ern);
-
-        HttpHeaders headers = new HttpHeaders();
-        headers.set("X-Authorization", API_TOKEN);
-        HttpEntity<RecordContactRequest> entity = new HttpEntity<>(contactRecord, headers);
-
-        try {
-            ResponseEntity<String> r = restTemplate.exchange(url, HttpMethod.POST, entity, String.class);
-            ResponseEntity<RecordContactRequest> response = restTemplate.exchange(url, HttpMethod.POST, entity, RecordContactRequest.class);
-            log.debug("Recorded voter voted PUT {}", url);
-            return Try.success(response.getBody());
-        } catch (Exception e) {
-            if (e instanceof HttpClientErrorException) {
-                HttpStatus statusCode = ((HttpClientErrorException) e).getStatusCode();
-                if (statusCode.value() == 404) {
-                    String message = String.format("No voter with ern=%s. PAF returned %s", ern, statusCode.getReasonPhrase());
-                    log.debug(message);
-                    return Try.failure(new NotFoundFailure(message, ern));
-                }
-            }
-            String message = String.format("Paf call to record contact for ern=%s failed. PAF returned %s", ern, e.getMessage());
-            log.error(message);
-            return Try.failure(new ServerFailure(String.format(ADD_CONTACT_ERROR_MESSAGE, ern, e.getMessage())));
         }
     }
 

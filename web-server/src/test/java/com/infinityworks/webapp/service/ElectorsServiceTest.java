@@ -7,7 +7,8 @@ import com.infinityworks.webapp.domain.User;
 import com.infinityworks.webapp.domain.Ward;
 import com.infinityworks.webapp.paf.client.PafClient;
 import com.infinityworks.webapp.paf.dto.ImmutableProperty;
-import com.infinityworks.webapp.paf.dto.Property;
+import com.infinityworks.webapp.paf.dto.ImmutablePropertyResponse;
+import com.infinityworks.webapp.paf.dto.PropertyResponse;
 import com.infinityworks.webapp.pdf.CanvassTableConfig;
 import com.infinityworks.webapp.pdf.DocumentBuilder;
 import com.infinityworks.webapp.pdf.PDFTableGenerator;
@@ -69,14 +70,14 @@ public class ElectorsServiceTest {
                 street().withMainStreet("High Road").build()
         );
         ElectorsByStreetsRequest request = electorsByStreets().withStreets(streets).withFlags(null).build();
-        List<List<Property>> voters = singletonList(asList(
+        PropertyResponse propertyResponse = ImmutablePropertyResponse.builder().withResponse(singletonList(asList(
                 ImmutableProperty.builder().withStreet("1").withHouse("1").withPostCode("CV2 2DH").withPostTown("Coventry").withVoters(emptyList()).build(),
                 ImmutableProperty.builder().withStreet("1").withHouse("2").withPostCode("CV2 2DH").withPostTown("Coventry").withVoters(emptyList()).build(),
                 ImmutableProperty.builder().withStreet("1").withHouse("3").withPostCode("CV2 2DH").withPostTown("Coventry").withVoters(emptyList()).build()
-        ));
+        ))).build();
 
         given(wardService.getByCode(w.getCode(), user)).willReturn(Try.success(w));
-        given(pafClient.findElectorsByStreet(streets, w.getCode())).willReturn(Try.success(voters));
+        given(pafClient.findVotersByStreet(streets, w.getCode())).willReturn(Try.success(propertyResponse));
         List<GeneratedPdfTable> tables = asList(table1, table2);
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream(4);
         given(documentBuilder.buildPages(tables)).willReturn(outputStream);

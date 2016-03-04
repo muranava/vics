@@ -13,6 +13,11 @@ class CanvassError extends Exception {
         this.custom = custom;
     }
 
+    CanvassError(String message, Exception e) {
+        super(message, e);
+        this.custom = "";
+    }
+
     public String getCustom() {
         return custom;
     }

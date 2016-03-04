@@ -60,8 +60,8 @@ public class ElectorsService {
         log.debug("Finding electorsByStreet by streets={} for permissible={}", request, permissible);
 
         return wardService.getByCode(wardCode, permissible)
-                .flatMap(ward -> pafClient.findElectorsByStreet(request.getStreets(), ward.getCode())
-                .flatMap(electorsByStreet -> renderPdfOfElectorsByStreets(tableBuilder, documentBuilder, request, ward, electorsByStreet)));
+                .flatMap(ward -> pafClient.findVotersByStreet(request.getStreets(), ward.getCode())
+                .flatMap(electorsByStreet -> renderPdfOfElectorsByStreets(tableBuilder, documentBuilder, request, ward, electorsByStreet.response())));
     }
 
     private Try<ByteArrayOutputStream> renderPdfOfElectorsByStreets(TableBuilder tableBuilder, DocumentBuilder documentBuilder, ElectorsByStreetsRequest request, Ward ward, List<List<Property>> electors) {

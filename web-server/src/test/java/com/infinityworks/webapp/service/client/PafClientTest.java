@@ -3,9 +3,12 @@ package com.infinityworks.webapp.service.client;
 import com.infinityworks.common.lang.Try;
 import com.infinityworks.webapp.config.CanvassConfig;
 import com.infinityworks.webapp.converter.PafToStreetConverter;
+import com.infinityworks.webapp.paf.client.Http;
 import com.infinityworks.webapp.paf.client.PafClient;
+import com.infinityworks.webapp.paf.client.PafErrorHandler;
 import com.infinityworks.webapp.paf.dto.Property;
 import com.infinityworks.webapp.paf.converter.StreetToPafConverter;
+import com.infinityworks.webapp.paf.dto.PropertyResponse;
 import com.infinityworks.webapp.rest.dto.Street;
 import com.infinityworks.webapp.testsupport.stub.PafServerStub;
 import org.junit.After;
@@ -32,7 +35,9 @@ public class PafClientTest {
     @Before
     public void setUp() throws Exception {
         when(canvassConfig.getPafApiBaseUrl()).thenReturn("http://localhost:9002/v1");
-        pafClient = new PafClient(new PafToStreetConverter(), new RestTemplate(), canvassConfig, new StreetToPafConverter());
+        RestTemplate restTemplate = new RestTemplate();
+        Http http = new Http(restTemplate, canvassConfig, new PafErrorHandler());
+        pafClient = new PafClient(new PafToStreetConverter(), restTemplate, http, canvassConfig, new StreetToPafConverter());
         pafApiStub.start();
     }
 
@@ -56,10 +61,10 @@ public class PafClientTest {
         pafApiStub.willReturnVotersByWardByTownAndByStreet("E05001221", "Coventry");
         List<Street> townStreets = asList(kirbyRoad(), abbotRoad());
 
-        Try<List<List<Property>>> electorsByStreet = pafClient.findElectorsByStreet(townStreets, "E05001221");
+        Try<PropertyResponse> electorsByStreet = pafClient.findVotersByStreet(townStreets, "E05001221");
 
         assertThat(electorsByStreet.isSuccess(), is(true));
-        List<List<Property>> properties = electorsByStreet.get();
+        List<List<Property>> properties = electorsByStreet.get().response();
         assertThat(properties.get(0).get(0).voters().get(0).lastName(), is("Deaux"));
     }
 }

@@ -2,6 +2,7 @@ package com.infinityworks.webapp.rest.dto;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.google.common.base.MoreObjects;
 
 import java.util.Collection;
 
@@ -29,5 +30,14 @@ public class AuthenticationToken {
 
     public String getUsername() {
         return username;
+    }
+
+    @Override
+    public String toString() {
+        return MoreObjects.toStringHelper(this)
+                .add("username", username)
+                .add("roles", roles)
+                .add("token", token)
+                .toString();
     }
 }

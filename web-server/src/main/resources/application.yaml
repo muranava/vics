@@ -31,6 +31,4 @@ canvass:
 logging.level.: INFO
 
 management:
-  security:
-    enabled: false
   context-path: /admin
