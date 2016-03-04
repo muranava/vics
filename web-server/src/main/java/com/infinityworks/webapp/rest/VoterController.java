@@ -86,6 +86,15 @@ public class VoterController {
     }
 
     @PreAuthorize("isAuthenticated()")
+    @RequestMapping(method = POST, value = "/voted")
+    public ResponseEntity<?> recordVote(@RequestBody @Valid RecordVote ern,
+                                        Principal principal) {
+        return sessionService.extractUserFromPrincipal(principal)
+                .flatMap(user -> recordVoteService.recordVote(user, ern))
+                .fold(errorHandler::mapToResponseEntity, ResponseEntity::ok);
+    }
+
+    @PreAuthorize("isAuthenticated()")
     @RequestMapping(value = "/ward/{wardCode}/street/pdf", method = POST)
     public ResponseEntity<?> getPdfOfElectorsByTownStreet(
             @RequestBody @Valid ElectorsByStreetsRequest electorsByStreetsRequest,
@@ -99,14 +108,5 @@ public class VoterController {
                     responseHeaders.setContentType(MediaType.valueOf("application/pdf"));
                     return new ResponseEntity<>(pdfData.toByteArray(), responseHeaders, HttpStatus.OK);
                 });
-    }
-
-    @PreAuthorize("isAuthenticated()")
-    @RequestMapping(method = POST, value = "/voted")
-    public ResponseEntity<?> recordVote(@RequestBody @Valid RecordVote ern,
-                                        Principal principal) {
-        return sessionService.extractUserFromPrincipal(principal)
-                .flatMap(user -> recordVoteService.recordVote(user, ern))
-                .fold(errorHandler::mapToResponseEntity, ResponseEntity::ok);
     }
 }

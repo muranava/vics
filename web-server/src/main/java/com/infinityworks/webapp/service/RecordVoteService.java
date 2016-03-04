@@ -39,7 +39,6 @@ public class RecordVoteService {
                 .flatMap(user -> wardService.getByCode(recordVote.getWardCode(), user)
                 .flatMap(ward -> ernFormatEnricher.apply(ward.getCode(), recordVote.getErn()))
                 .flatMap(pafClient::recordVoted))
-                .map(success -> recordVote)
-                .recoverWith(error -> Try.failure(new PafApiNotFoundFailure(error.getMessage(), recordVote.getErn())));
+                .map(success -> recordVote);
     }
 }

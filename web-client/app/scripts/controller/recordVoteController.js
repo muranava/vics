@@ -104,7 +104,7 @@ angular
     }
 
     $scope.onSearchVoted = function () {
-      $scope.onVote();
+
     };
 
     $scope.onSearch = function () {
