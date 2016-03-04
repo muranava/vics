@@ -6,6 +6,8 @@ import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import org.immutables.value.Value;
 
+import javax.annotation.Nullable;
+
 @Value.Immutable
 @JsonIgnoreProperties(ignoreUnknown = true)
 @Value.Style(init = "with*")
@@ -23,5 +25,10 @@ public interface RecordContactRequest {
     @Value.Default
     default Issues issues() {
         return ImmutableIssues.builder().build();
+    }
+
+    @Nullable @Value.Default
+    default Info info() {
+        return ImmutableInfo.builder().build();
     }
 }

@@ -10,6 +10,7 @@ import com.infinityworks.webapp.pdf.CanvassTableConfig;
 import com.infinityworks.webapp.pdf.DocumentBuilder;
 import com.infinityworks.webapp.converter.PropertyToRowsConverter;
 import com.infinityworks.webapp.pdf.GotvTableConfig;
+import com.infinityworks.webapp.pdf.renderer.FlagsKeyRenderer;
 import com.infinityworks.webapp.pdf.renderer.LogoRenderer;
 import com.infinityworks.webapp.pdf.TableBuilder;
 import com.infinityworks.webapp.common.RequestValidator;
@@ -128,13 +129,13 @@ public class Config {
     @Bean
     @Qualifier("canvass")
     public DocumentBuilder canvassDocumentBuilder(LogoRenderer logoRenderer) {
-        return new DocumentBuilder(logoRenderer, new CanvassTableConfig());
+        return new DocumentBuilder(logoRenderer, new FlagsKeyRenderer(), new CanvassTableConfig());
     }
 
     @Bean
     @Qualifier("gotv")
     public DocumentBuilder gotvDocumentBuilder(LogoRenderer logoRenderer) {
-        return new DocumentBuilder(logoRenderer, new GotvTableConfig());
+        return new DocumentBuilder(logoRenderer, new FlagsKeyRenderer(), new GotvTableConfig());
     }
 
     @Bean

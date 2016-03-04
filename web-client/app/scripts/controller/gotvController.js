@@ -5,44 +5,28 @@ angular
     $scope.numStreetsSelected = 0;
     $scope.validationErrors = [];
 
+    function createRadioItem(name) {
+      return {
+        name: name,
+        enabled: false,
+        value: null,
+        handler: function(value) {
+          this.value = value;
+        }
+      };
+    }
+
     /**
      * Model for radio buttons (it should be easier than this.
      * I was able to almost render the UI dynamically from a model, but wan't able to
      * get it to work with default values, so I went back to the primitive version - time).
      */
     $scope.radios = [
-      {
-        name: 'wantsPV',
-        enabled: false,
-        value: null,
-        handler: function (newValue) {
-          this.value = newValue;
-        }
-      },
-      {
-        name: 'hasPV',
-        enabled: false,
-        value: null,
-        handler: function (newValue) {
-          this.value = newValue;
-        }
-      },
-      {
-        name: 'lift',
-        enabled: false,
-        value: null,
-        handler: function (newValue) {
-          this.value = newValue;
-        }
-      },
-      {
-        name: 'poster',
-        enabled: false,
-        value: null,
-        handler: function (newValue) {
-          this.value = newValue;
-        }
-      }
+      createRadioItem('wantsPV'),
+      createRadioItem('hasPV'),
+      createRadioItem('lift'),
+      createRadioItem('poster'),
+      createRadioItem('canvassed')
     ];
 
     function validateFlagsRadios() {
@@ -50,7 +34,7 @@ angular
 
       $scope.radios.map(function (radio) {
         if (radio.enabled && radio.value === null) {
-          errors.push("Radio For " + radio.name + " is not selected");
+          errors.push("Radio for " + radio.name + " is not selected");
         }
       });
 
@@ -60,7 +44,7 @@ angular
     function defaultSliderOptions() {
       return {
         minValue: 3,
-        maxValue: 4,
+        maxValue: 5,
         options: {
           floor: 1,
           ceil: 5,

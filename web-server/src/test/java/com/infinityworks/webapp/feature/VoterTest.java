@@ -4,6 +4,7 @@ import com.infinityworks.common.lang.Try;
 import com.infinityworks.webapp.common.RequestValidator;
 import com.infinityworks.webapp.domain.User;
 import com.infinityworks.webapp.error.RestErrorHandler;
+import com.infinityworks.webapp.pdf.renderer.FlagsKeyRenderer;
 import com.infinityworks.webapp.rest.dto.RecordVote;
 import com.infinityworks.webapp.pdf.CanvassTableConfig;
 import com.infinityworks.webapp.pdf.DocumentBuilder;
@@ -66,7 +67,7 @@ public class VoterTest extends WebApplicationTest {
         RecordVoteService recordVoteService = getBean(RecordVoteService.class);
         RecordContactService recordContactService = getBean(RecordContactService.class);
         TableBuilder tableBuilder = new TableBuilder(new CanvassTableConfig());
-        DocumentBuilder documentBuilder = new DocumentBuilder(mock(LogoRenderer.class), new CanvassTableConfig());
+        DocumentBuilder documentBuilder = new DocumentBuilder(mock(LogoRenderer.class), getBean(FlagsKeyRenderer.class), new CanvassTableConfig());
         VoterController wardController = new VoterController(tableBuilder, documentBuilder, electorsService, requestValidator, recordVoteService, recordContactService, sessionService, new RestErrorHandler());
 
         mockMvc = MockMvcBuilders

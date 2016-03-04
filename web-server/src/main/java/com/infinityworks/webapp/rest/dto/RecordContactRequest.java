@@ -9,6 +9,8 @@ import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 
+import static com.infinityworks.common.lang.StringExtras.nullToEmpty;
+
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class RecordContactRequest {
 
@@ -40,6 +42,7 @@ public class RecordContactRequest {
     private final String wardCode;
     @NotNull
     private final Boolean inaccessible;
+    private final String telephone;
 
     @JsonCreator
     public RecordContactRequest(@JsonProperty("intention") Integer intention,
@@ -53,7 +56,8 @@ public class RecordContactRequest {
                                 @JsonProperty("deceased") Boolean deceased,
                                 @JsonProperty("poster") Boolean poster,
                                 @JsonProperty("wardCode") String wardCode,
-                                @JsonProperty("inaccessible") Boolean inaccessible) {
+                                @JsonProperty("inaccessible") Boolean inaccessible,
+                                @JsonProperty("telephone") String telephone) {
         this.intention = intention;
         this.likelihood = likelihood;
         this.cost = cost;
@@ -66,6 +70,7 @@ public class RecordContactRequest {
         this.poster = poster;
         this.wardCode = wardCode;
         this.inaccessible = inaccessible;
+        this.telephone = nullToEmpty(telephone);
     }
 
     public Integer getIntention() {
@@ -114,5 +119,9 @@ public class RecordContactRequest {
 
     public Boolean getInaccessible() {
         return inaccessible;
+    }
+
+    public String getTelephone() {
+        return telephone;
     }
 }

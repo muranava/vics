@@ -1,11 +1,14 @@
 package com.infinityworks.webapp.pdf.renderer;
 
+import com.infinityworks.webapp.rest.dto.Flags;
 import com.lowagie.text.*;
 import com.lowagie.text.pdf.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 import static com.lowagie.text.Font.HELVETICA;
 
@@ -13,8 +16,9 @@ public class PageInfoRenderer extends PdfPageEventHelper {
     private static final Logger log = LoggerFactory.getLogger(PageInfoRenderer.class);
     private static Font font = new Font(HELVETICA, 9);
     private static final String FOOTER_TEXT =
-            "All data is collected in accordance with our privacy policy which can be found at " +
+            "Generated %s. \tAll data is collected in accordance with our privacy policy which can be found at " +
                     "http://www.voteleavetakecontrol.org/privacy";
+    private static final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm:ss dd-MM-yyyy");
 
     private static final String LIKELIHOOD_KEY =
             "1 Definitely won't vote" +
@@ -31,11 +35,18 @@ public class PageInfoRenderer extends PdfPageEventHelper {
             "\n5 Definitely Leave";
 
     private static final String META_TEMPLATE = "Constituency: %s\nWard: %s \nAddress: %s";
+    private final FlagsKeyRenderer flagsKeyRenderer;
+    private final Flags flags;
 
     private String constituencyName = "";
     private String wardName = "";
     private String street = "";
     private boolean renderLikelihoodLegend = false;
+
+    public PageInfoRenderer(FlagsKeyRenderer flagsKeyRenderer, Flags flags) {
+        this.flagsKeyRenderer = flagsKeyRenderer;
+        this.flags = flags;
+    }
 
     @Override
     public void onEndPage(PdfWriter writer, Document document) {
@@ -45,6 +56,9 @@ public class PageInfoRenderer extends PdfPageEventHelper {
         createIntentionKey(cb);
         if (renderLikelihoodLegend) {
             createLikelihoodKey(cb);
+        }
+        if (flags != null) {
+            createFlagsKey(cb);
         }
         createPageNumber(cb, document, writer);
         createMetaSection(cb);
@@ -59,7 +73,7 @@ public class PageInfoRenderer extends PdfPageEventHelper {
     }
 
     private void createFooter(PdfContentByte cb, Document document) {
-        Phrase footer = new Phrase(FOOTER_TEXT, font);
+        Phrase footer = new Phrase(String.format(FOOTER_TEXT, LocalDateTime.now().format(formatter)), font);
         ColumnText.showTextAligned(cb, Element.ALIGN_LEFT,
                 footer,
                 document.left(),
@@ -84,7 +98,7 @@ public class PageInfoRenderer extends PdfPageEventHelper {
     private void createLikelihoodKey(PdfContentByte cb) {
         ColumnText ct = new ColumnText(cb);
         ct.setText(new Phrase(LIKELIHOOD_KEY, font));
-        ct.setSimpleColumn(374, 100, 700, 590);
+        ct.setSimpleColumn(365, 100, 700, 590);
         try {
             ct.go();
         } catch (DocumentException e) {
@@ -93,7 +107,7 @@ public class PageInfoRenderer extends PdfPageEventHelper {
     }
 
     private void createIntentionKey(PdfContentByte cb) {
-        int xOffset = renderLikelihoodLegend ? 565 : 535;
+        int xOffset = renderLikelihoodLegend ? 560 : 530;
         ColumnText ct = new ColumnText(cb);
         ct.setText(new Phrase(INTENTION_KEY, font));
         ct.setSimpleColumn(xOffset, 0, 700, 590);
@@ -101,6 +115,18 @@ public class PageInfoRenderer extends PdfPageEventHelper {
             ct.go();
         } catch (DocumentException e) {
             log.error("Failed to render intention text", e);
+        }
+    }
+
+    private void createFlagsKey(PdfContentByte cb) {
+        ColumnText ct = new ColumnText(cb);
+        Phrase phrase = new Phrase(flagsKeyRenderer.apply(flags), font);
+        ct.setText(phrase);
+        ct.setSimpleColumn(650, 0, 820, 590);
+        try {
+            ct.go();
+        } catch (DocumentException e) {
+            log.error("Failed to flags text", e);
         }
     }
 

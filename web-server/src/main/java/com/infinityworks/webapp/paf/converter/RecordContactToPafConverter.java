@@ -9,6 +9,8 @@ import java.util.function.BiFunction;
 
 @Component
 public class RecordContactToPafConverter implements BiFunction<User, RecordContactRequest, com.infinityworks.webapp.paf.dto.RecordContactRequest> {
+    private static final String CONTACT_TYPE = "canvass";
+
     @Override
     public com.infinityworks.webapp.paf.dto.RecordContactRequest apply(User user, RecordContactRequest contactRequest) {
         Voting builder = ImmutableVoting.builder()
@@ -25,13 +27,24 @@ public class RecordContactToPafConverter implements BiFunction<User, RecordConta
                 .withLift(contactRequest.getLift())
                 .build();
 
+        Issues issues = ImmutableIssues.builder()
+                .withBorder(contactRequest.getBorder())
+                .withCost(contactRequest.getCost())
+                .withSovereignty(contactRequest.getSovereignty())
+                .build();
+
+        Info info = ImmutableInfo.builder()
+                .withTelephone(contactRequest.getTelephone())
+                .build();
+
         return ImmutableRecordContactRequest.builder()
-                .withContactType("canvass")
+                .withContactType(CONTACT_TYPE)
                 .withUserId(user.getId().toString())
                 .withVoting(builder)
                 .withFlags(flags)
                 .withUserId(user.getId().toString())
+                .withIssues(issues)
+                .withInfo(info)
                 .build();
-
     }
 }

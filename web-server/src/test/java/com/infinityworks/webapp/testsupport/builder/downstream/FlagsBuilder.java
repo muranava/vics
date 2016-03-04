@@ -12,6 +12,7 @@ public class FlagsBuilder {
     private Boolean wantsPv;
     private Boolean needsLift;
     private Boolean notCanvassedYet;
+    private Boolean poster;
 
     public static FlagsBuilder flags() {
         return new FlagsBuilder().withDefaults();
@@ -61,7 +62,12 @@ public class FlagsBuilder {
         return this;
     }
 
+    public FlagsBuilder withPoster(Boolean poster) {
+        this.poster = poster;
+        return this;
+    }
+
     public Flags build() {
-        return new Flags(intentionFrom, intentionTo, likelihoodFrom, likelihoodTo, hasPV, wantsPv, needsLift, notCanvassedYet);
+        return new Flags(intentionFrom, intentionTo, likelihoodFrom, likelihoodTo, hasPV, wantsPv, needsLift, notCanvassedYet, poster);
     }
 }

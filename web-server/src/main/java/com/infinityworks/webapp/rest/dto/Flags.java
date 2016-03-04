@@ -29,6 +29,7 @@ public class Flags {
     private final Boolean wantsPv;
     private final Boolean needsLift;
     private final Boolean notCanvassedYet;
+    private final Boolean poster;
 
     @JsonCreator
     public Flags(@JsonProperty("intentionFrom") Integer intentionFrom,
@@ -37,8 +38,9 @@ public class Flags {
                  @JsonProperty("likelihoodTo") Integer likelihoodTo,
                  @JsonProperty("hasPV") Boolean hasPV,
                  @JsonProperty("wantsPv") Boolean wantsPv,
-                 @JsonProperty("needsLift") Boolean needsLift,
-                 @JsonProperty("notCanvassedYet") Boolean notCanvassedYet) {
+                 @JsonProperty("lift") Boolean needsLift,
+                 @JsonProperty("canvassed") Boolean notCanvassedYet,
+                 @JsonProperty("poster") Boolean poster) {
         this.intentionFrom = intentionFrom;
         this.intentionTo = intentionTo;
         this.likelihoodFrom = likelihoodFrom;
@@ -47,6 +49,7 @@ public class Flags {
         this.wantsPv = wantsPv;
         this.needsLift = needsLift;
         this.notCanvassedYet = notCanvassedYet;
+        this.poster = poster;
     }
 
     public Integer getIntentionFrom() {
@@ -79,5 +82,9 @@ public class Flags {
 
     public Boolean getNotCanvassedYet() {
         return notCanvassedYet;
+    }
+
+    public Boolean getPoster() {
+        return poster;
     }
 }

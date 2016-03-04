@@ -80,7 +80,7 @@ public class ElectorsServiceTest {
         given(pafClient.findVotersByStreet(streets, w.getCode())).willReturn(Try.success(propertyResponse));
         List<GeneratedPdfTable> tables = asList(table1, table2);
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream(4);
-        given(documentBuilder.buildPages(tables)).willReturn(outputStream);
+        given(documentBuilder.buildPages(tables, request.getFlags())).willReturn(outputStream);
 
         Try<ByteArrayOutputStream> byStreets = underTest.getPdfOfElectorsByStreet(tableBuilder, documentBuilder, request, w.getCode(), user);
 

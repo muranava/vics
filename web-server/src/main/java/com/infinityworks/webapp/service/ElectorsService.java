@@ -94,7 +94,7 @@ public class ElectorsService {
             log.debug("No voters found for ward={} streets={}", ward, request);
             return Try.failure(new NotFoundFailure("No voters found"));
         } else {
-            ByteArrayOutputStream content = documentBuilder.buildPages(generatedPdfTables);
+            ByteArrayOutputStream content = documentBuilder.buildPages(generatedPdfTables, request.getFlags());
             return Try.success(content);
         }
     }

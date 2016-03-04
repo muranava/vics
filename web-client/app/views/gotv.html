@@ -109,7 +109,7 @@
                 <!-- Wants PV filter -->
                 <div class="row">
                   <div class="form-group">
-                    <label class="col-sm-3 control-label">Wants PV</label>
+                    <label class="col-sm-3 control-label">Wants Postal Vote</label>
                     <div class="col-sm-3">
                       <switch id="wantsPVSwitch" name="wantsPVSwitch" ng-model="radios[0].enabled" class="red"></switch>
                     </div>
@@ -181,6 +181,26 @@
                       <label for="posterNo" class="radio-inline radio-styled">
                         <input ng-click="radios[3].handler(false)" ame="posterRadioValue" id="posterNo" type="radio"
                                ng-model="posterRadioValue" ng-value="false"><span>No</span>
+                      </label>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Poster filter -->
+                <div class="row">
+                  <div class="form-group">
+                    <label class="col-sm-3 control-label">Canvassed Already</label>
+                    <div class="col-sm-3">
+                      <switch id="canvassedSwitch" name="canvassedSwitch" ng-model="radios[4].enabled" class="red"></switch>
+                    </div>
+                    <div class="col-sm-6" ng-show="radios[4].enabled">
+                      <label for="canvassedYes" class="radio-inline radio-styled">
+                        <input ng-click="radios[4].handler(true)" name="canvassedRadioValue" id="canvassedYes" type="radio"
+                               ng-model="canvassedRadioValue" value="true"><span>Yes</span>
+                      </label>
+                      <label for="canvassedNo" class="radio-inline radio-styled">
+                        <input ng-click="radios[4].handler(false)" ame="canvassedRadioValue" id="canvassedNo" type="radio"
+                               ng-model="canvassedRadioValue" ng-value="false"><span>No</span>
                       </label>
                     </div>
                   </div>
