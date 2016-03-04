@@ -37,32 +37,32 @@ angular
     });
 
     $scope.onVote = function () {
-      if (isValidElectorID($scope.formModel.ern) &&
+      var ern = $scope.formModel.ern;
+      if (isValidElectorID(ern) &&
           isValidWard($scope.formModel.selectedWard)) {
 
         var elector = mapToRequest($scope.formModel);
 
         voteService.recordVote(elector)
-          .success(function (response) {
+          .success(function () {
             $scope.logs.push({
-              ern: response.ern,
+              ern: ern,
+              reason: '',
               result: 1
             });
           })
           .error(function(error) {
+            var reason = "-";
             if (error.type === 'PafApiNotFoundFailure') {
-              $scope.logs.push({
-                ern: error.custom,
-                result: 0
-              });
-            } else {
-              $scope.logs.push({
-                ern: 'UNKNOWN',
-                result: 0
-              });
+              reason = 'Voter not found';
             }
+            $scope.logs.push({
+              ern: ern,
+              reason: reason,
+              result: 0
+            });
           });
-        $scope.formModel.ern = util.extractErnPrefix($scope.formModel.ern);
+        $scope.formModel.ern = util.extractErnPrefix(ern);
 
         electorIdElement.focus();
       }

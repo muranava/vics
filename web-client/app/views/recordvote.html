@@ -79,13 +79,15 @@
               <thead>
               <tr>
                 <th>Elector ID</th>
-                <th></th>
+                <th>Reason</th>
+                <th>Result</th>
               </tr>
               </thead>
               <tbody>
               <tr ng-repeat="log in logs.elements.slice().reverse()"
                   ng-class="{danger: log.result === 0, success: log.result === 1}">
                 <td>{{log.ern}}</td>
+                <td>{{log.reason}}</td>
                 <td ng-show="log.result === 1">SUCCESS</td>
                 <td ng-show="log.result === 0">FAILED</td>
                 <td ng-show="log.result === -1">-</td>

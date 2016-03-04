@@ -1,5 +1,6 @@
 package com.infinityworks.webapp.domain;
 
+import com.google.common.base.MoreObjects;
 import com.google.common.base.Objects;
 import org.springframework.security.core.authority.AuthorityUtils;
 
@@ -37,5 +38,12 @@ public class CurrentUser extends org.springframework.security.core.userdetails.U
     @Override
     public int hashCode() {
         return Objects.hashCode(super.hashCode(), user);
+    }
+
+    @Override
+    public String toString() {
+        return MoreObjects.toStringHelper(this)
+                .add("user", user)
+                .toString();
     }
 }

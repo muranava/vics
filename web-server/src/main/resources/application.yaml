@@ -30,7 +30,7 @@ canvass:
 
 logging.level.: INFO
 logging.level:
-  com.infinityworks: DEBUG
+  com.infinityworks: TRACE
 
 management:
   context-path: /admin
