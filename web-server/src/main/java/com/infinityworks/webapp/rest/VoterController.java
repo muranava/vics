@@ -3,7 +3,7 @@ package com.infinityworks.webapp.rest;
 import com.infinityworks.webapp.common.RequestValidator;
 import com.infinityworks.webapp.error.NotFoundFailure;
 import com.infinityworks.webapp.error.RestErrorHandler;
-import com.infinityworks.webapp.paf.dto.RecordVote;
+import com.infinityworks.webapp.rest.dto.RecordVote;
 import com.infinityworks.webapp.pdf.DocumentBuilder;
 import com.infinityworks.webapp.pdf.TableBuilder;
 import com.infinityworks.webapp.rest.dto.ElectorsByStreetsRequest;

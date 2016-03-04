@@ -79,6 +79,11 @@ public final class RestErrorHandler {
             return new ResponseEntity<>(errorEntity, headers, HttpStatus.INTERNAL_SERVER_ERROR);
         }
 
+        if (exception instanceof PafApiNotFoundFailure) {
+            log.debug(exception.getMessage());
+            return new ResponseEntity<>(createError(exception), headers, HttpStatus.NOT_FOUND);
+        }
+
         if (exception instanceof ServerFailure) {
             return new ResponseEntity<>(createError(exception), headers, HttpStatus.INTERNAL_SERVER_ERROR);
         }

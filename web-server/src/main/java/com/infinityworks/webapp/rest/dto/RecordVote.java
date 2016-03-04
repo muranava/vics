@@ -1,4 +1,4 @@
-package com.infinityworks.webapp.paf.dto;
+package com.infinityworks.webapp.rest.dto;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;

@@ -2,18 +2,19 @@ package com.infinityworks.webapp.paf.client;
 
 import com.infinityworks.common.lang.Try;
 import com.infinityworks.webapp.config.CanvassConfig;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.*;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
-
-import java.util.Collections;
 
 import static java.util.Collections.singletonList;
 import static org.springframework.http.HttpMethod.*;
 
 @Component
 public class Http {
+    private final Logger log = LoggerFactory.getLogger(Http.class);
     private final HttpHeaders httpHeaders = new HttpHeaders();
     private final RestTemplate restTemplate;
     private final PafErrorHandler pafErrorHandler;
@@ -56,6 +57,7 @@ public class Http {
     }
 
     private <U> Try<U> request(String url, Class<U> responseType, HttpMethod method, HttpEntity httpEntity) {
+        log.debug(String.format("Upstream request: %s %s", method, url));
         try {
             ResponseEntity<U> responseEntity = restTemplate.exchange(url, method, httpEntity, responseType);
             return Try.success(responseEntity.getBody());

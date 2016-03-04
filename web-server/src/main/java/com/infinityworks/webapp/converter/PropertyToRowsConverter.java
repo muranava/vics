@@ -1,10 +1,8 @@
 package com.infinityworks.webapp.converter;
 
+import com.infinityworks.webapp.paf.dto.*;
 import com.infinityworks.webapp.pdf.model.ElectorRow;
 import com.infinityworks.webapp.pdf.model.ElectorRowBuilder;
-import com.infinityworks.webapp.paf.dto.*;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -16,12 +14,8 @@ import static java.util.stream.Collectors.toList;
 
 @Component
 public class PropertyToRowsConverter implements BiFunction<String, Property, List<ElectorRow>> {
-    private static final Logger log = LoggerFactory.getLogger(PropertyToRowsConverter.class);
-
     @Override
     public List<ElectorRow> apply(String wardCode, Property property) {
-        log.debug("Property: {}", property);
-
         return property.voters().stream()
                 .map(voter -> {
                     Issues issues = voter.issues();

@@ -1,6 +1,6 @@
 package com.infinityworks.webapp.testsupport.builder.downstream;
 
-import com.infinityworks.webapp.paf.dto.RecordVote;
+import com.infinityworks.webapp.rest.dto.RecordVote;
 
 public class RecordVoteBuilder {
     private String wardCode;
@@ -15,7 +15,7 @@ public class RecordVoteBuilder {
     public RecordVoteBuilder withDefaults() {
         withWardCode("E05001221")
                 .withWardName("Earlsdon")
-                .withErn("PD-123-4")
+                .withErn("E05001221-PD-123-4")
                 .withSuccess(true);
         return this;
     }

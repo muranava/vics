@@ -4,7 +4,7 @@ import com.infinityworks.common.lang.Try;
 import com.infinityworks.webapp.common.RequestValidator;
 import com.infinityworks.webapp.domain.User;
 import com.infinityworks.webapp.error.RestErrorHandler;
-import com.infinityworks.webapp.paf.dto.RecordVote;
+import com.infinityworks.webapp.rest.dto.RecordVote;
 import com.infinityworks.webapp.pdf.CanvassTableConfig;
 import com.infinityworks.webapp.pdf.DocumentBuilder;
 import com.infinityworks.webapp.pdf.TableBuilder;
@@ -180,7 +180,7 @@ public class VoterTest extends WebApplicationTest {
     public void recordsVoted() throws Exception {
         when(sessionService.extractUserFromPrincipal(any(Principal.class)))
                 .thenReturn(Try.success(covs()));
-        pafApiStub.willRecordVoterVoted("ADD-1313-1");
+        pafApiStub.willRecordVoterVoted("E05001221-ADD-1313-1");
 
         RecordVote request = new RecordVoteBuilder().withWardCode("E05001221").withWardName("Earlsdon").withErn("ADD-1313-1").withSuccess(true).build();
         String requestBody = objectMapper.writeValueAsString(request);

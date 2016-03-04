@@ -29,6 +29,8 @@ canvass:
   pafApiToken: 90f88caae35a5b863ae2450b55688a559b52a343
 
 logging.level.: INFO
+logging.level:
+  com.infinityworks: DEBUG
 
 management:
   context-path: /admin

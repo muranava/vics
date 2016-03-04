@@ -196,6 +196,14 @@ public interface Try<S> {
         }
     }
 
+    default Try<S> recoverWith(Function<Exception, Try<S>> other) {
+        if (isSuccess()) {
+            return this;
+        } else {
+            return other.apply(getFailure());
+        }
+    }
+
     /**
      * Gets the value of success
      *
