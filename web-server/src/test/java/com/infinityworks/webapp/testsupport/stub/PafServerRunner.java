@@ -11,7 +11,8 @@ public class PafServerRunner {
         PafServerStub pafApiStub = new PafServerStub();
         pafApiStub.start();
         try {
-            pafApiStub.willReturnStreetsByWard("E05001221");
+            pafApiStub.willReturnStreets();
+            pafApiStub.willReturnVotersByStreets();
         } catch (IOException e) {
             throw new IllegalStateException("Could not start PAF mock server");
         }

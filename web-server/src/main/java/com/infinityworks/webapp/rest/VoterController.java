@@ -1,22 +1,25 @@
 package com.infinityworks.webapp.rest;
 
 import com.infinityworks.webapp.common.RequestValidator;
-import com.infinityworks.webapp.error.NotFoundFailure;
 import com.infinityworks.webapp.error.RestErrorHandler;
-import com.infinityworks.webapp.rest.dto.RecordVote;
 import com.infinityworks.webapp.pdf.DocumentBuilder;
 import com.infinityworks.webapp.pdf.TableBuilder;
 import com.infinityworks.webapp.rest.dto.ElectorsByStreetsRequest;
 import com.infinityworks.webapp.rest.dto.RecordContactRequest;
+import com.infinityworks.webapp.rest.dto.RecordVote;
 import com.infinityworks.webapp.rest.dto.SearchElectors;
 import com.infinityworks.webapp.service.ElectorsService;
 import com.infinityworks.webapp.service.RecordContactService;
 import com.infinityworks.webapp.service.RecordVoteService;
 import com.infinityworks.webapp.service.SessionService;
 import com.lowagie.text.DocumentException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -30,7 +33,7 @@ import static org.springframework.web.bind.annotation.RequestMethod.POST;
 @RestController
 @RequestMapping("/elector")
 public class VoterController {
-
+    private final Logger log = LoggerFactory.getLogger(VoterController.class);
     private final TableBuilder tableBuilder;
     private final DocumentBuilder documentBuilder;
     private final ElectorsService electorsService;
@@ -86,7 +89,7 @@ public class VoterController {
     }
 
     @PreAuthorize("isAuthenticated()")
-    @RequestMapping(value = "/ward/{wardCode}/street/pdf", method = POST, produces = "application/pdf")
+    @RequestMapping(value = "/ward/{wardCode}/street/pdf", method = POST)
     public ResponseEntity<?> getPdfOfElectorsByTownStreet(
             @RequestBody @Valid ElectorsByStreetsRequest electorsByStreetsRequest,
             @PathVariable("wardCode") String wardCode,
@@ -94,13 +97,11 @@ public class VoterController {
         return requestValidator.validate(electorsByStreetsRequest)
                 .flatMap(streets -> sessionService.extractUserFromPrincipal(principal))
                 .flatMap(user -> electorsService.getPdfOfElectorsByStreet(tableBuilder, documentBuilder, electorsByStreetsRequest, wardCode, user))
-                .fold(error -> {
-                    if (error instanceof NotFoundFailure) {
-                        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(error);
-                    } else {
-                        return errorHandler.mapToResponseEntity(error);
-                    }
-                }, pdfData -> ResponseEntity.ok(pdfData.toByteArray()));
+                .fold(errorHandler::mapToResponseEntity, pdfData -> {
+                    HttpHeaders responseHeaders = new HttpHeaders();
+                    responseHeaders.setContentType(MediaType.valueOf("application/pdf"));
+                    return new ResponseEntity<>(pdfData.toByteArray(), responseHeaders, HttpStatus.OK);
+                });
     }
 
     @PreAuthorize("isAuthenticated()")

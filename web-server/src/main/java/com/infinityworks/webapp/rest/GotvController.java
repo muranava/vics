@@ -7,6 +7,9 @@ import com.infinityworks.webapp.service.GotvService;
 import com.infinityworks.webapp.service.SessionService;
 import com.lowagie.text.DocumentException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -40,9 +43,7 @@ public class GotvController {
     }
 
     @PreAuthorize("isAuthenticated()")
-    @RequestMapping(value = "/ward/{wardCode}/street/pdf",
-            method = POST,
-            produces = "application/pdf")
+    @RequestMapping(value = "/ward/{wardCode}/street/pdf", method = POST)
     public ResponseEntity<?> getPdfOfElectorsByTownStreet(
             @RequestBody @Valid ElectorsByStreetsRequest request,
             @PathVariable("wardCode") String wardCode,
@@ -51,6 +52,10 @@ public class GotvController {
                 .flatMap(req -> sessionService.extractUserFromPrincipal(principal))
                 .flatMap(user -> gotvService.generateElectorsByStreet(wardCode, user, request))
                 .fold(restErrorHandler::mapToResponseEntity,
-                      pdfData -> ResponseEntity.ok(pdfData.toByteArray()));
+                      pdfData -> {
+                          HttpHeaders responseHeaders = new HttpHeaders();
+                          responseHeaders.setContentType(MediaType.valueOf("application/pdf"));
+                          return new ResponseEntity<>(pdfData, responseHeaders, HttpStatus.OK);
+                      });
     }
 }

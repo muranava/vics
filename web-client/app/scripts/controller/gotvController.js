@@ -105,7 +105,8 @@ angular
       }
     };
 
-    function handleDownloadPdfError() {
+    function handleDownloadPdfError(error) {
+      console.log(error);
       $scope.errorLoadingData = true;
     }
 
@@ -131,7 +132,10 @@ angular
             var file = new Blob([response], {type: 'application/pdf'});
             saveAs(file, $scope.ward.code + '.pdf');
           })
-          .error(handleDownloadPdfError);
+          .error(function(error) {
+            console.log(error);
+            handleDownloadPdfError(error);
+          });
       }
     }
 

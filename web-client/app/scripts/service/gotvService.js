@@ -11,9 +11,9 @@ angular
       return $http({
         url: apiUrl + '/gotv/ward/' + wardCode + '/street/pdf',
         method: 'POST',
-        responseType: 'arraybuffer',
+        // responseType: 'arraybuffer',
         headers: {
-          accept: 'application/pdf'
+          accept: 'application/*'
         },
         withCredentials: true,
         data: data

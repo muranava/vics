@@ -121,6 +121,7 @@ public class TableBuilder {
         PdfPCell likelihood = new PdfPCell(new Phrase(row.getLikelihood()));
         likelihood.setBackgroundColor(LIGHT_GREY);
         likelihood.setHorizontalAlignment(Element.ALIGN_CENTER);
+        likelihood.setVerticalAlignment(Element.ALIGN_MIDDLE);
         table.addCell(likelihood);
 
         table.addCell(createDataCell(row.getIssue1(), Element.ALIGN_CENTER));
@@ -130,6 +131,7 @@ public class TableBuilder {
         PdfPCell support = new PdfPCell(new Phrase(row.getSupport()));
         support.setBackgroundColor(LIGHT_GREY);
         support.setHorizontalAlignment(Element.ALIGN_CENTER);
+        support.setVerticalAlignment(Element.ALIGN_MIDDLE);
         table.addCell(support);
 
         table.addCell(createDataCell(row.getHasPV(), Element.ALIGN_CENTER));

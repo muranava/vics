@@ -37,7 +37,7 @@ public class PafClientTest {
         when(canvassConfig.getPafApiBaseUrl()).thenReturn("http://localhost:9002/v1");
         RestTemplate restTemplate = new RestTemplate();
         Http http = new Http(restTemplate, canvassConfig, new PafErrorHandler());
-        pafClient = new PafClient(new PafToStreetConverter(), restTemplate, http, canvassConfig, new StreetToPafConverter());
+        pafClient = new PafClient(new PafToStreetConverter(), http, canvassConfig, new StreetToPafConverter());
         pafApiStub.start();
     }
 

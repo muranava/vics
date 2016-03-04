@@ -8,13 +8,10 @@ import com.infinityworks.webapp.paf.converter.StreetToPafConverter;
 import com.infinityworks.webapp.paf.dto.*;
 import com.infinityworks.webapp.rest.dto.SearchElectors;
 import com.infinityworks.webapp.rest.dto.Street;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
-import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import java.util.Arrays;
@@ -22,22 +19,13 @@ import java.util.List;
 
 import static java.util.stream.Collectors.toList;
 
-/**
- * TODO split this client up into separate functional classes.
- * TODO Rework exception handling
- */
 @Component
 public class PafClient {
-    private static final Logger log = LoggerFactory.getLogger(PafClient.class);
-    private static final String RECORD_VOTE_ERROR_MESSAGE = "PAF request failed when recording vote ern=%s. Paf responded with %s";
-
-    private final String API_TOKEN;
     private final String STREETS_BY_WARD_ENDPOINT;
     private final String ELECTORS_BY_STREET_ENDPOINT;
     private final String VOTED_ENDPOINT;
     private final String CONTACT_ENDPOINT;
 
-    private final RestTemplate restTemplate;
     private final Http http;
     private final StreetToPafConverter streetConverter;
     private final PafToStreetConverter pafToStreetConverter;
@@ -45,12 +33,10 @@ public class PafClient {
 
     @Autowired
     public PafClient(PafToStreetConverter pafStreetConverter,
-                     RestTemplate restTemplate,
                      Http http,
                      CanvassConfig canvassConfig,
                      StreetToPafConverter streetConverter) {
         pafToStreetConverter = pafStreetConverter;
-        this.restTemplate = restTemplate;
         this.http = http;
         this.streetConverter = streetConverter;
         pafApiBaseUrl = canvassConfig.getPafApiBaseUrl();
@@ -59,7 +45,6 @@ public class PafClient {
         ELECTORS_BY_STREET_ENDPOINT = pafApiBaseUrl + "/wards/%s/streets";
         VOTED_ENDPOINT = pafApiBaseUrl + "/voter/%s";
         CONTACT_ENDPOINT = pafApiBaseUrl + "/voter/%s/contact";
-        API_TOKEN = canvassConfig.getPafApiToken();
     }
 
     /**

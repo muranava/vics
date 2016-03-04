@@ -32,13 +32,13 @@
               "has_postal": false,
               "wants_postal": false,
               "lift": false,
-              "deceased": false,
-              "inaccessible": false
+              "deceased": true,
+              "inaccessible": true
             },
             "issues": {
               "cost": false,
-              "control": true,
-              "safety": null
+              "sovereignty": true,
+              "border": false
             },
             "contact": [
               {
@@ -106,14 +106,14 @@
             "flags": {
               "has_postal": false,
               "wants_postal": false,
-              "lift": false,
+              "lift": true,
               "deceased": false,
               "inaccessible": false
             },
             "issues": {
               "cost": false,
-              "control": true,
-              "safety": null
+              "sovereignty": true,
+              "border": true
             },
             "contact": [
               {
@@ -180,15 +180,15 @@
             },
             "flags": {
               "has_postal": false,
-              "wants_postal": false,
+              "wants_postal": true,
               "lift": false,
-              "deceased": false,
+              "deceased": true,
               "inaccessible": false
             },
             "issues": {
-              "cost": false,
-              "control": true,
-              "safety": null
+              "cost": true,
+              "sovereignty": true,
+              "border": false
             },
             "contact": [
               {
@@ -258,12 +258,12 @@
               "wants_postal": false,
               "lift": false,
               "deceased": false,
-              "inaccessible": false
+              "inaccessible": true
             },
             "issues": {
               "cost": false,
-              "control": true,
-              "safety": null
+              "sovereignty": true,
+              "border": null
             },
             "contact": [
               {
@@ -329,7 +329,7 @@
               "last_likelihood": 4
             },
             "flags": {
-              "has_postal": false,
+              "has_postal": true,
               "wants_postal": false,
               "lift": false,
               "deceased": false,
@@ -337,8 +337,8 @@
             },
             "issues": {
               "cost": false,
-              "control": true,
-              "safety": null
+              "sovereignty": true,
+              "border": null
             },
             "contact": [
               {
@@ -412,8 +412,8 @@
             },
             "issues": {
               "cost": false,
-              "control": true,
-              "safety": null
+              "sovereignty": true,
+              "border": null
             },
             "contact": [
               {
@@ -487,8 +487,8 @@
             },
             "issues": {
               "cost": false,
-              "control": true,
-              "safety": null
+              "sovereignty": true,
+              "border": null
             },
             "contact": [
               {
@@ -564,8 +564,8 @@
             },
             "issues": {
               "cost": false,
-              "control": true,
-              "safety": null
+              "sovereignty": true,
+              "border": null
             },
             "contact": [
               {
