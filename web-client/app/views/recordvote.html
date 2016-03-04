@@ -78,7 +78,6 @@
             <table class="table no-margin table-hover">
               <thead>
               <tr>
-                <th>Ward</th>
                 <th>Elector ID</th>
                 <th></th>
               </tr>
@@ -86,7 +85,6 @@
               <tbody>
               <tr ng-repeat="log in logs.elements.slice().reverse()"
                   ng-class="{danger: log.result === 0, success: log.result === 1}">
-                <td>{{log.wardName}}</td>
                 <td>{{log.ern}}</td>
                 <td ng-show="log.result === 1">SUCCESS</td>
                 <td ng-show="log.result === 0">FAILED</td>

@@ -83,6 +83,20 @@ public class PafServerStub {
                         .withBody(jsonData)));
     }
 
+    /**
+     * Returns the same voters no matter what streets you post
+     */
+    public void willReturnPropertiesWithoutVoters() throws IOException {
+        String jsonData = Resources.toString(getResource("json/paf-properties-no-voters.json"), UTF_8);
+
+        String urlPath = "/v1/wards/.*/streets";
+        wireMock.register(post(urlPathMatching(urlPath))
+                .willReturn(aResponse()
+                        .withStatus(200)
+                        .withHeader(CONTENT_TYPE, "application/json")
+                        .withBody(jsonData)));
+    }
+
     public void willReturnVotersByWardByTownAndByStreet(String wardCode, String town) throws IOException {
         String file = requireNonNull(files.get(String.format("%s,%s", wardCode, town)), "No json file for town=" + town);
         String jsonData = Resources.toString(getResource(file), UTF_8);

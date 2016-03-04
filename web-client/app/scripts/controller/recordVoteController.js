@@ -45,14 +45,24 @@ angular
         voteService.recordVote(elector)
           .success(function (response) {
             $scope.logs.push({
-              pollingDistrict: response.pollingDistrict,
               ern: response.ern,
-              wardName: response.wardName,
-              result: response.success ? 1 : 0
+              result: 1
             });
-
-            $scope.formModel.ern = util.extractErnPrefix(response.ern);
+          })
+          .error(function(error) {
+            if (error.type === 'PafApiNotFoundFailure') {
+              $scope.logs.push({
+                ern: error.custom,
+                result: 0
+              });
+            } else {
+              $scope.logs.push({
+                ern: 'UNKNOWN',
+                result: 0
+              });
+            }
           });
+        $scope.formModel.ern = util.extractErnPrefix($scope.formModel.ern);
 
         electorIdElement.focus();
       }

@@ -105,13 +105,8 @@ angular
       }
     };
 
-    function handleDownloadPdfError(error) {
-      console.log(error);
-      $scope.errorLoadingData = true;
-    }
-
     $scope.onPrintSelected = function () {
-      $scope.errorLoadingData = false;
+      $scope.errorLoadingData = null;
       var selected = _.filter($scope.streets, function (s) {
         return s.selected;
       });
@@ -119,7 +114,7 @@ angular
     };
 
     $scope.onPrintAll = function () {
-      $scope.errorLoadingData = false;
+      $scope.errorLoadingData = null;
       doPrint($scope.ward.code, $scope.streets);
     };
 
@@ -134,7 +129,7 @@ angular
           })
           .error(function(error) {
             console.log(error);
-            handleDownloadPdfError(error);
+            $scope.errorLoadingData = error.message;
           });
       }
     }

@@ -190,6 +190,10 @@
                 <div class="row">
                   <div class="col-lg-12">
                     <h4>Select individual streets or download all</h4>
+                    <br>
+                    <div ng-if="errorLoadingData" class="alert alert-callout alert-danger" role="alert">
+                      <strong>Sorry!</strong> We could not find any voters for the selected streets.
+                    </div>
                   </div>
                 </div>
                 <em class="text-caption">{{numStreetsSelected}} of {{streets.length}} streets selected</em>

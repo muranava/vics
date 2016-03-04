@@ -67,10 +67,19 @@ angular
           method: 'POST',
           responseType: 'arraybuffer',
           headers: {
-            accept: 'application/pdf'
+            accept: 'application/*'
           },
           withCredentials: true,
-          data: data
+          data: data,
+          transformResponse: function(data, header, status) {
+            if (status === 404) {
+              return {
+                status: 404,
+                message: 'No voters for streets'
+              };
+            }
+            return data;
+          }
         }
       );
     };

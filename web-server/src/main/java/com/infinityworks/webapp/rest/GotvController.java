@@ -55,7 +55,7 @@ public class GotvController {
                       pdfData -> {
                           HttpHeaders responseHeaders = new HttpHeaders();
                           responseHeaders.setContentType(MediaType.valueOf("application/pdf"));
-                          return new ResponseEntity<>(pdfData, responseHeaders, HttpStatus.OK);
+                          return new ResponseEntity<>(pdfData.toByteArray(), responseHeaders, HttpStatus.OK);
                       });
     }
 }

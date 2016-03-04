@@ -2,6 +2,7 @@ package com.infinityworks.webapp.service;
 
 import com.infinityworks.common.lang.Try;
 import com.infinityworks.webapp.domain.Permissible;
+import com.infinityworks.webapp.error.PafApiNotFoundFailure;
 import com.infinityworks.webapp.paf.client.PafClient;
 import com.infinityworks.webapp.rest.dto.RecordVote;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,7 +27,7 @@ public class RecordVoteService {
     }
 
     /**
-     * Records that a an elector has voted
+     * Records that a voter has voted
      *
      * @param permissible the activist entering the elector information
      * @param recordVote  the voter details
@@ -38,6 +39,7 @@ public class RecordVoteService {
                 .flatMap(user -> wardService.getByCode(recordVote.getWardCode(), user)
                 .flatMap(ward -> ernFormatEnricher.apply(ward.getCode(), recordVote.getErn()))
                 .flatMap(pafClient::recordVoted))
-                .map(success -> recordVote);
+                .map(success -> recordVote)
+                .recoverWith(error -> Try.failure(new PafApiNotFoundFailure(error.getMessage(), recordVote.getErn())));
     }
 }

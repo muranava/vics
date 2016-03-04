@@ -13,8 +13,6 @@ import com.infinityworks.webapp.service.RecordContactService;
 import com.infinityworks.webapp.service.RecordVoteService;
 import com.infinityworks.webapp.service.SessionService;
 import com.lowagie.text.DocumentException;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpHeaders;
@@ -33,7 +31,6 @@ import static org.springframework.web.bind.annotation.RequestMethod.POST;
 @RestController
 @RequestMapping("/elector")
 public class VoterController {
-    private final Logger log = LoggerFactory.getLogger(VoterController.class);
     private final TableBuilder tableBuilder;
     private final DocumentBuilder documentBuilder;
     private final ElectorsService electorsService;
