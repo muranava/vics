@@ -52,6 +52,7 @@
                                 <copy todir="${project.basedir}/../dist/server">
                                     <fileset dir="${project.basedir}/">
                                         <include name="run-web-server.sh"/>
+                                        <include name="canvass-env.sh"/>
                                     </fileset>
                                 </copy>
                             </tasks>
