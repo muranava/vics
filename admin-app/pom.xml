@@ -54,7 +54,7 @@
                 <executions>
                     <execution>
                         <phase>install</phase>
-                <configuration>
+                        <configuration>
                             <tasks>
                                 <copy todir="${project.basedir}/../dist/server">
                                     <fileset dir="${project.basedir}/">
@@ -64,7 +64,7 @@
                                     <flattenmapper/>
                                 </copy>
                             </tasks>
-                </configuration>
+                        </configuration>
                         <goals>
                             <goal>run</goal>
                         </goals>

@@ -9,18 +9,18 @@
     <version>0.0.1</version>
     <packaging>pom</packaging>
 
+    <scm>
+        <url>https://github.com/VoteLeave/canvass</url>
+    </scm>
+
     <modules>
+        <module>admin-app</module>
         <module>common</module>
         <module>pdf-gen</module>
         <module>tools</module>
         <module>web-client</module>
         <module>web-server</module>
-        <module>admin-app</module>
     </modules>
-
-    <scm>
-        <url>https://github.com/VoteLeave/canvass</url>
-    </scm>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -116,10 +116,21 @@
                 <groupId>de.codecentric</groupId>
                 <artifactId>spring-boot-admin-server</artifactId>
                 <version>${spring-boot-admin.version}</version>
+                <exclusions>
+                    <exclusion>
+                        <groupId>org.hibernate</groupId>
+                        <artifactId>hibernate-validator</artifactId>
+                    </exclusion>
+                </exclusions>
             </dependency>
             <dependency>
                 <groupId>de.codecentric</groupId>
                 <artifactId>spring-boot-admin-server-ui</artifactId>
+                <version>${spring-boot-admin.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>de.codecentric</groupId>
+                <artifactId>spring-boot-admin-starter-client</artifactId>
                 <version>${spring-boot-admin.version}</version>
             </dependency>
             <dependency>
@@ -181,6 +192,10 @@
                     <exclusion>
                         <groupId>org.springframework.boot</groupId>
                         <artifactId>spring-boot-starter-tomcat</artifactId>
+                    </exclusion>
+                    <exclusion>
+                        <groupId>org.hibernate</groupId>
+                        <artifactId>hibernate-validator</artifactId>
                     </exclusion>
                 </exclusions>
             </dependency>
