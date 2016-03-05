@@ -72,7 +72,7 @@ public class Http {
         } finally {
             log.trace(() -> {
                 long endTime = System.currentTimeMillis();
-                return String.format("Paf Response[%s] %s %s. Time Taken=%s", correlationKey, method, url, endTime - startTime);
+                return String.format("Paf Response[%s] %s %s. Time Taken(ms)=%s", correlationKey, method, url, endTime - startTime);
             });
         }
     }

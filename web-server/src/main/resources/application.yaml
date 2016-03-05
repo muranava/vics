@@ -2,6 +2,10 @@ server:
   context-path: /api/canvass
 
 spring:
+  application:
+    name: canvass
+    admin:
+      enabled: true
   redis:
     host: localhost
     password: secret
@@ -20,17 +24,30 @@ spring:
     hibernate:
       ddl-auto: validate
     database-platform: org.hibernate.dialect.PostgreSQLDialect
+  boot:
+    admin:
+      username: admin
+      password: admin
+      url: http://localhost:8088
 
 canvass:
   cors:
     hosts: "*"
     methods:  "POST, GET, PUT, OPTIONS, DELETE"
-  pafApiBaseUrl: http://localhost:9002/v1
+  pafApiBaseUrl: https://api.voteleave.uk/v1
   pafApiToken: 90f88caae35a5b863ae2450b55688a559b52a343
 
 logging.level.: INFO
 logging.level:
-  com.infinityworks: TRACE
+  com.infinityworks: DEBUG
 
 management:
   context-path: /admin
+  security:
+    enabled: false
+
+info:
+  app:
+    name: Canvass App
+    description: Voter Intention Collection System
+    version: v0.0.1

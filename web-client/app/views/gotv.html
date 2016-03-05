@@ -218,9 +218,6 @@
                 </div>
                 <em class="text-caption">{{numStreetsSelected}} of {{streets.length}} streets selected</em>
 
-                <div class="alert alert-callout alert-warning" ng-if="errorLoadingData" role="alert">
-                  <strong>Error!</strong> Failed to download electors.
-                </div>
                 <div class="alert alert-callout alert-warning" ng-if="validationErrors.length" role="alert">
                   <p ng-repeat="error in validationErrors">
                     <i class="fa fa-warning"></i> &nbsp;{{error}}
