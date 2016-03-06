@@ -35,8 +35,12 @@
         </dependency>
         <dependency>
             <groupId>com.infinityworks</groupId>
-            <artifactId>pdf-gen</artifactId>
+            <artifactId>common</artifactId>
             <version>${project.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.lowagie</groupId>
+            <artifactId>itext</artifactId>
         </dependency>
         <dependency>
             <groupId>com.zaxxer</groupId>
@@ -111,8 +115,9 @@
         </dependency>
 
         <dependency>
-            <groupId>com.github.tomakehurst</groupId>
-            <artifactId>wiremock</artifactId>
+            <groupId>com.infinityworks</groupId>
+            <artifactId>paf-stub</artifactId>
+            <version>${project.version}</version>
             <scope>test</scope>
         </dependency>
         <dependency>

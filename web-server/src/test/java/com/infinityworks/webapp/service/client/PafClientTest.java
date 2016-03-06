@@ -1,5 +1,6 @@
 package com.infinityworks.webapp.service.client;
 
+import com.infinityworks.canvass.pafstub.PafServerStub;
 import com.infinityworks.common.lang.Try;
 import com.infinityworks.webapp.config.CanvassConfig;
 import com.infinityworks.webapp.converter.PafToStreetConverter;
@@ -10,7 +11,6 @@ import com.infinityworks.webapp.paf.dto.Property;
 import com.infinityworks.webapp.paf.converter.StreetToPafConverter;
 import com.infinityworks.webapp.paf.dto.PropertyResponse;
 import com.infinityworks.webapp.rest.dto.Street;
-import com.infinityworks.webapp.testsupport.stub.PafServerStub;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -28,7 +28,7 @@ import static org.mockito.Mockito.when;
 
 public class PafClientTest {
 
-    private final PafServerStub pafApiStub = new PafServerStub();
+    private final PafServerStub pafApiStub = new PafServerStub(9002);
     private final CanvassConfig canvassConfig = mock(CanvassConfig.class);
     private PafClient pafClient;
 

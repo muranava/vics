@@ -1,4 +1,4 @@
-package com.infinityworks.webapp.testsupport.stub;
+package com.infinityworks.canvass.pafstub;
 
 import java.io.IOException;
 import java.util.concurrent.Executors;
@@ -8,11 +8,12 @@ import java.util.concurrent.Executors;
  */
 public class PafServerRunner {
     static Runnable pathServer = () -> {
-        PafServerStub pafApiStub = new PafServerStub();
+        PafServerStub pafApiStub = new PafServerStub(9002);
         pafApiStub.start();
         try {
             pafApiStub.willReturnStreets();
             pafApiStub.willReturnVotersByStreets();
+            pafApiStub.willRecordVoterVoted();
         } catch (IOException e) {
             throw new IllegalStateException("Could not start PAF mock server");
         }

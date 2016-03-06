@@ -9,6 +9,8 @@ import org.immutables.value.Value;
 import javax.annotation.Nullable;
 import java.util.List;
 
+import static java.util.Collections.emptyList;
+
 @Value.Immutable
 @Value.Style(init = "with*", jdkOnly = true)
 @JsonIgnoreProperties(ignoreUnknown = true)
@@ -19,5 +21,7 @@ public interface Property {
     @Nullable @JsonProperty("roll_house") String house();
     @Nullable @JsonProperty("post_town") String postTown();
     @Nullable @JsonProperty("postcode") String postCode();
-    List<Voter> voters();
+    @Value.Default default List<Voter> voters() {
+        return emptyList();
+    }
 }

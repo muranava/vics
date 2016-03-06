@@ -103,6 +103,6 @@ public class ElectorRowBuilder {
     }
 
     public ElectorRow build() {
-            return new ElectorRow(house, street, name, telephone, likelihood, issue1, issue2, issue3, support, hasPV, wantsPV, needsLift, poster, deceased, ern, inaccessible);
+        return new ElectorRow(house, street, name, telephone, likelihood, issue1, issue2, issue3, support, hasPV, wantsPV, needsLift, poster, deceased, ern, inaccessible);
     }
 }

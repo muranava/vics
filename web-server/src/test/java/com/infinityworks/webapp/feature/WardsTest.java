@@ -31,12 +31,9 @@ import java.util.List;
 import java.util.UUID;
 
 import static com.infinityworks.webapp.common.Json.objectMapper;
-import static com.infinityworks.webapp.testsupport.Fixtures.flagsWithDefaults;
-import static com.infinityworks.webapp.testsupport.Fixtures.issuesWithDefaults;
-import static com.infinityworks.webapp.testsupport.Fixtures.votingWithDefaults;
+import static com.infinityworks.webapp.testsupport.Fixtures.*;
 import static java.util.Arrays.asList;
 import static java.util.Collections.singletonList;
-import static org.hamcrest.CoreMatchers.hasItem;
 import static org.hamcrest.CoreMatchers.not;
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertThat;
@@ -45,9 +42,7 @@ import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -241,18 +236,6 @@ public class WardsTest extends WebApplicationTest {
     }
 
     @Test
-    public void checksUserHasNoAssociations() throws Exception {
-        when(sessionService.extractUserFromPrincipal(any(Principal.class)))
-                .thenReturn(Try.success(admin()));
-
-        mockMvc.perform(get("/ward/test")
-                .accept(APPLICATION_JSON))
-                .andDo(print())
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("hasAssociation", Matchers.is(false)));
-    }
-
-    @Test
     public void checksUserHasAssociations() throws Exception {
         when(sessionService.extractUserFromPrincipal(any(Principal.class)))
                 .thenReturn(Try.success(covs()));
@@ -261,7 +244,7 @@ public class WardsTest extends WebApplicationTest {
                 .accept(APPLICATION_JSON))
                 .andDo(print())
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("hasAssociation", Matchers.is(true)));
+                .andExpect(jsonPath("hasAssociation", is(true)));
     }
 
     public static void main(String... args) throws JsonProcessingException {

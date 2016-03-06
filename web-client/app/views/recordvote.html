@@ -23,7 +23,7 @@
       </div>
     </div>
     <div class="row" ng-if="!userHasNoAssociations">
-      <div class="col-lg-6 col-sm-6">
+      <div class="col-md-6 col-sm-12">
         <div class="card">
           <div class="card-head">
             <header>Enter the Elector ID</header>
@@ -50,18 +50,22 @@
                   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 
                 <div class="input-group">
-                  <div class="input-group-content">
-                    <input id="electorId" type="text" class="form-control" placeholder="-" ng-model="formModel.ern.pollingDistrict">
+                  <div class="input-group-content ern-spacing">
+                    <input id="electorId" type="text" class="form-control" ng-model="formModel.ern.pollingDistrict">
                     <label for="electorId">Polling District</label>
                   </div>
 
-                  <div class="input-group-content">
-                    <input id="electorNum" type="text" class="form-control" placeholder="-" ng-model="formModel.ern.number">
+                  <div class="input-group-content ern-spacing">&mdash;</div>
+
+                  <div class="input-group-content ern-spacing">
+                    <input id="electorNum" type="text" class="form-control" ng-model="formModel.ern.number">
                     <label for="electorNum">Elector ID</label>
                   </div>
 
+                  <div class="input-group-content ern-spacing">&mdash;</div>
+
                   <div class="input-group-content">
-                    <input id="electorSuffix" type="text" class="form-control" placeholder="-" ng-model="formModel.ern.suffix">
+                    <input id="electorSuffix" type="text" class="form-control" ng-model="formModel.ern.suffix">
                     <label for="electorSuffix">Elector Suffix</label>
                   </div>
 
@@ -211,11 +215,9 @@
           <dd>Elector ID</dd>
 
           <dt>2</dt>
-          <dd>Elector Suffix (optional)</dd>
+          <dd>Elector Suffix</dd>
 
         </dl>
-        <p>If the Elector Suffix is not present the Elector ID is represented as <b>BA-412</b>
-        </p>
       </div>
     </div>
   </div>

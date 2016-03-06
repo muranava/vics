@@ -55,13 +55,14 @@ public class UserService {
 
     @Transactional
     public Try<Void> delete(User user, UUID userToDelete) {
-        if (!user.isAdmin()) {
-            log.warn("Non admin tried to delete a user!. User={}, userToDelete={}", user, userToDelete);
-            return Try.failure(new NotAuthorizedFailure("Not authorized"));
-        }
-        if (userRepository.findOne(userToDelete) == null) {
+        User foundUser = userRepository.findOne(userToDelete);
+        if (foundUser == null) {
             log.warn("Attempt to delete non existent user. User={}, userToDelete={}", user, userToDelete);
             return Try.failure(new NotFoundFailure("No user with ID=" + userToDelete));
+        }
+        if (!user.isAdmin() || User.SUPER_NAME.equals(foundUser.getUsername())) {
+            log.warn("User attempted to delete user without authorization!. User={}, userToDelete={}", user, userToDelete);
+            return Try.failure(new NotAuthorizedFailure("Not authorized"));
         }
         userRepository.delete(userToDelete);
 

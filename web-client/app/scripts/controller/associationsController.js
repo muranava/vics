@@ -46,7 +46,7 @@ angular
             $scope.failedToAssociateUser = true;
           });
       } else {
-        $scope.invalidWard = true;
+        $scope.invalidConstituency = true;
       }
       $scope.constituencySearchModel = "";
     };

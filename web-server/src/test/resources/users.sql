@@ -22,4 +22,7 @@ INSERT INTO users_constituencies (users_id, constituencies_id) VALUES
 
 INSERT INTO users_wards (users_id, wards_id) VALUES
   -- earlsdon -> earlsdon ward
-  ('196af608-6d7a-4981-a6a0-ed8999b3b89c', '585aedd2-6f46-4718-854b-1856a3b1f3c1');
+  ('196af608-6d7a-4981-a6a0-ed8999b3b89c', '585aedd2-6f46-4718-854b-1856a3b1f3c1'),
+
+  -- admin
+  ('a54a4e73-943d-41e0-ae05-f6b507ad777e', '395b4d40-5074-4f2c-9c68-ea352f909402');

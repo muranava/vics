@@ -1,11 +1,11 @@
 package com.infinityworks.webapp.feature;
 
+import com.infinityworks.canvass.pafstub.PafServerStub;
 import com.infinityworks.webapp.Application;
 import com.infinityworks.webapp.config.Config;
 import com.infinityworks.webapp.domain.User;
 import com.infinityworks.webapp.security.SecurityConfig;
 import com.infinityworks.webapp.service.UserService;
-import com.infinityworks.webapp.testsupport.stub.PafServerStub;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.runner.RunWith;
@@ -29,7 +29,7 @@ import javax.servlet.Filter;
 })
 public abstract class WebApplicationTest {
     protected MockMvc mockMvc;
-    protected final PafServerStub pafApiStub = new PafServerStub();
+    protected final PafServerStub pafApiStub = new PafServerStub(9002);
 
     @Autowired
     protected WebApplicationContext applicationContext;

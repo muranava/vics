@@ -3,13 +3,17 @@ angular
   .controller('recordVoteController', function (util, $timeout, $scope, RingBuffer, voteService, electorService, wardService) {
     var logSize = 7,
       searchLimit = 10,
-      electorIdElement = $('#electorId');
+      electorIdElement = $('#electorNum');
 
     $scope.searchResults = [];
     $scope.logs = RingBuffer.newInstance(logSize);
 
     $scope.formModel = {
-      ern: '',
+      ern: {
+        pollingDistrict: '',
+        number: '',
+        suffix: ''
+      },
       selectedWard: null
     };
 
@@ -37,11 +41,13 @@ angular
     });
 
     $scope.onVote = function () {
-      var ern = $scope.formModel.ern;
+      var ern = $scope.formModel.ern.pollingDistrict + '-' +
+        $scope.formModel.ern.number + '-' +
+        $scope.formModel.ern.suffix;
       if (isValidElectorID(ern) &&
           isValidWard($scope.formModel.selectedWard)) {
 
-        var elector = mapToRequest($scope.formModel);
+        var elector = mapToRequest(ern);
 
         voteService.recordVote(elector)
           .success(function () {
@@ -62,22 +68,17 @@ angular
               result: 0
             });
           });
-        $scope.formModel.ern = util.extractErnPrefix(ern);
+        $scope.formModel.ern.number = '';
 
         electorIdElement.focus();
       }
     };
 
-    function mapToRequest(model) {
-      // removes any trailing hyphens
-      var sanitizedErn = _.filter(model.ern.split('-'), function (part) {
-        return !_.isEmpty(part);
-      }).join('-');
-
+    function mapToRequest(ern) {
       return {
-        ern: sanitizedErn,
-        wardCode: model.selectedWard.code,
-        wardName: model.selectedWard.name
+        ern: ern,
+        wardCode: $scope.formModel.selectedWard.code,
+        wardName: $scope.formModel.selectedWard.name
       };
     }
 

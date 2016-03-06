@@ -122,3 +122,7 @@ input:-webkit-autofill, textarea:-webkit-autofill, select:-webkit-autofill {
 .text-danger {
   color: #D92C27;
 }
+
+.ern-spacing {
+  padding-right: 10px;
+}

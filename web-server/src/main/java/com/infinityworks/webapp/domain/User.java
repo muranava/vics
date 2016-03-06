@@ -27,6 +27,8 @@ import static java.util.stream.Collectors.toSet;
 @Entity
 @Table(name = "users")
 public class User extends BaseEntity implements Permissible {
+    public static final String SUPER_NAME = "admin@admin.me";
+
     @Column(name = "username", nullable = false, unique = true)
     private String username;
 

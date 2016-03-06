@@ -43,7 +43,7 @@ public class PafClient {
 
         STREETS_BY_WARD_ENDPOINT = pafApiBaseUrl + "/wards/%s/streets";
         ELECTORS_BY_STREET_ENDPOINT = pafApiBaseUrl + "/wards/%s/streets";
-        VOTED_ENDPOINT = pafApiBaseUrl + "/voter/%s";
+        VOTED_ENDPOINT = pafApiBaseUrl + "/voter/%s/voted";
         CONTACT_ENDPOINT = pafApiBaseUrl + "/voter/%s/contact";
     }
 

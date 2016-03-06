@@ -162,7 +162,7 @@ public class UserTest extends WebApplicationTest {
         when(sessionService.extractUserFromPrincipal(any(Principal.class)))
                 .thenReturn(Try.success(covs()));
 
-        mockMvc.perform(delete("/user/ed24e8fd-8a15-41b2-9808-fe8f6d7cdd49")
+        mockMvc.perform(delete("/user/63f93970-d065-4fbb-8b9c-941e27ea53dc")
                 .accept(APPLICATION_JSON))
                 .andDo(print())
                 .andExpect(status().isUnauthorized());
