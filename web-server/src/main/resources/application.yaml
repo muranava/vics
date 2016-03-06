@@ -1,5 +1,6 @@
 server:
   context-path: /api/canvass
+  port: 18081
 
 spring:
   application:

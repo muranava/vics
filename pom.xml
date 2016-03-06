@@ -16,7 +16,7 @@
     <modules>
         <module>admin-app</module>
         <module>common</module>
-        <module>pdf-gen</module>
+        <module>performance-tests</module>
         <module>tools</module>
         <module>web-client</module>
         <module>web-server</module>

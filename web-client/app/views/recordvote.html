@@ -51,8 +51,18 @@
 
                 <div class="input-group">
                   <div class="input-group-content">
-                    <input id="electorId" type="text" class="form-control" ng-model="formModel.ern">
-                    <label for="electorId">Elector ID</label>
+                    <input id="electorId" type="text" class="form-control" placeholder="-" ng-model="formModel.ern.pollingDistrict">
+                    <label for="electorId">Polling District</label>
+                  </div>
+
+                  <div class="input-group-content">
+                    <input id="electorNum" type="text" class="form-control" placeholder="-" ng-model="formModel.ern.number">
+                    <label for="electorNum">Elector ID</label>
+                  </div>
+
+                  <div class="input-group-content">
+                    <input id="electorSuffix" type="text" class="form-control" placeholder="-" ng-model="formModel.ern.suffix">
+                    <label for="electorSuffix">Elector Suffix</label>
                   </div>
 
                   <div class="input-group-btn">
