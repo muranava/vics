@@ -37,7 +37,7 @@ public class Flags {
                  @JsonProperty("likelihoodFrom") Integer likelihoodFrom,
                  @JsonProperty("likelihoodTo") Integer likelihoodTo,
                  @JsonProperty("hasPV") Boolean hasPV,
-                 @JsonProperty("wantsPv") Boolean wantsPv,
+                 @JsonProperty("wantsPV") Boolean wantsPv,
                  @JsonProperty("lift") Boolean needsLift,
                  @JsonProperty("canvassed") Boolean notCanvassedYet,
                  @JsonProperty("poster") Boolean poster) {
