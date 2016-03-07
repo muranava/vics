@@ -5,6 +5,7 @@ import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
@@ -20,7 +21,7 @@ public class FlagsKeyRenderer implements Function<Flags, String> {
             sb.add("[Has PV: " + flags.getHasPV() + "] ");
         }
         if (flags.getWantsPv() != null) {
-            sb.add("[Wants PV: " + flags.getWantsPv() + "]");
+            sb.add("[Wants PV: " + flags.getWantsPv() + "]\n");
         }
         if (flags.getNeedsLift() != null) {
             sb.add("[Needs Lift: " + flags.getNeedsLift() + "]\n");
@@ -32,12 +33,18 @@ public class FlagsKeyRenderer implements Function<Flags, String> {
             sb.add("[Poster: " + flags.getPoster() + "] ");
         }
         if (flags.getLikelihoodFrom() != null) {
-            sb.add(String.format("[Likelihood: %s-%s]\n", flags.getLikelihoodFrom(), flags.getLikelihoodTo()));
+            sb.add(String.format("[Likelihood: %s]\n", rangeValue(flags.getLikelihoodFrom(), flags.getLikelihoodTo())));
         }
         if (flags.getIntentionFrom() != null) {
-            sb.add(String.format("[Intention: %s-%s]\n", flags.getIntentionFrom(), flags.getIntentionTo()));
+            sb.add(String.format("[Intention: %s]\n", rangeValue(flags.getIntentionFrom(), flags.getIntentionTo())));
         }
         return sb.stream()
                 .collect(Collectors.joining(""));
+    }
+
+    private String rangeValue(int from, int to) {
+        return Objects.equals(from, to)
+                ? String.valueOf(from)
+                : String.format("%d-%d", from, to);
     }
 }
