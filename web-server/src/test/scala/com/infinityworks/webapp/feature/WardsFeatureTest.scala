@@ -66,10 +66,10 @@ class WardsFeatureTest extends ApplicationTest {
   @Test
   def returnsStreetsByWard(): Unit = {
     session withUser BasicUser
-    val wardCode = "E05001221"
-    pafStub willReturnStreetsByWard wardCode
 
-    (http GET s"/ward/$wardCode/street")
+    pafStub willReturnStreetsByWard "E05001221"
+
+    (http GET s"/ward/E05001221/street")
       .andExpect(status.isOk)
       .andExpect(jsonPath("$[0].mainStreet", is("Kirby Road")))
       .andExpect(jsonPath("$[0].postTown", is("Coventry")))

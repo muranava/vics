@@ -29,7 +29,7 @@ import static org.junit.Assert.assertThat;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.mock;
 
-public class ElectoralWardServiceTest {
+public class WardServiceTest {
     private ConstituencyRepository constituencyRepository;
     private WardService underTest;
     private WardRepository wardRepository;
@@ -65,13 +65,13 @@ public class ElectoralWardServiceTest {
 
     @Test
     public void returnsTheWardByCode() throws Exception {
-        Ward w = ward().build();
-        User user = user().withRole(Role.USER).withWards(newHashSet(w)).build();
-        given(wardRepository.findByCode(w.getCode())).willReturn(Optional.of(w));
+        Ward ward = ward().build();
+        User user = user().withRole(Role.USER).withWards(newHashSet(ward)).build();
+        given(wardRepository.findByCode(ward.getCode())).willReturn(Optional.of(ward));
 
-        Try<Ward> result = underTest.getByCode(w.getCode(), user);
+        Try<Ward> result = underTest.getByCode(ward.getCode(), user);
 
-        assertThat(result, isSuccess(equalTo(w)));
+        assertThat(result, isSuccess(equalTo(ward)));
     }
 
     @Test
