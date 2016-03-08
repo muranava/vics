@@ -246,17 +246,4 @@ public class WardsTest extends WebApplicationTest {
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("hasAssociation", is(true)));
     }
-
-    public static void main(String... args) throws JsonProcessingException {
-
-        RecordContactRequest request = ImmutableRecordContactRequest.builder()
-                .withContactType("canvass")
-                .withUserId(UUID.randomUUID().toString())
-                .withFlags(flagsWithDefaults().build())
-                .withIssues(issuesWithDefaults().build())
-                .withVoting(votingWithDefaults().build())
-                .build();
-
-        System.out.println(objectMapper.writeValueAsString(request));
-    }
 }

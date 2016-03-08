@@ -20,6 +20,7 @@ public class Http {
     private final HttpHeaders httpHeaders = new HttpHeaders();
     private final RestTemplate restTemplate;
     private final PafErrorHandler pafErrorHandler;
+    public static final String EMPTY_BODY = "";
 
     @Autowired
     public Http(RestTemplate restTemplate,

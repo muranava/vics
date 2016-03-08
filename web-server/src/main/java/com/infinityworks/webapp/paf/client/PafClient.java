@@ -17,6 +17,7 @@ import org.springframework.web.util.UriComponentsBuilder;
 import java.util.Arrays;
 import java.util.List;
 
+import static com.infinityworks.webapp.paf.client.Http.EMPTY_BODY;
 import static java.util.stream.Collectors.toList;
 
 @Component
@@ -58,6 +59,18 @@ public class PafClient {
         return http
                 .get(url, Voter[].class)
                 .map(Arrays::asList);
+    }
+
+    /**
+     * Records that an elector has voted.  Not found responses from PAF are treated as
+     * success in the context of the application (users will type ids at a fast rate and
+     * erroneous inputs are expected) and we set a failure flag in the return entity.
+     *
+     * @param ern the details of the voter to record
+     */
+    public Try<String> recordVoted(String ern) {
+        String url = String.format(VOTED_ENDPOINT, ern);
+        return http.put(url, EMPTY_BODY, String.class);
     }
 
     /**
@@ -103,18 +116,6 @@ public class PafClient {
     public Try<RecordContactRequest> recordContact(String ern, RecordContactRequest contactRecord) {
         String url = String.format(CONTACT_ENDPOINT, ern);
         return http.post(url, contactRecord, RecordContactRequest.class);
-    }
-
-    /**
-     * Records that an elector has voted.  Not found responses from PAF are treated as
-     * success in the context of the application (users will type ids at a fast rate and
-     * erroneous inputs are expected) and we set a failure flag in the return entity.
-     *
-     * @param ern the details of the voter to record
-     */
-    public Try<String> recordVoted(String ern) {
-        String url = String.format(VOTED_ENDPOINT, ern);
-        return http.put(url, "", String.class);
     }
 
     private String buildSearchUrl(SearchElectors searchElectors) {

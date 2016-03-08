@@ -3,11 +3,8 @@ package com.infinityworks.webapp.pdf.renderer;
 import com.infinityworks.webapp.rest.dto.Flags;
 import org.springframework.stereotype.Component;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Objects;
 import java.util.function.Function;
-import java.util.stream.Collectors;
 
 @Component
 public class FlagsKeyRenderer implements Function<Flags, String> {
@@ -16,30 +13,29 @@ public class FlagsKeyRenderer implements Function<Flags, String> {
         if (flags == null) {
             return "";
         }
-        List<String> sb = new ArrayList<>();
+        StringBuilder sb = new StringBuilder();
         if (flags.getHasPV() != null) {
-            sb.add("[Has PV: " + flags.getHasPV() + "] ");
+            sb.append("[Has PV: ").append(flags.getHasPV()).append("] ");
         }
         if (flags.getWantsPv() != null) {
-            sb.add("[Wants PV: " + flags.getWantsPv() + "]\n");
+            sb.append("[Wants PV: ").append(flags.getWantsPv()).append("]\n");
         }
         if (flags.getNeedsLift() != null) {
-            sb.add("[Needs Lift: " + flags.getNeedsLift() + "]\n");
+            sb.append("[Needs Lift: ").append(flags.getNeedsLift()).append("]\n");
         }
         if (flags.getNotCanvassedYet() != null) {
-            sb.add("[Canvassed: " + flags.getNotCanvassedYet() + "]\n");
+            sb.append("[Canvassed: ").append(flags.getNotCanvassedYet()).append("]\n");
         }
         if (flags.getPoster() != null) {
-            sb.add("[Poster: " + flags.getPoster() + "] ");
+            sb.append("[Poster: ").append(flags.getPoster()).append("] ");
         }
         if (flags.getLikelihoodFrom() != null) {
-            sb.add(String.format("[Likelihood: %s]\n", rangeValue(flags.getLikelihoodFrom(), flags.getLikelihoodTo())));
+            sb.append(String.format("[Likelihood: %s]\n", rangeValue(flags.getLikelihoodFrom(), flags.getLikelihoodTo())));
         }
         if (flags.getIntentionFrom() != null) {
-            sb.add(String.format("[Intention: %s]\n", rangeValue(flags.getIntentionFrom(), flags.getIntentionTo())));
+            sb.append(String.format("[Intention: %s]\n", rangeValue(flags.getIntentionFrom(), flags.getIntentionTo())));
         }
-        return sb.stream()
-                .collect(Collectors.joining(""));
+        return sb.toString();
     }
 
     private String rangeValue(int from, int to) {

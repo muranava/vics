@@ -1,5 +1,6 @@
 package com.infinityworks.common.lang;
 
+import java.util.Optional;
 import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.Supplier;
@@ -196,11 +197,11 @@ public interface Try<S> {
         }
     }
 
-    default Try<S> recoverWith(Function<Exception, Try<S>> other) {
-        if (isSuccess()) {
-            return this;
+    static <S> Try<? super S> ofOptional(Optional<S> optional, String messageOnFailure) {
+        if (optional.isPresent()) {
+            return Try.success(optional.get());
         } else {
-            return other.apply(getFailure());
+            return Try.failure(new Exception(messageOnFailure));
         }
     }
 
