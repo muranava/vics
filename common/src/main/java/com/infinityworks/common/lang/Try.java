@@ -197,14 +197,6 @@ public interface Try<S> {
         }
     }
 
-    static <S> Try<? super S> ofOptional(Optional<S> optional, String messageOnFailure) {
-        if (optional.isPresent()) {
-            return Try.success(optional.get());
-        } else {
-            return Try.failure(new Exception(messageOnFailure));
-        }
-    }
-
     /**
      * Gets the value of success
      *

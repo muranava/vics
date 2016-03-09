@@ -1,4 +1,4 @@
-package com.infinityworks.webapp.feature.api
+package com.infinityworks.webapp.feature.testsupport.api
 
 import java.security.Principal
 
