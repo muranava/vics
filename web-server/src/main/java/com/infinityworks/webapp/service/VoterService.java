@@ -6,6 +6,8 @@ import com.infinityworks.webapp.domain.Ward;
 import com.infinityworks.webapp.error.NotAuthorizedFailure;
 import com.infinityworks.webapp.error.NotFoundFailure;
 import com.infinityworks.webapp.paf.client.PafClient;
+import com.infinityworks.webapp.paf.client.command.GetVotersCommand;
+import com.infinityworks.webapp.paf.client.command.GetVotersCommandFactory;
 import com.infinityworks.webapp.paf.dto.Property;
 import com.infinityworks.webapp.paf.dto.Voter;
 import com.infinityworks.webapp.pdf.DocumentBuilder;
@@ -27,19 +29,22 @@ import java.util.List;
  * The elector data is retrieve from the PAF api.
  */
 @Service
-public class ElectorsService {
-    private final Logger log = LoggerFactory.getLogger(ElectorsService.class);
+public class VoterService {
+    private final Logger log = LoggerFactory.getLogger(VoterService.class);
     private final PafClient pafClient;
     private final WardService wardService;
     private final PDFTableGenerator pdfTableGenerator;
+    private final GetVotersCommandFactory getVotersCommandFactory;
 
     @Autowired
-    public ElectorsService(PafClient pafClient,
-                           WardService wardService,
-                           PDFTableGenerator pdfTableGenerator) {
+    public VoterService(PafClient pafClient,
+                        WardService wardService,
+                        PDFTableGenerator pdfTableGenerator,
+                        GetVotersCommandFactory getVotersCommandFactory) {
         this.pafClient = pafClient;
         this.wardService = wardService;
         this.pdfTableGenerator = pdfTableGenerator;
+        this.getVotersCommandFactory = getVotersCommandFactory;
     }
 
     /**
@@ -78,8 +83,12 @@ public class ElectorsService {
                                                                String wardCode,
                                                                Permissible permissible) {
         return wardService.getByCode(wardCode, permissible)
-                .flatMap(ward -> pafClient.findVotersByStreet(request.getStreets(), ward.getCode())
-                        .flatMap(electorsByStreet -> renderPdfOfElectorsByStreets(tableBuilder, documentBuilder, request, ward, electorsByStreet.response())));
+                .flatMap(ward -> {
+                    GetVotersCommand getVotersCommand = getVotersCommandFactory.create(request.getStreets(), ward.getCode());
+                    return getVotersCommand.execute()
+                            .flatMap(electorsByStreet -> renderPdfOfElectorsByStreets(
+                                    tableBuilder, documentBuilder, request, ward, electorsByStreet.response()));
+                });
     }
 
     private Try<ByteArrayOutputStream> renderPdfOfElectorsByStreets(TableBuilder tableBuilder,

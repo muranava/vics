@@ -6,6 +6,7 @@ import com.infinityworks.webapp.domain.Role;
 import com.infinityworks.webapp.domain.User;
 import com.infinityworks.webapp.domain.Ward;
 import com.infinityworks.webapp.paf.client.PafClient;
+import com.infinityworks.webapp.paf.client.command.GetVotersCommandFactory;
 import com.infinityworks.webapp.paf.dto.ImmutableProperty;
 import com.infinityworks.webapp.paf.dto.ImmutablePropertyResponse;
 import com.infinityworks.webapp.paf.dto.PropertyResponse;
@@ -39,9 +40,9 @@ import static org.mockito.Mockito.mock;
 /**
  * TODO This test needs to be reworked and cover error scenarios
  */
-public class ElectorsServiceTest {
+public class VoterServiceTest {
 
-    private ElectorsService underTest;
+    private VoterService underTest;
     private PafClient pafClient;
     private DocumentBuilder documentBuilder;
     private WardService wardService;
@@ -61,7 +62,7 @@ public class ElectorsServiceTest {
         GeneratedPdfTable table1 = new GeneratedPdfTable(new PdfPTable(1), "Low Road", w.getName(), w.getCode(), w.getConstituency().getName());
         GeneratedPdfTable table2 = new GeneratedPdfTable(new PdfPTable(1), "High Road", w.getName(), w.getCode(), w.getConstituency().getName());
         PDFTableGenerator pdfTableGenerator = (tableBuilder, voters1, wardCode, wardName, constituencyName) -> asList(table1, table2);
-        underTest = new ElectorsService(pafClient, wardService, pdfTableGenerator);
+        underTest = new VoterService(pafClient, wardService, pdfTableGenerator, new GetVotersCommandFactory(pafClient, 30000));
 
         User user = user().withRole(Role.USER).build();
 

@@ -14,7 +14,6 @@
     </scm>
 
     <modules>
-        <module>admin-app</module>
         <module>common</module>
         <module>paf-stub</module>
         <module>tools</module>
@@ -30,12 +29,12 @@
         <apache-http-client.version>4.5.1</apache-http-client.version>
         <db-setup.version>1.6.0</db-setup.version>
         <equals-verifier.version>1.7.8</equals-verifier.version>
-        <gatling.version>2.1.7</gatling.version>
         <guava.version>18.0</guava.version>
         <hamcrest.version>1.3</hamcrest.version>
         <hibernate-annotations.version>3.5.6-Final</hibernate-annotations.version>
         <hibernate-validator.version>5.2.2.Final</hibernate-validator.version>
         <hikaricp.version>2.4.3</hikaricp.version>
+        <hystrix.version>1.5.1</hystrix.version>
         <immutables-version>2.1.12</immutables-version>
         <itext.version>2.1.7</itext.version>
         <javax-persistence-api.version>1.0.2</javax-persistence-api.version>
@@ -99,11 +98,33 @@
                 <groupId>com.jayway.jsonpath</groupId>
                 <artifactId>json-path</artifactId>
                 <version>${json-path.version}</version>
+                <exclusions>
+                    <exclusion>
+                        <groupId>org.ow2.asm</groupId>
+                        <artifactId>asm</artifactId>
+                    </exclusion>
+                </exclusions>
             </dependency>
             <dependency>
                 <groupId>com.lowagie</groupId>
                 <artifactId>itext</artifactId>
                 <version>${itext.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.netflix.hystrix</groupId>
+                <artifactId>hystrix-javanica</artifactId>
+                <version>${hystrix.version}</version>
+                <exclusions>
+                    <exclusion>
+                        <artifactId>commons-logging</artifactId>
+                        <groupId>commons-logging</groupId>
+                    </exclusion>
+                </exclusions>
+            </dependency>
+            <dependency>
+                <groupId>com.netflix.hystrix</groupId>
+                <artifactId>hystrix-metrics-event-stream</artifactId>
+                <version>${hystrix.version}</version>
             </dependency>
             <dependency>
                 <groupId>com.ninja-squad</groupId>
@@ -114,32 +135,6 @@
                 <groupId>com.zaxxer</groupId>
                 <artifactId>HikariCP</artifactId>
                 <version>${hikaricp.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>de.codecentric</groupId>
-                <artifactId>spring-boot-admin-server</artifactId>
-                <version>${spring-boot-admin.version}</version>
-                <exclusions>
-                    <exclusion>
-                        <groupId>org.hibernate</groupId>
-                        <artifactId>hibernate-validator</artifactId>
-                    </exclusion>
-                </exclusions>
-            </dependency>
-            <dependency>
-                <groupId>de.codecentric</groupId>
-                <artifactId>spring-boot-admin-server-ui</artifactId>
-                <version>${spring-boot-admin.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>de.codecentric</groupId>
-                <artifactId>spring-boot-admin-starter-client</artifactId>
-                <version>${spring-boot-admin.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>io.gatling.highcharts</groupId>
-                <artifactId>gatling-charts-highcharts</artifactId>
-                <version>${gatling.version}</version>
             </dependency>
             <dependency>
                 <groupId>javax.persistence</groupId>

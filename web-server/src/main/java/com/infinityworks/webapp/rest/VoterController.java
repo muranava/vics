@@ -8,7 +8,7 @@ import com.infinityworks.webapp.rest.dto.ElectorsByStreetsRequest;
 import com.infinityworks.webapp.rest.dto.RecordContactRequest;
 import com.infinityworks.webapp.rest.dto.RecordVote;
 import com.infinityworks.webapp.rest.dto.SearchElectors;
-import com.infinityworks.webapp.service.ElectorsService;
+import com.infinityworks.webapp.service.VoterService;
 import com.infinityworks.webapp.service.RecordContactService;
 import com.infinityworks.webapp.service.RecordVoteService;
 import com.infinityworks.webapp.service.SessionService;
@@ -33,7 +33,7 @@ import static org.springframework.web.bind.annotation.RequestMethod.POST;
 public class VoterController {
     private final TableBuilder tableBuilder;
     private final DocumentBuilder documentBuilder;
-    private final ElectorsService electorsService;
+    private final VoterService voterService;
     private final RequestValidator requestValidator;
     private final RecordVoteService recordVoteService;
     private final RecordContactService recordContactService;
@@ -43,7 +43,7 @@ public class VoterController {
     @Autowired
     public VoterController(@Qualifier("canvass") TableBuilder tableBuilder,
                            @Qualifier("canvass") DocumentBuilder documentBuilder,
-                           ElectorsService electorsService,
+                           VoterService voterService,
                            RequestValidator requestValidator,
                            RecordVoteService recordVoteService,
                            RecordContactService recordContactService,
@@ -51,7 +51,7 @@ public class VoterController {
                            RestErrorHandler errorHandler) {
         this.tableBuilder = tableBuilder;
         this.documentBuilder = documentBuilder;
-        this.electorsService = electorsService;
+        this.voterService = voterService;
         this.requestValidator = requestValidator;
         this.recordVoteService = recordVoteService;
         this.recordContactService = recordContactService;
@@ -71,7 +71,7 @@ public class VoterController {
         SearchElectors searchRequest = new SearchElectors(firstName, lastName, address, postCode, wardCode);
         return requestValidator.validate(searchRequest)
                 .flatMap(request -> sessionService.extractUserFromPrincipal(principal))
-                .flatMap(user -> electorsService.search(user, searchRequest))
+                .flatMap(user -> voterService.search(user, searchRequest))
                 .fold(errorHandler::mapToResponseEntity, ResponseEntity::ok);
     }
 
@@ -102,7 +102,7 @@ public class VoterController {
             Principal principal) throws DocumentException {
         return requestValidator.validate(electorsByStreetsRequest)
                 .flatMap(streets -> sessionService.extractUserFromPrincipal(principal))
-                .flatMap(user -> electorsService.getPdfOfElectorsByStreet(tableBuilder, documentBuilder, electorsByStreetsRequest, wardCode, user))
+                .flatMap(user -> voterService.getPdfOfElectorsByStreet(tableBuilder, documentBuilder, electorsByStreetsRequest, wardCode, user))
                 .fold(errorHandler::mapToResponseEntity, pdfData -> {
                     HttpHeaders responseHeaders = new HttpHeaders();
                     responseHeaders.setContentType(MediaType.valueOf("application/pdf"));

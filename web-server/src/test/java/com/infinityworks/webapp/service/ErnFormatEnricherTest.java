@@ -11,7 +11,7 @@ import static org.hamcrest.CoreMatchers.instanceOf;
 import static org.junit.Assert.*;
 
 public class ErnFormatEnricherTest {
-    private final ErnFormatEnricher underTest = new ErnFormatEnricher();
+    private final ErnShortFormToLongFormConverter underTest = new ErnShortFormToLongFormConverter();
 
     @Test
     public void formatsTheErnWithMinLengthParts() throws Exception {

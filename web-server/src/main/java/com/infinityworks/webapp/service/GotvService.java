@@ -14,15 +14,15 @@ import java.io.ByteArrayOutputStream;
 @Service
 public class GotvService {
 
-    private final ElectorsService electorsService;
+    private final VoterService voterService;
     private final TableBuilder tableBuilder;
     private final DocumentBuilder documentBuilder;
 
     @Autowired
-    public GotvService(ElectorsService electorsService,
+    public GotvService(VoterService voterService,
                        @Qualifier("gotv") TableBuilder tableBuilder,
                        @Qualifier("gotv") DocumentBuilder documentBuilder) {
-        this.electorsService = electorsService;
+        this.voterService = voterService;
         this.tableBuilder = tableBuilder;
         this.documentBuilder = documentBuilder;
     }
@@ -30,6 +30,6 @@ public class GotvService {
     public Try<ByteArrayOutputStream> generateElectorsByStreet(String wardCode,
                                                                User user,
                                                                ElectorsByStreetsRequest request) {
-        return electorsService.getPdfOfElectorsByStreet(tableBuilder, documentBuilder, request, wardCode, user);
+        return voterService.getPdfOfElectorsByStreet(tableBuilder, documentBuilder, request, wardCode, user);
     }
 }

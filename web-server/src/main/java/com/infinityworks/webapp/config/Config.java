@@ -6,6 +6,10 @@ import com.fasterxml.jackson.datatype.guava.GuavaModule;
 import com.fasterxml.jackson.datatype.jdk8.Jdk8Module;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.google.common.io.Resources;
+import com.infinityworks.webapp.paf.client.PafClient;
+import com.infinityworks.webapp.paf.client.command.GetStreetsCommandFactory;
+import com.infinityworks.webapp.paf.client.command.GetVotersCommandFactory;
+import com.infinityworks.webapp.paf.client.command.RecordVoteCommandFactory;
 import com.infinityworks.webapp.pdf.CanvassTableConfig;
 import com.infinityworks.webapp.pdf.DocumentBuilder;
 import com.infinityworks.webapp.converter.PropertyToRowsConverter;
@@ -112,6 +116,21 @@ public class Config {
         String methods = env.getRequiredProperty("canvass.cors.methods");
         Set<String> hosts = new HashSet<>(asList(allowedHosts.split(",")));
         return new CorsConfig(hosts, methods);
+    }
+
+    @Bean
+    public GetVotersCommandFactory getVotersCommandFactory(PafClient pafClient) {
+        return new GetVotersCommandFactory(pafClient, 30000);
+    }
+
+    @Bean
+    public RecordVoteCommandFactory recordVoteCommandFactory(PafClient pafClient) {
+        return new RecordVoteCommandFactory(pafClient, 30000);
+    }
+
+    @Bean
+    public GetStreetsCommandFactory getStreetsCommandFactory(PafClient pafClient) {
+        return new GetStreetsCommandFactory(pafClient, 30000);
     }
 
     @Bean

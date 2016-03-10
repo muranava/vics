@@ -55,9 +55,17 @@ angular
           saveAs(file, $scope.wardSearchModel.code + '.pdf');
         })
         .error(function (error) {
-          $scope.errorLoadingData = error.message;
+          handleErrorResponse(error);
         });
     };
+
+    function handleErrorResponse(error){
+          if (error) {
+            $scope.errorLoadingData = error.message;
+          } else {
+            $scope.errorLoadingData = "Failed to contact server";
+              }
+          }
 
     $scope.onPrintAll = function () {
       $scope.errorLoadingData = null;
@@ -67,7 +75,7 @@ angular
           saveAs(file, $scope.wardSearchModel.code + '.pdf');
         })
         .error(function (error) {
-          $scope.errorLoadingData = error.message;
+          handleErrorResponse(error);
         });
     };
   });

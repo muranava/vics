@@ -5,6 +5,7 @@ import com.infinityworks.webapp.domain.User;
 import com.infinityworks.webapp.domain.Ward;
 import com.infinityworks.webapp.error.NotAuthorizedFailure;
 import com.infinityworks.webapp.error.NotFoundFailure;
+import com.infinityworks.webapp.paf.client.command.GetStreetsCommandFactory;
 import com.infinityworks.webapp.rest.dto.Street;
 import com.infinityworks.webapp.paf.client.PafClient;
 import org.junit.Before;
@@ -35,7 +36,7 @@ public class AddressServiceTest {
     public void setUp() throws Exception {
         pafClient = mock(PafClient.class);
         wardService = mock(WardService.class);
-        underTest = new AddressService(wardService, pafClient);
+        underTest = new AddressService(wardService, new GetStreetsCommandFactory(pafClient, 30000));
     }
 
     @Test

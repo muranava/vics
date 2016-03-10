@@ -62,7 +62,7 @@ public class ElectorRowBuilder {
         return this;
     }
 
-    public ElectorRowBuilder withSupport(String support) {
+    public ElectorRowBuilder withIntention(String support) {
         this.support = support;
         return this;
     }

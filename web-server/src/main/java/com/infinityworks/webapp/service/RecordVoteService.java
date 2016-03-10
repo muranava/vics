@@ -2,8 +2,7 @@ package com.infinityworks.webapp.service;
 
 import com.infinityworks.common.lang.Try;
 import com.infinityworks.webapp.domain.Permissible;
-import com.infinityworks.webapp.error.PafApiNotFoundFailure;
-import com.infinityworks.webapp.paf.client.PafClient;
+import com.infinityworks.webapp.paf.client.command.RecordVoteCommandFactory;
 import com.infinityworks.webapp.rest.dto.RecordVote;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -13,17 +12,17 @@ import org.springframework.stereotype.Service;
  */
 @Service
 public class RecordVoteService {
-    private final PafClient pafClient;
     private final WardService wardService;
-    private final ErnFormatEnricher ernFormatEnricher;
+    private final ErnShortFormToLongFormConverter ernFormatEnricher;
+    private final RecordVoteCommandFactory recordVoteCommandFactory;
 
     @Autowired
-    public RecordVoteService(PafClient pafClient,
-                             WardService wardService,
-                             ErnFormatEnricher ernFormatEnricher) {
-        this.pafClient = pafClient;
+    public RecordVoteService(WardService wardService,
+                             ErnShortFormToLongFormConverter ernFormatEnricher,
+                             RecordVoteCommandFactory recordVoteCommandFactory) {
         this.wardService = wardService;
         this.ernFormatEnricher = ernFormatEnricher;
+        this.recordVoteCommandFactory = recordVoteCommandFactory;
     }
 
     /**
@@ -38,7 +37,7 @@ public class RecordVoteService {
                 .ensureWriteAccess()
                 .flatMap(user -> wardService.getByCode(recordVote.getWardCode(), user)
                 .flatMap(ward -> ernFormatEnricher.apply(ward.getCode(), recordVote.getErn()))
-                .flatMap(pafClient::recordVoted))
-                .map(success -> recordVote);
+                .flatMap(ern -> recordVoteCommandFactory.create(ern).execute())
+                .map(success -> recordVote));
     }
 }

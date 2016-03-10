@@ -1,17 +1,18 @@
 package com.infinityworks.webapp.service;
 
 import com.infinityworks.common.lang.Try;
-import com.infinityworks.webapp.rest.dto.RecordVote;
 import com.infinityworks.webapp.domain.User;
 import com.infinityworks.webapp.domain.Ward;
 import com.infinityworks.webapp.error.NotAuthorizedFailure;
 import com.infinityworks.webapp.paf.client.PafClient;
+import com.infinityworks.webapp.paf.client.command.RecordVoteCommandFactory;
+import com.infinityworks.webapp.rest.dto.RecordVote;
 import org.junit.Before;
 import org.junit.Test;
 
-import static com.infinityworks.webapp.testsupport.builder.downstream.RecordVoteBuilder.recordVote;
 import static com.infinityworks.webapp.testsupport.builder.UserBuilder.user;
 import static com.infinityworks.webapp.testsupport.builder.WardBuilder.ward;
+import static com.infinityworks.webapp.testsupport.builder.downstream.RecordVoteBuilder.recordVote;
 import static com.infinityworks.webapp.testsupport.matcher.TryFailureMatcher.isFailure;
 import static com.infinityworks.webapp.testsupport.matcher.TrySuccessMatcher.isSuccess;
 import static org.hamcrest.CoreMatchers.instanceOf;
@@ -22,7 +23,7 @@ import static org.mockito.Mockito.mock;
 
 public class RecordVoteServiceTest {
 
-    private final ErnFormatEnricher ernFormatEnricher = new ErnFormatEnricher();
+    private final ErnShortFormToLongFormConverter ernFormatEnricher = new ErnShortFormToLongFormConverter();
     private RecordVoteService underTest;
     private PafClient pafClient;
     private WardService wardService;
@@ -31,7 +32,7 @@ public class RecordVoteServiceTest {
     public void setUp() throws Exception {
         pafClient = mock(PafClient.class);
         wardService = mock(WardService.class);
-        underTest = new RecordVoteService(pafClient, wardService, ernFormatEnricher);
+        underTest = new RecordVoteService(wardService, ernFormatEnricher, new RecordVoteCommandFactory(pafClient, 30000));
     }
 
     @Test

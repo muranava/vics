@@ -14,7 +14,7 @@ import org.springframework.stereotype.Service;
 @Service
 public class RecordContactService {
 
-    private final Logger log = LoggerFactory.getLogger(ElectorsService.class);
+    private final Logger log = LoggerFactory.getLogger(VoterService.class);
     private final PafClient pafClient;
     private final WardService wardService;
     private final RecordContactToPafConverter recordContactToPafConverter;

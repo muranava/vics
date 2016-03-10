@@ -8,7 +8,6 @@ import org.springframework.stereotype.Component;
 import java.util.List;
 import java.util.function.BiFunction;
 
-import static com.infinityworks.common.lang.StringExtras.nullToEmpty;
 import static com.infinityworks.webapp.pdf.model.ElectorRowBuilder.electorRow;
 import static java.util.stream.Collectors.toList;
 
@@ -29,8 +28,8 @@ public class PropertyToRowsConverter implements BiFunction<String, Property, Lis
                             .withTelephone(voter.telephone());
 
                     if (voting != null) {
-                        row.withLikelihood(nullToEmpty(voting.likelihood()))
-                                .withSupport(nullToEmpty(voting.intention()));
+                        row.withLikelihood(normalizeScore(voting.likelihood()))
+                                .withIntention(normalizeScore(voting.intention()));
                     }
 
                     if (issues != null) {
@@ -56,6 +55,14 @@ public class PropertyToRowsConverter implements BiFunction<String, Property, Lis
                             .build();
                 })
                 .collect(toList());
+    }
+
+    private String normalizeScore(Integer value) {
+        if (value == null || value == 0) {
+            return "";
+        } else {
+            return String.valueOf(value);
+        }
     }
 
     private String createRollNum(Voter voter) {
