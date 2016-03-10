@@ -1,15 +1,15 @@
 package com.infinityworks.webapp.rest.dto;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.infinityworks.webapp.domain.Role;
 import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.NotEmpty;
 
 import javax.validation.constraints.NotNull;
-import java.util.List;
-import java.util.UUID;
 
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class CreateUserRequest {
 
     @NotEmpty
@@ -25,10 +25,6 @@ public class CreateUserRequest {
     @NotNull
     private final Role role;
     @NotNull
-    private final List<UUID> wardIDs;
-    @NotNull
-    private final List<UUID> constituencyIDs;
-    @NotNull
     private final boolean writeAccess;
 
     @JsonCreator
@@ -38,8 +34,6 @@ public class CreateUserRequest {
                              @JsonProperty("lastName") String lastName,
                              @JsonProperty("repeatPassword") String repeatPassword,
                              @JsonProperty("role") Role role,
-                             @JsonProperty("wardIDs") List<UUID> wardIDs,
-                             @JsonProperty("constituencyIDs") List<UUID> constituencyIDs,
                              @JsonProperty("writeAccess") boolean writeAccess) {
         this.username = username;
         this.password = password;
@@ -47,8 +41,6 @@ public class CreateUserRequest {
         this.lastName = lastName;
         this.repeatPassword = repeatPassword;
         this.role = role;
-        this.wardIDs = wardIDs;
-        this.constituencyIDs = constituencyIDs;
         this.writeAccess = writeAccess;
     }
 
@@ -66,14 +58,6 @@ public class CreateUserRequest {
 
     public Role getRole() {
         return role;
-    }
-
-    public List<UUID> getWardIDs() {
-        return wardIDs;
-    }
-
-    public List<UUID> getConstituencyIDs() {
-        return constituencyIDs;
     }
 
     public boolean getWriteAccess() {

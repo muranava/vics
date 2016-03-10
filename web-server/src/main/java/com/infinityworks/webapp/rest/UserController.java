@@ -1,12 +1,13 @@
 package com.infinityworks.webapp.rest;
 
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-import com.infinityworks.webapp.common.RequestValidator;
 import com.infinityworks.common.lang.Try;
+import com.infinityworks.webapp.common.RequestValidator;
 import com.infinityworks.webapp.domain.CurrentUser;
 import com.infinityworks.webapp.domain.Role;
 import com.infinityworks.webapp.error.RestErrorHandler;
-import com.infinityworks.webapp.rest.dto.*;
+import com.infinityworks.webapp.rest.dto.AuthenticationToken;
+import com.infinityworks.webapp.rest.dto.CreateUserRequest;
+import com.infinityworks.webapp.rest.dto.UpdateUserRequest;
 import com.infinityworks.webapp.security.SecurityUtils;
 import com.infinityworks.webapp.service.SessionService;
 import com.infinityworks.webapp.service.UserService;
@@ -67,7 +68,7 @@ public class UserController {
                 .fold(errorHandler::mapToResponseEntity, ResponseEntity::ok);
     }
 
-    @PreAuthorize("hasAuthority('ADMIN')")
+    @PreAuthorize("isAuthenticated()")
     @RequestMapping(method = DELETE, value = "/{id}")
     public ResponseEntity<?> delete(@PathVariable("id") UUID id, Principal principal) {
         return sessionService.extractUserFromPrincipal(principal)
@@ -84,9 +85,9 @@ public class UserController {
                 .fold(errorHandler::mapToResponseEntity, ResponseEntity::ok);
     }
 
-    @PreAuthorize("hasAuthority('ADMIN')")
+    @PreAuthorize("isAuthenticated()")
     @RequestMapping(method = POST)
-    public ResponseEntity<?> createUser(@RequestBody CreateUserRequest createUserRequest, Principal principal) {
+    public ResponseEntity<?> create(@RequestBody CreateUserRequest createUserRequest, Principal principal) {
         return requestValidator.validate(createUserRequest)
                 .flatMap(request -> sessionService.extractUserFromPrincipal(principal))
                 .flatMap(user -> userService.create(user, createUserRequest))
@@ -97,14 +98,15 @@ public class UserController {
                         });
     }
 
-    @PreAuthorize("hasAuthority('ADMIN')")
+    @PreAuthorize("isAuthenticated()")
     @RequestMapping(method = GET)
-    public ResponseEntity<?> allUsers() {
-        return userService.getAll()
+    public ResponseEntity<?> allUsers(Principal principal) {
+        return sessionService.extractUserFromPrincipal(principal)
+                .flatMap(userService::getAll)
                 .fold(errorHandler::mapToResponseEntity, ResponseEntity::ok);
     }
 
-    @PreAuthorize("hasAuthority('ADMIN')")
+    @PreAuthorize("isAuthenticated()")
     @RequestMapping(method = GET, value = "/{id}")
     public ResponseEntity<?> getUser(@PathVariable(value = "id") UUID id, Principal principal) {
         return sessionService.extractUserFromPrincipal(principal)
@@ -141,7 +143,7 @@ public class UserController {
 
     @PreAuthorize("isAuthenticated()")
     @RequestMapping(value = "/login/test", method = GET)
-    public ResponseEntity<?> test(Principal userPrincipal, @RequestParam(value = "role") String role) {
+    public ResponseEntity<?> testLoggedIn(Principal userPrincipal, @RequestParam(value = "role") String role) {
         return Role.of(role).flatMap(r -> {
             Object principal = ((UsernamePasswordAuthenticationToken) userPrincipal).getPrincipal();
             CurrentUser user = (CurrentUser) principal;

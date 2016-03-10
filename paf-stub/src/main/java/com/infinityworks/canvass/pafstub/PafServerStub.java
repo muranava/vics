@@ -78,7 +78,7 @@ public class PafServerStub {
      * Returns the same voters no matter what streets you post
      */
     public void willReturnVotersByStreets() throws IOException {
-        String jsonData = Resources.toString(getResource("json/paf-voters-multiple-streets.json"), UTF_8);
+        String jsonData = Resources.toString(getResource("json/paf-voters-leeds.json"), UTF_8);
 
         String urlPath = "/v1/wards/.*/streets";
         wireMock.register(post(urlPathMatching(urlPath))

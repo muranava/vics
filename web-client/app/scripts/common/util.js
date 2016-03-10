@@ -3,7 +3,7 @@ angular
   .service('util', function () {
     var api = {},
     passwordLength = 12,
-      chars = "abcdefghjknopqrstuvwxyz=@£!&%",
+      chars = "abcdefghjknopqrstuvwxyz",
       uppers = "ABCDEFGHJKMNPQRSTUVWXYZ",
       numbers = "23456789",
       emailRegex = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,

@@ -1,7 +1,7 @@
 package com.infinityworks.webapp.service;
 
 import com.infinityworks.common.lang.Try;
-import com.infinityworks.webapp.domain.Permissible;
+import com.infinityworks.webapp.domain.User;
 import com.infinityworks.webapp.domain.Ward;
 import com.infinityworks.webapp.error.NotAuthorizedFailure;
 import com.infinityworks.webapp.error.NotFoundFailure;
@@ -54,7 +54,7 @@ public class VoterService {
      * @param searchElectors the search criteria
      * @return a list of voters for the given search criteria
      */
-    public Try<List<Voter>> search(Permissible permissible, SearchElectors searchElectors) {
+    public Try<List<Voter>> search(User permissible, SearchElectors searchElectors) {
         String wardCode = searchElectors.getWardCode();
         return wardService.getByCode(wardCode, permissible)
                 .flatMap(ward -> {
@@ -69,20 +69,19 @@ public class VoterService {
 
     /**
      * Generates a PDF with the electorsByStreet grouped by the given streets.
-     * TODO refactor this
      *
      * @param tableBuilder constructs the table
      * @param request      the streets and filter criteria to search electorsByStreet for
      * @param wardCode     the ward code associated with the streets
-     * @param permissible  the permissible making the request. Must have permission for the given ward
+     * @param user         the user making the request. Must have permission for the given ward
      * @return the PDF contents as a byte stream
      */
     public Try<ByteArrayOutputStream> getPdfOfElectorsByStreet(TableBuilder tableBuilder,
                                                                DocumentBuilder documentBuilder,
                                                                ElectorsByStreetsRequest request,
                                                                String wardCode,
-                                                               Permissible permissible) {
-        return wardService.getByCode(wardCode, permissible)
+                                                               User user) {
+        return wardService.getByCode(wardCode, user)
                 .flatMap(ward -> {
                     GetVotersCommand getVotersCommand = getVotersCommandFactory.create(request.getStreets(), ward.getCode());
                     return getVotersCommand.execute()

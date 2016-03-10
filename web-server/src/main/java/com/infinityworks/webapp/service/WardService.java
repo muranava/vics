@@ -2,7 +2,6 @@ package com.infinityworks.webapp.service;
 
 import com.infinityworks.common.lang.Try;
 import com.infinityworks.webapp.converter.WardSummaryConverter;
-import com.infinityworks.webapp.domain.Permissible;
 import com.infinityworks.webapp.domain.User;
 import com.infinityworks.webapp.domain.Ward;
 import com.infinityworks.webapp.error.NotAuthorizedFailure;
@@ -40,7 +39,7 @@ public class WardService {
         this.constituencyRepository = constituencyRepository;
     }
 
-    public Try<Ward> getByCode(String wardCode, Permissible permissible) {
+    public Try<Ward> getByCode(String wardCode, User permissible) {
         Optional<Ward> byWard = wardRepository.findByCode(wardCode);
         if (!byWard.isPresent()) {
             String msg = String.format("No ward with code=%s", wardCode);

@@ -138,9 +138,9 @@
                     </div>
                     <div class="input-group-content">
                       <input type="text" class="form-control" name="pw1" ng-model="createUserModel.password" id="pw1"
-                             data-rule-min="8" data-rule-max="50" required>
+                             data-rule-min="12" data-rule-max="50" required>
                       <label for="pw1">Password</label>
-                      <p class="help-block">At least 8 characters with at least one number and uppercase character</p>
+                      <p class="help-block">At least 12 characters with at least one number and uppercase character</p>
                     </div>
                   </div>
                 </div>
@@ -162,6 +162,7 @@
               </div><!--end .card-body -->
               <div class="card-actionbar">
                 <div class="card-actionbar-row">
+                  <button type="button" class="btn btn-sm btn-primary raised" ng-click="onCsvUpload()">CSV UPLOAD</button>
                   <button type="submit" class="btn btn-sm btn-danger raised">CREATE USER</button>
                 </div>
               </div>
@@ -236,8 +237,8 @@
         <strong>Delete {{userToDelete.username}}. Are you sure?</strong>
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
-        <button type="button" class="btn btn-primary" data-dismiss="modal" ng-click="onConfirmDeleteUser(userToDelete)">
+        <button type="button" class="btn btn-sm btn-primary raised" data-dismiss="modal">Cancel</button>
+        <button type="button" class="btn btn-sm btn-danger raised" data-dismiss="modal" ng-click="onConfirmDeleteUser(userToDelete)">
           Delete
         </button>
       </div>

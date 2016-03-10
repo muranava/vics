@@ -1,0 +1,88 @@
+<section>
+  <br>
+  <div class="section-body contain-lg">
+    <div class="row">
+      <div class="col-lg-12">
+        <h2 class="text-primary">CSV Upload</h2>
+      </div>
+      <div class="col-lg-12">
+        <article class="lead">
+          <p>Add users and associations by importing a csv file</p>
+        </article>
+      </div>
+    </div>
+
+    <!-- BEGIN FILE UPLOAD -->
+    <div class="row">
+
+      <!-- BEGIN LAYOUT JUSTIFIED -->
+      <div class="col-md-12">
+        <div class="card">
+          <div class="card-head">
+            <ul class="nav nav-tabs nav-justified" data-toggle="tabs">
+              <li class="active"><a href="#first4">Users</a></li>
+              <li><a href="#second4">Constituencies</a></li>
+              <li><a href="#third4">Wards</a></li>
+            </ul>
+          </div><!--end .card-head -->
+          <div class="card-body tab-content">
+            <div class="tab-pane active" id="first4">
+
+              <ng-csv-import content="csvUser.content"
+                             header="csvUser.header"
+                             separator="csvUser.separator"
+                             result="csvUser.result"
+                             callback="csvUser.callback"
+                             accept="csvUser.accept">
+              </ng-csv-import>
+
+              <div class="block row"  ng-if="csvUser.result">
+                <table class="table no-margin">
+                  <thead>
+                  <tr>
+                    <th>#</th>
+                    <th>Username</th>
+                    <th>First Name</th>
+                    <th>Last Name</th>
+                    <th>Write Access</th>
+                    <th></th>
+                  </tr>
+                  </thead>
+                  <tbody>
+                  <tr ng-repeat="row in csvUser.result">
+                    <td>{{$index + 1}}</td>
+                    <td>{{row.username}}</td>
+                    <td>{{row.first_name}}</td>
+                    <td>{{row.last_name}}</td>
+                    <td>{{row.write_access}}</td>
+                    <td>{{row.outcome}}</td>
+                  </tr>
+                  </tbody>
+                </table>
+
+                <button type="button" class="btn btn-sm btn-danger raised pull-right " ng-click="onCreateUsers()">CREATE USERS</button>
+
+              </div>
+
+            </div>
+            <div class="tab-pane" id="second4"><p>Ad ius duis dissentiunt, an sit harum primis persecuti, adipisci tacimates mediocrem sit et. Id illud voluptaria omittantur qui, te affert nostro mel. Cu conceptam vituperata temporibus has.</p>
+            </div>
+            <div class="tab-pane" id="third4"><p>Duo semper accumsan ea, quidam convenire cum cu, oportere maiestatis incorrupte est eu. Soluta audiam timeam ius te, idque gubergren forensibus ad mel, persius urbanitas usu id. Civibus nostrum fabellas mea te, ne pri lucilius iudicabit. Ut cibo semper vituperatoribus vix, cum in error elitr. Vix molestiae intellegat omittantur an, nam cu modo ullum scriptorem.</p>
+              <p>Quod option numquam vel in, et fuisset delicatissimi duo, qui ut animal noluisse erroribus. Ea eum veniam audire. Per at postea mediocritatem, vim numquam aliquid eu, in nam sale gubergren. Dicant vituperata consequuntur at sea, mazim commodo</p>
+            </div>
+          </div><!--end .card-body -->
+      </div><!--end .card -->
+    </div><!--end .col -->
+    <!-- END LAYOUT JUSTIFIED -->
+
+
+  </div><!--end .row -->
+  <!-- END FILE UPLOAD -->
+
+  </div>
+
+</section>
+
+
+
+

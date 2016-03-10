@@ -1,7 +1,7 @@
 
 angular
   .module('canvass')
-  .controller('adminUserController', function (util, $timeout, $scope, userService) {
+  .controller('adminUserController', function (util, $timeout, $scope, userService, $location) {
 
     $scope.editMode = false;
     $scope.createdUserEmail = '';
@@ -13,8 +13,6 @@ angular
         firstName: '',
         lastName: '',
         role: 'USER',
-        wardIDs: [],
-        constituencyIDs: [],
         password: '',
         repeatPassword: '',
         writeAccess: false
@@ -35,6 +33,10 @@ angular
         .error(function() {
           $scope.deleteUserFailed = true;
         });
+    };
+
+    $scope.onCsvUpload = function() {
+      $location.path('/csvupload');
     };
 
     $scope.onEditUser = function(userID) {
@@ -106,8 +108,8 @@ angular
         errors.push('Passwords do not match');
       }
 
-      if (includePasswords && user.password.length < 8) {
-        errors.push('Password must be at least 8 characters');
+      if (includePasswords && user.password.length < 12) {
+        errors.push('Password must be at least 12 characters');
       }
 
       if (includePasswords && !(/\d/.test(user.password))) {

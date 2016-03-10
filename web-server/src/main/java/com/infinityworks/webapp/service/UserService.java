@@ -1,7 +1,6 @@
 package com.infinityworks.webapp.service;
 
 import com.infinityworks.common.lang.Try;
-import com.infinityworks.webapp.domain.Permissible;
 import com.infinityworks.webapp.domain.User;
 import com.infinityworks.webapp.error.BadRequestFailure;
 import com.infinityworks.webapp.error.NotAuthorizedFailure;
@@ -36,7 +35,11 @@ public class UserService {
         return userRepository.findOneByUsername(email);
     }
 
-    public Try<Collection<User>> getAll() {
+    public Try<Collection<User>> getAll(User user) {
+        if (!user.isAdmin()) {
+            log.warn("Non admin tried to retrieve all users. User={}", user);
+            return Try.failure(new NotAuthorizedFailure("Forbidden"));
+        }
         return Try.of(() -> userRepository.findAll(new Sort("username")));
     }
 
@@ -102,7 +105,7 @@ public class UserService {
     }
 
     @Transactional
-    public Try<User> create(Permissible user, CreateUserRequest request) {
+    public Try<User> create(User user, CreateUserRequest request) {
         if (!user.isAdmin()) {
             log.warn("Non admin tried to create user!. User={}, request={}", user, request);
             return Try.failure(new NotAuthorizedFailure("Not authorized"));

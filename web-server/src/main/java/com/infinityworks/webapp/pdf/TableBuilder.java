@@ -82,7 +82,22 @@ public class TableBuilder {
         if (rows.isEmpty()) {
             return Optional.empty();
         }
+        PdfPTable table = generateTableAndHeaders();
+        String prevHouse = null;
+        for (ElectorRow row : rows) {
+            prevHouse = createRow(table, prevHouse, row);
+        }
 
+        return Optional.of(new GeneratedPdfTable(table, mainStreetName, wardName, wardCode, constituencyName));
+    }
+
+    public PdfPTable generateEmptyRows() {
+        PdfPTable table = generateTableAndHeaders();
+        createEmptyRow(table);
+        return table;
+    }
+
+    private PdfPTable generateTableAndHeaders() {
         PdfPTable table = new PdfPTable(columnDefinition.getNumColumns());
         table.setWidthPercentage(TableProperties.TABLE_WIDTH_PERCENTAGE);
         try {
@@ -93,13 +108,7 @@ public class TableBuilder {
         }
         table.setHeaderRows(TableProperties.NUM_HEADER_ROWS);
         generateTableHeaders(table);
-
-        String prevHouse = null;
-        for (ElectorRow row : rows) {
-            prevHouse = createRow(table, prevHouse, row);
-        }
-
-        return Optional.of(new GeneratedPdfTable(table, mainStreetName, wardName, wardCode, constituencyName));
+        return table;
     }
 
     /**
@@ -116,7 +125,7 @@ public class TableBuilder {
 
         table.addCell(createDataCell(row.getHouse(), Element.ALIGN_LEFT));
         table.addCell(createDataCell(row.getName(), Element.ALIGN_LEFT));
-        table.addCell(createDataCell(row.getTelephone(), Element.ALIGN_LEFT));
+            table.addCell(createDataCell(row.getTelephone(), Element.ALIGN_LEFT));
 
         PdfPCell likelihood = new PdfPCell(new Phrase(row.getLikelihood()));
         likelihood.setBackgroundColor(LIGHT_GREY);
@@ -142,6 +151,11 @@ public class TableBuilder {
         table.addCell(createDataCell(row.getDeceased(), Element.ALIGN_CENTER));
         table.addCell(createDataCell(row.getErn(), Element.ALIGN_LEFT));
         return prevHouse;
+    }
+
+    private void createEmptyRow(PdfPTable table) {
+        IntStream.range(0, columnDefinition.getNumColumns())
+                .forEach(i -> table.addCell(""));
     }
 
     /**

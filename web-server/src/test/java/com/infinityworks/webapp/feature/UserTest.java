@@ -19,14 +19,10 @@ import org.springframework.test.context.jdbc.SqlGroup;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 import java.security.Principal;
-import java.util.List;
 import java.util.Optional;
-import java.util.UUID;
 
 import static com.infinityworks.webapp.common.Json.objectMapper;
-import static java.util.Arrays.asList;
 import static java.util.Collections.emptyList;
-import static java.util.Collections.singletonList;
 import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.assertThat;
 import static org.mockito.Matchers.any;
@@ -68,9 +64,7 @@ public class UserTest extends WebApplicationTest {
         when(sessionService.extractUserFromPrincipal(any(Principal.class)))
                 .thenReturn(Try.success(admin()));
 
-        List<UUID> wardIDs = asList(UUID.fromString("39d75cc3-d7ae-49f6-8be4-ea13218a4907"), UUID.fromString("6e5f7fb6-6aed-4370-8325-0d8cc17e98ac"));
-        List<UUID> constituencyIDs = singletonList(UUID.fromString("0d338b99-3d15-44f7-904f-3ebc18a7ab4a"));
-        CreateUserRequest request = new CreateUserRequest("email@email.com", "password", "amit", "lakhani", "password", Role.USER, wardIDs, constituencyIDs, true);
+        CreateUserRequest request = new CreateUserRequest("email@email.com", "password", "amit", "lakhani", "password", Role.USER, true);
 
         mockMvc.perform(post(endpoint)
                 .contentType(APPLICATION_JSON)
@@ -87,7 +81,7 @@ public class UserTest extends WebApplicationTest {
         when(sessionService.extractUserFromPrincipal(any(Principal.class)))
                 .thenReturn(Try.success(admin()));
 
-        CreateUserRequest request = new CreateUserRequest("com", "pw", "amy", "neale", "pw", Role.USER, emptyList(), emptyList(), true);
+        CreateUserRequest request = new CreateUserRequest("com", "pw", "amy", "neale", "pw", Role.USER, true);
 
         mockMvc.perform(post(endpoint)
                 .contentType(APPLICATION_JSON)
@@ -103,7 +97,7 @@ public class UserTest extends WebApplicationTest {
         when(sessionService.extractUserFromPrincipal(any(Principal.class)))
                 .thenReturn(Try.success(admin()));
 
-        CreateUserRequest request = new CreateUserRequest("me@admin.uk", "pw", "peter", "ndlovu", "pw", Role.USER, emptyList(), emptyList(), true);
+        CreateUserRequest request = new CreateUserRequest("me@admin.uk", "pw", "peter", "ndlovu", "pw", Role.USER, true);
 
         mockMvc.perform(post(endpoint)
                 .contentType(APPLICATION_JSON)
@@ -119,7 +113,7 @@ public class UserTest extends WebApplicationTest {
         when(sessionService.extractUserFromPrincipal(any(Principal.class)))
                 .thenReturn(Try.success(covs()));
 
-        CreateUserRequest request = new CreateUserRequest("mdde@admin.uk", "pw", "mdo", "ambokani", "pw", Role.USER, emptyList(), emptyList(), true);
+        CreateUserRequest request = new CreateUserRequest("mdde@admin.uk", "pw", "mdo", "ambokani", "pw", Role.USER, true);
 
         mockMvc.perform(post(endpoint)
                 .contentType(APPLICATION_JSON)

@@ -1,7 +1,8 @@
 package com.infinityworks.webapp.service;
 
 import com.infinityworks.common.lang.Try;
-import com.infinityworks.webapp.domain.Permissible;
+import com.infinityworks.webapp.domain.User;
+import com.infinityworks.webapp.paf.client.command.GetStreetsCommand;
 import com.infinityworks.webapp.paf.client.command.GetStreetsCommandFactory;
 import com.infinityworks.webapp.rest.dto.Street;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,9 +21,12 @@ public class AddressService {
         this.getStreetsCommandFactory = getStreetsCommandFactory;
     }
 
-    public Try<List<Street>> getTownStreetsByWardCode(String wardCode, Permissible permissible) {
+    public Try<List<Street>> getTownStreetsByWardCode(String wardCode, User user) {
         return wardService
-                .getByCode(wardCode, permissible)
-                .flatMap(ward -> getStreetsCommandFactory.create(wardCode).execute());
+                .getByCode(wardCode, user)
+                .flatMap(ward -> {
+                    GetStreetsCommand getStreetsCommand = getStreetsCommandFactory.create(wardCode);
+                    return getStreetsCommand.execute();
+                });
     }
 }

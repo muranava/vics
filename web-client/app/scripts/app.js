@@ -19,7 +19,8 @@ angular
     'ui.bootstrap',
     'angular-loading-bar',
     'uiSwitch',
-    'rzModule'
+    'rzModule',
+    'ngCsvImport'
   ])
   .constant('config', {
     apiUrl: 'http://localhost:8080/api/canvass',
@@ -38,7 +39,8 @@ angular
       {route: '/gotv', role: 'USER'},
       {route: '/admin', role: 'ADMIN'},
       {route: '/associations', role: 'ADMIN'},
-      {route: '/users', role: 'ADMIN'}
+      {route: '/users', role: 'ADMIN'},
+      {route: '/csvupload', role: 'ADMIN'}
     ];
 
     /**
@@ -134,6 +136,13 @@ angular
       .when('/profile', {
         templateUrl: 'views/profile.html',
         controller: 'profileController',
+        resolve: {
+          auth: userAuth
+        }
+      })
+      .when('/csvupload', {
+        templateUrl: 'views/csvupload.html',
+        controller: 'csvUploadController',
         resolve: {
           auth: userAuth
         }

@@ -3,6 +3,8 @@ package com.infinityworks.webapp.domain;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.google.common.base.MoreObjects;
 import com.google.common.base.Objects;
+import com.infinityworks.common.lang.Try;
+import com.infinityworks.webapp.error.NotAuthorizedFailure;
 
 import javax.persistence.*;
 import java.util.Collection;
@@ -26,7 +28,7 @@ import static java.util.stream.Collectors.toSet;
  */
 @Entity
 @Table(name = "users")
-public class User extends BaseEntity implements Permissible {
+public class User extends BaseEntity {
     public static final String SUPER_NAME = "admin@admin.me";
 
     @Column(name = "username", nullable = false, unique = true)
@@ -74,7 +76,6 @@ public class User extends BaseEntity implements Permissible {
     private Set<Ward> wards;
 
     @JsonIgnore
-    @Override
     public boolean isAdmin() {
         return role == Role.ADMIN;
     }
@@ -136,7 +137,6 @@ public class User extends BaseEntity implements Permissible {
         this.wards = wards;
     }
 
-    @Override
     public Boolean getWriteAccess() {
         return writeAccess;
     }
@@ -175,6 +175,31 @@ public class User extends BaseEntity implements Permissible {
                 .collect(toSet());
         wards.addAll(getWards());
         return wards;
+    }
+
+    public boolean hasWardPermission(Ward ward) {
+        return getWards().contains(ward) ||
+                getConstituencies().contains(ward.getConstituency());
+    }
+
+    public boolean hasConstituencyPermission(Constituency constituency) {
+        return getConstituencies().contains(constituency);
+    }
+
+    public boolean hasPermission(Permission permission) {
+        return getPermissions().stream().anyMatch(privilege -> privilege.getPermission() == permission);
+    }
+
+    public Boolean hasWriteAccess() {
+        return getWriteAccess();
+    }
+
+    public Try<User> ensureWriteAccess() {
+        if (getWriteAccess()) {
+            return Try.success(this);
+        } else {
+            return Try.failure(new NotAuthorizedFailure("User does not have write access"));
+        }
     }
 
     @Override
