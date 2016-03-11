@@ -2,7 +2,7 @@ angular
   .module('canvass')
   .service('util', function () {
     var api = {},
-    passwordLength = 12,
+    passwordLength = 18,
       chars = "abcdefghjknopqrstuvwxyz",
       uppers = "ABCDEFGHJKMNPQRSTUVWXYZ",
       numbers = "23456789",
