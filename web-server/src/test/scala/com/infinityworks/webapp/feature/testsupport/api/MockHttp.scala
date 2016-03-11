@@ -14,12 +14,15 @@ class MockHttp(mockMvc: MockMvc) {
       .andDo(print()))
   }
 
+  def POST(url: String): ActionExecutor = POST(url, "")
+
   def POST(url: String, content: String): ActionExecutor = {
     new ActionExecutor(mockMvc.perform(
       post(url)
         .accept(APPLICATION_JSON)
         .content(content)
         .contentType(APPLICATION_JSON))
+        .andDo(print())
     )
   }
 }

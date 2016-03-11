@@ -15,9 +15,11 @@ import static com.lowagie.text.Font.HELVETICA;
 public class PageInfoRenderer extends PdfPageEventHelper {
     private static final Logger log = LoggerFactory.getLogger(PageInfoRenderer.class);
     private static Font font = new Font(HELVETICA, 9);
-    private static final String FOOTER_TEXT =
-            "Generated %s. \tAll data is collected in accordance with our privacy policy which can be found at " +
-                    "http://www.voteleavetakecontrol.org/privacy";
+    private static final String FOOTER_TEXT_1 =
+            "Promoted by Matthew Elliott on behalf of Vote Leave Limited, both of Westminster Tower, 3 Albert Embankment, London SE1 7SP." +
+                    "  Printed by Vote Leave Limited.";
+    private static final String FOOTER_TEXT_2 = "All data is collected in accordance with our privacy policy which can be found at " +
+            "http://www.voteleavetakecontrol.org/privacy  %s.";
     private static final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm:ss dd-MM-yyyy");
 
     private static final String LIKELIHOOD_KEY =
@@ -73,11 +75,17 @@ public class PageInfoRenderer extends PdfPageEventHelper {
     }
 
     private void createFooter(PdfContentByte cb, Document document) {
-        Phrase footer = new Phrase(String.format(FOOTER_TEXT, LocalDateTime.now().format(formatter)), font);
+        Phrase footer1 = new Phrase(FOOTER_TEXT_1, font);
         ColumnText.showTextAligned(cb, Element.ALIGN_LEFT,
-                footer,
-                document.left(),
-                document.bottom() - 15, 0);
+                footer1,
+                document.left() + 40,
+                document.bottom() - 14, 0);
+
+        Phrase footer2 = new Phrase(String.format(FOOTER_TEXT_2, LocalDateTime.now().format(formatter)), font);
+        ColumnText.showTextAligned(cb, Element.ALIGN_LEFT,
+                footer2,
+                document.left() + 40,
+                document.bottom() - 25, 0);
     }
 
     private void createLogo(PdfContentByte cb) {

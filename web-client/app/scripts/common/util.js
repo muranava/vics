@@ -2,7 +2,7 @@ angular
   .module('canvass')
   .service('util', function () {
     var api = {},
-    passwordLength = 18,
+      passwordLength = 18,
       chars = "abcdefghjknopqrstuvwxyz",
       uppers = "ABCDEFGHJKMNPQRSTUVWXYZ",
       numbers = "23456789",
@@ -25,15 +25,15 @@ angular
       return emailRegex.test(email);
     };
 
-    api.extractErnPrefix = function(ern) {
+    api.extractErnPrefix = function (ern) {
       return _.head(ern.split('-')) + '-';
     };
 
-    api.validErn = function(electorID) {
+    api.validErn = function (electorID) {
       return electorID && ernRegex.test(electorID);
     };
 
-    api.notEmpty = function(underTest) {
+    api.notEmpty = function (underTest) {
       return !_.isEmpty(underTest);
     };
 

@@ -1,9 +1,12 @@
 package com.infinityworks.webapp.feature
 
+import java.util.Collections._
+
 import com.infinityworks.webapp.common.RequestValidator
 import com.infinityworks.webapp.error.RestErrorHandler
 import com.infinityworks.webapp.feature.testsupport.StringContainsIgnoreCase.containsStringIgnoringCase
 import com.infinityworks.webapp.feature.testsupport.api.{Admin, BasicUser, MockHttp, SessionApi}
+import com.infinityworks.webapp.rest.dto.AssociateUserWard
 import com.infinityworks.webapp.rest.{UserController, WardController}
 import com.infinityworks.webapp.service._
 import org.hamcrest.collection.IsCollectionWithSize._
@@ -50,6 +53,42 @@ class WardsFeatureTest extends ApplicationTest {
     (http GET "/ward/test")
       .andExpect(status.isOk,
         jsonPath("hasAssociation", is(true)))
+  }
+
+  @Test
+  def associatesAWardWithUserByIds(): Unit = {
+    session withUser Admin
+
+    val ward = "6b710adf-6d9f-4745-b441-5b58c85d3a07"
+
+    (http POST s"/ward/$ward/user/63f93970-d065-4fbb-8b9c-941e27ea53dc")
+        .andExpect(
+          status().isOk,
+          jsonPath("$..wards[?(@.name =~ /.*Westwood/i)].id", is(singletonList(ward))))
+  }
+
+  @Test
+  def associatesAWardWithUserByUsernameAndWardCode(): Unit = {
+    session withUser Admin
+
+    val data = new AssociateUserWard("me@admin.uk", "E05001235")
+    val content = objectMapper.writeValueAsString(data)
+
+    (http POST ("/ward/associate", content))
+      .andExpect(
+        status().isOk,
+        jsonPath("$..wards[?(@.name =~ /.*Wyken/i)].code", is(singletonList(data.getWardCode))))
+  }
+
+  @Test
+  def failsToAssociateAWardWithUserIfNotAdmin(): Unit = {
+    session withUser BasicUser
+
+    val data = new AssociateUserWard("me@admin.uk", "E05001235")
+    val content = objectMapper.writeValueAsString(data)
+
+    (http POST ("/ward/associate", content))
+      .andExpect(status().isUnauthorized)
   }
 
   @Test

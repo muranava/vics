@@ -24,7 +24,7 @@
                 <a class="cursor-hand" ng-click="scrollTo('users')">Users</a>
               </li>
               <li ng-class="{'tab-pane': true, 'active': currentTab === 'constituencies'}"><a class="cursor-hand"
-                ng-click="scrollTo('constituencies')">Constituencies</a>
+                                                                                              ng-click="scrollTo('constituencies')">Constituencies</a>
               </li>
               <li ng-class="{'tab-pane': true, 'active': currentTab === 'wards'}">
                 <a class="cursor-hand" ng-click="scrollTo('wards')">Wards</a>
@@ -36,7 +36,8 @@
 
               <div>
 
-                <p>Upload a CSV file in the format: <pre>username,first_name,last_name,write_access<br>me@stein.com,stein,fletcher,true<br>thom@borwick.com,thom,borwick,false</pre>
+                <p>Upload a CSV file in the format:
+                <pre>username,first_name,last_name,write_access<br>me@stein.com,stein,fletcher,true<br>thom@borwick.com,thom,borwick,false</pre>
                 <br>
 
                 <ng-csv-import content="csvUser.content"
@@ -49,9 +50,11 @@
 
                 <div class="block" ng-if="csvUser.result">
 
-                  <button type="button" class="btn btn-sm btn-danger raised pull-right" ng-click="onCreateUsers()">
-                    CREATE USERS
-                  </button>
+                  <div class="btn-group pull-right">
+                    <button type="button" class="btn-separator btn btn-sm btn-danger raised" ng-click="onCreateUsers()">
+                      CREATE USERS
+                    </button>
+                  </div>
 
                   <table class="table no-margin">
                     <thead>
@@ -82,7 +85,8 @@
             <div id="second4" ng-if="currentTab === 'constituencies'">
 
               <div>
-                <p>Upload a CSV file in the format: <pre>username,constituency_code<br>me@stein.com,E09001234<br>thom@borwick.com,C1230012</pre>
+                <p>Upload a CSV file in the format:
+                <pre>username,constituency_code<br>me@stein.com,E09001234<br>thom@borwick.com,C1230012</pre>
                 <br>
 
                 <ng-csv-import content="csvConstituencies.content"
@@ -95,7 +99,8 @@
 
                 <div class="block" ng-if="csvConstituencies.result">
 
-                  <button type="button" class="btn btn-sm btn-danger raised pull-right" ng-click="onAssociateConstituencies()">
+                  <button type="button" class="btn btn-sm btn-danger raised pull-right"
+                          ng-click="onAssociateConstituencies()">
                     Associate Constituencies
                   </button>
 
@@ -126,7 +131,8 @@
 
             <div id="third4" ng-if="currentTab === 'wards'">
               <div>
-                <p>Upload a CSV file in the format: <pre>username,ward_code<br>me@stein.com,E09114201<br>thom@borwick.com,S8760444</pre>
+                <p>Upload a CSV file in the format:
+                <pre>username,ward_code<br>me@stein.com,E09114201<br>thom@borwick.com,S8760444</pre>
                 <br>
 
                 <ng-csv-import content="csvWards.content"

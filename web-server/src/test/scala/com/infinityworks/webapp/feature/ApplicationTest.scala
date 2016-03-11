@@ -1,5 +1,6 @@
 package com.infinityworks.webapp.feature
 
+import com.fasterxml.jackson.databind.ObjectMapper
 import com.infinityworks.canvass.pafstub.PafServerStub
 import com.infinityworks.webapp.Application
 import com.infinityworks.webapp.config.Config
@@ -24,6 +25,8 @@ abstract class ApplicationTest {
   var mockMvc: MockMvc = _
 
   val pafStub = new PafServerStub(9002)
+
+  val objectMapper = new ObjectMapper()
 
   @Autowired
   var applicationContext: WebApplicationContext = _
