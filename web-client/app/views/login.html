@@ -18,12 +18,12 @@
           <div class="form-group">
             <input type="password" class="form-control" id="password" name="password" ng-model="credentials.password">
             <label for="password">Password</label>
-            <p class="help-block"><a href="mailto:canvassapp@voteleave.uk?Subject=Forgot%20Password" target="_blank">Forgotten?</a></p>
+            <p class="help-block"><a ng-href="mailto:{{supportEmail}}?Subject=Forgot%20Password" target="_blank">Forgotten?</a></p>
 
           </div>
           <div class="alert alert-callout alert-danger" role="alert" ng-show="badCredentials">
             <strong>Invalid Credentials</strong>
-            <p>Please retry or contact <a href="mailto:canvassapp@voteleave.uk?Subject=Forgot%20Password" target="_blank">forgotpassword@voteleave.uk</a> to renew your password</p>
+            <p>Please retry or contact <a ng-href="mailto:{{supportEmail}}?Subject=Forgot%20Password" target="_blank">{{supportEmail}}</a> to renew your password</p>
           </div>
           <div class="alert alert-callout alert-danger" role="alert" ng-show="networkError">
             <strong>Network Error!</strong> Cannot connect to server
@@ -43,7 +43,7 @@
         <h3 class="text-light">
           No account yet?
         </h3>
-        <a class="btn btn-block raised btn-danger btn-sm" href="mailto:canvassapp@voteleave.uk?Subject=Request%20Access" target="_blank">Request access</a>
+        <a class="btn btn-block raised btn-danger btn-sm" ng-href="mailto:{{supportEmail}}?Subject=Request%20Access" target="_blank">Request access</a>
       </div><!--end .col -->
     </div><!--end .row -->
   </div><!--end .card-body -->
