@@ -29,14 +29,20 @@ public class WardService {
     private final WardSummaryConverter wardSummaryConverter;
     private final WardRepository wardRepository;
     private final ConstituencyRepository constituencyRepository;
+    private final UserService userService;
+    private final WardAssociationService wardAssociationService;
 
     @Autowired
     public WardService(WardSummaryConverter wardSummaryConverter,
                        WardRepository wardRepository,
-                       ConstituencyRepository constituencyRepository) {
+                       ConstituencyRepository constituencyRepository,
+                       UserService userService,
+                       WardAssociationService wardAssociationService) {
         this.wardSummaryConverter = wardSummaryConverter;
         this.wardRepository = wardRepository;
         this.constituencyRepository = constituencyRepository;
+        this.userService = userService;
+        this.wardAssociationService = wardAssociationService;
     }
 
     public Try<Ward> getByCode(String wardCode, User permissible) {
@@ -47,7 +53,7 @@ public class WardService {
             return Try.failure(new NotFoundFailure(msg));
         } else {
             Ward ward = byWard.get();
-            if (!permissible.hasWardPermission(ward)) {
+            if (!permissible.hasWardPermission(ward) && !permissible.isAdmin()) {
                 String msg = String.format("User=%s tried to access ward=%s without permission", permissible, wardCode);
                 log.warn(msg);
                 return Try.failure(new NotAuthorizedFailure("Not Authorized"));
@@ -107,5 +113,11 @@ public class WardService {
             log.warn("Non-admin user={} tried to get all wards", user);
             return Try.failure(new NotAuthorizedFailure("Forbidden"));
         }
+    }
+
+    public Try<User> associateToUserByUsername(User permissible, String wardCode, String username) {
+        return userService.getByEmail(username)
+                .flatMap(user -> getByCode(wardCode, permissible)
+                        .flatMap(ward -> wardAssociationService.associateToUser(permissible, ward.getId(), user.getId())));
     }
 }

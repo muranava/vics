@@ -6,9 +6,12 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 @Repository
 public interface ConstituencyRepository extends JpaRepository<Constituency, UUID> {
     List<Constituency> findByNameIgnoreCaseContainingOrderByNameAsc(String name, Pageable pageable);
+
+    Optional<Constituency> findOneByCode(String constituencyCode);
 }

@@ -1,16 +1,14 @@
 package com.infinityworks.webapp.rest;
 
 import com.infinityworks.webapp.error.RestErrorHandler;
+import com.infinityworks.webapp.rest.dto.AssociateUserConstituency;
 import com.infinityworks.webapp.service.ConstituencyService;
 import com.infinityworks.webapp.service.SessionService;
 import org.hibernate.validator.constraints.NotEmpty;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
 import java.util.UUID;
@@ -60,6 +58,17 @@ public class ConstituencyController {
             @PathVariable("userID") UUID userID) {
         return sessionService.extractUserFromPrincipal(principal)
                 .flatMap(user -> constituencyService.associateToUser(user, constituencyID, userID))
+                .fold(errorHandler::mapToResponseEntity, ResponseEntity::ok);
+    }
+
+    @PreAuthorize("hasAuthority('ADMIN')")
+    @RequestMapping(method = POST, value = "/associate")
+    public ResponseEntity<?> addUserAssociationByUsernameAndConstituencyCode(
+            Principal principal,
+            @RequestBody AssociateUserConstituency association) {
+        return sessionService.extractUserFromPrincipal(principal)
+                .flatMap(user -> constituencyService.associateToUserByUsername(user, association.getConstituencyCode(),
+                        association.getUsername()))
                 .fold(errorHandler::mapToResponseEntity, ResponseEntity::ok);
     }
 

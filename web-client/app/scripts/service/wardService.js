@@ -91,11 +91,22 @@ angular
       });
     };
 
-
     api.associateToUser = function(wardID, userID) {
       return $http({
         method: 'POST',
         url: apiUrl + '/ward/' + wardID + '/user/' + userID,
+        withCredentials: true
+      });
+    };
+
+    api.associateToUserByUsername = function(wardCode, username) {
+      return $http({
+        method: 'POST',
+        url: apiUrl + '/ward/associate',
+        data: {
+          wardCode: wardCode,
+          username: username
+        },
         withCredentials: true
       });
     };

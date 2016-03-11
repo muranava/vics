@@ -197,6 +197,14 @@ public interface Try<S> {
         }
     }
 
+    default <X extends Throwable> S orElseThrow(Supplier<? extends X> exceptionSupplier) throws X {
+        if (isSuccess()) {
+            return get();
+        } else {
+            throw exceptionSupplier.get();
+        }
+    }
+
     /**
      * Gets the value of success
      *

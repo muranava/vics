@@ -70,7 +70,7 @@ public class PafClient {
      */
     public Try<String> recordVoted(String ern) {
         String url = String.format(VOTED_ENDPOINT, ern);
-        return http.put(url, EMPTY_BODY, String.class);
+        return http.post(url, EMPTY_BODY, String.class);
     }
 
     /**

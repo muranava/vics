@@ -33,12 +33,16 @@ public class WardServiceTest {
     private ConstituencyRepository constituencyRepository;
     private WardService underTest;
     private WardRepository wardRepository;
+    private UserService userService;
+    private WardAssociationService wardAssociationService;
 
     @Before
     public void setUp() throws Exception {
         wardRepository = mock(WardRepository.class);
         constituencyRepository = mock(ConstituencyRepository.class);
-        underTest = new WardService(new WardSummaryConverter(), wardRepository, constituencyRepository);
+        userService = mock(UserService.class);
+        wardAssociationService = mock(WardAssociationService.class);
+        underTest = new WardService(new WardSummaryConverter(), wardRepository, constituencyRepository, userService, wardAssociationService);
     }
 
     @Test

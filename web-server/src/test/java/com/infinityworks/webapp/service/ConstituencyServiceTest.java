@@ -10,11 +10,9 @@ import com.infinityworks.webapp.error.NotFoundFailure;
 import com.infinityworks.webapp.repository.ConstituencyRepository;
 import com.infinityworks.webapp.repository.UserRepository;
 import com.infinityworks.webapp.rest.dto.UserRestrictedConstituencies;
-import org.hamcrest.CoreMatchers;
 import org.junit.Before;
 import org.junit.Test;
 
-import java.util.Collections;
 import java.util.HashSet;
 
 import static com.google.common.collect.Sets.newHashSet;
@@ -35,12 +33,14 @@ public class ConstituencyServiceTest {
     private ConstituencyRepository constituencyRepository;
     private ConstituencyService underTest;
     private UserRepository userRepository;
+    private UserService userService;
 
     @Before
     public void setUp() throws Exception {
         constituencyRepository = mock(ConstituencyRepository.class);
         userRepository = mock(UserRepository.class);
-        underTest = new ConstituencyService(constituencyRepository, userRepository);
+        userService = mock(UserService.class);
+        underTest = new ConstituencyService(constituencyRepository, userRepository, userService);
     }
 
     @Test

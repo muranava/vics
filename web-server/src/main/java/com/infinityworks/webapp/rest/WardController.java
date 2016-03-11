@@ -1,6 +1,8 @@
 package com.infinityworks.webapp.rest;
 
 import com.infinityworks.webapp.error.RestErrorHandler;
+import com.infinityworks.webapp.rest.dto.AssociateUserConstituency;
+import com.infinityworks.webapp.rest.dto.AssociateUserWard;
 import com.infinityworks.webapp.service.AddressService;
 import com.infinityworks.webapp.service.SessionService;
 import com.infinityworks.webapp.service.WardAssociationService;
@@ -9,10 +11,7 @@ import org.hibernate.validator.constraints.NotEmpty;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
 import java.util.UUID;
@@ -104,6 +103,17 @@ public class WardController {
             @PathVariable("userID") UUID userID) {
         return sessionService.extractUserFromPrincipal(principal)
                 .flatMap(user -> wardAssociationService.associateToUser(user, wardID, userID))
+                .fold(errorHandler::mapToResponseEntity, ResponseEntity::ok);
+    }
+
+    @PreAuthorize("hasAuthority('ADMIN')")
+    @RequestMapping(method = POST, value = "/associate")
+    public ResponseEntity<?> addUserAssociationByUsernameAndWardCode(
+            Principal principal,
+            @RequestBody AssociateUserWard association) {
+        return sessionService.extractUserFromPrincipal(principal)
+                .flatMap(user -> wardService.associateToUserByUsername(user, association.getWardCode(),
+                        association.getUsername()))
                 .fold(errorHandler::mapToResponseEntity, ResponseEntity::ok);
     }
 

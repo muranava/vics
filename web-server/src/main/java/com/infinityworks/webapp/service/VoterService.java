@@ -50,16 +50,16 @@ public class VoterService {
     /**
      * Searches for electors by attributes.
      *
-     * @param permissible    the current user
+     * @param user    the current user
      * @param searchElectors the search criteria
      * @return a list of voters for the given search criteria
      */
-    public Try<List<Voter>> search(User permissible, SearchElectors searchElectors) {
+    public Try<List<Voter>> search(User user, SearchElectors searchElectors) {
         String wardCode = searchElectors.getWardCode();
-        return wardService.getByCode(wardCode, permissible)
+        return wardService.getByCode(wardCode, user)
                 .flatMap(ward -> {
-                    if (!permissible.hasWardPermission(ward)) {
-                        String msg = String.format("User=%s tried to access ward=%s without permission", permissible, wardCode);
+                    if (!user.hasWardPermission(ward)) {
+                        String msg = String.format("User=%s tried to access ward=%s without permission", user, wardCode);
                         log.warn(msg);
                         return Try.failure(new NotAuthorizedFailure("Not Authorized"));
                     }
@@ -83,6 +83,7 @@ public class VoterService {
                                                                User user) {
         return wardService.getByCode(wardCode, user)
                 .flatMap(ward -> {
+                    log.info("Generate PDF of voters for ward={}. User={}", wardCode, user);
                     GetVotersCommand getVotersCommand = getVotersCommandFactory.create(request.getStreets(), ward.getCode());
                     return getVotersCommand.execute()
                             .flatMap(electorsByStreet -> renderPdfOfElectorsByStreets(
@@ -99,7 +100,7 @@ public class VoterService {
                 electors, ward.getCode(), ward.getName(), ward.getConstituency().getName());
 
         if (generatedPdfTables.isEmpty()) {
-            log.debug("No voters found for ward={} streets={}", ward, request);
+            log.info("No voters found for ward={} streets={}", ward, request);
             return Try.failure(new NotFoundFailure("No voters found"));
         } else {
             ByteArrayOutputStream content = documentBuilder.buildPages(generatedPdfTables, request.getFlags());

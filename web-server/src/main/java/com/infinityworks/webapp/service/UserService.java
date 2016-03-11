@@ -31,8 +31,13 @@ public class UserService {
         this.userRepository = userRepository;
     }
 
-    public Optional<User> getByEmail(String email) {
-        return userRepository.findOneByUsername(email);
+    public Try<User> getByEmail(String email) {
+        Optional<User> user = userRepository.findOneByUsername(email);
+        if (user.isPresent()) {
+            return Try.success(user.get());
+        } else {
+            return Try.failure(new NotFoundFailure("No user with username=" + email));
+        }
     }
 
     public Try<Collection<User>> getAll(User user) {

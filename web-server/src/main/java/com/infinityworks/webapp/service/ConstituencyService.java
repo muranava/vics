@@ -17,6 +17,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 import java.util.UUID;
 
@@ -31,11 +32,15 @@ public class ConstituencyService {
     private final Logger log = LoggerFactory.getLogger(ConstituencyService.class);
     private final ConstituencyRepository constituencyRepository;
     private final UserRepository userRepository;
+    private final UserService userService;
 
     @Autowired
-    public ConstituencyService(ConstituencyRepository constituencyRepository, UserRepository userRepository) {
+    public ConstituencyService(ConstituencyRepository constituencyRepository,
+                               UserRepository userRepository,
+                               UserService userService) {
         this.constituencyRepository = constituencyRepository;
         this.userRepository = userRepository;
+        this.userService = userService;
     }
 
     /**
@@ -89,6 +94,21 @@ public class ConstituencyService {
 
         log.debug("Added association constituency={}, user={}", constituencyID, userID);
         return Try.success(updatedUser);
+    }
+
+    public Try<User> associateToUserByUsername(User permissible, String constituencyCode, String username) {
+        return userService.getByEmail(username)
+                .flatMap(user -> getByCode(constituencyCode)
+                .flatMap(constituency -> associateToUser(permissible, constituency.getId(), user.getId())));
+    }
+
+    public Try<Constituency> getByCode(String code) {
+        Optional<Constituency> constituency = constituencyRepository.findOneByCode(code);
+        if (constituency.isPresent()) {
+            return Try.success(constituency.get());
+        } else {
+            return Try.failure(new NotFoundFailure("No constituency={}", code));
+        }
     }
 
     @Transactional

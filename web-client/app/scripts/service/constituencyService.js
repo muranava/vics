@@ -39,6 +39,19 @@ angular
       });
     };
 
+    api.associateToUserByUsername = function(constituencyID, username) {
+      return $http({
+        method: 'POST',
+        url: apiUrl + '/constituency/associate',
+        data: {
+          constituencyCode: constituencyID,
+          username: username
+        },
+        withCredentials: true
+      });
+    };
+
+
     api.removeUserAssociation = function(constituencyID, userID) {
       return $http({
         method: 'DELETE',
