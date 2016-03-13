@@ -1,32 +1,32 @@
 [
   {
     "ward_code": "E05001221",
-    "polling_district": "AB",
+    "prefix": "AB",
     "elector_id": "22217bf4",
-    "elector_suffix": "",
+    "suffix": "",
     "title": "Mr",
     "first_name": "John",
     "initial": "",
-    "last_name": "McCall"
+    "surname": "McCall"
   },
   {
     "ward_code": "E05001221",
-    "polling_district": "AB",
+    "prefix": "AB",
     "elector_id": "11217bf4",
-    "elector_suffix": "",
+    "suffix": "",
     "title": "Mr",
     "first_name": "David",
     "initial": "",
-    "last_name": "McCall"
+    "surname": "McCall"
   },
   {
     "ward_code": "E05001221",
-    "polling_district": "AB",
+    "prefix": "AB",
     "elector_id": "37217b14",
-    "elector_suffix": "",
+    "suffix": "",
     "title": "Ms",
     "first_name": "Sam",
     "initial": "",
-    "last_name": "McCall"
+    "surname": "McCall"
   }
 ]

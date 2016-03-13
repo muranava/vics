@@ -13,8 +13,8 @@ import java.util.UUID;
 public class TraceLoggerInterceptor extends HandlerInterceptorAdapter {
     private static final LambdaLogger log = LambdaLogger.getLogger(TraceLoggerInterceptor.class);
 
-    private static final String START_LOG_TEMPLATE = "Canvass Request[%s] %s";
-    private static final String END_LOG_TEMPLATE = "Canvass Response[%s] %s. Time Taken(ms)=%s";
+    private static final String START_LOG_TEMPLATE = "Canvass Request[%s] %s.";
+    private static final String END_LOG_TEMPLATE = "Canvass Response[%s] %s. response_time=%s";
 
     private static final String CORRELATION_KEY = "correlationKey";
     private static final String START_TIME_KEY = "startTime";

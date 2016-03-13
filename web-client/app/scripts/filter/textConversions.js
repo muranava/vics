@@ -34,7 +34,7 @@ angular
       if (_.isEmpty(address)) {
         return '';
       }
-      var parts = [address.dependentStreet, address.mainStreet, address.dependentLocality, toTitleCase(address.postTown.toLowerCase())];
+      var parts = [address.mainStreet, address.dependentStreet, address.dependentLocality, toTitleCase(address.postTown.toLowerCase())];
       return _
         .chain(parts)
         .filter(function (part) {

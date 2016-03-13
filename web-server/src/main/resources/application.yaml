@@ -5,7 +5,7 @@
 
 server:
   context-path: /api/canvass
-  port: 8080
+  port: 18080
 
 spring:
   application:
@@ -35,7 +35,7 @@ canvass:
   cors:
     hosts: "*"
     methods:  "POST, GET, PUT, OPTIONS, DELETE"
-  pafApiBaseUrl: http://localhost:9002/v1
+  pafApiBaseUrl: https://api.voteleave.uk/v1
   pafApiToken: 90f88caae35a5b863ae2450b55688a559b52a343
 
 logging.level.: INFO
@@ -49,7 +49,7 @@ logstash:
 # port not exposed to outside
 management:
   context-path: /admin
-  port: 8081
+  port: 18081
   security:
     enabled: false
 

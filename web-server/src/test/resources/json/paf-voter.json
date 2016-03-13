@@ -1,14 +1,14 @@
 {
   "id": "2ddcc2b7-e3e7-414a-8ecf-8060fb1bf272",
   "ward_code": "E05009131",
-  "polling_district": "AB",
-  "elector_number": "01",
-  "elector_suffix": "1",
+  "prefix": "AB",
+  "number": "01",
+  "suffix": "1",
   "roll_number": "E05009131-AB-01-1",
   "title": "Mr",
   "first_name": "John",
   "initial": "",
-  "last_name": "Deaux",
+  "surname": "Deaux",
   "attainment": "",
   "voting": {
     "intention": 5,

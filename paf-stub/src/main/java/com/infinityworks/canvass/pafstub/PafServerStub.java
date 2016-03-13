@@ -118,20 +118,19 @@ public class PafServerStub {
         String file = requireNonNull(files.get("voted," + ern), "No json file for voted request ern=" + ern);
         String jsonData = Resources.toString(getResource(file), UTF_8);
 
-        String urlPath = "/v1/voter/" + ern;
-        wireMock.register(put(urlPathMatching(urlPath))
+        String urlPath = "/v1/voter/" + ern + "/voted";
+        wireMock.register(post(urlPathMatching(urlPath))
                 .willReturn(aResponse()
                         .withStatus(200)
                         .withBody(jsonData)));
     }
-
 
     public void willRecordVoterVoted() throws IOException {
         String file = requireNonNull(files.get("voted,E05001221-ADD-1313-1"), "No json file");
         String jsonData = Resources.toString(getResource(file), UTF_8);
 
         String urlPath = "/v1/voter/.*/voted";
-        wireMock.register(put(urlPathMatching(urlPath))
+        wireMock.register(post(urlPathMatching(urlPath))
                 .willReturn(aResponse()
                         .withStatus(200)
                         .withBody(jsonData)));

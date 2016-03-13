@@ -8,8 +8,6 @@ import com.infinityworks.webapp.service._
 import org.hamcrest.core.Is._
 import org.junit.{Before, Test}
 import org.springframework.http.MediaType.APPLICATION_JSON
-import org.springframework.security.authentication.AuthenticationManager
-import org.springframework.security.core.userdetails.UserDetailsService
 import org.springframework.test.context.jdbc.{Sql, SqlGroup}
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders._
 import org.springframework.test.web.servlet.result.MockMvcResultHandlers._
@@ -34,9 +32,7 @@ class UsersFeatureTest extends ApplicationTest {
     session = new SessionApi(applicationContext)
     sessionService = session.withSession()
 
-    val userDetailsService = getBean(classOf[UserDetailsService])
-    val userController = new UserController(getBean(classOf[UserService]), getBean(classOf[RestErrorHandler]),
-      userDetailsService, sessionService, getBean(classOf[AuthenticationManager]), getBean(classOf[RequestValidator]))
+    val userController = new UserController(getBean(classOf[UserService]), getBean(classOf[RestErrorHandler]), sessionService, getBean(classOf[RequestValidator]), getBean(classOf[LoginService]))
     mockMvc = MockMvcBuilders.standaloneSetup(userController).build
     http = new MockHttp(mockMvc)
     pafStub.start()

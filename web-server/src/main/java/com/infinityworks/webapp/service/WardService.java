@@ -59,8 +59,8 @@ public class WardService {
                 return Try.failure(new NotAuthorizedFailure("Not Authorized"));
             } else {
                 return Try.success(ward);
-            }
-        }
+    }
+    }
     }
 
     /**

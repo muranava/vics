@@ -16,7 +16,7 @@ import static java.util.stream.Collectors.toSet;
  * Main user domain model. From a security aspect, there are 3 orthogonal concepts bound to
  * a user:
  * 1) Role (Admin, User) - which determines whether a user has elevated privileges or not,
- * e.g. if a user is ADMIN then they will get all privileges
+ * e.g. if a user is ROLE_ADMIN then they will get all privileges
  * 2) Privileges - determines what a user can DO, e.g. read/write access
  * 3) Application restrictions - determines what type of data the user can access, e.g.
  * which wards, which constituencies

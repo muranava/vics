@@ -23,7 +23,7 @@ angular
     'ngCsvImport'
   ])
   .constant('config', {
-    apiUrl: 'http://localhost:8080/api/canvass',
+    apiUrl: 'http://localhost:18080/api/canvass',
     supportEmail: 'vicssupport@voteleave.uk'
   })
   .run(function($rootScope, config) {

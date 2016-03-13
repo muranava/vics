@@ -5,16 +5,22 @@ angular
     .module('canvass')
     .controller('parentController', function ($location, $scope, authService, $rootScope) {
 
-      // todo remove this.  Added to enforce menus are removed on logout
-      if(!$scope.$$phase) {
-        $scope.$apply();
+      function resetMenu() {
+        // Added to enforce menus are removed on logout
+        if(!$scope.$$phase) {
+          $scope.$apply();
+        }
       }
+      resetMenu();
 
       $scope.logout = function() {
         authService.logout()
           .finally(function() {
             $location.path('/login');
+            resetMenu();
           });
         $rootScope.currentUser = null;
       };
+
+
     });

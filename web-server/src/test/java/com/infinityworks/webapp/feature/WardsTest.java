@@ -1,12 +1,9 @@
 package com.infinityworks.webapp.feature;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.infinityworks.common.lang.Try;
 import com.infinityworks.webapp.common.RequestValidator;
 import com.infinityworks.webapp.domain.User;
 import com.infinityworks.webapp.error.RestErrorHandler;
-import com.infinityworks.webapp.paf.dto.ImmutableRecordContactRequest;
-import com.infinityworks.webapp.paf.dto.RecordContactRequest;
 import com.infinityworks.webapp.repository.UserRepository;
 import com.infinityworks.webapp.rest.UserController;
 import com.infinityworks.webapp.rest.WardController;
@@ -14,12 +11,9 @@ import com.infinityworks.webapp.rest.dto.Street;
 import com.infinityworks.webapp.rest.dto.UserRestrictedWards;
 import com.infinityworks.webapp.rest.dto.WardSummary;
 import com.infinityworks.webapp.service.*;
-import org.hamcrest.Matchers;
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.http.MediaType;
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.context.jdbc.SqlGroup;
 import org.springframework.test.web.servlet.MvcResult;
@@ -31,7 +25,6 @@ import java.util.List;
 import java.util.UUID;
 
 import static com.infinityworks.webapp.common.Json.objectMapper;
-import static com.infinityworks.webapp.testsupport.Fixtures.*;
 import static java.util.Arrays.asList;
 import static java.util.Collections.singletonList;
 import static org.hamcrest.CoreMatchers.not;
@@ -66,8 +59,8 @@ public class WardsTest extends WebApplicationTest {
         WardAssociationService wardAssociationService = getBean(WardAssociationService.class);
         AddressService addressService = getBean(AddressService.class);
         WardController wardController = new WardController(sessionService, wardService, wardAssociationService, new RestErrorHandler(), addressService);
-        UserController userController = new UserController(getBean(UserService.class), getBean(RestErrorHandler.class), getBean(UserDetailsService.class), sessionService, getBean(AuthenticationManager.class), getBean(RequestValidator.class));
-
+        UserController userController = new UserController(getBean(UserService.class), new RestErrorHandler()
+                , sessionService, getBean(RequestValidator.class), getBean(LoginService.class));
         mockMvc = MockMvcBuilders
                 .standaloneSetup(wardController, userController)
                 .build();

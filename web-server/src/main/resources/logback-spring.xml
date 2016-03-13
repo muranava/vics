@@ -3,14 +3,16 @@
     <include resource="org/springframework/boot/logging/logback/base.xml"/>
     <jmxConfigurator/>
 
-    <property name="logstash.url" value="localhost"/>
+    <property name="logstash.url" value="192.168.99.100"/>
     <property name="logstash.port" value="4560"/>
 
     <appender name="stash" class="net.logstash.logback.appender.LogstashTcpSocketAppender">
         <remoteHost>${logstash.url}</remoteHost>
         <port>${logstash.port}</port>
 
-        <encoder class="net.logstash.logback.encoder.LogstashEncoder" />
+        <encoder class="net.logstash.logback.encoder.LogstashEncoder">
+            <customFields>{"appname":"canvass-webapp"}</customFields>
+        </encoder>
     </appender>
 
     <root level="INFO">

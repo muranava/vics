@@ -7,13 +7,15 @@ import com.infinityworks.webapp.converter.PafToStreetConverter;
 import com.infinityworks.webapp.paf.client.Http;
 import com.infinityworks.webapp.paf.client.PafClient;
 import com.infinityworks.webapp.paf.client.PafErrorHandler;
-import com.infinityworks.webapp.paf.dto.Property;
 import com.infinityworks.webapp.paf.converter.StreetToPafConverter;
+import com.infinityworks.webapp.paf.dto.Property;
 import com.infinityworks.webapp.paf.dto.PropertyResponse;
 import com.infinityworks.webapp.rest.dto.Street;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.junit.runners.JUnit4;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.List;
@@ -26,6 +28,7 @@ import static org.hamcrest.Matchers.is;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
+@RunWith(JUnit4.class)
 public class PafClientTest {
 
     private final PafServerStub pafApiStub = new PafServerStub(9002);

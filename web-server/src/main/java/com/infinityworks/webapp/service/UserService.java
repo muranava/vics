@@ -16,10 +16,7 @@ import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Collection;
-import java.util.Objects;
-import java.util.Optional;
-import java.util.UUID;
+import java.util.*;
 
 @Service
 public class UserService {
@@ -134,7 +131,10 @@ public class UserService {
         newUser.setLastName(request.getLastName());
         newUser.setWriteAccess(request.getWriteAccess());
         User savedUser = userRepository.save(newUser);
-        return Try.success(savedUser);
+
+        log.info("User={} created new user={}", user, newUser);
+
+        return  Try.success(savedUser);
     }
 
     private String hashPw(String password) {

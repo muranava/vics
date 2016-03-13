@@ -40,7 +40,7 @@ class WardsFeatureTest extends ApplicationTest {
     val wardAssociationService: WardAssociationService = getBean(classOf[WardAssociationService])
     val addressService: AddressService = getBean(classOf[AddressService])
     val wardController: WardController = new WardController(sessionService, wardService, wardAssociationService, new RestErrorHandler, addressService)
-    val userController: UserController = new UserController(getBean(classOf[UserService]), getBean(classOf[RestErrorHandler]), getBean(classOf[UserDetailsService]), sessionService, getBean(classOf[AuthenticationManager]), getBean(classOf[RequestValidator]))
+    val userController: UserController = new UserController(getBean(classOf[UserService]), getBean(classOf[RestErrorHandler]), sessionService, getBean(classOf[RequestValidator]), getBean(classOf[LoginService]))
     mockMvc = MockMvcBuilders.standaloneSetup(wardController, userController).build
     http = new MockHttp(mockMvc)
     pafStub.start()

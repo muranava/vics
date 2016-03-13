@@ -8,12 +8,11 @@ import com.infinityworks.webapp.error.RestErrorHandler;
 import com.infinityworks.webapp.repository.UserRepository;
 import com.infinityworks.webapp.rest.UserController;
 import com.infinityworks.webapp.rest.dto.CreateUserRequest;
+import com.infinityworks.webapp.service.LoginService;
 import com.infinityworks.webapp.service.SessionService;
 import com.infinityworks.webapp.service.UserService;
 import org.junit.Before;
 import org.junit.Test;
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.context.jdbc.SqlGroup;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
@@ -22,7 +21,6 @@ import java.security.Principal;
 import java.util.Optional;
 
 import static com.infinityworks.webapp.common.Json.objectMapper;
-import static java.util.Collections.emptyList;
 import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.assertThat;
 import static org.mockito.Matchers.any;
@@ -49,8 +47,8 @@ public class UserTest extends WebApplicationTest {
     @Before
     public void setup() {
         sessionService = mock(SessionService.class);
-        UserController votedController = new UserController(getBean(UserService.class), new RestErrorHandler(),
-                getBean(UserDetailsService.class), sessionService, getBean(AuthenticationManager.class), getBean(RequestValidator.class));
+        UserController votedController = new UserController(getBean(UserService.class), new RestErrorHandler()
+                , sessionService, getBean(RequestValidator.class), getBean(LoginService.class));
 
         mockMvc = MockMvcBuilders
                 .standaloneSetup(votedController)
