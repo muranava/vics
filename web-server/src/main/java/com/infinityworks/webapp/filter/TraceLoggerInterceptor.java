@@ -25,7 +25,7 @@ public class TraceLoggerInterceptor extends HandlerInterceptorAdapter {
     @Override
     public boolean preHandle(HttpServletRequest request,
                              HttpServletResponse response, Object handler) throws Exception {
-        log.trace(() -> {
+        log.debug(() -> {
             long startTime = System.currentTimeMillis();
             UUID correlationKey = UUID.randomUUID();
             request.setAttribute(START_TIME_KEY, startTime);
@@ -41,7 +41,7 @@ public class TraceLoggerInterceptor extends HandlerInterceptorAdapter {
     @Override
     public void afterCompletion(HttpServletRequest request,
                                 HttpServletResponse response, Object handler, Exception ex) throws Exception {
-        log.trace(() -> {
+        log.debug(() -> {
             long startTime = (Long) request.getAttribute(START_TIME_KEY);
             long endTime = System.currentTimeMillis();
             long timeTaken = endTime - startTime;

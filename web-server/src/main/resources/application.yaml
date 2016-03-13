@@ -1,3 +1,8 @@
+
+# Application properties
+# All properties can be overriden at runtime by passing the variable into the environment,
+# e.g. java -Dserver.port=18080 -jar app.jar
+
 server:
   context-path: /api/canvass
   port: 8080
@@ -37,8 +42,14 @@ logging.level.: INFO
 logging.level:
   com.infinityworks: DEBUG
 
+logstash:
+  port: 4560
+  url: localhost
+
+# port not exposed to outside
 management:
   context-path: /admin
+  port: 8081
   security:
     enabled: false
 

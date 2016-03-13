@@ -61,7 +61,7 @@ public class Http {
     private <U> Try<U> request(String url, Class<U> responseType, HttpMethod method, HttpEntity httpEntity) {
         UUID correlationKey = UUID.randomUUID();
         long startTime = System.currentTimeMillis();
-        log.trace(() -> String.format("Paf Request[%s] %s %s", correlationKey, method, url));
+        log.debug(() -> String.format("Paf Request[%s] %s %s", correlationKey, method, url));
 
         try {
             ResponseEntity<U> responseEntity = restTemplate.exchange(url, method, httpEntity, responseType);
@@ -70,7 +70,7 @@ public class Http {
             String msg = String.format("%s " + url, method);
             return pafErrorHandler.handleError(msg, e);
         } finally {
-            log.trace(() -> {
+            log.debug(() -> {
                 long endTime = System.currentTimeMillis();
                 return String.format("Paf Response[%s] %s %s. Time Taken(ms)=%s", correlationKey, method, url, endTime - startTime);
             });
