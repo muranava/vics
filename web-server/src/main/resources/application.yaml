@@ -25,11 +25,6 @@ spring:
     hibernate:
       ddl-auto: validate
     database-platform: org.hibernate.dialect.PostgreSQLDialect
-  boot:
-    admin:
-      username: admin
-      password: admin
-      url: http://localhost:8088
 
 canvass:
   cors:

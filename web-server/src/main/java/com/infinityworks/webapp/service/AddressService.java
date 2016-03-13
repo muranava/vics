@@ -24,9 +24,6 @@ public class AddressService {
     public Try<List<Street>> getTownStreetsByWardCode(String wardCode, User user) {
         return wardService
                 .getByCode(wardCode, user)
-                .flatMap(ward -> {
-                    GetStreetsCommand getStreetsCommand = getStreetsCommandFactory.create(wardCode);
-                    return getStreetsCommand.execute();
-                });
+                .flatMap(ward -> getStreetsCommandFactory.create(wardCode).execute());
     }
 }

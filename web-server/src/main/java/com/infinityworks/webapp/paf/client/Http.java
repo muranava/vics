@@ -4,7 +4,6 @@ import com.infinityworks.common.lang.Try;
 import com.infinityworks.webapp.common.LambdaLogger;
 import com.infinityworks.webapp.config.CanvassConfig;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.env.SystemEnvironmentPropertySource;
 import org.springframework.http.*;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
