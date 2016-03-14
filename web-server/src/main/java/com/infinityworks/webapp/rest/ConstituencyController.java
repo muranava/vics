@@ -39,7 +39,7 @@ public class ConstituencyController {
                 .fold(errorHandler::mapToResponseEntity, ResponseEntity::ok);
     }
 
-    @PreAuthorize("hasAuthority('ADMIN')")
+    @PreAuthorize("isAuthenticated()")
     @RequestMapping(method = GET, value = "/search", produces = "application/json")
     public ResponseEntity<?> constituencySearch(
             Principal principal,
@@ -50,7 +50,7 @@ public class ConstituencyController {
                 .fold(errorHandler::mapToResponseEntity, ResponseEntity::ok);
     }
 
-    @PreAuthorize("hasAuthority('ADMIN')")
+    @PreAuthorize("isAuthenticated()")
     @RequestMapping(method = POST, value = "/{constituencyID}/user/{userID}")
     public ResponseEntity<?> addUserAssociation(
             Principal principal,
@@ -61,7 +61,7 @@ public class ConstituencyController {
                 .fold(errorHandler::mapToResponseEntity, ResponseEntity::ok);
     }
 
-    @PreAuthorize("hasAuthority('ADMIN')")
+    @PreAuthorize("isAuthenticated()")
     @RequestMapping(method = POST, value = "/associate")
     public ResponseEntity<?> addUserAssociationByUsernameAndConstituencyCode(
             Principal principal,
@@ -72,7 +72,7 @@ public class ConstituencyController {
                 .fold(errorHandler::mapToResponseEntity, ResponseEntity::ok);
     }
 
-    @PreAuthorize("hasAuthority('ADMIN')")
+    @PreAuthorize("isAuthenticated()")
     @RequestMapping(method = DELETE, value = "/{constituencyID}/user/{userID}")
     public ResponseEntity<?> removeUserAssociation(
             Principal principal,

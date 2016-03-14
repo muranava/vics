@@ -16,7 +16,7 @@ import com.infinityworks.webapp.rest.dto.RecordContactRequest;
 import com.infinityworks.webapp.rest.dto.Street;
 import com.infinityworks.webapp.service.VoterService;
 import com.infinityworks.webapp.service.RecordContactService;
-import com.infinityworks.webapp.service.RecordVoteService;
+import com.infinityworks.webapp.service.RecordVotedService;
 import com.infinityworks.webapp.service.SessionService;
 import com.infinityworks.webapp.testsupport.builder.downstream.RecordVoteBuilder;
 import org.junit.Before;
@@ -64,11 +64,11 @@ public class VoterTest extends WebApplicationTest {
         sessionService = mock(SessionService.class);
         VoterService voterService = getBean(VoterService.class);
         RequestValidator requestValidator = getBean(RequestValidator.class);
-        RecordVoteService recordVoteService = getBean(RecordVoteService.class);
+        RecordVotedService recordVotedService = getBean(RecordVotedService.class);
         RecordContactService recordContactService = getBean(RecordContactService.class);
         TableBuilder tableBuilder = new TableBuilder(new CanvassTableConfig());
         DocumentBuilder documentBuilder = new DocumentBuilder(mock(LogoRenderer.class), getBean(FlagsKeyRenderer.class), new CanvassTableConfig());
-        VoterController wardController = new VoterController(tableBuilder, documentBuilder, voterService, requestValidator, recordVoteService, recordContactService, sessionService, new RestErrorHandler());
+        VoterController wardController = new VoterController(tableBuilder, documentBuilder, voterService, requestValidator, recordVotedService, recordContactService, sessionService, new RestErrorHandler());
 
         mockMvc = MockMvcBuilders
                 .standaloneSetup(wardController)

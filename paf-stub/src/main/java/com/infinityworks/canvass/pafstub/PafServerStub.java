@@ -165,6 +165,4 @@ public class PafServerStub {
                         .withHeader(CONTENT_TYPE, "application/json")
                         .withBody(jsonData)));
     }
-
-
 }

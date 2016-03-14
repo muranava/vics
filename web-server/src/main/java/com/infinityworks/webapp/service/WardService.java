@@ -45,7 +45,7 @@ public class WardService {
         this.wardAssociationService = wardAssociationService;
     }
 
-    public Try<Ward> getByCode(String wardCode, User permissible) {
+    public Try<Ward> getByCode(String wardCode, User user) {
         Optional<Ward> byWard = wardRepository.findByCode(wardCode);
         if (!byWard.isPresent()) {
             String msg = String.format("No ward with code=%s", wardCode);
@@ -53,14 +53,14 @@ public class WardService {
             return Try.failure(new NotFoundFailure(msg));
         } else {
             Ward ward = byWard.get();
-            if (!permissible.hasWardPermission(ward) && !permissible.isAdmin()) {
-                String msg = String.format("User=%s tried to access ward=%s without permission", permissible, wardCode);
+            if (!user.hasWardPermission(ward) && !user.isAdmin()) {
+                String msg = String.format("User=%s tried to access ward=%s without permission", user, wardCode);
                 log.warn(msg);
                 return Try.failure(new NotAuthorizedFailure("Not Authorized"));
             } else {
                 return Try.success(ward);
-    }
-    }
+            }
+        }
     }
 
     /**

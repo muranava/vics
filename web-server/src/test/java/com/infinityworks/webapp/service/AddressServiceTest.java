@@ -1,25 +1,21 @@
 package com.infinityworks.webapp.service;
 
 import com.infinityworks.common.lang.Try;
+import com.infinityworks.webapp.converter.PafToStreetConverter;
 import com.infinityworks.webapp.domain.User;
-import com.infinityworks.webapp.domain.Ward;
 import com.infinityworks.webapp.error.NotAuthorizedFailure;
 import com.infinityworks.webapp.error.NotFoundFailure;
+import com.infinityworks.webapp.paf.client.PafClient;
+import com.infinityworks.webapp.paf.client.PafRequestExecutor;
 import com.infinityworks.webapp.paf.client.command.GetStreetsCommandFactory;
 import com.infinityworks.webapp.rest.dto.Street;
-import com.infinityworks.webapp.paf.client.PafClient;
 import org.junit.Before;
 import org.junit.Test;
 
 import java.util.List;
 
 import static com.google.common.collect.Sets.newHashSet;
-import static com.infinityworks.webapp.testsupport.builder.downstream.StreetBuilder.street;
 import static com.infinityworks.webapp.testsupport.builder.UserBuilder.user;
-import static com.infinityworks.webapp.testsupport.builder.WardBuilder.ward;
-import static com.infinityworks.webapp.testsupport.matcher.TrySuccessMatcher.isSuccess;
-import static java.util.Collections.singletonList;
-import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.instanceOf;
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertThat;
@@ -36,7 +32,7 @@ public class AddressServiceTest {
     public void setUp() throws Exception {
         pafClient = mock(PafClient.class);
         wardService = mock(WardService.class);
-        underTest = new AddressService(wardService, new GetStreetsCommandFactory(pafClient, 30000));
+        underTest = new AddressService(wardService, new GetStreetsCommandFactory(pafClient, 30000, new PafRequestExecutor(){}), new PafToStreetConverter());
     }
 
     @Test
@@ -64,21 +60,6 @@ public class AddressServiceTest {
 
         assertThat(streets.isSuccess(), is(false));
         assertThat(streets.getFailure(), instanceOf(NotAuthorizedFailure.class));
-    }
-
-    @Test
-    public void returnsTheStreets() throws Exception {
-        Ward ward = ward().build();
-        User user = user()
-                .withWards(newHashSet(ward))
-                .build();
-        given(wardService.getByCode(ward.getCode(), user)).willReturn(Try.success(ward));
-        List<Street> streets = singletonList(street().build());
-        given(pafClient.findStreetsByWardCode(ward.getCode())).willReturn(Try.success(streets));
-
-        Try<List<Street>> streetsResponse = underTest.getTownStreetsByWardCode(ward.getCode(), user);
-
-        assertThat(streetsResponse, isSuccess(equalTo(streets)));
     }
 
 }

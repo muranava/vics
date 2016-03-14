@@ -12,7 +12,6 @@ import static java.util.Arrays.asList;
 public class SearchElectorsRequestValidator implements ConstraintValidator<ValidSearchElectorsRequest, SearchElectors> {
     @Override
     public void initialize(ValidSearchElectorsRequest constraintAnnotation) {
-
     }
 
     @Override

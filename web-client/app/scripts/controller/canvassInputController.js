@@ -21,7 +21,11 @@ angular
     function initForm() {
       var prevWard = $scope.inputRecordModel && $scope.inputRecordModel.ward;
       $scope.inputRecordModel = {
-        ern: '',
+        ern: {
+          pollingDistrict: '',
+          number: '',
+          suffix: ''
+        },
         likelihood: '3 - Undecided',
         intention: '3 - Undecided',
         cost: false,
@@ -93,7 +97,7 @@ angular
             }
           });
 
-        $('#electorId').focus();
+        $('#electorNum').focus();
       }
     };
 
@@ -103,32 +107,40 @@ angular
       copy.likelihood = _.parseInt(formModel.likelihood.charAt(0));
       copy.wardCode = formModel.ward.code;
       delete copy.ward;
+
+      copy.ern = $scope.inputRecordModel.ern.pollingDistrict + '-' +
+        $scope.inputRecordModel.ern.number + '-' +
+        $scope.inputRecordModel.ern.suffix;
+
       return copy;
     }
 
     function handleSubmitEntrySuccess(response) {
       $scope.elector = response;
-      resetForm();
-
       $scope.logs.push({
         ern: response.ern,
         reason: '-',
         success: true
       });
+      resetForm();
     }
 
     function resetForm() {
-      var prefix = util.extractErnPrefix($scope.inputRecordModel.ern);
+      var prefix = $scope.inputRecordModel.ern.pollingDistrict,
+        suffix = $scope.inputRecordModel.ern.suffix;
       initForm();
-      $scope.inputRecordModel.ern = prefix;
+      $scope.inputRecordModel.ern.pollingDistrict = prefix;
+      $scope.inputRecordModel.ern.suffix = suffix;
     }
 
     function validateForm() {
       var errors = [];
 
-      if (_.isEmpty($scope.inputRecordModel.ern)) {
-        errors.push("Elector ID is empty");
-      } else if (!util.validErn($scope.inputRecordModel.ern)) {
+      var ern = $scope.inputRecordModel.ern.pollingDistrict + '-' +
+      $scope.inputRecordModel.ern.number + '-' +
+      $scope.inputRecordModel.ern.suffix;
+
+       if (!util.validErn(ern)) {
         errors.push("Elector ID is invalid");
       }
 

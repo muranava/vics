@@ -13,16 +13,16 @@ import org.springframework.stereotype.Service;
  * Service to record that a voter has voted
  */
 @Service
-public class RecordVoteService {
-    private final Logger log = LoggerFactory.getLogger(RecordVoteService.class);
+public class RecordVotedService {
+    private final Logger log = LoggerFactory.getLogger(RecordVotedService.class);
     private final WardService wardService;
     private final ErnShortFormToLongFormConverter ernFormatEnricher;
     private final RecordVoteCommandFactory recordVoteCommandFactory;
 
     @Autowired
-    public RecordVoteService(WardService wardService,
-                             ErnShortFormToLongFormConverter ernFormatEnricher,
-                             RecordVoteCommandFactory recordVoteCommandFactory) {
+    public RecordVotedService(WardService wardService,
+                              ErnShortFormToLongFormConverter ernFormatEnricher,
+                              RecordVoteCommandFactory recordVoteCommandFactory) {
         this.wardService = wardService;
         this.ernFormatEnricher = ernFormatEnricher;
         this.recordVoteCommandFactory = recordVoteCommandFactory;

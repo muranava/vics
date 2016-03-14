@@ -19,278 +19,309 @@
       <div class="col-sm-12">
         <div class="alert alert-callout alert-warning" role="alert">
           <strong>Warning!</strong> You do not have any wards associated with your account. This will prevent
-          you from submitting canvass data. Please contact <a href="mailto:{{supportEmail}}">{{supportEmail}}</a> to request access.
+          you from submitting canvass data. Please contact <a href="mailto:{{supportEmail}}">{{supportEmail}}</a> to
+          request access.
         </div>
       </div>
     </div>
 
     <div class="row" ng-if="!userHasNoAssociations">
-      <div class="col-lg-6 col-md-6 col-sm-12">
-        <div class="card">
-          <div class="card-head">
-            <header>Canvass Entry</header>
-            <div class="tools">
-              <div class="btn-group">
-                <a class="btn btn-icon-toggle btn-refresh" data-toggle="modal" data-target="#simpleModal"><i
-                   class="fa fa-question"></i></a>
+      <div class="col-md-6">
+        <form class="form" ng-submit="onSubmitRecord()">
+          <div class="card">
+            <div class="card-head">
+              <header>Canvass Entry</header>
+              <div class="tools">
+                <div class="btn-group">
+                  <a class="btn btn-icon-toggle btn-refresh" data-toggle="modal" data-target="#simpleModal"><i
+                    class="fa fa-question"></i></a>
+                </div>
               </div>
             </div>
-          </div>
-          <div class="card-body">
-            <form class="form-horizontal" ng-submit="onSubmitRecord()">
-              <div class="alert alert-callout alert-danger" role="alert" ng-show="errors.length">
-                <p ng-repeat="error in errors">
-                  <i class="fa fa-warning"></i> &nbsp;{{error}} <a class="btn btn-icon-toggle btn-refresh"
-                                                                   data-toggle="modal" data-target="#simpleModal"><i
-                  class="fa fa-question"></i></a>
-                </p>
-              </div>
+            <div class="card-body">
 
-              <!-- Ward select -->
               <div class="form-group">
-                <label for="selectWard" class="col-sm-3 control-label">Ward</label>
-                <div class="col-sm-9">
-                  <select id="selectWard" class="form-control"
-                          ng-model="inputRecordModel.ward"
-                          ng-options="ward.name + ' in ' + ward.constituencyName for ward in wards">
-                  </select>
+                <div class="alert alert-callout alert-danger" role="alert" ng-show="errors.length">
+                  <p ng-repeat="error in errors">
+                    <i class="fa fa-warning"></i> &nbsp;{{error}} <a class="btn btn-icon-toggle btn-refresh"
+                                                                     data-toggle="modal" data-target="#simpleModal"><i
+                    class="fa fa-question"></i></a>
+                  </p>
                 </div>
               </div>
 
-              <!-- Elector details -->
+              <!-- Ward -->
               <div class="form-group">
-                <label for="electorId" class="col-sm-3 control-label">Elector ID</label>
-                <div class="col-sm-9">
-                  <input type="text" class="form-control" ng-model="inputRecordModel.ern"
-                         placeholder="Enter the elector ID" id="electorId">
+                <select id="selectWards" class="form-control"
+                        ng-model="inputRecordModel.ward"
+                        ng-options="ward.name + ' in ' + ward.constituencyName for ward in wards">
+                </select>
+                <label for="selectWards">Ward</label>
+              </div>
+
+              <!-- ERN -->
+              <div class="form-group">
+
+                <div class="input-group">
+                  <div class="input-group-content ern-spacing">
+                    <input id="electorI" type="text" class="form-control"
+                           ng-model="inputRecordModel.ern.pollingDistrict">
+                    <label for="electorI">Polling District</label>
+                  </div>
+
+                  <div class="input-group-content ern-spacing">&mdash;</div>
+
+                  <div class="input-group-content ern-spacing">
+                    <input id="electorNum" type="text" class="form-control" ng-model="inputRecordModel.ern.number">
+                    <label for="electorNum">Elector ID</label>
+                  </div>
+
+                  <div class="input-group-content ern-spacing">&mdash;</div>
+
+                  <div class="input-group-content">
+                    <input id="electorSuffix" type="text" class="form-control" ng-model="inputRecordModel.ern.suffix">
+                    <label for="electorSuffix">Elector Suffix</label>
+                  </div>
+
+                </div>
+                <br>
+                <div class="alert alert-callout alert-danger" role="alert" ng-show="invalidErn">
+                  <p>
+                    <i class="fa fa-warning"></i> &nbsp;Invalid Elector ID. <a class="btn btn-icon-toggle btn-refresh"
+                                                                               data-toggle="modal"
+                                                                               data-target="#simpleModal"><i
+                    class="fa fa-question"></i></a>
+                  </p>
+                </div>
+                <div class="alert alert-callout alert-danger" role="alert" ng-show="invalidWard">
+                  <p>
+                    <i class="fa fa-warning"></i> &nbsp;Ward is not selected
+                  </p>
                 </div>
               </div>
 
-              <!-- Likelihood to vote select box -->
+              <!-- Likelihood to vote -->
               <div class="form-group">
-                <label class="col-sm-3 control-label">Voting Likelihood</label>
-                <div class="col-sm-9">
-                  <select name="likelihood"
-                          class="form-control hl-focus"
-                          ng-options="item for item in [
+                <label class="control-label">Voting Likelihood</label>
+                <select name="likelihood"
+                        class="form-control hl-focus"
+                        ng-options="item for item in [
                           '1 - Definitely won\'t vote',
                           '2 - Probably won\'t vote',
                           '3 - Undecided',
                           '4 - Probably will vote',
                           '5 - Definitely will vote'] track by item"
-                          ng-model="inputRecordModel.likelihood">
-                  </select>
-                </div>
+                        ng-model="inputRecordModel.likelihood">
+                </select>
               </div>
 
               <!-- Key issues checkboxes -->
               <div class="form-group">
-                <label class="col-sm-3 control-label">Key Issues</label>
-                <div class="col-sm-9">
-                  <div class="checkbox checkbox-styled">
-                    <label>
-                      <input id="costCheckbox" ng-click="setCheckboxFocus()" type="checkbox" ng-model="inputRecordModel.cost" value="">
-                      <span>Cost</span>
-                    </label>
-                  </div>
-                  <div class="checkbox checkbox-styled">
-                    <label>
-                      <input type="checkbox" ng-model="inputRecordModel.sovereignty" value="">
-                      <span>Sovereignty</span>
-                    </label>
-                  </div>
-                  <div class="checkbox checkbox-styled">
-                    <label>
-                      <input class="checkbox-focus" type="checkbox" ng-model="inputRecordModel.border" value="">
-                      <span>Border</span>
-                    </label>
-                  </div>
+                <label class="control-label">Key Issues</label><br>
+                <div class="checkbox checkbox-styled">
+                  <label>
+                    <input id="costCheckbox1" ng-click="setCheckboxFocus()" type="checkbox"
+                           ng-model="inputRecordModel.cost" value="">
+                    <span>Cost</span>
+                  </label>
+                </div>
+                <div class="checkbox checkbox-styled">
+                  <label>
+                    <input type="checkbox" ng-model="inputRecordModel.sovereignty" value="">
+                    <span>Sovereignty</span>
+                  </label>
+                </div>
+                <div class="checkbox checkbox-styled">
+                  <label>
+                    <input class="checkbox-focus" type="checkbox" ng-model="inputRecordModel.border" value="">
+                    <span>Border</span>
+                  </label>
                 </div>
               </div>
 
               <!-- Intention to vote select -->
               <div class="form-group">
-                <label class="col-sm-3 control-label">Intention to Vote</label>
-                <div class="col-sm-9">
-                  <select name="intention"
-                          class="form-control hl-focus"
-                          ng-options="item for item in [
+                <label class="control-label">Intention to Vote</label>
+                <select name="intention"
+                        class="form-control hl-focus"
+                        ng-options="item for item in [
                           '1 - Definitely remain',
                           '2 - Probably remain',
                           '3 - Undecided',
                           '4 - Probably leave',
                           '5 - Definitely leave'] track by item"
-                          ng-model="inputRecordModel.intention">
-                  </select>
-                </div>
+                        ng-model="inputRecordModel.intention">
+                </select>
               </div>
 
-              <!-- key issues checkboxes -->
+              <!-- flags checkboxes -->
               <div class="form-group">
-                <label class="col-sm-3 control-label">Flags</label>
-                <div class="col-sm-9">
-                  <div class="checkbox checkbox-styled">
-                    <label>
-                      <input type="checkbox" ng-model="inputRecordModel.hasPV" value="">
-                      <span>Has Postal Vote</span>
-                    </label>
-                  </div>
-                  <div class="checkbox checkbox-styled">
-                    <label>
-                      <input type="checkbox" ng-model="inputRecordModel.wantsPV" value="">
-                      <span>Wants Postal Vote</span>
-                    </label>
-                  </div>
-                  <div class="checkbox checkbox-styled">
-                    <label>
-                      <input type="checkbox" ng-model="inputRecordModel.lift" value="">
-                      <span>Needs Lift</span>
-                    </label>
-                  </div>
-                  <div class="checkbox checkbox-styled">
-                    <label>
-                      <input type="checkbox" ng-model="inputRecordModel.poster" value="">
-                      <span>Will Display Poster</span>
-                    </label>
-                  </div>
-                  <div class="checkbox checkbox-styled">
-                    <label>
-                      <input type="checkbox" ng-model="inputRecordModel.deceased" value="">
-                      <span>Deceased</span>
-                    </label>
-                  </div>
-                  <div class="checkbox checkbox-styled">
-                    <label>
-                      <input type="checkbox" ng-model="inputRecordModel.inaccessible" value="">
-                      <span>Inaccessible</span>
-                    </label>
-                  </div>
+                <label class="control-label">Flags</label>
+                <br>
+                <div class="checkbox  checkbox-styled">
+                  <label>
+                    <input type="checkbox" ng-model="inputRecordModel.hasPV" value="">
+                    <span>Has Postal Vote</span>
+                  </label>
+                </div>
+                <div class="checkbox  checkbox-styled">
+                  <label>
+                    <input type="checkbox" ng-model="inputRecordModel.wantsPV" value="">
+                    <span>Wants Postal Vote</span>
+                  </label>
+                </div>
+                <div class="checkbox  checkbox-styled">
+                  <label>
+                    <input type="checkbox" ng-model="inputRecordModel.lift" value="">
+                    <span>Needs Lift</span>
+                  </label>
+                </div>
+                <div class="checkbox  checkbox-styled">
+                  <label>
+                    <input type="checkbox" ng-model="inputRecordModel.poster" value="">
+                    <span>Will Display Poster</span>
+                  </label>
+                </div>
+                <div class="checkbox  checkbox-styled">
+                  <label>
+                    <input type="checkbox" ng-model="inputRecordModel.deceased" value="">
+                    <span>Deceased</span>
+                  </label>
+                </div>
+                <div class="checkbox  checkbox-styled">
+                  <label>
+                    <input type="checkbox" ng-model="inputRecordModel.inaccessible" value="">
+                    <span>Inaccessible</span>
+                  </label>
                 </div>
               </div>
 
-              <div class="input-group">
-                <div class="input-group-btn">
-                  <button type="submit" class="btn btn-sm raised btn-danger pull-right" tabindex="-1">SUBMIT</button>
-                </div>
+            </div><!--end .card-body -->
+            <div class="card-actionbar">
+
+              <div class="card-actionbar-row">
+                <button type="submit" class="btn btn-sm raised btn-danger pull-right">SUBMIT</button>
               </div>
-            </form>
+              <br><br>
+            </div>
+          </div><!--end .card -->
+        </form>
+      </div><!--end .col -->
 
-          </div>
-
-        </div>
-      </div>
-      <div class="col-lg-6 col-md-6 col-sm-12">
+      <div class="col-md-6">
         <div class="row">
-          <div class="card">
-            <div class="card-head card-head-xs style-primary">
-              <header>Log</header>
+          <form class="form">
+
+            <div class="card">
+              <div class="card-head card-head-xs style-primary">
+                <header>Log</header>
+              </div>
+              <div class="card-body">
+
+                <table class="table no-margin table-hover">
+                  <thead>
+                  <tr>
+                    <th>Roll #</th>
+                    <th>Reason</th>
+                    <th>Result</th>
+                  </tr>
+                  </thead>
+                  <tbody>
+                  <tr ng-repeat="log in logs.elements.slice().reverse()"
+                      ng-class="{danger: !log.success, success: log.success}">
+                    <td>{{log.ern}}</td>
+                    <td>{{log.reason}}</td>
+                    <td ng-show="log.success">SUCCESS</td>
+                    <td ng-show="!log.success">FAILED</td>
+                  </tr>
+                  </tbody>
+                </table>
+
+              </div>
             </div>
-            <div class="card-body">
-
-              <table class="table no-margin table-hover">
-                <thead>
-                <tr>
-                  <th>Roll #</th>
-                  <th>Reason</th>
-                  <th>Result</th>
-                </tr>
-                </thead>
-                <tbody>
-                <tr ng-repeat="log in logs.elements.slice().reverse()"
-                    ng-class="{danger: !log.success, success: log.success}">
-                  <td>{{log.ern}}</td>
-                  <td>{{log.reason}}</td>
-                  <td ng-show="log.success">SUCCESS</td>
-                  <td ng-show="!log.success">FAILED</td>
-                </tr>
-                </tbody>
-              </table>
-
-            </div>
-          </div>
-
+          </form>
         </div>
         <div class="row">
-          <!-- SEARCH -->
-          <div class="card">
-            <div class="card-head card-head-xs style-primary">
-              <header>Search</header>
+          <form class="form">
+
+            <div class="card">
+              <div class="card-head card-head-xs style-primary">
+                <header>Search</header>
+              </div>
+              <div class="card-body">
+
+                <form class="form" ng-submit="onSearchVoter()">
+                  <div class="form-group">
+
+                    <div class="input-group">
+                      <div class="input-group-content">
+                        <input id="fName" type="text" class="form-control" ng-model="searchForm.firstName">
+                        <label for="fName">First Name</label>
+                      </div>
+                      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                      <div class="input-group-content">
+                        <input id="lName" type="text" class="form-control" ng-model="searchForm.lastName">
+                        <label for="lName">Last Name</label>
+                      </div>
+                    </div>
+                    <br><br>
+                    <div class="input-group">
+                      <div class="input-group-content">
+                        <input id="address" type="text" class="form-control" ng-model="searchForm.address">
+                        <label for="address">Address</label>
+                      </div>
+                      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                      <div class="input-group-content">
+                        <input id="pCode" type="text" class="form-control" ng-model="searchForm.postCode">
+                        <label for="pCode">Post Code</label>
+                      </div>
+                    </div>
+
+                    <br>
+                    <div class="input-group">
+                      <div class="input-group-btn">
+                        <button type="submit" class="btn btn-danger btn-sm raised pull-right" tabindex="-1">Search</button>
+                      </div>
+                    </div>
+                  </div>
+                </form>
+
+                <!-- Search results -->
+                <table class="table no-margin table-hover" ng-show="searchResults.length">
+                  <thead>
+                  <tr>
+                    <th>Roll #</th>
+                    <th>First Name</th>
+                    <th>Last Name</th>
+                    <th>Address</th>
+                    <th>Post Code</th>
+                    <th></th>
+                  </tr>
+                  </thead>
+                  <tbody>
+                  <tr ng-repeat="result in searchResults">
+                    <td>{{result.rollNum}}</td>
+                    <td>{{result.firstName}}</td>
+                    <td>{{result.lastName}}</td>
+                    <td>{{result.address}}</td>
+                    <td>{{result.postCode}}</td>
+                    <td>
+                      <button type="submit" class="btn btn-sm btn-danger raised" tabindex="-1" ng-click="onSearchVoted(result)">
+                        Voted
+                      </button>
+                    </td>
+                  </tr>
+                  </tbody>
+                </table>
+
+              </div>
             </div>
-            <div class="card-body">
-
-              <form class="form" ng-submit="onSearchVoter()">
-                <div class="form-group">
-
-                  <div class="input-group">
-                    <div class="input-group-content">
-                      <input id="fName" type="text" class="form-control" ng-model="searchForm.firstName">
-                      <label for="fName">First Name</label>
-                    </div>
-                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                    <div class="input-group-content">
-                      <input id="lName" type="text" class="form-control" ng-model="searchForm.lastName">
-                      <label for="lName">Last Name</label>
-                    </div>
-                  </div>
-                  <br><br>
-                  <div class="input-group">
-                    <div class="input-group-content">
-                      <input id="address" type="text" class="form-control" ng-model="searchForm.address">
-                      <label for="address">Address</label>
-                    </div>
-                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                    <div class="input-group-content">
-                      <input id="pCode" type="text" class="form-control" ng-model="searchForm.postCode">
-                      <label for="pCode">Post Code</label>
-                    </div>
-                  </div>
-
-                  <br>
-                  <div class="input-group">
-                    <div class="input-group-btn">
-                      <button type="submit" class="btn btn-danger btn-sm raised pull-right" tabindex="-1">Search</button>
-                    </div>
-                  </div>
-                </div>
-              </form>
-
-              <!-- Search results -->
-              <table class="table no-margin table-hover" ng-show="searchResults.length">
-                <thead>
-                <tr>
-                  <th>Roll #</th>
-                  <th>First Name</th>
-                  <th>Last Name</th>
-                  <th>Address</th>
-                  <th>Post Code</th>
-                  <th></th>
-                </tr>
-                </thead>
-                <tbody>
-                <tr ng-repeat="result in searchResults">
-                  <td>{{result.rollNum}}</td>
-                  <td>{{result.firstName}}</td>
-                  <td>{{result.lastName}}</td>
-                  <td>{{result.address}}</td>
-                  <td>{{result.postCode}}</td>
-                  <td>
-                    <button type="submit" class="btn btn-sm btn-danger raised" tabindex="-1" ng-click="onSearchVoted(result)">
-                      Voted
-                    </button>
-                  </td>
-                </tr>
-                </tbody>
-              </table>
-
-            </div>
-          </div>
+          </form>
         </div>
-
       </div>
     </div>
   </div>
 </section>
-
 
 <!-- Elector ID modal -->
 <div class="modal fade" id="simpleModal" tabindex="-1" role="dialog" aria-labelledby="simpleModalLabel"

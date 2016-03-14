@@ -5,8 +5,9 @@ import org.springframework.context.annotation.Configuration;
 
 @Configuration
 @ConfigurationProperties(prefix="canvass")
-public class CanvassConfig {
+public class PafApiConfig {
     private String pafApiBaseUrl;
+    private String pafApiTimeout;
     private String pafApiToken;
 
     public void setPafApiToken(String pafApiToken) {
@@ -23,5 +24,13 @@ public class CanvassConfig {
 
     public void setPafApiBaseUrl(String pafApiBaseUrl) {
         this.pafApiBaseUrl = pafApiBaseUrl;
+    }
+
+    public Integer getPafApiTimeout() {
+        return Integer.valueOf(pafApiTimeout);
+    }
+
+    public void setPafApiTimeout(String pafApiTimeout) {
+        this.pafApiTimeout = pafApiTimeout;
     }
 }

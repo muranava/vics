@@ -24,5 +24,7 @@ public class RecordContactRequestTest {
         assertThat(contactRequest.issues().border(), is(false));
         assertThat(contactRequest.issues().cost(), is(false));
         assertThat(contactRequest.issues().sovereignty(), is(false));
+
+        System.out.println(objectMapper.writeValueAsString(contactRequest));
     }
 }

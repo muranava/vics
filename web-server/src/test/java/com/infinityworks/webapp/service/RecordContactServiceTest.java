@@ -5,10 +5,15 @@ import com.infinityworks.webapp.domain.User;
 import com.infinityworks.webapp.domain.Ward;
 import com.infinityworks.webapp.error.NotAuthorizedFailure;
 import com.infinityworks.webapp.paf.client.PafClient;
+import com.infinityworks.webapp.paf.client.PafRequestExecutor;
+import com.infinityworks.webapp.paf.client.command.RecordContactCommandFactory;
 import com.infinityworks.webapp.paf.converter.RecordContactToPafConverter;
 import com.infinityworks.webapp.rest.dto.RecordContactRequest;
+import com.infinityworks.webapp.testsupport.mocks.CallStub;
 import org.junit.Before;
 import org.junit.Test;
+import retrofit2.Call;
+import retrofit2.Response;
 
 import static com.google.common.collect.Sets.newHashSet;
 import static com.infinityworks.webapp.testsupport.builder.UserBuilder.user;
@@ -36,7 +41,7 @@ public class RecordContactServiceTest {
 
     @Test
     public void recordsContact() throws Exception {
-        underTest = new RecordContactService(pafClient, wardService, recordContactToPafConverter);
+        underTest = new RecordContactService(wardService, recordContactToPafConverter, new RecordContactCommandFactory(pafClient, 3000, new PafRequestExecutor(){}), new ErnShortFormToLongFormConverter());
 
         Ward earlsdon = ward().withWardCode("E05001221").build();
         RecordContactRequest request = recordContactRequest()
@@ -47,7 +52,8 @@ public class RecordContactServiceTest {
                 .build();
         given(wardService.getByCode("E05001221", user)).willReturn(Try.success(earlsdon));
         com.infinityworks.webapp.paf.dto.RecordContactRequest contactRecord = recordContactToPafConverter.apply(user, request);
-        given(pafClient.recordContact("PD-123-4", contactRecord)).willReturn(Try.success(contactRecord));
+        Call<com.infinityworks.webapp.paf.dto.RecordContactRequest> success = CallStub.success(contactRecord);
+        given(pafClient.recordContact("E05001221-PD-123-4", contactRecord)).willReturn(success);
 
         Try<RecordContactRequest> contact = underTest.recordContact(user, "PD-123-4", request);
 
@@ -56,7 +62,7 @@ public class RecordContactServiceTest {
 
     @Test
     public void recordsContactFailsIfUserDoesNotHaveWriteAccess() throws Exception {
-        underTest = new RecordContactService(pafClient, wardService, recordContactToPafConverter);
+        underTest = new RecordContactService(wardService, recordContactToPafConverter, new RecordContactCommandFactory(pafClient, 3000, new PafRequestExecutor(){}), new ErnShortFormToLongFormConverter());
 
         Ward earlsdon = ward().withWardCode("E05001221").build();
         RecordContactRequest request = recordContactRequest()
@@ -67,8 +73,6 @@ public class RecordContactServiceTest {
                 .withWards(newHashSet(earlsdon))
                 .build();
         given(wardService.getByCode("E05001221", user)).willReturn(Try.success(earlsdon));
-        com.infinityworks.webapp.paf.dto.RecordContactRequest contactRecord = recordContactToPafConverter.apply(user, request);
-        given(pafClient.recordContact(ern, contactRecord)).willReturn(Try.success(contactRecord));
 
         Try<RecordContactRequest> contact = underTest.recordContact(user, ern, request);
 
@@ -77,7 +81,7 @@ public class RecordContactServiceTest {
 
     @Test
     public void failsToRecordContactIfUserDoesNotHaveWardPermission() throws Exception {
-        underTest = new RecordContactService(pafClient, wardService, recordContactToPafConverter);
+        underTest = new RecordContactService(wardService, recordContactToPafConverter, new RecordContactCommandFactory(pafClient, 3000, new PafRequestExecutor(){}), new ErnShortFormToLongFormConverter());
 
         Ward earlsdon = ward().withWardCode("E05001221").build();
         RecordContactRequest request = recordContactRequest()

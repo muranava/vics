@@ -1,32 +1,35 @@
-[
-  {
-    "ward_code": "E05001221",
-    "polling_district": "AB",
-    "elector_id": "22217bf4",
-    "elector_suffix": "",
-    "title": "Mr",
-    "first_name": "John",
-    "initial": "",
-    "last_name": "McCall"
-  },
-  {
-    "ward_code": "E05001221",
-    "polling_district": "AB",
-    "elector_id": "11217bf4",
-    "elector_suffix": "",
-    "title": "Mr",
-    "first_name": "David",
-    "initial": "",
-    "last_name": "McCall"
-  },
-  {
-    "ward_code": "E05001221",
-    "polling_district": "AB",
-    "elector_id": "37217b14",
-    "elector_suffix": "",
-    "title": "Ms",
-    "first_name": "Sam",
-    "initial": "",
-    "last_name": "McCall"
-  }
-]
+{
+  "stats": {},
+  "response": [
+    {
+      "ward_code": "E05001221",
+      "prefix": "AB",
+      "number": "22217bf4",
+      "suffix": "",
+      "title": "Mr",
+      "first_name": "John",
+      "initial": "",
+      "surname": "McCall"
+    },
+    {
+      "ward_code": "E05001221",
+      "prefix": "AB",
+      "number": "11217bf4",
+      "suffix": "",
+      "title": "Mr",
+      "first_name": "David",
+      "initial": "",
+      "surname": "McCall"
+    },
+    {
+      "ward_code": "E05001221",
+      "prefix": "AB",
+      "number": "37217b14",
+      "suffix": "",
+      "title": "Ms",
+      "first_name": "Sam",
+      "initial": "",
+      "surname": "McCall"
+    }
+  ]
+}

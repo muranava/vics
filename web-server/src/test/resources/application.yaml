@@ -22,8 +22,9 @@ canvass:
   cors:
     hosts: "*"
     methods:  "POST, GET, PUT, OPTIONS, DELETE"
-  pafApiBaseUrl: http://localhost:9002/v1
+  pafApiBaseUrl: http://localhost:9002/v1/
   pafApiToken: token
+  pafApiTimeout: 60000
 
 logging:
   level:

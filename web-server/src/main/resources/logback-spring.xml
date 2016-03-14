@@ -1,10 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<configuration>
+<configuration debug="true">
     <include resource="org/springframework/boot/logging/logback/base.xml"/>
     <jmxConfigurator/>
 
-    <property name="logstash.url" value="192.168.99.100"/>
-    <property name="logstash.port" value="4560"/>
+    <property resource="application.properties"/>
 
     <appender name="stash" class="net.logstash.logback.appender.LogstashTcpSocketAppender">
         <remoteHost>${logstash.url}</remoteHost>

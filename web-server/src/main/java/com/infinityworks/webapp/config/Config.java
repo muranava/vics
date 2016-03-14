@@ -6,20 +6,17 @@ import com.fasterxml.jackson.datatype.guava.GuavaModule;
 import com.fasterxml.jackson.datatype.jdk8.Jdk8Module;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.google.common.io.Resources;
-import com.infinityworks.webapp.paf.client.PafClient;
-import com.infinityworks.webapp.paf.client.command.GetStreetsCommandFactory;
-import com.infinityworks.webapp.paf.client.command.GetVotersCommandFactory;
-import com.infinityworks.webapp.paf.client.command.RecordVoteCommandFactory;
-import com.infinityworks.webapp.pdf.CanvassTableConfig;
-import com.infinityworks.webapp.pdf.DocumentBuilder;
-import com.infinityworks.webapp.converter.PropertyToRowsConverter;
-import com.infinityworks.webapp.pdf.GotvTableConfig;
-import com.infinityworks.webapp.pdf.renderer.FlagsKeyRenderer;
-import com.infinityworks.webapp.pdf.renderer.LogoRenderer;
-import com.infinityworks.webapp.pdf.TableBuilder;
 import com.infinityworks.webapp.common.RequestValidator;
+import com.infinityworks.webapp.converter.PropertyToRowsConverter;
 import com.infinityworks.webapp.error.RestErrorHandler;
 import com.infinityworks.webapp.filter.CorsConfig;
+import com.infinityworks.webapp.paf.client.PafRequestExecutor;
+import com.infinityworks.webapp.pdf.CanvassTableConfig;
+import com.infinityworks.webapp.pdf.DocumentBuilder;
+import com.infinityworks.webapp.pdf.GotvTableConfig;
+import com.infinityworks.webapp.pdf.TableBuilder;
+import com.infinityworks.webapp.pdf.renderer.FlagsKeyRenderer;
+import com.infinityworks.webapp.pdf.renderer.LogoRenderer;
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
 import org.apache.http.client.HttpClient;
@@ -92,45 +89,11 @@ public class Config {
     }
 
     @Bean
-    public ClientHttpRequestFactory httpRequestFactory(HttpClient httpClient) {
-        return new HttpComponentsClientHttpRequestFactory(httpClient);
-    }
-
-    @Bean
-    public RestTemplate restTemplate(ObjectMapper objectMapper, ClientHttpRequestFactory httpRequestFactory) {
-        RestTemplate restTemplate = new RestTemplate(httpRequestFactory);
-        List<HttpMessageConverter<?>> converters = restTemplate.getMessageConverters();
-
-        converters.stream()
-                .filter(converter -> converter instanceof MappingJackson2HttpMessageConverter)
-                .forEach(converter -> {
-                    MappingJackson2HttpMessageConverter jsonConverter = (MappingJackson2HttpMessageConverter) converter;
-                    jsonConverter.setObjectMapper(objectMapper);
-                });
-        return restTemplate;
-    }
-
-    @Bean
     public CorsConfig allowedHostsForCORS(Environment env) {
         String allowedHosts = env.getRequiredProperty("canvass.cors.hosts");
         String methods = env.getRequiredProperty("canvass.cors.methods");
         Set<String> hosts = new HashSet<>(asList(allowedHosts.split(",")));
         return new CorsConfig(hosts, methods);
-    }
-
-    @Bean
-    public GetVotersCommandFactory getVotersCommandFactory(PafClient pafClient) {
-        return new GetVotersCommandFactory(pafClient, 30000);
-    }
-
-    @Bean
-    public RecordVoteCommandFactory recordVoteCommandFactory(PafClient pafClient) {
-        return new RecordVoteCommandFactory(pafClient, 30000);
-    }
-
-    @Bean
-    public GetStreetsCommandFactory getStreetsCommandFactory(PafClient pafClient) {
-        return new GetStreetsCommandFactory(pafClient, 30000);
     }
 
     @Bean
@@ -175,5 +138,30 @@ public class Config {
                 .setConnectionManager(connectionManager)
                 .setMaxConnTotal(DEFAULT_MAX_TOTAL_CONNECTIONS)
                 .build();
+    }
+
+    @Bean
+    public ClientHttpRequestFactory httpRequestFactory(HttpClient httpClient) {
+        return new HttpComponentsClientHttpRequestFactory(httpClient);
+    }
+
+    @Bean
+    public PafRequestExecutor commandExecutor() {
+        return new PafRequestExecutor() {
+        };
+    }
+
+    @Bean
+    public RestTemplate restTemplate(ObjectMapper objectMapper, ClientHttpRequestFactory httpRequestFactory) {
+        RestTemplate restTemplate = new RestTemplate(httpRequestFactory);
+        List<HttpMessageConverter<?>> converters = restTemplate.getMessageConverters();
+
+        converters.stream()
+                .filter(converter -> converter instanceof MappingJackson2HttpMessageConverter)
+                .forEach(converter -> {
+                    MappingJackson2HttpMessageConverter jsonConverter = (MappingJackson2HttpMessageConverter) converter;
+                    jsonConverter.setObjectMapper(objectMapper);
+                });
+        return restTemplate;
     }
 }

@@ -10,7 +10,7 @@ import com.infinityworks.webapp.rest.dto.RecordVote;
 import com.infinityworks.webapp.rest.dto.SearchElectors;
 import com.infinityworks.webapp.service.VoterService;
 import com.infinityworks.webapp.service.RecordContactService;
-import com.infinityworks.webapp.service.RecordVoteService;
+import com.infinityworks.webapp.service.RecordVotedService;
 import com.infinityworks.webapp.service.SessionService;
 import com.lowagie.text.DocumentException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,7 +35,7 @@ public class VoterController {
     private final DocumentBuilder documentBuilder;
     private final VoterService voterService;
     private final RequestValidator requestValidator;
-    private final RecordVoteService recordVoteService;
+    private final RecordVotedService recordVotedService;
     private final RecordContactService recordContactService;
     private final SessionService sessionService;
     private final RestErrorHandler errorHandler;
@@ -45,7 +45,7 @@ public class VoterController {
                            @Qualifier("canvass") DocumentBuilder documentBuilder,
                            VoterService voterService,
                            RequestValidator requestValidator,
-                           RecordVoteService recordVoteService,
+                           RecordVotedService recordVotedService,
                            RecordContactService recordContactService,
                            SessionService sessionService,
                            RestErrorHandler errorHandler) {
@@ -53,7 +53,7 @@ public class VoterController {
         this.documentBuilder = documentBuilder;
         this.voterService = voterService;
         this.requestValidator = requestValidator;
-        this.recordVoteService = recordVoteService;
+        this.recordVotedService = recordVotedService;
         this.recordContactService = recordContactService;
         this.sessionService = sessionService;
         this.errorHandler = errorHandler;
@@ -90,7 +90,7 @@ public class VoterController {
     public ResponseEntity<?> recordVote(@RequestBody @Valid RecordVote ern,
                                         Principal principal) {
         return sessionService.extractUserFromPrincipal(principal)
-                .flatMap(user -> recordVoteService.recordVote(user, ern))
+                .flatMap(user -> recordVotedService.recordVote(user, ern))
                 .fold(errorHandler::mapToResponseEntity, ResponseEntity::ok);
     }
 

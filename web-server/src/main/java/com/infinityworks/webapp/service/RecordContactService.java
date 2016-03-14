@@ -3,7 +3,8 @@ package com.infinityworks.webapp.service;
 import com.infinityworks.common.lang.Try;
 import com.infinityworks.webapp.domain.User;
 import com.infinityworks.webapp.error.NotAuthorizedFailure;
-import com.infinityworks.webapp.paf.client.PafClient;
+import com.infinityworks.webapp.paf.client.command.RecordContactCommand;
+import com.infinityworks.webapp.paf.client.command.RecordContactCommandFactory;
 import com.infinityworks.webapp.paf.converter.RecordContactToPafConverter;
 import com.infinityworks.webapp.rest.dto.RecordContactRequest;
 import org.slf4j.Logger;
@@ -15,17 +16,20 @@ import org.springframework.stereotype.Service;
 public class RecordContactService {
 
     private final Logger log = LoggerFactory.getLogger(VoterService.class);
-    private final PafClient pafClient;
     private final WardService wardService;
     private final RecordContactToPafConverter recordContactToPafConverter;
+    private final RecordContactCommandFactory recordContactCommandFactory;
+    private final ErnShortFormToLongFormConverter ernEnricher;
 
     @Autowired
-    public RecordContactService(PafClient pafClient,
-                                WardService wardService,
-                                RecordContactToPafConverter recordContactToPafConverter) {
-        this.pafClient = pafClient;
+    public RecordContactService(WardService wardService,
+                                RecordContactToPafConverter recordContactToPafConverter,
+                                RecordContactCommandFactory recordContactCommandFactory,
+                                ErnShortFormToLongFormConverter ernEnricher) {
         this.wardService = wardService;
         this.recordContactToPafConverter = recordContactToPafConverter;
+        this.recordContactCommandFactory = recordContactCommandFactory;
+        this.ernEnricher = ernEnricher;
     }
 
     /**
@@ -43,8 +47,11 @@ public class RecordContactService {
         }
         return wardService
                 .getByCode(contactRequest.getWardCode(), user)
-                .flatMap(ward -> pafClient.recordContact(ern, recordContactToPafConverter.apply(user, contactRequest)))
-                .map(response -> contactRequest);
-
+                .flatMap(ward -> ernEnricher.apply(ward.getCode(), ern)
+                        .flatMap(fullErn -> {
+                            RecordContactCommand recordContactCommand = recordContactCommandFactory.create(fullErn, recordContactToPafConverter.apply(user, contactRequest));
+                            return recordContactCommand.execute();
+                        })
+                        .map(response -> contactRequest));
     }
 }

@@ -1,7 +1,10 @@
 package com.infinityworks.webapp.rest.dto;
 
 import com.google.common.base.MoreObjects;
+import com.google.common.collect.ImmutableMap;
 import com.infinityworks.webapp.rest.validation.ValidSearchElectorsRequest;
+
+import java.util.Map;
 
 import static com.google.common.base.Strings.nullToEmpty;
 
@@ -39,6 +42,16 @@ public class SearchElectors {
 
     public String getWardCode() {
         return wardCode;
+    }
+
+    public Map<String, String> getParameters() {
+        return ImmutableMap.<String, String>builder()
+                .put("wardCode", wardCode)
+                .put("firstName", firstName)
+                .put("lastName", lastName)
+                .put("address", address)
+                .put("postCode", postCode)
+                .build();
     }
 
     @Override

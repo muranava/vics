@@ -25,10 +25,6 @@ angular
       return emailRegex.test(email);
     };
 
-    api.extractErnPrefix = function (ern) {
-      return _.head(ern.split('-')) + '-';
-    };
-
     api.validErn = function (electorID) {
       return electorID && ernRegex.test(electorID);
     };

@@ -96,10 +96,10 @@ public class ConstituencyService {
         return Try.success(updatedUser);
     }
 
-    public Try<User> associateToUserByUsername(User permissible, String constituencyCode, String username) {
+    public Try<User> associateToUserByUsername(User user, String constituencyCode, String username) {
         return userService.getByEmail(username)
-                .flatMap(user -> getByCode(constituencyCode)
-                .flatMap(constituency -> associateToUser(permissible, constituency.getId(), user.getId())));
+                .flatMap(u -> getByCode(constituencyCode)
+                .flatMap(constituency -> associateToUser(user, constituency.getId(), user.getId())));
     }
 
     public Try<Constituency> getByCode(String code) {
