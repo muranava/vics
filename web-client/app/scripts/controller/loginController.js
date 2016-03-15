@@ -36,6 +36,7 @@ angular
 
         var game = $('.game');
         game.blockrain({
+          showFieldOnStart: false,
           playText: 'Let\'s play some Tetris'
         });
 
