@@ -70,10 +70,6 @@ angular
         .error(handleError);
     };
 
-    $scope.onUndo = function(model) {
-      var fullErn = $scope.ward
-    };
-
     /**
      * Submits the entry form and adds the result to the log.
      */
@@ -103,7 +99,7 @@ angular
       }
       scrollToInput();
     };
-    
+
     function scrollToInput() {
       $("html, body").animate({ scrollTop: $('#canvassEntry').offset().top }, 500);
       $('#electorNum').focus();
