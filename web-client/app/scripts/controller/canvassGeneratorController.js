@@ -11,11 +11,13 @@ angular
     $scope.numStreetsSelected = 0;
     $scope.errorLoadingData = false;
 
-    $scope.onSelectConstituency = function(constituency) {
+    $scope.onSelectConstituency = function (constituency) {
+      resetErrors();
       $scope.constituencySearchModel = constituency;
+      $scope.wardSearchModel = '';
     };
 
-    $scope.onLoadedConstituencies = function(constituencies) {
+    $scope.onLoadedConstituencies = function (constituencies) {
       if (_.isEmpty(constituencies)) {
         $scope.userHasNoAssociations = true;
       }
@@ -23,16 +25,21 @@ angular
     };
 
     $scope.onSelectWard = function (model) {
+      resetErrors();
+
       $scope.wardSearchModel = model.ward;
       $scope.constituencySearchModel = model.constituency;
 
       wardService.findStreetsByWard($scope.wardSearchModel.code)
         .success(function (streets) {
           $scope.streets = streets;
+        })
+        .error(function () {
+          $scope.errorLoadingStreets = true;
         });
     };
 
-    $scope.onNoAssociations = function() {
+    $scope.onNoAssociations = function () {
       $scope.userHasNoAssociations = true;
     };
 
@@ -45,7 +52,7 @@ angular
     };
 
     $scope.onPrintSelected = function () {
-      $scope.errorLoadingData = null;
+      resetErrors();
       var selected = _.filter($scope.streets, function (s) {
         return s.selected;
       });
@@ -59,13 +66,13 @@ angular
         });
     };
 
-    function handleErrorResponse(error){
-          if (error) {
-            $scope.errorLoadingData = error.message;
-          } else {
-            $scope.errorLoadingData = "Failed to contact server";
-              }
-          }
+    function handleErrorResponse(error) {
+      if (error) {
+        $scope.errorLoadingData = error.message;
+      } else {
+        $scope.errorLoadingData = "Failed to contact server";
+      }
+    }
 
     $scope.onPrintAll = function () {
       $scope.errorLoadingData = null;
@@ -78,4 +85,9 @@ angular
           handleErrorResponse(error);
         });
     };
+
+    function resetErrors() {
+      $scope.failedToLoadStreets = null;
+      $scope.errorLoadingData = null;
+    }
   });

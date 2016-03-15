@@ -42,6 +42,7 @@ public class RecordContactRequest {
     private final String wardCode;
     @NotNull
     private final Boolean inaccessible;
+
     private final String telephone;
 
     @JsonCreator

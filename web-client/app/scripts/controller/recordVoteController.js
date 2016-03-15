@@ -1,9 +1,8 @@
+
 angular
   .module('canvass')
   .controller('recordVoteController', function (util, $timeout, $scope, RingBuffer, voteService, electorService, wardService) {
-    var logSize = 7,
-      searchLimit = 10,
-      electorIdElement = $('#electorNum');
+    var logSize = 7, searchLimit = 10;
 
     $scope.searchResults = [];
     $scope.logs = RingBuffer.newInstance(logSize);
@@ -69,8 +68,9 @@ angular
             });
           });
         $scope.formModel.ern.number = '';
+        $scope.formModel.ern.suffix = 0;
 
-        electorIdElement.focus();
+        $('#electorNum').focus();
       }
     };
 

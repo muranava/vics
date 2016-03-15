@@ -1,8 +1,7 @@
 angular
   .module('canvass')
   .service('electorService', function (config, $http, util) {
-    var api = {},
-      apiUrl = config.apiUrl;
+    var api = {}, apiUrl = config.apiUrl;
 
     /**
      * Retrieves the elector records for the given ward
@@ -29,6 +28,15 @@ angular
       return $http({
         url: apiUrl + '/elector/' + inputModel.ern + '/contact',
         method: 'POST',
+        data: inputModel,
+        withCredentials: true
+      });
+    };
+
+    api.undoCanvassInput = function (inputModel) {
+      return $http({
+        url: apiUrl + '/elector/' + inputModel.ern + '/contact/' + inputModel.contactId,
+        method: 'DELETE',
         data: inputModel,
         withCredentials: true
       });

@@ -9,7 +9,10 @@ import com.infinityworks.webapp.paf.client.command.GetVotersCommandFactory;
 import com.infinityworks.webapp.paf.client.command.SearchVotersCommand;
 import com.infinityworks.webapp.paf.client.command.SearchVotersCommandFactory;
 import com.infinityworks.webapp.paf.converter.StreetToPafConverter;
-import com.infinityworks.webapp.paf.dto.*;
+import com.infinityworks.webapp.paf.dto.PafStreet;
+import com.infinityworks.webapp.paf.dto.Property;
+import com.infinityworks.webapp.paf.dto.PropertyResponse;
+import com.infinityworks.webapp.paf.dto.SearchVoterResponse;
 import com.infinityworks.webapp.pdf.DocumentBuilder;
 import com.infinityworks.webapp.pdf.PDFTableGenerator;
 import com.infinityworks.webapp.pdf.TableBuilder;
@@ -85,8 +88,6 @@ public class VoterService {
                                                                User user) {
         return wardService.getByCode(wardCode, user)
                 .flatMap(ward -> {
-                    log.info("Generate PDF of voters for ward={}. User={}", wardCode, user);
-
                     List<PafStreet> pafStreets = request.getStreets()
                             .stream()
                             .map(streetToPafConverter)

@@ -6,6 +6,7 @@ import com.infinityworks.webapp.error.NotAuthorizedFailure;
 import com.infinityworks.webapp.paf.client.command.RecordContactCommand;
 import com.infinityworks.webapp.paf.client.command.RecordContactCommandFactory;
 import com.infinityworks.webapp.paf.converter.RecordContactToPafConverter;
+import com.infinityworks.webapp.paf.dto.RecordContactResponse;
 import com.infinityworks.webapp.rest.dto.RecordContactRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -40,7 +41,8 @@ public class RecordContactService {
      * @param contactRequest the contact data
      * @return the updated contact data, or a failure object if the operation failed
      */
-    public Try<RecordContactRequest> recordContact(User user, String ern, RecordContactRequest contactRequest) {
+    public Try<RecordContactResponse> recordContact(User user, String ern,
+                                                    RecordContactRequest contactRequest) {
         if (!user.getWriteAccess()) {
             log.warn("User={} tried to add contact for ern={} but does not have write access", user, ern);
             return Try.failure(new NotAuthorizedFailure("Forbidden"));
@@ -48,10 +50,10 @@ public class RecordContactService {
         return wardService
                 .getByCode(contactRequest.getWardCode(), user)
                 .flatMap(ward -> ernEnricher.apply(ward.getCode(), ern)
-                        .flatMap(fullErn -> {
-                            RecordContactCommand recordContactCommand = recordContactCommandFactory.create(fullErn, recordContactToPafConverter.apply(user, contactRequest));
-                            return recordContactCommand.execute();
-                        })
-                        .map(response -> contactRequest));
+                .flatMap(fullErn -> {
+                    RecordContactCommand recordContactCommand = recordContactCommandFactory.create(
+                            fullErn, recordContactToPafConverter.apply(user, contactRequest));
+                    return recordContactCommand.execute();
+                }));
     }
 }

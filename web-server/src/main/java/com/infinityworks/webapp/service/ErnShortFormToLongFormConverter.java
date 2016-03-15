@@ -16,7 +16,7 @@ import java.util.function.BiFunction;
  */
 @Component
 public class ErnShortFormToLongFormConverter implements BiFunction<String, String, Try<String>> {
-    private static final String ERN_SHORT_FORM_REGEX = "^\\w{2,4}-\\d{1,7}-\\w{1,2}$";
+    private static final String ERN_SHORT_FORM_REGEX = "^\\w{1,4}-\\d{1,7}-\\w{1,2}$";
 
     @Override
     public Try<String> apply(String wardCode, String shortErn) {

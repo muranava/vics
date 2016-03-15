@@ -3,7 +3,7 @@
   <div class="section-body contain-lg">
     <div class="row">
       <div class="col-lg-12">
-        <h2 class="text-primary">Canvass Data Input</h2>
+        <h2 class="text-primary" id="canvassEntry">Canvass Data Input</h2>
       </div>
       <div class="col-lg-8">
         <article class="lead">
@@ -195,10 +195,20 @@
                   </label>
                 </div>
               </div>
+              <br>
 
-            </div><!--end .card-body -->
+              <!-- Telephone -->
+              <div class="form-group">
+                <div class="input-group">
+                  <div class="input-group-content ern-spacing">
+                    <input id="phone" type="text" class="form-control" ng-model="inputRecordModel.telephone">
+                    <label for="phone">Telephone</label>
+                  </div>
+                </div>
+              </div>
+            </div>
+
             <div class="card-actionbar">
-
               <div class="card-actionbar-row">
                 <button type="submit" class="btn btn-sm raised btn-danger pull-right">SUBMIT</button>
               </div>
@@ -224,6 +234,7 @@
                     <th>Roll #</th>
                     <th>Reason</th>
                     <th>Result</th>
+                    <th></th>
                   </tr>
                   </thead>
                   <tbody>
@@ -233,6 +244,7 @@
                     <td>{{log.reason}}</td>
                     <td ng-show="log.success">SUCCESS</td>
                     <td ng-show="!log.success">FAILED</td>
+                    <td><button ng-click="onUndo(log)" ng-show="log.success" class="btn btn-xs btn-danger raised">UNDO</button></td>
                   </tr>
                   </tbody>
                 </table>
@@ -280,7 +292,8 @@
                     <br>
                     <div class="input-group">
                       <div class="input-group-btn">
-                        <button type="submit" class="btn btn-danger btn-sm raised pull-right" tabindex="-1">Search</button>
+                        <button type="submit" class="btn btn-danger btn-sm raised pull-right" tabindex="-1">Search
+                        </button>
                       </div>
                     </div>
                   </div>
@@ -306,7 +319,8 @@
                     <td>{{result.address}}</td>
                     <td>{{result.postCode}}</td>
                     <td>
-                      <button type="submit" class="btn btn-sm btn-danger raised" tabindex="-1" ng-click="onSearchVoted(result)">
+                      <button type="submit" class="btn btn-sm btn-danger raised" tabindex="-1"
+                              ng-click="onSearchVoted(result)">
                         Voted
                       </button>
                     </td>

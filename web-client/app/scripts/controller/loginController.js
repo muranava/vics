@@ -22,4 +22,21 @@ angular
     $scope.logout = function () {
       authService.logout();
     };
+
+    $scope.onCloseEgg = function() {
+      $('#egg').hide();
+    };
+
+    var egg = new Egg();
+    egg.addCode("up,up,down,down,left,right,left,right,b,a", function () {
+      })
+      .addHook(function () {
+        $('#egg').show();
+
+        var game = $('.game');
+        game.blockrain({
+          playText: 'Let\'s play some Tetris'
+        });
+
+      }).listen();
   });

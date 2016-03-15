@@ -49,8 +49,8 @@ public interface PafClient {
      * @return the contact data
      */
     @POST("voter/{ern}/contact")
-    Call<RecordContactRequest> recordContact(@Path("ern") String ern,
-                                             @Body RecordContactRequest contactRequest);
+    Call<RecordContactResponse> recordContact(@Path("ern") String ern,
+                                              @Body RecordContactRequest contactRequest);
 
     /**
      * Records that a voter has voted

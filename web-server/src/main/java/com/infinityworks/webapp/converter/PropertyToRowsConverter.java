@@ -1,5 +1,6 @@
 package com.infinityworks.webapp.converter;
 
+import com.infinityworks.common.lang.StringExtras;
 import com.infinityworks.webapp.paf.dto.*;
 import com.infinityworks.webapp.pdf.model.ElectorRow;
 import com.infinityworks.webapp.pdf.model.ElectorRowBuilder;
@@ -7,8 +8,10 @@ import org.springframework.stereotype.Component;
 
 import java.util.List;
 import java.util.function.BiFunction;
+import java.util.stream.Stream;
 
 import static com.infinityworks.webapp.pdf.model.ElectorRowBuilder.electorRow;
+import static java.util.stream.Collectors.joining;
 import static java.util.stream.Collectors.toList;
 
 @Component
@@ -24,7 +27,7 @@ public class PropertyToRowsConverter implements BiFunction<String, Property, Lis
 
                     ElectorRowBuilder row = electorRow()
                             .withHouse(property.house())
-                            .withName(voter.lastName() + ", " + voter.firstName())
+                            .withName(createName(voter))
                             .withTelephone(voter.telephone());
 
                     if (voting != null) {
@@ -57,6 +60,12 @@ public class PropertyToRowsConverter implements BiFunction<String, Property, Lis
                 .collect(toList());
     }
 
+    private String createName(Voter voter) {
+        return Stream.of(voter.firstName(), voter.lastName())
+                .filter(e -> !StringExtras.isNullOrEmpty(e))
+                .collect(joining(", "));
+    }
+
     private String normalizeScore(Integer value) {
         if (value == null || value == 0) {
             return "";
@@ -66,8 +75,9 @@ public class PropertyToRowsConverter implements BiFunction<String, Property, Lis
     }
 
     private String createRollNum(Voter voter) {
-        return String.format("%s-%s-%s",
-                voter.pollingDistrict(), voter.electorNumber(), voter.electorSuffix());
+        return Stream.of(voter.pollingDistrict(), voter.electorNumber(), voter.electorSuffix())
+                .filter(e -> !StringExtras.isNullOrEmpty(e))
+                .collect(joining("-"));
     }
 
     private String createCheckBox(Boolean value) {

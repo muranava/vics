@@ -70,6 +70,10 @@ angular
         .error(handleError);
     };
 
+    $scope.onUndo = function(model) {
+      var fullErn = $scope.ward
+    };
+
     /**
      * Submits the entry form and adds the result to the log.
      */
@@ -96,10 +100,14 @@ angular
               });
             }
           });
-
-        $('#electorNum').focus();
       }
+      scrollToInput();
     };
+    
+    function scrollToInput() {
+      $("html, body").animate({ scrollTop: $('#canvassEntry').offset().top }, 500);
+      $('#electorNum').focus();
+    }
 
     function mapFormToRequest(formModel) {
       var copy = $.extend(true, {}, formModel);
@@ -116,9 +124,15 @@ angular
     }
 
     function handleSubmitEntrySuccess(response) {
+      function stripWardCodeFromErn(fullErn) {
+        var parts = fullErn.split("-");
+        parts.splice(0, 1);
+        return parts.join("-");
+      }
+
       $scope.elector = response;
       $scope.logs.push({
-        ern: response.ern,
+        ern: stripWardCodeFromErn(response.ern),
         reason: '-',
         success: true
       });

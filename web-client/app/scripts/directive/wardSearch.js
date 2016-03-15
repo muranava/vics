@@ -28,9 +28,11 @@ angular
          * Reloads wards when a constituency typeahead is matched
          */
         scope.onSelectConstituencyInternal = function () {
+          scope.directiveModel.ward = '';
           wardService.findWardsWithinConstituency(scope.directiveModel.constituency.id)
             .success(function (response) {
               scope.wards = response.wards;
+              $('#wardInputID').focus();
             });
         };
 

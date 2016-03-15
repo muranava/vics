@@ -133,3 +133,28 @@ input:-webkit-autofill, textarea:-webkit-autofill, select:-webkit-autofill {
 .btn-separator {
   margin-left: 5px !important;
 }
+
+/* egg */
+div.egg {
+  opacity:    0.75;
+  background: #000;
+  width:      100%;
+  height:     100%;
+  z-index:    10;
+  top:        0;
+  left:       0;
+  position:   fixed;
+}
+div.game-center {
+  width: 100px;
+  height: 100px;
+  background-color: red;
+
+  position: absolute;
+  top:100px;
+  bottom: 0;
+  left: 0;
+  right: 0;
+
+  margin: auto;
+}

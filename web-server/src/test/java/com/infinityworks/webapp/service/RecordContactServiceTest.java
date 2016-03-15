@@ -8,12 +8,15 @@ import com.infinityworks.webapp.paf.client.PafClient;
 import com.infinityworks.webapp.paf.client.PafRequestExecutor;
 import com.infinityworks.webapp.paf.client.command.RecordContactCommandFactory;
 import com.infinityworks.webapp.paf.converter.RecordContactToPafConverter;
+import com.infinityworks.webapp.paf.dto.ImmutableRecordContactResponse;
+import com.infinityworks.webapp.paf.dto.RecordContactResponse;
 import com.infinityworks.webapp.rest.dto.RecordContactRequest;
 import com.infinityworks.webapp.testsupport.mocks.CallStub;
 import org.junit.Before;
 import org.junit.Test;
 import retrofit2.Call;
-import retrofit2.Response;
+
+import java.util.UUID;
 
 import static com.google.common.collect.Sets.newHashSet;
 import static com.infinityworks.webapp.testsupport.builder.UserBuilder.user;
@@ -52,10 +55,10 @@ public class RecordContactServiceTest {
                 .build();
         given(wardService.getByCode("E05001221", user)).willReturn(Try.success(earlsdon));
         com.infinityworks.webapp.paf.dto.RecordContactRequest contactRecord = recordContactToPafConverter.apply(user, request);
-        Call<com.infinityworks.webapp.paf.dto.RecordContactRequest> success = CallStub.success(contactRecord);
+        Call<RecordContactResponse> success = CallStub.success(ImmutableRecordContactResponse.builder().withContactId(UUID.randomUUID()).withErn("E05001221-PD-123-4").build());
         given(pafClient.recordContact("E05001221-PD-123-4", contactRecord)).willReturn(success);
 
-        Try<RecordContactRequest> contact = underTest.recordContact(user, "PD-123-4", request);
+        Try<RecordContactResponse> contact = underTest.recordContact(user, "PD-123-4", request);
 
         assertThat(contact.isSuccess(), is(true));
     }
@@ -74,7 +77,7 @@ public class RecordContactServiceTest {
                 .build();
         given(wardService.getByCode("E05001221", user)).willReturn(Try.success(earlsdon));
 
-        Try<RecordContactRequest> contact = underTest.recordContact(user, ern, request);
+        Try<RecordContactResponse> contact = underTest.recordContact(user, ern, request);
 
         assertThat(contact, isFailure(instanceOf(NotAuthorizedFailure.class)));
     }
@@ -92,7 +95,7 @@ public class RecordContactServiceTest {
                 .build();
         given(wardService.getByCode("E05001221", user)).willReturn(Try.failure(new NotAuthorizedFailure("forbidden")));
 
-        Try<RecordContactRequest> contact = underTest.recordContact(user, ern, request);
+        Try<RecordContactResponse> contact = underTest.recordContact(user, ern, request);
 
         assertThat(contact, isFailure(instanceOf(NotAuthorizedFailure.class)));
     }

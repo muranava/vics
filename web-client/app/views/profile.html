@@ -15,6 +15,21 @@
 </section>
 <!-- END PROFILE HEADER  -->
 
+<script type="text/javascript" src="https://cdn.rawgit.com/mikeflynn/egg.js/master/egg.min.js"></script>
+<script>var egg = new Egg();
+egg.addCode("up,up,down,down,left,right,left,right,b,a", function () {
+    jQuery('#egggif').fadeIn(500, function () {
+      window.setTimeout(function () {
+        jQuery('#egggif').hide();
+      }, 5000);
+    });
+  })
+  .addHook(function () {
+    $('#egg').show();
+    $('.game').blockrain();
+    $('.game').blockrain('controls', true);
+  }).listen();
+</script>
 
 <section>
   <div class="section-body contain-lg">    <!-- BEGIN DEFAULT TABLE -->

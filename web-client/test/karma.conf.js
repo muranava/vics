@@ -39,6 +39,7 @@ module.exports = function(config) {
       'bower_components/angularjs-slider/dist/rzslider.js',
       'bower_components/angular-ui-switch/angular-ui-switch.js',
       'bower_components/angular-csv-import-tmp/dist/angular-csv-import.js',
+      'bower_components/blockrain/dist/blockrain.jquery.min.js',
       'bower_components/angular-mocks/angular-mocks.js',
       // endbower
       "app/scripts/**/*.js",

@@ -18,4 +18,5 @@ INSERT INTO wards(id, constituency_id, name, code) VALUES
   ('6b710adf-6d9f-4745-b441-5b58c85d3a07', '0d338b99-3d15-44f7-904f-3ebc18a7ab4a', 'Westwood', 'E05001232'),
   ('fa1f84f6-8bee-4679-aa03-bcf456e72ac6', '911a68a5-5689-418d-b63d-b21545345f03', 'Whoberley', 'E05001233'),
   ('4564fe48-9df5-4c11-a0ed-e9dd48778832', '911a68a5-5689-418d-b63d-b21545345f03', 'Woodlands', 'E05001234'),
-  ('71f563da-4303-4603-b095-67255b1fc8fc', 'ee9733a9-6ad3-4066-a692-e6ebe21258e9', 'Wyken', 'E05001235');
+  ('71f563da-4303-4603-b095-67255b1fc8fc', 'ee9733a9-6ad3-4066-a692-e6ebe21258e9', 'Wyken', 'E05001235'),
+  ('ed662665-768e-402d-af7b-5eac8721fcee', '8dc960af-2263-43b0-a338-2572a92ced52', 'Beeston and Holbeck', 'E05001415');

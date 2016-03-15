@@ -10,8 +10,10 @@ import org.springframework.stereotype.Component;
 import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Stream;
 
 import static com.infinityworks.common.lang.StringExtras.isNullOrEmpty;
+import static java.util.Collections.singletonList;
 import static java.util.stream.Collectors.toList;
 
 @Component
