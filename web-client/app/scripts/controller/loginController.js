@@ -32,6 +32,7 @@ angular
       })
       .addHook(function () {
         $('#egg').show();
+        $('#closeBtn').show();
 
         var game = $('.game');
         game.blockrain({
