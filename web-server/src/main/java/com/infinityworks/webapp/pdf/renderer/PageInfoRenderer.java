@@ -2,7 +2,10 @@ package com.infinityworks.webapp.pdf.renderer;
 
 import com.infinityworks.webapp.rest.dto.Flags;
 import com.lowagie.text.*;
-import com.lowagie.text.pdf.*;
+import com.lowagie.text.pdf.BaseFont;
+import com.lowagie.text.pdf.ColumnText;
+import com.lowagie.text.pdf.PdfContentByte;
+import com.lowagie.text.pdf.PdfWriter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -12,7 +15,7 @@ import java.time.format.DateTimeFormatter;
 
 import static com.lowagie.text.Font.HELVETICA;
 
-public class PageInfoRenderer extends PdfPageEventHelper {
+public class PageInfoRenderer extends PageEventRenderer {
     private static final Logger log = LoggerFactory.getLogger(PageInfoRenderer.class);
     private static Font font = new Font(HELVETICA, 9);
     private static final String FOOTER_TEXT_1 =
@@ -24,17 +27,17 @@ public class PageInfoRenderer extends PdfPageEventHelper {
 
     private static final String LIKELIHOOD_KEY =
             "1 Definitely won't vote" +
-            "\n2 Probably won't vote" +
-            "\n3 Undecided" +
-            "\n4 Probably will vote" +
-            "\n5 Definitely will vote";
+                    "\n2 Probably won't vote" +
+                    "\n3 Undecided" +
+                    "\n4 Probably will vote" +
+                    "\n5 Definitely will vote";
 
     private static final String INTENTION_KEY =
             "1 Definitely Remain" +
-            "\n2 Probably Remain" +
-            "\n3 Undecided" +
-            "\n4 Probably Leave" +
-            "\n5 Definitely Leave";
+                    "\n2 Probably Remain" +
+                    "\n3 Undecided" +
+                    "\n4 Probably Leave" +
+                    "\n5 Definitely Leave";
 
     private static final String META_TEMPLATE = "Constituency: %s\nWard: %s \nAddress: %s";
     private final FlagsKeyRenderer flagsKeyRenderer;
@@ -52,18 +55,20 @@ public class PageInfoRenderer extends PdfPageEventHelper {
 
     @Override
     public void onEndPage(PdfWriter writer, Document document) {
-        PdfContentByte cb = writer.getDirectContent();
-        createFooter(cb, document);
-        createLogo(cb);
-        createIntentionKey(cb);
-        if (renderLikelihoodLegend) {
-            createLikelihoodKey(cb);
+        if (isEnabled()) {
+            PdfContentByte cb = writer.getDirectContent();
+            createFooter(cb, document);
+            createLogo(cb);
+            createIntentionKey(cb);
+            if (renderLikelihoodLegend) {
+                createLikelihoodKey(cb);
+            }
+            if (flags != null) {
+                createFlagsKey(cb);
+            }
+            createPageNumber(cb, document, writer);
+            createMetaSection(cb);
         }
-        if (flags != null) {
-            createFlagsKey(cb);
-        }
-        createPageNumber(cb, document, writer);
-        createMetaSection(cb);
     }
 
     private void createPageNumber(PdfContentByte cb, Document document, PdfWriter writer) {

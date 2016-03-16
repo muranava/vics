@@ -24,9 +24,9 @@ public class PropertyToRowsConverterTest {
                 .withHouse("10")
                 .withStreet("Glen Avenue")
                 .withVoters(asList(
-                        voterWithDefaults().withFirstName("Andy").withPollingDistrict("PD").withElectorNumber("11").withElectorSuffix("1").withTelephone("0987654321").withLastName("Benz").build(),
-                        voterWithDefaults().withFirstName("Mike").withPollingDistrict("PD").withElectorNumber("22").withElectorSuffix("2").withTelephone("0987654321").withLastName("Benz").build(),
-                        voterWithDefaults().withFirstName("Samo").withPollingDistrict("PD").withElectorNumber("33").withElectorSuffix("3").withTelephone("0987654321").withLastName("Benz").build()
+                        voterWithDefaults().withFirstName("Andy").withPollingDistrict("PD").withElectorNumber("11").withElectorSuffix("1").withLastName("Benz").build(),
+                        voterWithDefaults().withFirstName("Mike").withPollingDistrict("PD").withElectorNumber("22").withElectorSuffix("2").withLastName("Benz").build(),
+                        voterWithDefaults().withFirstName("Samo").withPollingDistrict("PD").withElectorNumber("33").withElectorSuffix("3").withLastName("Benz").build()
                 )).build();
 
         List<ElectorRow> electorRows = underTest.apply("E0123456", property);

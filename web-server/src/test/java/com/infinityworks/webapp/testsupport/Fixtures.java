@@ -11,7 +11,6 @@ public class Fixtures {
                 .withPollingDistrict("PD")
                 .withElectorNumber("123")
                 .withElectorSuffix("4")
-                .withTelephone("07983441616")
                 .withTitle("")
                 .withFirstName("Alan")
                 .withLastName("Donald")

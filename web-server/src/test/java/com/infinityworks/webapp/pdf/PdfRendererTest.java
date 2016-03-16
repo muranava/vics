@@ -29,7 +29,7 @@ public class PdfRendererTest {
         List<GeneratedPdfTable> tables = underTest.generateTables(tableBuilder,
                 votersByStreets, "E0900134", "Henley", "Coventry South");
 
-        assertThat(tables.size(), is(2));
+        assertThat(tables.size(), is(3));
         assertThat(tables.get(0).getStreet(), is("Street1, CV2 3ER"));
         assertThat(tables.get(1).getStreet(), is("Street2, CV2 3ER"));
 
@@ -80,7 +80,7 @@ public class PdfRendererTest {
     public List<Property> streetWithPropertiesWithoutAndWithoutVoters() {
         return asList(
                 ImmutableProperty.builder().withHouse("31a").withStreet("Street1").withPostCode("CV2 3ER").withVoters(asList(
-                        voterWithDefaults().withTelephone("").withPollingDistrict("ZZ").withElectorNumber("555").withElectorSuffix("2").withLastName("Brown").withFirstName("David").withIssues(
+                        voterWithDefaults().withPollingDistrict("ZZ").withElectorNumber("555").withElectorSuffix("2").withLastName("Brown").withFirstName("David").withIssues(
                                 issuesWithDefaults().withCost(true).withSovereignty(true).build())
                                 .withFlags(flagsWithDefaults().withDeceased(true).withHasPV(true).build())
                                 .withVoting(votingWithDefaults().withIntention(2).withLikelihood(4).build())

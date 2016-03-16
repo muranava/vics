@@ -7,7 +7,7 @@ angular
       uppers = "ABCDEFGHJKMNPQRSTUVWXYZ",
       numbers = "23456789",
       emailRegex = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
-      ernRegex = /^\w{0,9}-\w{1,4}-\d{1,7}-\w{1,2}$/;
+      ernRegex = /^\w{1,9}-\w{1,4}-\d{1,7}-\w{1,2}$/;
 
     api.uuid = function () {
       function s4() {

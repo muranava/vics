@@ -1,5 +1,6 @@
 package com.infinityworks.webapp.pdf;
 
+import com.infinityworks.common.lang.StringExtras;
 import com.infinityworks.webapp.pdf.model.ElectorRow;
 import com.infinityworks.webapp.pdf.model.GeneratedPdfTable;
 import com.lowagie.text.DocumentException;
@@ -18,14 +19,18 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.IntStream;
+import java.util.stream.Stream;
 
+import static com.infinityworks.common.lang.StringExtras.isNullOrEmpty;
 import static com.lowagie.text.Font.HELVETICA;
+import static java.util.stream.Collectors.joining;
 
 @Component
 public class TableBuilder {
     private static final Logger log = LoggerFactory.getLogger(TableBuilder.class);
     private static final Font dataFont = new Font(HELVETICA, 11);
     private static final Font headerFont = new Font(HELVETICA, 10);
+    private static final Font clear = new Font(HELVETICA, 10, 1, Color.WHITE);
     private static final Color LIGHT_GREY = new Color(215, 215, 215);
     private static final Color LIGHTER_GREY = new Color(235, 235, 235);
     private final PdfTableConfig columnDefinition;
@@ -55,7 +60,7 @@ public class TableBuilder {
     private void generateTableHeaders(PdfPTable table) {
         table.addCell(createHeaderCell("House #", TableProperties.HORIZONTAL_TEXT_ANGLE));
         table.addCell(createHeaderCell("Name", TableProperties.HORIZONTAL_TEXT_ANGLE));
-        table.addCell(createHeaderCell("Tel No.", TableProperties.HORIZONTAL_TEXT_ANGLE));
+        table.addCell(createHeaderCell("Contact", TableProperties.HORIZONTAL_TEXT_ANGLE));
 
         PdfPCell likelihood = createHeaderCell("Voting\nLikelihood", TableProperties.HORIZONTAL_TEXT_ANGLE);
         likelihood.setBackgroundColor(LIGHT_GREY);
@@ -91,12 +96,6 @@ public class TableBuilder {
         return Optional.of(new GeneratedPdfTable(table, mainStreetName, wardName, wardCode, constituencyName));
     }
 
-    public PdfPTable generateEmptyRows() {
-        PdfPTable table = generateTableAndHeaders();
-        createEmptyRow(table);
-        return table;
-    }
-
     private PdfPTable generateTableAndHeaders() {
         PdfPTable table = new PdfPTable(columnDefinition.getNumColumns());
         table.setWidthPercentage(TableProperties.TABLE_WIDTH_PERCENTAGE);
@@ -123,9 +122,15 @@ public class TableBuilder {
             addChangeRow(table);
         }
 
-        table.addCell(createDataCell(row.getHouse(), Element.ALIGN_LEFT));
+        // workaround to set row height for empty rows (relevant when creating empty pdf page)
+        if (isNullOrEmpty(row.getHouse())) {
+            table.addCell(new Phrase("-", clear));
+        } else {
+            table.addCell(createDataCell(row.getHouse(), Element.ALIGN_LEFT));
+        }
+
         table.addCell(createDataCell(row.getName(), Element.ALIGN_LEFT));
-            table.addCell(createDataCell(row.getTelephone(), Element.ALIGN_LEFT));
+            table.addCell(createDataCell(getContact(row), Element.ALIGN_LEFT));
 
         PdfPCell likelihood = new PdfPCell(new Phrase(row.getLikelihood()));
         likelihood.setBackgroundColor(LIGHT_GREY);
@@ -153,9 +158,10 @@ public class TableBuilder {
         return prevHouse;
     }
 
-    private void createEmptyRow(PdfPTable table) {
-        IntStream.range(0, columnDefinition.getNumColumns())
-                .forEach(i -> table.addCell(""));
+    private String getContact(ElectorRow row) {
+        return Stream.of(row.getEmail(), row.getTelephone())
+                .filter(e -> !StringExtras.isNullOrEmpty(e))
+                .collect(joining(", "));
     }
 
     /**

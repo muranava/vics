@@ -112,7 +112,7 @@ public class VoterService {
             log.info("No voters found for ward={} streets={}", ward, request);
             return Try.failure(new NotFoundFailure("No voters found"));
         } else {
-            ByteArrayOutputStream content = documentBuilder.buildPages(generatedPdfTables, request.getFlags());
+            ByteArrayOutputStream content = documentBuilder.buildPdfPages(generatedPdfTables, request.getFlags());
             return Try.success(content);
         }
     }

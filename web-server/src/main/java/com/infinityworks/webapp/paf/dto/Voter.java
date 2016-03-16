@@ -17,7 +17,6 @@ public interface Voter {
     @Nullable @JsonProperty("prefix") String pollingDistrict();
     @Nullable @JsonProperty("number") String electorNumber();
     @Nullable @JsonProperty("suffix") String electorSuffix();
-    @Nullable @JsonProperty("telephone") String telephone();
     @Nullable @JsonProperty("title") String title();
     @Nullable @JsonProperty("first_name") String firstName();
     @Nullable @JsonProperty("initial") String initial();
@@ -26,4 +25,5 @@ public interface Voter {
     @Nullable @JsonProperty("flags") Flags flags();
     @Nullable @JsonProperty("issues") Issues issues();
     @Nullable @JsonProperty("volunteer") Volunteer volunteer();
+    @Nullable @JsonProperty("info") Info info();
 }

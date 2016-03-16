@@ -37,7 +37,9 @@ angular
         lift: false,
         deceased: false,
         inaccessible: false,
-        ward: null
+        ward: null,
+        telephone: null,
+        email: null
       };
 
       if (prevWard) {

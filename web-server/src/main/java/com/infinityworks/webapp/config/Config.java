@@ -112,13 +112,13 @@ public class Config {
     @Bean
     @Qualifier("canvass")
     public DocumentBuilder canvassDocumentBuilder(LogoRenderer logoRenderer) {
-        return new DocumentBuilder(logoRenderer, new FlagsKeyRenderer(), new CanvassTableConfig());
+        return new DocumentBuilder(logoRenderer, new CanvassTableConfig());
     }
 
     @Bean
     @Qualifier("gotv")
     public DocumentBuilder gotvDocumentBuilder(LogoRenderer logoRenderer) {
-        return new DocumentBuilder(logoRenderer, new FlagsKeyRenderer(), new GotvTableConfig());
+        return new DocumentBuilder(logoRenderer, new GotvTableConfig());
     }
 
     @Bean

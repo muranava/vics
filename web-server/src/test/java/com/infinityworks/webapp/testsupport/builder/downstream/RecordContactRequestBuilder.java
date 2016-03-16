@@ -15,6 +15,7 @@ public class RecordContactRequestBuilder {
     private Boolean poster;
     private Boolean inaccessible;
     private String telephone;
+    private String email;
 
     public static RecordContactRequestBuilder recordContactRequest() {
         return new RecordContactRequestBuilder().withDefaults();
@@ -32,7 +33,8 @@ public class RecordContactRequestBuilder {
                 .withDeceased(false)
                 .withPoster(false)
                 .withInaccessible(false)
-                .withTelephone("07980123456");
+                .withTelephone("07980123456")
+                .withEmail("a@b.com");
         return this;
     }
 
@@ -96,7 +98,12 @@ public class RecordContactRequestBuilder {
         return this;
     }
 
+    public RecordContactRequestBuilder withEmail(String email) {
+        this.email = email;
+        return this;
+    }
+
     public RecordContactRequest build() {
-        return new RecordContactRequest(intention, likelihood, cost, sovereignty, border, lift, hasPV, wantsPV, deceased, poster, inaccessible, telephone);
+        return new RecordContactRequest(intention, likelihood, cost, sovereignty, border, lift, hasPV, wantsPV, deceased, poster, inaccessible, telephone, email);
     }
 }

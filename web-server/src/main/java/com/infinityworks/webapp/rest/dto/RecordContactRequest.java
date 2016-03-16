@@ -41,6 +41,7 @@ public class RecordContactRequest {
     private final Boolean inaccessible;
 
     private final String telephone;
+    private final String email;
 
     @JsonCreator
     public RecordContactRequest(@JsonProperty("intention") Integer intention,
@@ -54,7 +55,8 @@ public class RecordContactRequest {
                                 @JsonProperty("deceased") Boolean deceased,
                                 @JsonProperty("poster") Boolean poster,
                                 @JsonProperty("inaccessible") Boolean inaccessible,
-                                @JsonProperty("telephone") String telephone) {
+                                @JsonProperty("telephone") String telephone,
+                                @JsonProperty("email") String email) {
         this.intention = intention;
         this.likelihood = likelihood;
         this.cost = cost;
@@ -66,6 +68,7 @@ public class RecordContactRequest {
         this.deceased = deceased;
         this.poster = poster;
         this.inaccessible = inaccessible;
+        this.email = email;
         this.telephone = nullToEmpty(telephone);
     }
 
@@ -115,5 +118,9 @@ public class RecordContactRequest {
 
     public String getTelephone() {
         return telephone;
+    }
+
+    public String getEmail() {
+        return email;
     }
 }

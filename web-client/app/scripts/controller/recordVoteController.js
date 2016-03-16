@@ -95,7 +95,7 @@ angular
 
     function isValidElectorID(electorID) {
       $scope.invalidErn = false;
-      var valid = util.validErn(electorID);
+      var valid = util.validErn($scope.formModel.selectedWard.code + "-" + electorID);
       if (valid) {
         return true;
       } else {
@@ -103,10 +103,6 @@ angular
         return false;
       }
     }
-
-    $scope.onSearchVoted = function () {
-
-    };
 
     $scope.onSearch = function () {
       electorService.search($scope.searchModel, searchLimit)

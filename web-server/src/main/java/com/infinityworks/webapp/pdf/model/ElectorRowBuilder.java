@@ -17,6 +17,7 @@ public class ElectorRowBuilder {
     private String deceased = "";
     private String ern = "";
     private String inaccessible = "";
+    private String email = "";
 
     public static ElectorRowBuilder electorRow() {
         return new ElectorRowBuilder();
@@ -102,7 +103,12 @@ public class ElectorRowBuilder {
         return this;
     }
 
+    public ElectorRowBuilder withEmail(String email) {
+        this.email = email;
+        return this;
+    }
+
     public ElectorRow build() {
-        return new ElectorRow(house, street, name, telephone, likelihood, issue1, issue2, issue3, support, hasPV, wantsPV, needsLift, poster, deceased, ern, inaccessible);
+        return new ElectorRow(house, street, name, telephone, likelihood, issue1, issue2, issue3, support, hasPV, wantsPV, needsLift, poster, deceased, ern, inaccessible, email);
     }
 }

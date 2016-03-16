@@ -4,7 +4,6 @@ import com.lowagie.text.BadElementException;
 import com.lowagie.text.Document;
 import com.lowagie.text.DocumentException;
 import com.lowagie.text.Image;
-import com.lowagie.text.pdf.PdfPageEventHelper;
 import com.lowagie.text.pdf.PdfWriter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -12,7 +11,7 @@ import org.slf4j.LoggerFactory;
 import java.io.IOException;
 import java.net.URL;
 
-public class LogoRenderer extends PdfPageEventHelper {
+public class LogoRenderer extends PageEventRenderer {
     private final Logger log = LoggerFactory.getLogger(LogoRenderer.class);
     private Image logo;
 
@@ -27,12 +26,14 @@ public class LogoRenderer extends PdfPageEventHelper {
 
     @Override
     public void onEndPage(PdfWriter writer, Document document) {
-        try {
-            if (logo != null) {
-                writer.getDirectContent().addImage(logo);
+        if (isEnabled()) {
+            try {
+                if (logo != null) {
+                    writer.getDirectContent().addImage(logo);
+                }
+            } catch (DocumentException e) {
+                log.error("Failed to render logo", e);
             }
-        } catch (DocumentException e) {
-            log.error("Failed to render logo", e);
         }
     }
 

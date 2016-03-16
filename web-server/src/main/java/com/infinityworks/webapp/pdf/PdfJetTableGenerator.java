@@ -1,5 +1,6 @@
 package com.infinityworks.webapp.pdf;
 
+import com.infinityworks.common.lang.ListExtras;
 import com.infinityworks.webapp.converter.PropertyToRowsConverter;
 import com.infinityworks.webapp.paf.dto.Property;
 import com.infinityworks.webapp.pdf.model.ElectorRow;
@@ -19,6 +20,12 @@ import static java.util.stream.Collectors.toList;
 @Component
 public class PdfJetTableGenerator implements PDFTableGenerator {
     private final PropertyToRowsConverter propertyToRowsConverter;
+    private static final int NUM_EMPTY_ROWS = 28;
+    private static final List<ElectorRow> EMPTY_ROWS;
+
+    static {
+        EMPTY_ROWS = ListExtras.times(() -> ElectorRow.EMPTY, NUM_EMPTY_ROWS);
+    }
 
     @Autowired
     public PdfJetTableGenerator(PropertyToRowsConverter propertyToRowsConverter) {
@@ -31,11 +38,24 @@ public class PdfJetTableGenerator implements PDFTableGenerator {
      */
     @Override
     public List<GeneratedPdfTable> generateTables(TableBuilder tableBuilder, List<List<Property>> votersByStreets, String wardCode, String wardName, String constituencyName) {
-        return votersByStreets.stream()
+        List<GeneratedPdfTable> pdfTables = votersByStreets.stream()
                 .map(street -> createTableFromStreet(tableBuilder, street, wardCode, wardName, constituencyName))
                 .filter(Optional::isPresent)
                 .map(Optional::get)
                 .collect(toList());
+
+        GeneratedPdfTable emptyTable = createEmptyTable(tableBuilder, wardName, wardCode, constituencyName);
+
+        if (ListExtras.isNullOrEmpty(pdfTables)) {
+            return pdfTables;
+        } else {
+            return Stream.concat(pdfTables.stream(),
+                                 singletonList(emptyTable).stream()).collect(toList());
+        }
+    }
+
+    private GeneratedPdfTable createEmptyTable(TableBuilder tableBuilder, String wardName, String wardCode, String constituencyName) {
+        return tableBuilder.generateTableRows(EMPTY_ROWS, "", wardName, wardCode, constituencyName).get();
     }
 
     private Optional<GeneratedPdfTable> createTableFromStreet(TableBuilder tableBuilder, List<Property> properties, String wardCode, String wardName, String constituencyName) {

@@ -24,11 +24,11 @@ public class PropertyToRowsConverter implements BiFunction<String, Property, Lis
                     Volunteer volunteer = voter.volunteer();
                     Voting voting = voter.voting();
                     Flags flags = voter.flags();
+                    Info info = voter.info();
 
                     ElectorRowBuilder row = electorRow()
                             .withHouse(property.house())
-                            .withName(createName(voter))
-                            .withTelephone(voter.telephone());
+                            .withName(createName(voter));
 
                     if (voting != null) {
                         row.withLikelihood(normalizeScore(voting.likelihood()))
@@ -51,6 +51,11 @@ public class PropertyToRowsConverter implements BiFunction<String, Property, Lis
 
                     if (volunteer != null) {
                         row.withPoster(createCheckBox(volunteer.poster()));
+                    }
+
+                    if (info != null) {
+                        row.withEmail(info.email());
+                        row.withTelephone(info.telephone());
                     }
 
                     return row.withStreet(property.street())

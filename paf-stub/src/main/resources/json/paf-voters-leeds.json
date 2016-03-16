@@ -341,9 +341,12 @@
             "flags": {
               "has_postal": false,
               "wants_postal": false,
-              "lift": false,
+              "lift": true,
               "deceased": false,
               "inaccessible": false
+            },
+            "info": {
+              "email": "roy@waring.com"
             }
           }
         ]
@@ -387,6 +390,10 @@
               "lift": false,
               "deceased": false,
               "inaccessible": false
+            },
+            "info": {
+              "email": "alicee@moobic.net",
+              "telephone": "088317474881"
             }
           },
           {

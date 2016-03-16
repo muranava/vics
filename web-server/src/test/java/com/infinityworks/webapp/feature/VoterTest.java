@@ -63,7 +63,7 @@ public class VoterTest extends WebApplicationTest {
         RecordVotedService recordVotedService = getBean(RecordVotedService.class);
         ContactService contactService = getBean(ContactService.class);
         TableBuilder tableBuilder = new TableBuilder(new CanvassTableConfig());
-        DocumentBuilder documentBuilder = new DocumentBuilder(mock(LogoRenderer.class), getBean(FlagsKeyRenderer.class), new CanvassTableConfig());
+        DocumentBuilder documentBuilder = new DocumentBuilder(mock(LogoRenderer.class), new CanvassTableConfig());
         VoterController wardController = new VoterController(tableBuilder, documentBuilder, voterService, requestValidator, recordVotedService, contactService, sessionService, new RestErrorHandler());
 
         mockMvc = MockMvcBuilders

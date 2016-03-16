@@ -35,6 +35,7 @@ public class RecordContactToPafConverter implements BiFunction<User, RecordConta
 
         Info info = ImmutableInfo.builder()
                 .withTelephone(contactRequest.getTelephone())
+                .withEmail(contactRequest.getEmail())
                 .build();
 
         return ImmutableRecordContactRequest.builder()
