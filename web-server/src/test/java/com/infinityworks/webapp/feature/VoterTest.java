@@ -4,23 +4,22 @@ import com.infinityworks.common.lang.Try;
 import com.infinityworks.webapp.common.RequestValidator;
 import com.infinityworks.webapp.domain.User;
 import com.infinityworks.webapp.error.RestErrorHandler;
-import com.infinityworks.webapp.pdf.renderer.FlagsKeyRenderer;
-import com.infinityworks.webapp.rest.dto.RecordVote;
 import com.infinityworks.webapp.pdf.CanvassTableConfig;
 import com.infinityworks.webapp.pdf.DocumentBuilder;
 import com.infinityworks.webapp.pdf.TableBuilder;
+import com.infinityworks.webapp.pdf.renderer.FlagsKeyRenderer;
 import com.infinityworks.webapp.pdf.renderer.LogoRenderer;
 import com.infinityworks.webapp.rest.VoterController;
 import com.infinityworks.webapp.rest.dto.ElectorsByStreetsRequest;
 import com.infinityworks.webapp.rest.dto.RecordContactRequest;
+import com.infinityworks.webapp.rest.dto.RecordVote;
 import com.infinityworks.webapp.rest.dto.Street;
-import com.infinityworks.webapp.service.VoterService;
-import com.infinityworks.webapp.service.RecordContactService;
+import com.infinityworks.webapp.service.ContactService;
 import com.infinityworks.webapp.service.RecordVotedService;
 import com.infinityworks.webapp.service.SessionService;
+import com.infinityworks.webapp.service.VoterService;
 import com.infinityworks.webapp.testsupport.builder.downstream.RecordVoteBuilder;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.context.jdbc.SqlGroup;
@@ -65,10 +64,10 @@ public class VoterTest extends WebApplicationTest {
         VoterService voterService = getBean(VoterService.class);
         RequestValidator requestValidator = getBean(RequestValidator.class);
         RecordVotedService recordVotedService = getBean(RecordVotedService.class);
-        RecordContactService recordContactService = getBean(RecordContactService.class);
+        ContactService contactService = getBean(ContactService.class);
         TableBuilder tableBuilder = new TableBuilder(new CanvassTableConfig());
         DocumentBuilder documentBuilder = new DocumentBuilder(mock(LogoRenderer.class), getBean(FlagsKeyRenderer.class), new CanvassTableConfig());
-        VoterController wardController = new VoterController(tableBuilder, documentBuilder, voterService, requestValidator, recordVotedService, recordContactService, sessionService, new RestErrorHandler());
+        VoterController wardController = new VoterController(tableBuilder, documentBuilder, voterService, requestValidator, recordVotedService, contactService, sessionService, new RestErrorHandler());
 
         mockMvc = MockMvcBuilders
                 .standaloneSetup(wardController)
@@ -198,24 +197,9 @@ public class VoterTest extends WebApplicationTest {
                 .andExpect(jsonPath("success", is(true)));
     }
 
-    // FIXME
-    @Ignore
     @Test
-    public void addAContactRecord() throws Exception {
-        User covs = covs();
-        when(sessionService.extractUserFromPrincipal(any(Principal.class)))
-                .thenReturn(Try.success(covs));
-        String ern = "E05001221-PD-123-4";
-        pafApiStub.willCreateANewContactRecord(ern);
+    public void undoRecordContact() throws Exception {
 
-        RecordContactRequest request = recordContactRequest().build();
-        String content = objectMapper.writeValueAsString(request);
 
-        mockMvc.perform(post(String.format("/elector/%s/contact", ern))
-                .content(content)
-                .contentType(APPLICATION_JSON)
-                .accept(APPLICATION_JSON))
-                .andDo(print())
-                .andExpect(status().isOk());
     }
 }

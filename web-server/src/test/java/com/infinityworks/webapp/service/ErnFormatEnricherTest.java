@@ -56,7 +56,7 @@ public class ErnFormatEnricherTest {
     @Test
     public void failsIfPollingDistrictTooShort() throws Exception {
         String wardCode = "E09000134";
-        String ernShortForm = "P-123-0";
+        String ernShortForm = "-123-0";
 
         Try<String> longForm = underTest.apply(wardCode, ernShortForm);
 

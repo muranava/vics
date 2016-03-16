@@ -1,11 +1,13 @@
 package com.infinityworks.webapp.service;
 
 import com.infinityworks.common.lang.Try;
+import com.infinityworks.webapp.domain.Ern;
 import com.infinityworks.webapp.domain.User;
 import com.infinityworks.webapp.domain.Ward;
 import com.infinityworks.webapp.error.NotAuthorizedFailure;
 import com.infinityworks.webapp.paf.client.PafClient;
 import com.infinityworks.webapp.paf.client.PafRequestExecutor;
+import com.infinityworks.webapp.paf.client.command.DeleteContactCommandFactory;
 import com.infinityworks.webapp.paf.client.command.RecordContactCommandFactory;
 import com.infinityworks.webapp.paf.converter.RecordContactToPafConverter;
 import com.infinityworks.webapp.paf.dto.ImmutableRecordContactResponse;
@@ -29,9 +31,9 @@ import static org.junit.Assert.assertThat;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.mock;
 
-public class RecordContactServiceTest {
+public class ContactServiceTest {
 
-    private RecordContactService underTest;
+    private ContactService underTest;
     private PafClient pafClient;
     private WardService wardService;
     private RecordContactToPafConverter recordContactToPafConverter = new RecordContactToPafConverter();
@@ -44,11 +46,11 @@ public class RecordContactServiceTest {
 
     @Test
     public void recordsContact() throws Exception {
-        underTest = new RecordContactService(wardService, recordContactToPafConverter, new RecordContactCommandFactory(pafClient, 3000, new PafRequestExecutor(){}), new ErnShortFormToLongFormConverter());
+        PafRequestExecutor requestExecutor = new PafRequestExecutor() {};
+        underTest = new ContactService(wardService, recordContactToPafConverter, new RecordContactCommandFactory(pafClient, 3000, requestExecutor), new DeleteContactCommandFactory(pafClient, 1000, requestExecutor));
 
         Ward earlsdon = ward().withWardCode("E05001221").build();
-        RecordContactRequest request = recordContactRequest()
-                .withWardCode(earlsdon.getCode()).build();
+        RecordContactRequest request = recordContactRequest().build();
         User user = user()
                 .withWriteAccess(true)
                 .withWards(newHashSet(earlsdon))
@@ -58,44 +60,41 @@ public class RecordContactServiceTest {
         Call<RecordContactResponse> success = CallStub.success(ImmutableRecordContactResponse.builder().withContactId(UUID.randomUUID()).withErn("E05001221-PD-123-4").build());
         given(pafClient.recordContact("E05001221-PD-123-4", contactRecord)).willReturn(success);
 
-        Try<RecordContactResponse> contact = underTest.recordContact(user, "PD-123-4", request);
+        Try<RecordContactResponse> contact = underTest.recordContact(user, Ern.valueOf("E05001221-PD-123-4"), request);
 
         assertThat(contact.isSuccess(), is(true));
     }
 
     @Test
     public void recordsContactFailsIfUserDoesNotHaveWriteAccess() throws Exception {
-        underTest = new RecordContactService(wardService, recordContactToPafConverter, new RecordContactCommandFactory(pafClient, 3000, new PafRequestExecutor(){}), new ErnShortFormToLongFormConverter());
+        PafRequestExecutor requestExecutor = new PafRequestExecutor() {};
+        underTest = new ContactService(wardService, recordContactToPafConverter, new RecordContactCommandFactory(pafClient, 3000, requestExecutor), new DeleteContactCommandFactory(pafClient, 1000, requestExecutor));
 
         Ward earlsdon = ward().withWardCode("E05001221").build();
-        RecordContactRequest request = recordContactRequest()
-                .withWardCode(earlsdon.getCode()).build();
-        String ern = "PD-123-1";
+        RecordContactRequest request = recordContactRequest().build();
         User user = user()
                 .withWriteAccess(false)
                 .withWards(newHashSet(earlsdon))
                 .build();
         given(wardService.getByCode("E05001221", user)).willReturn(Try.success(earlsdon));
 
-        Try<RecordContactResponse> contact = underTest.recordContact(user, ern, request);
+        Try<RecordContactResponse> contact = underTest.recordContact(user, Ern.valueOf("E05001221-PD-123-1"), request);
 
         assertThat(contact, isFailure(instanceOf(NotAuthorizedFailure.class)));
     }
 
     @Test
     public void failsToRecordContactIfUserDoesNotHaveWardPermission() throws Exception {
-        underTest = new RecordContactService(wardService, recordContactToPafConverter, new RecordContactCommandFactory(pafClient, 3000, new PafRequestExecutor(){}), new ErnShortFormToLongFormConverter());
+        PafRequestExecutor requestExecutor = new PafRequestExecutor() {};
+        underTest = new ContactService(wardService, recordContactToPafConverter, new RecordContactCommandFactory(pafClient, 3000, requestExecutor), new DeleteContactCommandFactory(pafClient, 1000, requestExecutor));
 
-        Ward earlsdon = ward().withWardCode("E05001221").build();
-        RecordContactRequest request = recordContactRequest()
-                .withWardCode(earlsdon.getCode()).build();
-        String ern = "PD-123-1";
+        RecordContactRequest request = recordContactRequest().build();
         User user = user()
                 .withWriteAccess(true)
                 .build();
         given(wardService.getByCode("E05001221", user)).willReturn(Try.failure(new NotAuthorizedFailure("forbidden")));
 
-        Try<RecordContactResponse> contact = underTest.recordContact(user, ern, request);
+        Try<RecordContactResponse> contact = underTest.recordContact(user, Ern.valueOf("E05001221-PD-123-1"), request);
 
         assertThat(contact, isFailure(instanceOf(NotAuthorizedFailure.class)));
     }

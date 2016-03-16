@@ -3,7 +3,6 @@ package com.infinityworks.webapp.rest.dto;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import org.hibernate.validator.constraints.NotEmpty;
 
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
@@ -38,8 +37,6 @@ public class RecordContactRequest {
     private final Boolean deceased;
     @NotNull
     private final Boolean poster;
-    @NotEmpty
-    private final String wardCode;
     @NotNull
     private final Boolean inaccessible;
 
@@ -56,7 +53,6 @@ public class RecordContactRequest {
                                 @JsonProperty("wantsPV") Boolean wantsPV,
                                 @JsonProperty("deceased") Boolean deceased,
                                 @JsonProperty("poster") Boolean poster,
-                                @JsonProperty("wardCode") String wardCode,
                                 @JsonProperty("inaccessible") Boolean inaccessible,
                                 @JsonProperty("telephone") String telephone) {
         this.intention = intention;
@@ -69,7 +65,6 @@ public class RecordContactRequest {
         this.wantsPV = wantsPV;
         this.deceased = deceased;
         this.poster = poster;
-        this.wardCode = wardCode;
         this.inaccessible = inaccessible;
         this.telephone = nullToEmpty(telephone);
     }
@@ -112,10 +107,6 @@ public class RecordContactRequest {
 
     public Boolean getPoster() {
         return poster;
-    }
-
-    public String getWardCode() {
-        return wardCode;
     }
 
     public Boolean getInaccessible() {

@@ -35,7 +35,7 @@ public class PafServerStub {
         files.put("E05001221,Coventry", "json/paf-voters-multiple-streets.json");
         files.put("voted,E05001221-ADD-1313-1", "json/paf-record-voted.json");
         files.put("search,McCall,KT25BU", "json/paf-search-voter.json");
-        files.put("postContact,E05001221-PD-123-4", "json/paf-record-contact.json");
+        files.put("postContact,E05001221-PD-123-4", "json/paf-record-contact-response.json");
     }
 
     public void start() {

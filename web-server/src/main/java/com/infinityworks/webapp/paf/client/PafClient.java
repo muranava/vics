@@ -51,6 +51,15 @@ public interface PafClient {
     @POST("voter/{ern}/contact")
     Call<RecordContactResponse> recordContact(@Path("ern") String ern,
                                               @Body RecordContactRequest contactRequest);
+    /**
+     * Deletes an existing contact record
+     *
+     * @param ern            the voter ID
+     * @param contactId      the contact record to delete
+     * @return no content
+     */
+    @DELETE("voter/{ern}/contact/{contactId}")
+    Call<Nil> deleteContact(@Path("ern") String ern, @Path("contactId") String contactId);
 
     /**
      * Records that a voter has voted

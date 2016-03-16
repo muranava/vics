@@ -24,20 +24,19 @@ angular
       });
     };
 
-    api.submitCanvassInput = function (inputModel) {
+    api.submitCanvassInput = function (ern, data) {
       return $http({
-        url: apiUrl + '/elector/' + inputModel.ern + '/contact',
+        url: apiUrl + '/elector/' + ern + '/contact',
         method: 'POST',
-        data: inputModel,
+        data: data,
         withCredentials: true
       });
     };
 
-    api.undoCanvassInput = function (inputModel) {
+    api.undoCanvassInput = function (ern, contactId) {
       return $http({
-        url: apiUrl + '/elector/' + inputModel.ern + '/contact/' + inputModel.contactId,
+        url: apiUrl + '/elector/' + ern + '/contact/' + contactId,
         method: 'DELETE',
-        data: inputModel,
         withCredentials: true
       });
     };

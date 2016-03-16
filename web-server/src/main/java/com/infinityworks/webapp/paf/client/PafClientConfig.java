@@ -7,7 +7,6 @@ import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.core.env.Environment;
 import retrofit2.Retrofit;
 import retrofit2.converter.jackson.JacksonConverterFactory;
 
@@ -65,5 +64,10 @@ public class PafClientConfig {
     @Bean
     public SearchVotersCommandFactory searchVotersCommandFactory(PafClient pafClient, PafRequestExecutor requestExecutor, PafApiConfig pafApiConfig) {
         return new SearchVotersCommandFactory(pafClient, pafApiConfig.getPafApiTimeout(), requestExecutor);
+    }
+
+    @Bean
+    public DeleteContactCommandFactory deleteContactCommandFactory(PafClient pafClient, PafRequestExecutor requestExecutor, PafApiConfig pafApiConfig) {
+        return new DeleteContactCommandFactory(pafClient, pafApiConfig.getPafApiTimeout(), requestExecutor);
     }
 }

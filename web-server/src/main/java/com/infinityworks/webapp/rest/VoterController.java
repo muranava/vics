@@ -1,6 +1,7 @@
 package com.infinityworks.webapp.rest;
 
 import com.infinityworks.webapp.common.RequestValidator;
+import com.infinityworks.webapp.domain.Ern;
 import com.infinityworks.webapp.error.RestErrorHandler;
 import com.infinityworks.webapp.pdf.DocumentBuilder;
 import com.infinityworks.webapp.pdf.TableBuilder;
@@ -8,10 +9,10 @@ import com.infinityworks.webapp.rest.dto.ElectorsByStreetsRequest;
 import com.infinityworks.webapp.rest.dto.RecordContactRequest;
 import com.infinityworks.webapp.rest.dto.RecordVote;
 import com.infinityworks.webapp.rest.dto.SearchElectors;
-import com.infinityworks.webapp.service.VoterService;
-import com.infinityworks.webapp.service.RecordContactService;
+import com.infinityworks.webapp.service.ContactService;
 import com.infinityworks.webapp.service.RecordVotedService;
 import com.infinityworks.webapp.service.SessionService;
+import com.infinityworks.webapp.service.VoterService;
 import com.lowagie.text.DocumentException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -25,8 +26,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 import java.security.Principal;
 
-import static org.springframework.web.bind.annotation.RequestMethod.GET;
-import static org.springframework.web.bind.annotation.RequestMethod.POST;
+import static org.springframework.web.bind.annotation.RequestMethod.*;
 
 @RestController
 @RequestMapping("/elector")
@@ -36,7 +36,7 @@ public class VoterController {
     private final VoterService voterService;
     private final RequestValidator requestValidator;
     private final RecordVotedService recordVotedService;
-    private final RecordContactService recordContactService;
+    private final ContactService contactService;
     private final SessionService sessionService;
     private final RestErrorHandler errorHandler;
 
@@ -46,7 +46,7 @@ public class VoterController {
                            VoterService voterService,
                            RequestValidator requestValidator,
                            RecordVotedService recordVotedService,
-                           RecordContactService recordContactService,
+                           ContactService contactService,
                            SessionService sessionService,
                            RestErrorHandler errorHandler) {
         this.tableBuilder = tableBuilder;
@@ -54,7 +54,7 @@ public class VoterController {
         this.voterService = voterService;
         this.requestValidator = requestValidator;
         this.recordVotedService = recordVotedService;
-        this.recordContactService = recordContactService;
+        this.contactService = contactService;
         this.sessionService = sessionService;
         this.errorHandler = errorHandler;
     }
@@ -77,11 +77,21 @@ public class VoterController {
 
     @PreAuthorize("isAuthenticated()")
     @RequestMapping(value = "/{ern}/contact", method = POST)
-    public ResponseEntity<?> recordContact(@PathVariable("ern") String ern,
-                                           Principal principal,
-                                           @Valid @RequestBody RecordContactRequest contactRequest) throws DocumentException {
+    public ResponseEntity<?> recordContact(Principal principal,
+                                           @PathVariable("ern") Ern ern,
+                                           @Valid @RequestBody RecordContactRequest recordContactRequest) throws DocumentException {
         return sessionService.extractUserFromPrincipal(principal)
-                .flatMap(user -> recordContactService.recordContact(user, ern, contactRequest))
+                .flatMap(user -> contactService.recordContact(user, ern, recordContactRequest))
+                .fold(errorHandler::mapToResponseEntity, ResponseEntity::ok);
+    }
+
+    @PreAuthorize("isAuthenticated()")
+    @RequestMapping(value = "/{ern}/contact/{contactId}", method = DELETE)
+    public ResponseEntity<?> deleteContact(Principal principal,
+                                           @PathVariable("ern") Ern ern,
+                                           @PathVariable("contactId") String contactId) throws DocumentException {
+        return sessionService.extractUserFromPrincipal(principal)
+                .flatMap(user -> contactService.deleteContact(user, ern, contactId))
                 .fold(errorHandler::mapToResponseEntity, ResponseEntity::ok);
     }
 

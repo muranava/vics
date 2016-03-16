@@ -61,7 +61,7 @@ public class PropertyToRowsConverter implements BiFunction<String, Property, Lis
     }
 
     private String createName(Voter voter) {
-        return Stream.of(voter.firstName(), voter.lastName())
+        return Stream.of(voter.lastName(), voter.firstName())
                 .filter(e -> !StringExtras.isNullOrEmpty(e))
                 .collect(joining(", "));
     }

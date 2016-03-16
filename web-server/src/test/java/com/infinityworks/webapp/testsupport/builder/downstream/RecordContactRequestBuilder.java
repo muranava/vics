@@ -13,7 +13,6 @@ public class RecordContactRequestBuilder {
     private Boolean wantsPV;
     private Boolean deceased;
     private Boolean poster;
-    private String wardCode;
     private Boolean inaccessible;
     private String telephone;
 
@@ -33,8 +32,7 @@ public class RecordContactRequestBuilder {
                 .withDeceased(false)
                 .withPoster(false)
                 .withInaccessible(false)
-                .withTelephone("07980123456")
-                .withWardCode("E05001221");
+                .withTelephone("07980123456");
         return this;
     }
 
@@ -88,11 +86,6 @@ public class RecordContactRequestBuilder {
         return this;
     }
 
-    public RecordContactRequestBuilder withWardCode(String wardCode) {
-        this.wardCode = wardCode;
-        return this;
-    }
-
     public RecordContactRequestBuilder withInaccessible(Boolean inaccessible) {
         this.inaccessible = inaccessible;
         return this;
@@ -104,6 +97,6 @@ public class RecordContactRequestBuilder {
     }
 
     public RecordContactRequest build() {
-        return new RecordContactRequest(intention, likelihood, cost, sovereignty, border, lift, hasPV, wantsPV, deceased, poster, wardCode, inaccessible, telephone);
+        return new RecordContactRequest(intention, likelihood, cost, sovereignty, border, lift, hasPV, wantsPV, deceased, poster, inaccessible, telephone);
     }
 }
