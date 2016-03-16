@@ -74,6 +74,7 @@ public class Config {
     public ObjectMapper objectMapper() {
         return new ObjectMapper()
                 .registerModules(new JavaTimeModule(), new Jdk8Module(), new GuavaModule())
+                .configure(SerializationFeature.FAIL_ON_EMPTY_BEANS, false)
                 .configure(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, false);
     }
 

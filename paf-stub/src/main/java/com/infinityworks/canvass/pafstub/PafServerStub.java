@@ -30,6 +30,7 @@ public class PafServerStub {
     }
 
     private static final Map<String, String> files = new HashMap<>();
+
     static {
         files.put("E05001221", "json/paf-streets-earlsdon.json");
         files.put("E05001221,Coventry", "json/paf-voters-multiple-streets.json");
@@ -72,6 +73,14 @@ public class PafServerStub {
                         .withStatus(200)
                         .withHeader(CONTENT_TYPE, "application/json")
                         .withBody(jsonData)));
+    }
+
+    public void willDeleteAContactRecordFor(String ern, String contactId) throws IOException {
+        String urlPath = "/v1/voter/" + ern + "/contact/" + contactId;
+        wireMock.register(delete(urlPathMatching(urlPath))
+                .willReturn(aResponse()
+                        .withStatus(200)
+                .withHeader(CONTENT_TYPE, "application/json")));
     }
 
     /**
@@ -165,4 +174,6 @@ public class PafServerStub {
                         .withHeader(CONTENT_TYPE, "application/json")
                         .withBody(jsonData)));
     }
+
+    private static class Nil {}
 }

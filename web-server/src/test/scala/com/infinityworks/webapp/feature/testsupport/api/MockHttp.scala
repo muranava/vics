@@ -22,8 +22,12 @@ class MockHttp(mockMvc: MockMvc) {
         .accept(APPLICATION_JSON)
         .content(content)
         .contentType(APPLICATION_JSON))
-        .andDo(print())
+      .andDo(print())
     )
+  }
+
+  def DELETE(url: String): ActionExecutor = {
+    new ActionExecutor(mockMvc.perform(delete(url).accept(APPLICATION_JSON)).andDo(print()))
   }
 }
 

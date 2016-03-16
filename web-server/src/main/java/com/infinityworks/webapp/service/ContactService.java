@@ -61,7 +61,7 @@ public class ContactService {
                 });
     }
 
-    public Try<Nil> deleteContact(User user, Ern ern, String contactId) {
+    public Try<Void> deleteContact(User user, Ern ern, String contactId) {
         if (!user.getWriteAccess()) {
             log.warn("User={} tried to delete contact for ern={} but does not have write access", user, ern);
             return Try.failure(new NotAuthorizedFailure("Forbidden"));

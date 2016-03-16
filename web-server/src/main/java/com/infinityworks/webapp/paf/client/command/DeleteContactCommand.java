@@ -3,12 +3,11 @@ package com.infinityworks.webapp.paf.client.command;
 import com.infinityworks.common.lang.Try;
 import com.infinityworks.webapp.paf.client.PafClient;
 import com.infinityworks.webapp.paf.client.PafRequestExecutor;
-import com.infinityworks.webapp.paf.dto.Nil;
 import com.netflix.hystrix.HystrixCommand;
 import com.netflix.hystrix.HystrixCommandGroupKey;
 import retrofit2.Call;
 
-public class DeleteContactCommand extends HystrixCommand<Try<Nil>> {
+public class DeleteContactCommand extends HystrixCommand<Try<Void>> {
     private final String ern;
     private final String contactId;
     private final PafClient pafClient;
@@ -27,8 +26,8 @@ public class DeleteContactCommand extends HystrixCommand<Try<Nil>> {
     }
 
     @Override
-    protected Try<Nil> run() throws Exception {
-        Call<Nil> call = pafClient.deleteContact(ern, contactId);
+    protected Try<Void> run() throws Exception {
+        Call<Void> call = pafClient.deleteContact(ern, contactId);
         return requestExecutor.execute(call);
     }
 }

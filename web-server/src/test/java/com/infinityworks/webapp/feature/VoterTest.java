@@ -2,7 +2,6 @@ package com.infinityworks.webapp.feature;
 
 import com.infinityworks.common.lang.Try;
 import com.infinityworks.webapp.common.RequestValidator;
-import com.infinityworks.webapp.domain.User;
 import com.infinityworks.webapp.error.RestErrorHandler;
 import com.infinityworks.webapp.pdf.CanvassTableConfig;
 import com.infinityworks.webapp.pdf.DocumentBuilder;
@@ -11,7 +10,6 @@ import com.infinityworks.webapp.pdf.renderer.FlagsKeyRenderer;
 import com.infinityworks.webapp.pdf.renderer.LogoRenderer;
 import com.infinityworks.webapp.rest.VoterController;
 import com.infinityworks.webapp.rest.dto.ElectorsByStreetsRequest;
-import com.infinityworks.webapp.rest.dto.RecordContactRequest;
 import com.infinityworks.webapp.rest.dto.RecordVote;
 import com.infinityworks.webapp.rest.dto.Street;
 import com.infinityworks.webapp.service.ContactService;
@@ -34,7 +32,6 @@ import java.util.List;
 
 import static com.infinityworks.webapp.common.Json.objectMapper;
 import static com.infinityworks.webapp.testsupport.builder.downstream.ElectorsByStreetsRequestBuilder.electorsByStreets;
-import static com.infinityworks.webapp.testsupport.builder.downstream.RecordContactRequestBuilder.recordContactRequest;
 import static java.util.Collections.emptyList;
 import static org.hamcrest.CoreMatchers.is;
 import static org.mockito.Matchers.any;
@@ -195,11 +192,5 @@ public class VoterTest extends WebApplicationTest {
                 .andExpect(jsonPath("wardName", is("Earlsdon")))
                 .andExpect(jsonPath("ern", is("ADD-1313-1")))
                 .andExpect(jsonPath("success", is(true)));
-    }
-
-    @Test
-    public void undoRecordContact() throws Exception {
-
-
     }
 }
