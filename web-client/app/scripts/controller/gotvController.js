@@ -64,6 +64,18 @@ angular
         });
     };
 
+    $scope.onSelectConstituency = function () {
+      resetErrors();
+      $scope.streets = [];
+      $scope.numStreetsSelected = 0;
+    };
+
+    function scrollToPrintSection() {
+      _.defer(function() {
+        $("html, body").animate({scrollTop: $('#printCards').offset().top - 75}, 500);
+      });
+    }
+
     $scope.onLoadedConstituencies = function (constituencies) {
       if (_.isEmpty(constituencies)) {
         $scope.userHasNoAssociations = true;
@@ -74,10 +86,12 @@ angular
     $scope.onSelectWard = function (directiveModel) {
       $scope.ward = directiveModel.ward;
       $scope.constituency = directiveModel.constituency;
+      $scope.numStreetsSelected = 0;
 
       wardService.findStreetsByWard($scope.ward.code)
         .success(function (streets) {
           $scope.streets = streets;
+          scrollToPrintSection();
         });
     };
 
@@ -138,5 +152,10 @@ angular
         }
       });
       return flags;
+    }
+
+    function resetErrors() {
+      $scope.failedToLoadStreets = null;
+      $scope.errorLoadingData = null;
     }
   });

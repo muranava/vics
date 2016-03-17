@@ -5,16 +5,18 @@
  */
 angular
   .module('canvass')
-  .directive('wardSearch', function (constituencyService, wardService) {
+  .directive('wardSearch', function (constituencyService, wardService, $timeout) {
     return {
       templateUrl: 'views/partials/wardsearch.html',
       restrict: 'EA',
       scope: {
-        onSelect: '&',
+        onSelectWard: '&',
+        onSelectConstituency: '&',
         onLoadedConstituencies: '&'
       },
       link: function (scope) {
-        scope.onSelect = scope.onSelect();
+        scope.onSelectWard = scope.onSelectWard();
+        scope.onSelectConstituency = scope.onSelectConstituency();
         scope.onLoadedConstituencies = scope.onLoadedConstituencies();
 
         // preload the constituencies associated to the active user
@@ -32,8 +34,11 @@ angular
           wardService.findWardsWithinConstituency(scope.directiveModel.constituency.id)
             .success(function (response) {
               scope.wards = response.wards;
-              $('#wardInputID').focus();
+              scope.onSelectConstituency(scope.directiveModel.constituency);
             });
+          $timeout(function() {
+            $('#wardInputID').focus()
+          }, 100);
         };
 
         /**
@@ -41,7 +46,7 @@ angular
          */
         scope.onSelectWardInternal = function() {
           if (scope.directiveModel.ward && scope.directiveModel.ward.id) {
-            scope.onSelect(scope.directiveModel);
+            scope.onSelectWard(scope.directiveModel);
           }
         };
 

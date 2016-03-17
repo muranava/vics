@@ -1,7 +1,7 @@
 
-DROP DATABASE IF EXISTS canvassapp;
-
+CREATE USER vics;
 CREATE DATABASE canvassapp WITH ENCODING = 'UTF8' LC_COLLATE = 'en_US.UTF-8' LC_CTYPE = 'en_US.UTF-8' TABLESPACE = pg_default TEMPLATE template0;
+GRANT ALL PRIVILEGES ON DATABASE canvassapp to vics;
 
 \connect canvassapp;
 

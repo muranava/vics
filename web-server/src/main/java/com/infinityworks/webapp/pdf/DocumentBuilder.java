@@ -53,6 +53,7 @@ public class DocumentBuilder {
         PdfWriter writer;
         try {
             writer = PdfWriter.getInstance(document, os);
+            writer.setFullCompression();
         } catch (DocumentException e) {
             log.error("Failed to create PDF writer");
             throw new IllegalStateException(e);

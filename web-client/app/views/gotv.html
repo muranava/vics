@@ -23,12 +23,14 @@
       </div>
     </div>
 
-    <ward-search ng-show="contentLoaded && !userHasNoAssociations" on-select="onSelectWard"
+    <ward-search ng-show="contentLoaded && !userHasNoAssociations"
+                 on-select-constituency="onSelectConstituency"
+                 on-select-ward="onSelectWard"
                  on-loaded-constituencies="onLoadedConstituencies"></ward-search>
 
     <!-- 3. Select Streets -->
     <!-- Download Cards -->
-    <div class="row" ng-if="streets">
+    <div id="printCards" class="row" ng-if="streets && streets.length">
       <div class="col-md-12">
         <div class="card">
           <div class="card-head">
@@ -37,35 +39,45 @@
           <div class="card-body tab-content style-default-bright">
             <div class="row">
               <div class="col-lg-12">
-                <h4>You have selected the following ward and constituency.
-                </h4>
+                <p>You have selected the following ward and constituency.</p>
                 <br>
               </div>
             </div>
             <div class="row">
               <div class="col-lg-12">
-                <div class="card">
-                  <div class="card-body no-padding">
-                    <ul class="list">
-                      <li class="tile">
-                        <a class="tile-content ink-reaction">
-                          <div class="tile-text canvass-search-result">
-                            <div>{{constituency.name}} ({{constituency.code}})</div>
-                            <small>Constituency</small>
+
+                <div class="row">
+                  <div class="col-md-6 col-sm-6">
+                    <div class="card">
+                      <div class="card-body no-padding">
+                        <div class="alert alert-callout alert-danger no-margin">
+                          <strong class="pull-right text-default-light text-lg">{{constituency.code}}</strong>
+                          <strong class="text-xl">{{constituency.name}}</strong><br/>
+                          <span class="opacity-50">Constituency</span>
+                          <div class="stick-bottom-left-right">
+                            <div class="height-2 sparkline-revenue" data-line-color="#bdc1c1"></div>
                           </div>
-                        </a>
-                      </li>
-                      <li class="tile">
-                        <a class="tile-content ink-reaction">
-                          <div class="tile-text">
-                            <div>{{ward.name}} ({{ward.code}})</div>
-                            <small>Ward</small>
+                        </div>
+                      </div><!--end .card-body -->
+                    </div><!--end .card -->
+                  </div><!--end .col -->
+
+                  <div class="col-md-6 col-sm-6">
+                    <div class="card">
+                      <div class="card-body no-padding">
+                        <div class="alert alert-callout alert-danger no-margin">
+                          <strong class="pull-right text-default-light text-lg">{{ward.code}}</strong>
+                          <strong class="text-xl">{{ward.name}}</strong><br/>
+                          <span class="opacity-50">Ward</span>
+                          <div class="stick-bottom-left-right">
+                            <div class="height-2 sparkline-revenue" data-line-color="#bdc1c1"></div>
                           </div>
-                        </a>
-                      </li>
-                    </ul>
-                  </div>
+                        </div>
+                      </div><!--end .card-body -->
+                    </div><!--end .card -->
+                  </div><!--end .col -->
                 </div>
+
                 <br>
 
                 <div class="row">

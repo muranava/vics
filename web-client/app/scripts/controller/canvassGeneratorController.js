@@ -11,10 +11,9 @@ angular
     $scope.numStreetsSelected = 0;
     $scope.errorLoadingData = false;
 
-    $scope.onSelectConstituency = function (constituency) {
+    $scope.onSelectConstituency = function () {
       resetErrors();
-      $scope.constituencySearchModel = constituency;
-      $scope.wardSearchModel = '';
+      $scope.streets = [];
     };
 
     $scope.onLoadedConstituencies = function (constituencies) {
@@ -26,6 +25,8 @@ angular
 
     $scope.onSelectWard = function (model) {
       resetErrors();
+      $scope.streets = [];
+      $scope.numStreetsSelected = 0;
 
       $scope.wardSearchModel = model.ward;
       $scope.constituencySearchModel = model.constituency;
@@ -33,11 +34,18 @@ angular
       wardService.findStreetsByWard($scope.wardSearchModel.code)
         .success(function (streets) {
           $scope.streets = streets;
+          scrollToPrintSection();
         })
         .error(function () {
           $scope.errorLoadingStreets = true;
         });
     };
+
+    function scrollToPrintSection() {
+      _.defer(function() {
+        $("html, body").animate({scrollTop: $('#printCards').offset().top - 75}, 500);
+      });
+    }
 
     $scope.onNoAssociations = function () {
       $scope.userHasNoAssociations = true;

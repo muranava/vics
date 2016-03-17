@@ -1,0 +1,6 @@
+spring-boot-canvass-app:
+  image: steinf/vics
+  links:
+    - PostgreSQL:postgres
+  ports:
+    - 18090:18080
