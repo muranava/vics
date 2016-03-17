@@ -2,10 +2,7 @@ package com.infinityworks.webapp.pdf.renderer;
 
 import com.infinityworks.webapp.rest.dto.Flags;
 import com.lowagie.text.*;
-import com.lowagie.text.pdf.BaseFont;
-import com.lowagie.text.pdf.ColumnText;
-import com.lowagie.text.pdf.PdfContentByte;
-import com.lowagie.text.pdf.PdfWriter;
+import com.lowagie.text.pdf.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -15,7 +12,7 @@ import java.time.format.DateTimeFormatter;
 
 import static com.lowagie.text.Font.HELVETICA;
 
-public class PageInfoRenderer extends PageEventRenderer {
+public class PageInfoRenderer extends PdfPageEventHelper {
     private static final Logger log = LoggerFactory.getLogger(PageInfoRenderer.class);
     private static Font font = new Font(HELVETICA, 9);
     private static final String FOOTER_TEXT_1 =
@@ -55,20 +52,18 @@ public class PageInfoRenderer extends PageEventRenderer {
 
     @Override
     public void onEndPage(PdfWriter writer, Document document) {
-        if (isEnabled()) {
-            PdfContentByte cb = writer.getDirectContent();
-            createFooter(cb, document);
-            createLogo(cb);
-            createIntentionKey(cb);
-            if (renderLikelihoodLegend) {
-                createLikelihoodKey(cb);
-            }
-            if (flags != null) {
-                createFlagsKey(cb);
-            }
-            createPageNumber(cb, document, writer);
-            createMetaSection(cb);
+        PdfContentByte cb = writer.getDirectContent();
+        createFooter(cb, document);
+        createLogo(cb);
+        createIntentionKey(cb);
+        if (renderLikelihoodLegend) {
+            createLikelihoodKey(cb);
         }
+        if (flags != null) {
+            createFlagsKey(cb);
+        }
+        createPageNumber(cb, document, writer);
+        createMetaSection(cb);
     }
 
     private void createPageNumber(PdfContentByte cb, Document document, PdfWriter writer) {

@@ -45,7 +45,7 @@ logging.level:
 
 logstash:
   port: 4560
-  url: 192.168.99.100
+  url: localhost
 
 # port not exposed to outside
 management:

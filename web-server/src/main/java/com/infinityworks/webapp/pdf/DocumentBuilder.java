@@ -10,11 +10,16 @@ import com.lowagie.text.Document;
 import com.lowagie.text.DocumentException;
 import com.lowagie.text.PageSize;
 import com.lowagie.text.pdf.PdfWriter;
+import net.logstash.logback.encoder.org.apache.commons.io.IOUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.List;
+
+import static java.util.Arrays.asList;
 
 /**
  * Builds the PDF document containing the electors by street
@@ -24,11 +29,19 @@ public class DocumentBuilder {
     private final Logger log = LoggerFactory.getLogger(DocumentBuilder.class);
     private final LogoRenderer logoRenderer;
     private final PdfTableConfig tableConfig;
+    private byte[] coverPage;
     private final FlagsKeyRenderer flagsKeyRenderer = new FlagsKeyRenderer();
 
     public DocumentBuilder(LogoRenderer logoRenderer, PdfTableConfig tableConfig) {
         this.logoRenderer = logoRenderer;
         this.tableConfig = tableConfig;
+
+        InputStream resourceAsStream = getClass().getClassLoader().getResourceAsStream("pdf/canvass_cover.pdf");
+        try {
+            coverPage = IOUtils.toByteArray(resourceAsStream);
+        } catch (IOException e) {
+            throw new IllegalStateException("Failed to load cover page");
+        }
     }
 
     /**
@@ -42,12 +55,7 @@ public class DocumentBuilder {
         ByteArrayOutputStream os = new ByteArrayOutputStream();
         Document document = createDocument();
 
-        TitlePageRenderer titlePageRenderer = new TitlePageRenderer();
-        titlePageRenderer.setEnabled(true);
-        logoRenderer.setEnabled(true);
-
         PageInfoRenderer pageInfoRenderer = new PageInfoRenderer(flagsKeyRenderer, flags);
-        pageInfoRenderer.setEnabled(false);
         pageInfoRenderer.setRenderLikelihoodLegend(tableConfig.showLikelihoodLegend());
 
         PdfWriter writer;
@@ -58,19 +66,20 @@ public class DocumentBuilder {
             log.error("Failed to create PDF writer");
             throw new IllegalStateException(e);
         }
-        writer.setPageEvent(titlePageRenderer);
         writer.setPageEvent(pageInfoRenderer);
         writer.setPageEvent(logoRenderer);
 
         document.open();
         document.newPage();
 
-        titlePageRenderer.setEnabled(false);
-        pageInfoRenderer.setEnabled(true);
-
         renderTables(pdfTables, document, pageInfoRenderer);
         document.close();
-        return os;
+
+        try {
+            return PdfUtil.mergePdfs(asList(coverPage, os.toByteArray()));
+        } catch (Exception e) {
+            throw new IllegalStateException("Failed to render doc", e);
+        }
     }
 
     private void renderTables(List<GeneratedPdfTable> pdfTables, Document document, PageInfoRenderer pageInfoRenderer) {
