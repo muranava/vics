@@ -1,6 +1,6 @@
 angular
   .module('canvass')
-  .controller('loginController', function ($scope, $http, $location, authService) {
+  .controller('loginController', function ($scope, $http, $location, authService, $window) {
 
     $scope.failedLogin = false;
     $scope.credentials = {};
@@ -37,7 +37,7 @@ angular
         var game = $('.game');
         game.blockrain({
           showFieldOnStart: false,
-          playText: 'Let\'s play some Tetris'
+          playText: $window.atob("Q3JlYXRlZCBieSBTdGVpbiBGbGV0Y2hlcg==")
         });
 
       }).listen();

@@ -2,6 +2,7 @@ package com.infinityworks.webapp.rest;
 
 import com.infinityworks.webapp.error.RestErrorHandler;
 import com.infinityworks.webapp.rest.dto.AssociateUserConstituency;
+import com.infinityworks.webapp.service.ConstituencyAssociationService;
 import com.infinityworks.webapp.service.ConstituencyService;
 import com.infinityworks.webapp.service.SessionService;
 import org.hibernate.validator.constraints.NotEmpty;
@@ -19,14 +20,17 @@ import static org.springframework.web.bind.annotation.RequestMethod.*;
 @RequestMapping("/constituency")
 public class ConstituencyController {
     private final ConstituencyService constituencyService;
+    private final ConstituencyAssociationService constituencyAssociationService;
     private final RestErrorHandler errorHandler;
     private final SessionService sessionService;
 
     @Autowired
     public ConstituencyController(ConstituencyService constituencyService,
+                                  ConstituencyAssociationService constituencyAssociationService,
                                   RestErrorHandler errorHandler,
                                   SessionService sessionService) {
         this.constituencyService = constituencyService;
+        this.constituencyAssociationService = constituencyAssociationService;
         this.errorHandler = errorHandler;
         this.sessionService = sessionService;
     }
@@ -57,7 +61,7 @@ public class ConstituencyController {
             @PathVariable("constituencyID") UUID constituencyID,
             @PathVariable("userID") UUID userID) {
         return sessionService.extractUserFromPrincipal(principal)
-                .flatMap(user -> constituencyService.associateToUser(user, constituencyID, userID))
+                .flatMap(user -> constituencyAssociationService.associateToUser(user, constituencyID, userID))
                 .fold(errorHandler::mapToResponseEntity, ResponseEntity::ok);
     }
 
@@ -67,7 +71,7 @@ public class ConstituencyController {
             Principal principal,
             @RequestBody AssociateUserConstituency association) {
         return sessionService.extractUserFromPrincipal(principal)
-                .flatMap(user -> constituencyService.associateToUserByUsername(user, association.getConstituencyCode(),
+                .flatMap(user -> constituencyAssociationService.associateToUserByUsername(user, association.getConstituencyCode(),
                         association.getUsername()))
                 .fold(errorHandler::mapToResponseEntity, ResponseEntity::ok);
     }
@@ -79,7 +83,7 @@ public class ConstituencyController {
             @PathVariable("constituencyID") UUID constituencyID,
             @PathVariable("userID") UUID userID) {
         return sessionService.extractUserFromPrincipal(principal)
-                .flatMap(user -> constituencyService.removeUserAssociation(user, constituencyID, userID))
+                .flatMap(user -> constituencyAssociationService.removeUserAssociation(user, constituencyID, userID))
                 .fold(errorHandler::mapToResponseEntity, ResponseEntity::ok);
     }
 }

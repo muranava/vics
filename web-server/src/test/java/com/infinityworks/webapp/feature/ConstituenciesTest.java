@@ -6,6 +6,7 @@ import com.infinityworks.webapp.domain.User;
 import com.infinityworks.webapp.error.RestErrorHandler;
 import com.infinityworks.webapp.repository.ConstituencyRepository;
 import com.infinityworks.webapp.rest.ConstituencyController;
+import com.infinityworks.webapp.service.ConstituencyAssociationService;
 import com.infinityworks.webapp.service.ConstituencyService;
 import com.infinityworks.webapp.service.SessionService;
 import org.junit.Before;
@@ -48,7 +49,8 @@ public class ConstituenciesTest extends WebApplicationTest {
     public void setup() {
         sessionService = mock(SessionService.class);
         ConstituencyService constituencyService =  getBean(ConstituencyService.class);
-        ConstituencyController constituencyController = new ConstituencyController(constituencyService, new RestErrorHandler(), sessionService);
+        ConstituencyAssociationService constituencyAssociationService =  getBean(ConstituencyAssociationService.class);
+        ConstituencyController constituencyController = new ConstituencyController(constituencyService, constituencyAssociationService, new RestErrorHandler(), sessionService);
 
         mockMvc = MockMvcBuilders
                 .standaloneSetup(constituencyController)
