@@ -50,16 +50,20 @@ public class ConstituencyAssociationService {
             return Try.failure(new NotFoundFailure(msg));
         }
 
-        User foundUser = userRepository.findOne(userID);
-        if (foundUser == null) {
-            return Try.failure(new NotFoundFailure("No user with ID " + userID));
-        }
+        User updatedUser;
+        synchronized (lock) {
+            User foundUser = userRepository.findOne(userID);
+            if (foundUser == null) {
+                return Try.failure(new NotFoundFailure("No user with ID " + userID));
+            }
 
-        foundUser.getConstituencies().add(constituency);
-        User updatedUser = userRepository.saveAndFlush(foundUser);
+            foundUser.getConstituencies().add(constituency);
+            updatedUser = userRepository.saveAndFlush(foundUser);
+        }
 
         log.debug("Added association constituency={}, user={}", constituencyID, userID);
         return Try.success(updatedUser);
+
     }
 
     @Transactional
@@ -76,16 +80,18 @@ public class ConstituencyAssociationService {
             return Try.failure(new NotFoundFailure(msg));
         }
 
-        User foundUser = userRepository.findOne(userID);
-        if (foundUser == null) {
-            String msg = "No user=" + userID;
-            log.debug(msg);
-            return Try.failure(new NotFoundFailure(msg));
+        User updatedUser;
+        synchronized (lock) {
+            User foundUser = userRepository.findOne(userID);
+            if (foundUser == null) {
+                String msg = "No user=" + userID;
+                log.debug(msg);
+                return Try.failure(new NotFoundFailure(msg));
+            }
+
+            foundUser.removeConstituency(constituency);
+            updatedUser = userRepository.saveAndFlush(foundUser);
         }
-
-        foundUser.removeConstituency(constituency);
-        User updatedUser = userRepository.saveAndFlush(foundUser);
-
         log.debug("Removed association constituency={}, user={}", constituencyID, userID);
         return Try.success(updatedUser);
     }

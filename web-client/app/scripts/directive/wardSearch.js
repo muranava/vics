@@ -37,7 +37,7 @@ angular
               scope.onSelectConstituency(scope.directiveModel.constituency);
             });
           $timeout(function() {
-            $('#wardInputID').focus()
+            $('#wardInputID').focus();
           }, 100);
         };
 
