@@ -22,8 +22,6 @@ public class WardAssociationService {
     private final WardRepository wardRepository;
     private final UserRepository userRepository;
 
-    private final Object lock = new Object();
-
     @Autowired
     public WardAssociationService(WardRepository wardRepository, UserRepository userRepository) {
         this.wardRepository = wardRepository;
@@ -41,27 +39,25 @@ public class WardAssociationService {
             return Try.failure(new NotAuthorizedFailure("Forbidden content"));
         }
 
-        synchronized (lock) {
-            Ward ward = wardRepository.findOne(wardID);
-            if (ward == null) {
-                String msg = "No ward=" + wardID;
-                log.debug(msg);
-                return Try.failure(new NotFoundFailure(msg));
-            }
-
-            User foundUser = userRepository.findOne(userID);
-            if (foundUser == null) {
-                String msg = "No user=" + userID;
-                log.debug(msg);
-                return Try.failure(new NotFoundFailure(msg));
-            }
-
-            foundUser.getWards().add(ward);
-            User updatedUser = userRepository.saveAndFlush(foundUser);
-
-            log.info("Added association ward={}, user={}", wardID, userID);
-            return Try.success(updatedUser);
+        Ward ward = wardRepository.findOne(wardID);
+        if (ward == null) {
+            String msg = "No ward=" + wardID;
+            log.debug(msg);
+            return Try.failure(new NotFoundFailure(msg));
         }
+
+        User foundUser = userRepository.findOne(userID);
+        if (foundUser == null) {
+            String msg = "No user=" + userID;
+            log.debug(msg);
+            return Try.failure(new NotFoundFailure(msg));
+        }
+
+        foundUser.getWards().add(ward);
+        User updatedUser = userRepository.saveAndFlush(foundUser);
+
+        log.info("Added association ward={}, user={}", wardID, userID);
+        return Try.success(updatedUser);
     }
 
     @Transactional
@@ -71,26 +67,24 @@ public class WardAssociationService {
             return Try.failure(new NotAuthorizedFailure("Forbidden content"));
         }
 
-        synchronized (lock) {
-            Ward ward = wardRepository.findOne(wardID);
-            if (ward == null) {
-                String msg = "No ward=" + wardID;
-                log.debug(msg);
-                return Try.failure(new NotFoundFailure(msg));
-            }
-
-            User foundUser = userRepository.findOne(userID);
-            if (foundUser == null) {
-                String msg = "No user=" + userID;
-                log.debug(msg);
-                return Try.failure(new NotFoundFailure(msg));
-            }
-
-            foundUser.removeWard(ward);
-            User updatedUser = userRepository.saveAndFlush(foundUser);
-
-            log.info("Removed association ward={}, user={}", wardID, userID);
-            return Try.success(updatedUser);
+        Ward ward = wardRepository.findOne(wardID);
+        if (ward == null) {
+            String msg = "No ward=" + wardID;
+            log.debug(msg);
+            return Try.failure(new NotFoundFailure(msg));
         }
+
+        User foundUser = userRepository.findOne(userID);
+        if (foundUser == null) {
+            String msg = "No user=" + userID;
+            log.debug(msg);
+            return Try.failure(new NotFoundFailure(msg));
+        }
+
+        foundUser.removeWard(ward);
+        User updatedUser = userRepository.saveAndFlush(foundUser);
+
+        log.info("Removed association ward={}, user={}", wardID, userID);
+        return Try.success(updatedUser);
     }
 }

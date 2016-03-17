@@ -43,25 +43,23 @@ public class ConstituencyAssociationService {
             return Try.failure(new NotAuthorizedFailure("Forbidden content"));
         }
 
-        synchronized (lock) {
-            Constituency constituency = constituencyRepository.findOne(constituencyID);
-            if (constituency == null) {
-                String msg = "No constituency=" + constituencyID;
-                log.debug(msg);
-                return Try.failure(new NotFoundFailure(msg));
-            }
-
-            User foundUser = userRepository.findOne(userID);
-            if (foundUser == null) {
-                return Try.failure(new NotFoundFailure("No user with ID " + userID));
-            }
-
-            foundUser.getConstituencies().add(constituency);
-            User updatedUser = userRepository.saveAndFlush(foundUser);
-
-            log.debug("Added association constituency={}, user={}", constituencyID, userID);
-            return Try.success(updatedUser);
+        Constituency constituency = constituencyRepository.findOne(constituencyID);
+        if (constituency == null) {
+            String msg = "No constituency=" + constituencyID;
+            log.debug(msg);
+            return Try.failure(new NotFoundFailure(msg));
         }
+
+        User foundUser = userRepository.findOne(userID);
+        if (foundUser == null) {
+            return Try.failure(new NotFoundFailure("No user with ID " + userID));
+        }
+
+        foundUser.getConstituencies().add(constituency);
+        User updatedUser = userRepository.saveAndFlush(foundUser);
+
+        log.debug("Added association constituency={}, user={}", constituencyID, userID);
+        return Try.success(updatedUser);
     }
 
     @Transactional
@@ -71,32 +69,30 @@ public class ConstituencyAssociationService {
             return Try.failure(new NotAuthorizedFailure("Forbidden content"));
         }
 
-        synchronized (lock) {
-            Constituency constituency = constituencyRepository.findOne(constituencyID);
-            if (constituency == null) {
-                String msg = "No constituency=" + constituencyID;
-                log.debug(msg);
-                return Try.failure(new NotFoundFailure(msg));
-            }
-
-            User foundUser = userRepository.findOne(userID);
-            if (foundUser == null) {
-                String msg = "No user=" + userID;
-                log.debug(msg);
-                return Try.failure(new NotFoundFailure(msg));
-            }
-
-            foundUser.removeConstituency(constituency);
-            User updatedUser = userRepository.saveAndFlush(foundUser);
-
-            log.debug("Removed association constituency={}, user={}", constituencyID, userID);
-            return Try.success(updatedUser);
+        Constituency constituency = constituencyRepository.findOne(constituencyID);
+        if (constituency == null) {
+            String msg = "No constituency=" + constituencyID;
+            log.debug(msg);
+            return Try.failure(new NotFoundFailure(msg));
         }
+
+        User foundUser = userRepository.findOne(userID);
+        if (foundUser == null) {
+            String msg = "No user=" + userID;
+            log.debug(msg);
+            return Try.failure(new NotFoundFailure(msg));
+        }
+
+        foundUser.removeConstituency(constituency);
+        User updatedUser = userRepository.saveAndFlush(foundUser);
+
+        log.debug("Removed association constituency={}, user={}", constituencyID, userID);
+        return Try.success(updatedUser);
     }
 
     public Try<User> associateToUserByUsername(User user, String constituencyCode, String username) {
         return userService.getByEmail(username)
                 .flatMap(u -> constituencyService.getByCode(constituencyCode)
-                .flatMap(constituency -> associateToUser(user, constituency.getId(), user.getId())));
+                        .flatMap(constituency -> associateToUser(user, constituency.getId(), user.getId())));
     }
 }
