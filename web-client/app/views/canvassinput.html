@@ -259,7 +259,7 @@
                     <td>{{log.reason}}</td>
                     <td ng-show="log.success">SUCCESS</td>
                     <td ng-show="!log.success">FAILED</td>
-                    <td><button ng-click="onUndo(log)" ng-show="log.success" class="btn btn-xs btn-danger raised">UNDO</button></td>
+                    <td><button ng-click="onUndo(log)" ng-show="log.success && log.reason !== 'Undone'" class="btn btn-xs btn-danger raised">UNDO</button></td>
                   </tr>
                   </tbody>
                 </table>

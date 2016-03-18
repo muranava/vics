@@ -76,11 +76,14 @@ public class PafServerStub {
     }
 
     public void willDeleteAContactRecordFor(String ern, String contactId) throws IOException {
+        String jsonData = Resources.toString(getResource("json/paf-delete-contact-success.json"), UTF_8);
+
         String urlPath = "/v1/voter/" + ern + "/contact/" + contactId;
         wireMock.register(delete(urlPathMatching(urlPath))
                 .willReturn(aResponse()
                         .withStatus(200)
-                .withHeader(CONTENT_TYPE, "application/json")));
+                        .withHeader(CONTENT_TYPE, "application/json")
+                        .withBody(jsonData)));
     }
 
     /**
@@ -175,5 +178,6 @@ public class PafServerStub {
                         .withBody(jsonData)));
     }
 
-    private static class Nil {}
+    private static class Nil {
+    }
 }

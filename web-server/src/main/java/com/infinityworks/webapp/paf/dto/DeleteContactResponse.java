@@ -7,14 +7,12 @@ import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import org.immutables.value.Value;
 
 import javax.annotation.Nullable;
-import java.util.UUID;
 
 @Value.Immutable
 @JsonIgnoreProperties(ignoreUnknown = true)
 @Value.Style(init = "with*")
-@JsonDeserialize(as = ImmutableRecordContactResponse.class)
-@JsonSerialize(as = ImmutableRecordContactResponse.class)
-public interface RecordContactResponse {
-    @JsonProperty("ern") String ern();
-    @JsonProperty("id") UUID id();
+@JsonDeserialize(as = ImmutableDeleteContactResponse.class)
+@JsonSerialize(as = ImmutableDeleteContactResponse.class)
+public interface DeleteContactResponse {
+    @Nullable @JsonProperty("success") Success success();
 }

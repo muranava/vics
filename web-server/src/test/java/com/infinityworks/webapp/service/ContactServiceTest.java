@@ -57,7 +57,7 @@ public class ContactServiceTest {
                 .build();
         given(wardService.getByCode("E05001221", user)).willReturn(Try.success(earlsdon));
         com.infinityworks.webapp.paf.dto.RecordContactRequest contactRecord = recordContactToPafConverter.apply(user, request);
-        Call<RecordContactResponse> success = CallStub.success(ImmutableRecordContactResponse.builder().withContactId(UUID.randomUUID()).withErn("E05001221-PD-123-4").build());
+        Call<RecordContactResponse> success = CallStub.success(ImmutableRecordContactResponse.builder().withId(UUID.randomUUID()).withErn("E05001221-PD-123-4").build());
         given(pafClient.recordContact("E05001221-PD-123-4", contactRecord)).willReturn(success);
 
         Try<RecordContactResponse> contact = underTest.recordContact(user, Ern.valueOf("E05001221-PD-123-4"), request);

@@ -100,7 +100,7 @@ angular
               ern: stripWardCodeFromErn(response.ern),
               reason: '-',
               fullErn: ern,
-              contactId: response.contact_id,
+              contactId: response.id,
               success: true
             });
             resetForm();

@@ -59,7 +59,7 @@ public interface PafClient {
      * @return no content
      */
     @DELETE("voter/{ern}/contact/{contactId}")
-    Call<Void> deleteContact(@Path("ern") String ern, @Path("contactId") String contactId);
+    Call<DeleteContactResponse> deleteContact(@Path("ern") String ern, @Path("contactId") String contactId);
 
     /**
      * Records that a voter has voted

@@ -6,7 +6,6 @@ import com.infinityworks.webapp.error.RestErrorHandler;
 import com.infinityworks.webapp.pdf.CanvassTableConfig;
 import com.infinityworks.webapp.pdf.DocumentBuilder;
 import com.infinityworks.webapp.pdf.TableBuilder;
-import com.infinityworks.webapp.pdf.renderer.FlagsKeyRenderer;
 import com.infinityworks.webapp.pdf.renderer.LogoRenderer;
 import com.infinityworks.webapp.rest.VoterController;
 import com.infinityworks.webapp.rest.dto.ElectorsByStreetsRequest;
