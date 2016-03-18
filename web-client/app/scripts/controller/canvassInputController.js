@@ -59,6 +59,10 @@ angular
         $scope.contentLoaded = true;
       });
 
+    $scope.showPrintMenu = function() {
+      return $scope.streets && $scope.streets.length;
+    };
+
     $scope.onSearchVoter = function () {
       function handleSuccess() {
         $scope.searchResults.push({});

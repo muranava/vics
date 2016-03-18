@@ -1391,7 +1391,7 @@ a.text-success:hover {
     left: 64px;
   }
 }
-@media (max-width: 768px) {
+@media (max-width: 1px) {
   #header {
     position: relative;
   }
