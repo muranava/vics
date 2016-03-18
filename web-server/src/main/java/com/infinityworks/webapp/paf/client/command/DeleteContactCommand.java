@@ -18,7 +18,7 @@ public class DeleteContactCommand extends HystrixCommand<Try<Void>> {
                                 PafClient pafClient,
                                 int timeoutMSecs,
                                 PafRequestExecutor responseHandler) {
-        super(HystrixCommandGroupKey.Factory.asKey("RecordContact"), timeoutMSecs);
+        super(HystrixCommandGroupKey.Factory.asKey("DeleteContact"), timeoutMSecs);
         this.ern = ern;
         this.contactId = contactId;
         this.pafClient = pafClient;
