@@ -134,6 +134,12 @@ input:-webkit-autofill, textarea:-webkit-autofill, select:-webkit-autofill {
   margin-left: 5px !important;
 }
 
+.checkbox-focus-visible:not(ie8) input:focus ~ span:before {
+  width: 20px;
+  height: 20px;
+  background-color: #c5bdc5;
+}
+
 /* egg */
 div.egg {
   opacity:    0.75;

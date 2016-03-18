@@ -49,17 +49,7 @@
                                         <include name="db/*"/>
                                     </fileset>
                                 </copy>
-                                <copy todir="${project.basedir}/../dist/server">
-                                    <fileset dir="${project.basedir}/">
-                                        <include name="run-web-server.sh"/>
-                                        <include name="canvass-env.sh"/>
-                                    </fileset>
-                                </copy>
                             </tasks>
-                            <target>
-                                <chmod file="${project.basedir}/../dist/server/run-web-server.sh" perm="755"/>
-                                <chmod file="${project.basedir}/../dist/db/install-db.sh" perm="755"/>
-                            </target>
                         </configuration>
                         <goals>
                             <goal>run</goal>

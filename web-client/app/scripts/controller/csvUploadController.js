@@ -90,9 +90,13 @@ angular
               var found = _.find($scope.csvUser.result, {username: modelWithPassword.username});
               found.outcome = modelWithPassword.password;
             })
-            .error(function () {
+            .error(function (e) {
               var found = _.find($scope.csvUser.result, {username: modelWithPassword.username});
-              found.outcome = "Failed";
+              if (e && e.message) {
+                found.outcome = "User already exists";
+              } else {
+                found.outcome = "Failed. Check server log for errors";
+              }
               if (!$scope.$$phase) {
                 $scope.$apply();
               }

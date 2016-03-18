@@ -16,4 +16,4 @@ Deploy the ```static``` directory into a file server such as nginx or haproxy
 
 ## web-server
 
-Execute the ```run-web-server.sh``` script to launch the java web server application.
+See http://docs.spring.io/spring-boot/docs/current/reference/html/deployment-install.html

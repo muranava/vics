@@ -64,11 +64,13 @@ public class VoterService {
      * @return a list of voters for the given search criteria
      */
     public Try<SearchVoterResponse> search(User user, SearchElectors searchElectors) {
+        log.info("Search voters user={} criteria={}", user, searchElectors);
+
         return wardService
                 .getByCode(searchElectors.getWardCode(), user)
                 .flatMap(ward -> {
                     SearchVotersCommand searchVotersCommand = searchVotersCommandFactory.create(searchElectors.getParameters());
-                    return searchVotersCommand.execute();
+                    return  searchVotersCommand.execute();
                 });
     }
 
@@ -86,6 +88,8 @@ public class VoterService {
                                                                ElectorsByStreetsRequest request,
                                                                String wardCode,
                                                                User user) {
+        log.info("Get voters by ward={} numStreets={} for user={}", wardCode, request.getStreets(), user);
+
         return wardService.getByCode(wardCode, user)
                 .flatMap(ward -> {
                     List<PafStreet> pafStreets = request.getStreets()

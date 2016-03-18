@@ -6,8 +6,8 @@
     <property resource="application.properties"/>
 
     <appender name="stash" class="net.logstash.logback.appender.LogstashTcpSocketAppender">
-        <remoteHost>${logstash.url}</remoteHost>
-        <port>${logstash.port}</port>
+        <remoteHost>localhost</remoteHost>
+        <port>4560</port>
 
         <encoder class="net.logstash.logback.encoder.LogstashEncoder">
             <customFields>{"appname":"canvass-webapp"}</customFields>
