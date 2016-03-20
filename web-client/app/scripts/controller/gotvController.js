@@ -1,6 +1,6 @@
 angular
   .module('canvass')
-  .controller('gotvController', function ($scope, wardService, gotvService) {
+  .controller('gotvController', function ($scope, wardService, gotvService, $window) {
 
     $scope.numStreetsSelected = 0;
     $scope.validationErrors = [];
@@ -52,6 +52,17 @@ angular
           showTicksValues: true
         }
       };
+    }
+
+    var debounce = _.debounce(fire, 1, false);
+    $("#canvassinputcontent").on('mousewheel', function () {
+      debounce();
+    });
+    function fire() {
+      $scope.showSubMenu = $window.scrollY > 100;
+      if (!$scope.$$phase) {
+        $scope.$apply();
+      }
     }
 
     $scope.intentionSlider = defaultSliderOptions();

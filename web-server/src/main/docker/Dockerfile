@@ -9,3 +9,4 @@ ADD server /app
 EXPOSE 18080
 
 CMD ["java", "-jar", "/app/server/web-server-0.0.1.jar"]
+

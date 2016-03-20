@@ -1,5 +1,5 @@
-<header id="header" ng-show="showPrintMenu()">
-<!--<header id="header" ng-show="streets && streets.length">-->
+<header id="header" ng-show="streets && streets.length && showSubMenu">
+  <!--<header id="header" ng-show="streets && streets.length">-->
   <div class="headerbar">
     <div class="headerbar-left">
       <ul class="header-nav header-nav-options">
@@ -23,7 +23,7 @@
   </div>
 </header>
 
-<section ng-show="contentLoaded">
+<section id="canvassinputcontent" ng-show="contentLoaded">
   <br>
   <!-- Choose Constituency -->
   <div class="section-body contain-lg">

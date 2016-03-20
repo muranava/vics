@@ -1,4 +1,29 @@
-<section ng-show="contentLoaded">
+<header id="header" ng-show="streets && streets.length && showSubMenu">
+  <!--<header id="header" ng-show="streets && streets.length">-->
+  <div class="headerbar">
+    <div class="headerbar-left">
+      <ul class="header-nav header-nav-options">
+        <li class="header-nav-brand">
+          <div class="brand-holder">
+            <h4>{{numStreetsSelected}} of {{streets.length}} streets selected</h4>
+          </div>
+        </li>
+      </ul>
+    </div>
+
+    <div class="headerbar-right">
+      <div class="print-button-bar" style="margin: 13px 10px 13px 0;">
+        <button type="button" class="btn btn-primary btn-sm raised pull-left" ng-click="onPrintSelected()"
+                ng-disabled="numStreetsSelected === 0">Print Selected
+        </button>
+        <a class="btn btn-danger btn-sm raised pull-left button-group-spacing" data-toggle="modal"
+           data-target="#simpleModal">Print All</a>
+      </div>
+    </div>
+  </div>
+</header>
+
+<section id="canvassinputcontent" ng-show="contentLoaded">
   <br>
   <div class="section-body contain-lg">
     <div class="row">
@@ -228,7 +253,6 @@
                     </div>
                   </div>
                 </div>
-                <em class="text-caption">{{numStreetsSelected}} of {{streets.length}} streets selected</em>
 
                 <div class="alert alert-callout alert-warning" ng-if="validationErrors.length" role="alert">
                   <p ng-repeat="error in validationErrors">
@@ -237,15 +261,6 @@
                 </div>
 
                 <div class="card">
-                  <div class="card-actionbar">
-                    <div class="card-actionbar-row">
-                      <button type="button" class="btn btn-primary btn-sm raised pull-left" ng-click="onPrintSelected()"
-                              ng-disabled="numStreetsSelected === 0">Print Selected
-                      </button>
-                      <a class="btn btn-danger btn-sm raised pull-left button-group-spacing" data-toggle="modal"
-                         data-target="#confirmPrintAllModal">Print All</a>
-                    </div>
-                  </div>
                   <div class="card-body">
                     <div class="form">
                       <div class="form-group">

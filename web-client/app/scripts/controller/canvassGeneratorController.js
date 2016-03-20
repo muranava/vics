@@ -23,6 +23,17 @@ angular
       $scope.contentLoaded = true;
     };
 
+    var debounce = _.debounce(fire, 1, false);
+    $("#canvassinputcontent").on('mousewheel', function () {
+      debounce();
+    });
+    function fire() {
+      $scope.showSubMenu = $window.scrollY > 100;
+      if (!$scope.$$phase) {
+        $scope.$apply();
+      }
+    }
+
     $scope.onSelectWard = function (model) {
       resetErrors();
       $scope.streets = [];
@@ -42,8 +53,9 @@ angular
     };
 
     function scrollToPrintSection() {
-      _.defer(function() {
-        $("html, body").animate({scrollTop: $('#printCards').offset().top - 75}, 500);
+      _.defer(function () {
+        $("html, body").animate({scrollTop: $('#printCards').offset().top - 140}, 500);
+        $scope.showSubMenu = true;
       });
     }
 
