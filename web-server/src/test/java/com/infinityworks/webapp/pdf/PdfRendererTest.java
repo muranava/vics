@@ -80,12 +80,12 @@ public class PdfRendererTest {
     public List<Property> streetWithPropertiesWithoutAndWithoutVoters() {
         return asList(
                 ImmutableProperty.builder().withHouse("31a").withStreet("Street1").withPostCode("CV2 3ER").withVoters(asList(
-                        voterWithDefaults().withPollingDistrict("ZZ").withElectorNumber("555").withElectorSuffix("2").withLastName("Brown").withFirstName("David").withIssues(
+                        voterWithDefaults().withPollingDistrict("ZZ").withElectorNumber("555").withElectorSuffix("2").withFullName("Brown, David").withIssues(
                                 issuesWithDefaults().withCost(true).withSovereignty(true).build())
                                 .withFlags(flagsWithDefaults().withDeceased(true).withHasPV(true).build())
                                 .withVoting(votingWithDefaults().withIntention(2).withLikelihood(4).build())
                                 .build(),
-                        voterWithDefaults().withLastName("Brown").withFirstName("Sam").build()
+                        voterWithDefaults().withFullName("Brown, Sam").build()
                 )).build(),
                 ImmutableProperty.builder().withStreet("Street1").withPostCode("CV2 3ER").withVoters(
                         emptyList()
@@ -96,15 +96,15 @@ public class PdfRendererTest {
     public List<Property> street1() {
         return asList(
                 ImmutableProperty.builder().withStreet("Street1").withPostCode("CV2 3ER").withVoters(asList(
-                        voterWithDefaults().withFirstName("David").build(),
-                        voterWithDefaults().withFirstName("Sam").build()
+                        voterWithDefaults().withFullName("David").build(),
+                        voterWithDefaults().withFullName("Sam").build()
                 )).build(),
                 ImmutableProperty.builder().withStreet("Street1").withPostCode("CV2 3ER").withVoters(asList(
-                        voterWithDefaults().withFirstName("Amy").build(),
-                        voterWithDefaults().withFirstName("Paul").build()
+                        voterWithDefaults().withFullName("Amy").build(),
+                        voterWithDefaults().withFullName("Paul").build()
                 )).build(),
                 ImmutableProperty.builder().withStreet("Street1").withPostCode("CV2 3ER").withVoters(singletonList(
-                        voterWithDefaults().withFirstName("Abdul").build()
+                        voterWithDefaults().withFullName("Abdul").build()
                 )).build()
         );
     }
@@ -112,15 +112,15 @@ public class PdfRendererTest {
     public List<Property> street2() {
         return asList(
                 ImmutableProperty.builder().withStreet("Street2").withPostCode("CV2 3ER").withVoters(asList(
-                        voterWithDefaults().withFirstName("Javier").build(),
-                        voterWithDefaults().withFirstName("Marti").build()
+                        voterWithDefaults().withFullName("Javier").build(),
+                        voterWithDefaults().withFullName("Marti").build()
                 )).build(),
                 ImmutableProperty.builder().withStreet("Street2").withPostCode("CV2 3ER").withVoters(asList(
-                        voterWithDefaults().withFirstName("Selina").build(),
-                        voterWithDefaults().withFirstName("Pedro").build()
+                        voterWithDefaults().withFullName("Selina").build(),
+                        voterWithDefaults().withFullName("Pedro").build()
                 )).build(),
                 ImmutableProperty.builder().withStreet("Street2").withPostCode("CV2 3ER").withVoters(singletonList(
-                        voterWithDefaults().withFirstName("Carlos").build()
+                        voterWithDefaults().withFullName("Carlos").build()
                 )).build()
         );
     }

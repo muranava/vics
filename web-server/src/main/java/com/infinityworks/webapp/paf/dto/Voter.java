@@ -17,10 +17,7 @@ public interface Voter {
     @Nullable @JsonProperty("prefix") String pollingDistrict();
     @Nullable @JsonProperty("number") String electorNumber();
     @Nullable @JsonProperty("suffix") String electorSuffix();
-    @Nullable @JsonProperty("title") String title();
-    @Nullable @JsonProperty("first_name") String firstName();
-    @Nullable @JsonProperty("initial") String initial();
-    @Nullable @JsonProperty("surname") String lastName();
+    @Nullable @JsonProperty("full_name") String fullName();
     @Nullable @JsonProperty("voting") Voting voting();
     @Nullable @JsonProperty("flags") Flags flags();
     @Nullable @JsonProperty("issues") Issues issues();

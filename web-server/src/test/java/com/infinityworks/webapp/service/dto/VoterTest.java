@@ -15,12 +15,10 @@ public class VoterTest {
         Voter voter = objectMapper.readValue(
                 Resources.getResource("json/paf-voter.json"), Voter.class);
 
-        assertThat(voter.firstName(), is("John"));
-        assertThat(voter.lastName(), is("Deaux"));
+        assertThat(voter.fullName(), is("Deaux, John"));
         assertThat(voter.pollingDistrict(), is("AB"));
         assertThat(voter.electorNumber(), is("01"));
         assertThat(voter.electorSuffix(), is("1"));
-        assertThat(voter.lastName(), is("Deaux"));
         assertThat(voter.flags().deceased(), is(false));
         assertThat(voter.flags().inaccessible(), is(false));
         assertThat(voter.flags().hasPV(), is(false));

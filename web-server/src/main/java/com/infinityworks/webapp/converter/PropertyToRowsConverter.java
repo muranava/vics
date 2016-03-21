@@ -28,7 +28,7 @@ public class PropertyToRowsConverter implements BiFunction<String, Property, Lis
 
                     ElectorRowBuilder row = electorRow()
                             .withHouse(property.house())
-                            .withName(createName(voter));
+                            .withName(voter.fullName());
 
                     if (voting != null) {
                         row.withLikelihood(normalizeScore(voting.likelihood()))
@@ -63,12 +63,6 @@ public class PropertyToRowsConverter implements BiFunction<String, Property, Lis
                             .build();
                 })
                 .collect(toList());
-    }
-
-    private String createName(Voter voter) {
-        return Stream.of(voter.lastName(), voter.firstName())
-                .filter(e -> !StringExtras.isNullOrEmpty(e))
-                .collect(joining(", "));
     }
 
     private String normalizeScore(Integer value) {
