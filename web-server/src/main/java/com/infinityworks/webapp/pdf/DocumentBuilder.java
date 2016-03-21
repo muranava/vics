@@ -85,10 +85,10 @@ public class DocumentBuilder {
     private void renderTables(List<GeneratedPdfTable> pdfTables, Document document, PageInfoRenderer pageInfoRenderer) {
         for (GeneratedPdfTable table : pdfTables) {
             try {
-                pageInfoRenderer.setStreet(table.getStreet());
-                pageInfoRenderer.setConstituencyName(table.getConstituencyName());
-                pageInfoRenderer.setWardName(table.getWardName());
-                document.add(table.getTable());
+                pageInfoRenderer.setStreet(table.street());
+                pageInfoRenderer.setConstituencyName(table.constituencyName());
+                pageInfoRenderer.setWardName(table.wardName());
+                document.add(table.table());
             } catch (DocumentException e) {
                 log.error("Failed to add page to document");
                 throw new IllegalStateException(e);

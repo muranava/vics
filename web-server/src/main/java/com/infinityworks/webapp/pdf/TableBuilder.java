@@ -3,6 +3,7 @@ package com.infinityworks.webapp.pdf;
 import com.infinityworks.common.lang.StringExtras;
 import com.infinityworks.webapp.pdf.model.ElectorRow;
 import com.infinityworks.webapp.pdf.model.GeneratedPdfTable;
+import com.infinityworks.webapp.pdf.model.ImmutableGeneratedPdfTable;
 import com.lowagie.text.DocumentException;
 import com.lowagie.text.Element;
 import com.lowagie.text.Font;
@@ -93,7 +94,14 @@ public class TableBuilder {
             prevHouse = createRow(table, prevHouse, row);
         }
 
-        return Optional.of(new GeneratedPdfTable(table, mainStreetName, wardName, wardCode, constituencyName));
+        ImmutableGeneratedPdfTable pdfTable = ImmutableGeneratedPdfTable.builder()
+                .withTable(table)
+                .withStreet(mainStreetName)
+                .withWardCode(wardCode)
+                .withWardName(wardName)
+                .withConstituencyName(constituencyName)
+                .build();
+        return Optional.of(pdfTable);
     }
 
     private PdfPTable generateTableAndHeaders() {
@@ -175,6 +183,5 @@ public class TableBuilder {
                     cell.setBackgroundColor(Color.BLACK);
                     table.addCell(cell);
                 });
-
     }
 }

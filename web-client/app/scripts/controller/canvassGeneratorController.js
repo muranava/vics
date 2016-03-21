@@ -23,16 +23,16 @@ angular
       $scope.contentLoaded = true;
     };
 
-    var debounce = _.debounce(fire, 1, false);
-    $("#canvassinputcontent").on('mousewheel', function () {
-      debounce();
-    });
     function fire() {
       $scope.showSubMenu = $window.scrollY > 100;
       if (!$scope.$$phase) {
         $scope.$apply();
       }
     }
+    var debounce = _.debounce(fire, 1, false);
+    $("#canvassinputcontent").on('mousewheel', function () {
+      debounce();
+    });
 
     $scope.onSelectWard = function (model) {
       resetErrors();

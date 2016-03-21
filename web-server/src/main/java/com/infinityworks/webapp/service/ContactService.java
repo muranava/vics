@@ -10,7 +10,6 @@ import com.infinityworks.webapp.paf.client.command.RecordContactCommand;
 import com.infinityworks.webapp.paf.client.command.RecordContactCommandFactory;
 import com.infinityworks.webapp.paf.converter.RecordContactToPafConverter;
 import com.infinityworks.webapp.paf.dto.DeleteContactResponse;
-import com.infinityworks.webapp.paf.dto.Nil;
 import com.infinityworks.webapp.paf.dto.RecordContactResponse;
 import com.infinityworks.webapp.rest.dto.RecordContactRequest;
 import org.slf4j.Logger;

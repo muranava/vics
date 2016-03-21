@@ -30,14 +30,14 @@ public class PdfRendererTest {
                 votersByStreets, "E0900134", "Henley", "Coventry South");
 
         assertThat(tables.size(), is(3));
-        assertThat(tables.get(0).getStreet(), is("Street1, CV2 3ER"));
-        assertThat(tables.get(1).getStreet(), is("Street2, CV2 3ER"));
+        assertThat(tables.get(0).street(), is("Street1, CV2 3ER"));
+        assertThat(tables.get(1).street(), is("Street2, CV2 3ER"));
 
-        assertThat(tables.get(0).getConstituencyName(), is("Coventry South"));
-        assertThat(tables.get(1).getConstituencyName(), is("Coventry South"));
+        assertThat(tables.get(0).constituencyName(), is("Coventry South"));
+        assertThat(tables.get(1).constituencyName(), is("Coventry South"));
 
-        assertThat(tables.get(0).getWardName(), is("Henley"));
-        assertThat(tables.get(1).getWardName(), is("Henley"));
+        assertThat(tables.get(0).wardName(), is("Henley"));
+        assertThat(tables.get(1).wardName(), is("Henley"));
     }
 
     @Test
@@ -57,7 +57,7 @@ public class PdfRendererTest {
         List<GeneratedPdfTable> generatedPdfTables = underTest.generateTables(tableBuilder, someEmptyProperties, "E0900134", "Henley", "Coventry South");
 
         int expectedRows = 3; // header row, plus two rows for voters
-        assertThat(generatedPdfTables.get(0).getTable().getRows().size(), is(expectedRows));
+        assertThat(generatedPdfTables.get(0).table().getRows().size(), is(expectedRows));
         assertThat(getCellText(generatedPdfTables.get(0), 1, Column.HOUSE.getColumn()), is("31a"));
         assertThat(getCellText(generatedPdfTables.get(0), 1, Column.NAME.getColumn()), is("Brown, David"));
         assertThat(getCellText(generatedPdfTables.get(0), 1, Column.TEL.getColumn()), is(""));

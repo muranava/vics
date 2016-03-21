@@ -26,7 +26,7 @@ public class TablePropertyAccessor {
     }
 
     public static String getCellText(GeneratedPdfTable table, int row, int column) throws NoSuchFieldException, IllegalAccessException {
-        ColumnText columnText = table.getTable().getRow(row).getCells()[column].getColumn();
+        ColumnText columnText = table.table().getRow(row).getCells()[column].getColumn();
         Field content = ColumnText.class.getDeclaredField("waitPhrase");
         content.setAccessible(true);
         Phrase phrase = (Phrase) content.get(columnText);
