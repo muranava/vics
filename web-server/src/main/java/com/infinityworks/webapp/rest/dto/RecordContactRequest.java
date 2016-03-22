@@ -14,11 +14,11 @@ import static com.infinityworks.common.lang.StringExtras.nullToEmpty;
 public class RecordContactRequest {
 
     @NotNull
-    @Min(1)
+    @Min(0)
     @Max(5)
     private final Integer intention;
     @NotNull
-    @Min(1)
+    @Min(0)
     @Max(5)
     private final Integer likelihood;
     @NotNull

@@ -2,7 +2,7 @@ package com.infinityworks.webapp.service;
 
 import com.infinityworks.common.lang.Try;
 import com.infinityworks.webapp.domain.User;
-import com.infinityworks.webapp.paf.client.command.RecordVoteCommandFactory;
+import com.infinityworks.webapp.clients.paf.command.RecordVoteCommandFactory;
 import com.infinityworks.webapp.rest.dto.RecordVote;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

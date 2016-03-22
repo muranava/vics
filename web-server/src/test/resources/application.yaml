@@ -25,6 +25,8 @@ canvass:
   pafApiBaseUrl: http://localhost:9002/v1/
   pafApiToken: token
   pafApiTimeout: 60000
+  addressLookupBaseUrl: https://maps.googleapis.com/maps/api/
+  addressLookupToken: AIzaSyBdXzJ-korOOBRX8qZPRpxgo_yNvfpBXnU
 
 logging:
   level:

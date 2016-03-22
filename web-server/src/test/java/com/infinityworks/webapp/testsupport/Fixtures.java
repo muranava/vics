@@ -1,6 +1,6 @@
 package com.infinityworks.webapp.testsupport;
 
-import com.infinityworks.webapp.paf.dto.*;
+import com.infinityworks.webapp.clients.paf.dto.*;
 import com.infinityworks.webapp.rest.dto.Street;
 
 public class Fixtures {

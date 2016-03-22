@@ -1,11 +1,10 @@
 package com.infinityworks.webapp.service.dto;
 
 import com.google.common.io.Resources;
-import com.infinityworks.webapp.paf.dto.Voter;
+import com.infinityworks.webapp.clients.paf.dto.Voter;
 import org.junit.Test;
 
 import static com.infinityworks.webapp.common.Json.objectMapper;
-import static org.hamcrest.CoreMatchers.nullValue;
 import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.assertThat;
 

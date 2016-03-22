@@ -1,18 +1,18 @@
 package com.infinityworks.webapp.service;
 
 import com.infinityworks.common.lang.Try;
+import com.infinityworks.webapp.clients.paf.command.GetVotersCommand;
+import com.infinityworks.webapp.clients.paf.command.GetVotersCommandFactory;
+import com.infinityworks.webapp.clients.paf.command.SearchVotersCommand;
+import com.infinityworks.webapp.clients.paf.command.SearchVotersCommandFactory;
+import com.infinityworks.webapp.clients.paf.converter.StreetToPafConverter;
+import com.infinityworks.webapp.clients.paf.dto.PafStreet;
+import com.infinityworks.webapp.clients.paf.dto.Property;
+import com.infinityworks.webapp.clients.paf.dto.PropertyResponse;
+import com.infinityworks.webapp.clients.paf.dto.SearchVoterResponse;
 import com.infinityworks.webapp.domain.User;
 import com.infinityworks.webapp.domain.Ward;
 import com.infinityworks.webapp.error.NotFoundFailure;
-import com.infinityworks.webapp.paf.client.command.GetVotersCommand;
-import com.infinityworks.webapp.paf.client.command.GetVotersCommandFactory;
-import com.infinityworks.webapp.paf.client.command.SearchVotersCommand;
-import com.infinityworks.webapp.paf.client.command.SearchVotersCommandFactory;
-import com.infinityworks.webapp.paf.converter.StreetToPafConverter;
-import com.infinityworks.webapp.paf.dto.PafStreet;
-import com.infinityworks.webapp.paf.dto.Property;
-import com.infinityworks.webapp.paf.dto.PropertyResponse;
-import com.infinityworks.webapp.paf.dto.SearchVoterResponse;
 import com.infinityworks.webapp.pdf.DocumentBuilder;
 import com.infinityworks.webapp.pdf.PDFTableGenerator;
 import com.infinityworks.webapp.pdf.TableBuilder;

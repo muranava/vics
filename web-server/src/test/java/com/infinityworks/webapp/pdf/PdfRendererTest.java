@@ -1,8 +1,8 @@
 package com.infinityworks.webapp.pdf;
 
+import com.infinityworks.webapp.clients.paf.dto.ImmutableProperty;
+import com.infinityworks.webapp.clients.paf.dto.Property;
 import com.infinityworks.webapp.converter.PropertyToRowsConverter;
-import com.infinityworks.webapp.paf.dto.ImmutableProperty;
-import com.infinityworks.webapp.paf.dto.Property;
 import com.infinityworks.webapp.pdf.TablePropertyAccessor.Column;
 import com.infinityworks.webapp.pdf.model.GeneratedPdfTable;
 import org.junit.Test;

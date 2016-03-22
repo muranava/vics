@@ -106,6 +106,7 @@
                 <select name="likelihood"
                         class="form-control hl-focus"
                         ng-options="item for item in [
+                          '0 - N/A',
                           '1 - Definitely won\'t vote',
                           '2 - Probably won\'t vote',
                           '3 - Undecided',
@@ -145,6 +146,7 @@
                 <select name="intention"
                         class="form-control hl-focus"
                         ng-options="item for item in [
+                          '0 - N/A',
                           '1 - Definitely remain',
                           '2 - Probably remain',
                           '3 - Undecided',
@@ -192,6 +194,14 @@
                   <label>
                     <input type="checkbox" ng-model="inputRecordModel.inaccessible" value="">
                     <span>Inaccessible</span>
+                  </label>
+                </div>
+
+                <!-- This intentionally isn't hooked up -->
+                <div class="checkbox  checkbox-styled checkbox-focus-visible">
+                  <label>
+                    <input type="checkbox" value="">
+                    <span>Moved</span>
                   </label>
                 </div>
               </div>

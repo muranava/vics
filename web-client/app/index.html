@@ -21,6 +21,7 @@
   <link rel="stylesheet" href="bower_components/angular-loading-bar/build/loading-bar.css" />
   <link rel="stylesheet" href="bower_components/angularjs-slider/dist/rzslider.css" />
   <link rel="stylesheet" href="bower_components/angular-ui-switch/angular-ui-switch.css" />
+  <link rel="stylesheet" href="bower_components/leaflet/dist/leaflet.css" />
   <!-- endbower -->
   <!-- endbuild -->
   <!-- build:css(.tmp) styles/main.css -->
@@ -59,7 +60,6 @@
     $zopim(function () {
       $zopim.livechat.badge.setImage('images/logo.png');
       $zopim.livechat.badge.setText('We\'re Online Chat with us');
-      $zopim.livechat.badge.show();
       $zopim.livechat.theme.reload(); // apply new theme settings
     });
 
@@ -89,8 +89,8 @@
 
     <div class="headerbar-right">
       <ul class="header-nav header-nav-profile">
-        <li class="dropdown">
-          <a href="javascript:void(0);" class="dropdown-toggle ink-reaction" data-toggle="dropdown">
+        <li id="dropdown" class="dropdown">
+          <a href="javascript:void(0);" ng-click="onSelectDropdown()" class="dropdown-toggle ink-reaction" data-toggle="dropdown">
 								<span class="profile-info">
 									{{currentUser.username}}
 									<small>{{currentUser | userRoleLabel}}</small>
@@ -230,6 +230,9 @@
 <script src="bower_components/angular-ui-switch/angular-ui-switch.js"></script>
 <script src="bower_components/angular-csv-import-tmp/dist/angular-csv-import.js"></script>
 <script src="bower_components/blockrain/dist/blockrain.jquery.min.js"></script>
+<script src="bower_components/angular-simple-logger/dist/angular-simple-logger.js"></script>
+<script src="bower_components/leaflet/dist/leaflet-src.js"></script>
+<script src="bower_components/ui-leaflet/dist/ui-leaflet.js"></script>
 <!-- endbower -->
 <!-- endbuild -->
 <!-- build:js({.tmp,app}) scripts/scripts.js -->
@@ -256,6 +259,7 @@
 <script src="scripts/service/wardService.js"></script>
 <script src="scripts/service/constituencyService.js"></script>
 <script src="scripts/service/healthService.js"></script>
+<script src="scripts/service/geoService.js"></script>
 <script src="scripts/service/electorService.js"></script>
 <script src="scripts/service/gotvService.js"></script>
 <script src="scripts/service/userService.js"></script>

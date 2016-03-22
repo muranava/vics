@@ -4,6 +4,7 @@
 angular
   .module('canvass')
   .controller('parentController', function ($location, $scope, authService, $rootScope) {
+    $rootScope.dropdownOpen = false;
 
     function resetMenu() {
       // Added to enforce menus are removed on logout

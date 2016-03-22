@@ -1,7 +1,7 @@
 package com.infinityworks.webapp.converter;
 
 import com.infinityworks.common.lang.StringExtras;
-import com.infinityworks.webapp.paf.dto.*;
+import com.infinityworks.webapp.clients.paf.dto.*;
 import com.infinityworks.webapp.pdf.model.ElectorRow;
 import com.infinityworks.webapp.pdf.model.ElectorRowBuilder;
 import org.springframework.stereotype.Component;

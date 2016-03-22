@@ -20,7 +20,8 @@ angular
     'angular-loading-bar',
     'uiSwitch',
     'rzModule',
-    'ngCsvImport'
+    'ngCsvImport',
+    'ui-leaflet'
   ])
   .constant('config', {
     apiUrl: 'http://localhost:18080/api/canvass',
