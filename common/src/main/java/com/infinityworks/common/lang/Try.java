@@ -181,6 +181,12 @@ public interface Try<S> {
         }
     }
 
+    default void accept(Consumer<S> successConsumer) {
+        if (isSuccess()) {
+            successConsumer.accept(get());
+        }
+    }
+
     /**
      * Return the success value if present, otherwise return {@code other}.
      *
@@ -225,4 +231,3 @@ public interface Try<S> {
      */
     boolean isSuccess();
 }
-

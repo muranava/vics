@@ -1,6 +1,5 @@
 package com.infinityworks.webapp.pdf;
 
-import com.infinityworks.common.lang.StringExtras;
 import com.infinityworks.webapp.pdf.model.ElectorRow;
 import com.infinityworks.webapp.pdf.model.GeneratedPdfTable;
 import com.infinityworks.webapp.pdf.model.ImmutableGeneratedPdfTable;
@@ -19,7 +18,6 @@ import java.awt.*;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
-import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
 import static com.infinityworks.common.lang.StringExtras.isNullOrEmpty;
@@ -31,10 +29,19 @@ public class TableBuilder {
     private static final Logger log = LoggerFactory.getLogger(TableBuilder.class);
     private static final Font dataFont = new Font(HELVETICA, 11);
     private static final Font headerFont = new Font(HELVETICA, 10);
-    private static final Font clear = new Font(HELVETICA, 10, 1, Color.WHITE);
+    private static final Font CLEAR = new Font(HELVETICA, 10, 1, Color.WHITE);
     private static final Color LIGHT_GREY = new Color(215, 215, 215);
     private static final Color LIGHTER_GREY = new Color(235, 235, 235);
     private final PdfTableConfig columnDefinition;
+
+    private static final String EMPTY_CELL = "";
+    private static final PdfPCell CHANGE_CELL = new PdfPCell();
+    private static final Phrase EMPTY_CONTENT = new Phrase("N/A", CLEAR);
+
+    static {
+        CHANGE_CELL.setFixedHeight(TableProperties.HOUSE_CHANGE_ROW_HEIGHT);
+        CHANGE_CELL.setBackgroundColor(Color.BLACK);
+    }
 
     @Autowired
     public TableBuilder(PdfTableConfig columnDefinition) {
@@ -50,18 +57,10 @@ public class TableBuilder {
         return header;
     }
 
-    private PdfPCell createDataCell(String content, int alignment) {
-        PdfPCell cell = new PdfPCell(new Phrase(content, dataFont));
-        cell.setPadding(3);
-        cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
-        cell.setHorizontalAlignment(alignment);
-        return cell;
-    }
-
     private void generateTableHeaders(PdfPTable table) {
         table.addCell(createHeaderCell("House #", TableProperties.HORIZONTAL_TEXT_ANGLE));
         table.addCell(createHeaderCell("Name", TableProperties.HORIZONTAL_TEXT_ANGLE));
-        table.addCell(createHeaderCell("Contact", TableProperties.HORIZONTAL_TEXT_ANGLE));
+        table.addCell(createHeaderCell("Tel / Email", TableProperties.HORIZONTAL_TEXT_ANGLE));
 
         PdfPCell likelihood = createHeaderCell("Voting\nLikelihood", TableProperties.HORIZONTAL_TEXT_ANGLE);
         likelihood.setBackgroundColor(LIGHT_GREY);
@@ -120,6 +119,7 @@ public class TableBuilder {
 
     /**
      * Creates a table row from an individual {@link ElectorRow}
+     *
      * @return the house that is generated for the current house
      */
     private String createRow(PdfPTable table, String prevHouse, ElectorRow row) {
@@ -132,13 +132,13 @@ public class TableBuilder {
 
         // workaround to set row height for empty rows (relevant when creating empty pdf page)
         if (isNullOrEmpty(row.getHouse())) {
-            table.addCell(new Phrase("-", clear));
+            table.addCell(EMPTY_CONTENT);
         } else {
-            table.addCell(createDataCell(row.getHouse(), Element.ALIGN_LEFT));
+            addDataCell(table, row.getHouse(), Element.ALIGN_LEFT);
         }
 
-        table.addCell(createDataCell(row.getName(), Element.ALIGN_LEFT));
-            table.addCell(createDataCell(getContact(row), Element.ALIGN_LEFT));
+        addDataCell(table, row.getName(), Element.ALIGN_LEFT);
+        addDataCell(table, getContact(row), Element.ALIGN_LEFT);
 
         PdfPCell likelihood = new PdfPCell(new Phrase(row.getLikelihood()));
         likelihood.setBackgroundColor(LIGHT_GREY);
@@ -146,9 +146,9 @@ public class TableBuilder {
         likelihood.setVerticalAlignment(Element.ALIGN_MIDDLE);
         table.addCell(likelihood);
 
-        table.addCell(createDataCell(row.getIssue1(), Element.ALIGN_CENTER));
-        table.addCell(createDataCell(row.getIssue2(), Element.ALIGN_CENTER));
-        table.addCell(createDataCell(row.getIssue3(), Element.ALIGN_CENTER));
+        addDataCell(table, row.getIssue1(), Element.ALIGN_CENTER);
+        addDataCell(table, row.getIssue2(), Element.ALIGN_CENTER);
+        addDataCell(table, row.getIssue3(), Element.ALIGN_CENTER);
 
         PdfPCell support = new PdfPCell(new Phrase(row.getSupport()));
         support.setBackgroundColor(LIGHT_GREY);
@@ -156,19 +156,31 @@ public class TableBuilder {
         support.setVerticalAlignment(Element.ALIGN_MIDDLE);
         table.addCell(support);
 
-        table.addCell(createDataCell(row.getHasPV(), Element.ALIGN_CENTER));
-        table.addCell(createDataCell(row.getWantsPV(), Element.ALIGN_CENTER));
-        table.addCell(createDataCell(row.getNeedsLift(), Element.ALIGN_CENTER));
-        table.addCell(createDataCell(row.getPoster(), Element.ALIGN_CENTER));
-        table.addCell(createDataCell(row.getInaccessible(), Element.ALIGN_CENTER));
-        table.addCell(createDataCell(row.getDeceased(), Element.ALIGN_CENTER));
-        table.addCell(createDataCell(row.getErn(), Element.ALIGN_LEFT));
+        addDataCell(table, row.getHasPV(), Element.ALIGN_CENTER);
+        addDataCell(table, row.getWantsPV(), Element.ALIGN_CENTER);
+        addDataCell(table, row.getNeedsLift(), Element.ALIGN_CENTER);
+        addDataCell(table, row.getPoster(), Element.ALIGN_CENTER);
+        addDataCell(table, row.getInaccessible(), Element.ALIGN_CENTER);
+        addDataCell(table, row.getDeceased(), Element.ALIGN_CENTER);
+        addDataCell(table, row.getErn(), Element.ALIGN_LEFT);
         return prevHouse;
+    }
+
+    private void addDataCell(PdfPTable table, String content, int alignment) {
+        if (isNullOrEmpty(content)) {
+            table.addCell(EMPTY_CELL);
+        } else {
+            PdfPCell cell = new PdfPCell(new Phrase(content, dataFont));
+            cell.setPadding(TableProperties.CELL_PADDING);
+            cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
+            cell.setHorizontalAlignment(alignment);
+            table.addCell(cell);
+        }
     }
 
     private String getContact(ElectorRow row) {
         return Stream.of(row.getEmail(), row.getTelephone())
-                .filter(e -> !StringExtras.isNullOrEmpty(e))
+                .filter(e -> !isNullOrEmpty(e))
                 .collect(joining(", "));
     }
 
@@ -176,12 +188,8 @@ public class TableBuilder {
      * Adds an empty black row to signify that the house has changed
      */
     private void addChangeRow(PdfPTable table) {
-        IntStream.range(0, columnDefinition.getNumColumns())
-                .forEach(i -> {
-                    PdfPCell cell = new PdfPCell();
-                    cell.setFixedHeight(0.15f);
-                    cell.setBackgroundColor(Color.BLACK);
-                    table.addCell(cell);
-                });
+        for (int i = 0; i < columnDefinition.getNumColumns(); i++) {
+            table.addCell(CHANGE_CELL);
+        }
     }
 }

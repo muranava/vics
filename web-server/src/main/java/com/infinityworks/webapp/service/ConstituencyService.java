@@ -7,19 +7,16 @@ import com.infinityworks.webapp.domain.Ward;
 import com.infinityworks.webapp.error.NotAuthorizedFailure;
 import com.infinityworks.webapp.error.NotFoundFailure;
 import com.infinityworks.webapp.repository.ConstituencyRepository;
-import com.infinityworks.webapp.repository.UserRepository;
 import com.infinityworks.webapp.rest.dto.UserRestrictedConstituencies;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
-import java.util.UUID;
 
 import static java.util.stream.Collectors.toSet;
 
@@ -31,15 +28,10 @@ import static java.util.stream.Collectors.toSet;
 public class ConstituencyService {
     private final Logger log = LoggerFactory.getLogger(ConstituencyService.class);
     private final ConstituencyRepository constituencyRepository;
-    private final UserRepository userRepository;
-
-    private final Object lock = new Object();
 
     @Autowired
-    public ConstituencyService(ConstituencyRepository constituencyRepository,
-                               UserRepository userRepository) {
+    public ConstituencyService(ConstituencyRepository constituencyRepository) {
         this.constituencyRepository = constituencyRepository;
-        this.userRepository = userRepository;
     }
 
     /**

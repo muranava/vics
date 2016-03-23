@@ -1,8 +1,8 @@
 package com.infinityworks.webapp.pdf;
 
 import com.infinityworks.common.lang.ListExtras;
-import com.infinityworks.webapp.converter.PropertyToRowsConverter;
 import com.infinityworks.webapp.clients.paf.dto.Property;
+import com.infinityworks.webapp.converter.PropertyToRowsConverter;
 import com.infinityworks.webapp.pdf.model.ElectorRow;
 import com.infinityworks.webapp.pdf.model.GeneratedPdfTable;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -44,17 +44,18 @@ public class PdfJetTableGenerator implements PDFTableGenerator {
                 .map(Optional::get)
                 .collect(toList());
 
-        GeneratedPdfTable emptyTable = createEmptyTable(tableBuilder, wardName, wardCode, constituencyName);
+        GeneratedPdfTable emptyTable = createEmptyBackPageTable(tableBuilder, wardName, wardCode, constituencyName);
 
         if (ListExtras.isNullOrEmpty(pdfTables)) {
             return pdfTables;
         } else {
             return Stream.concat(pdfTables.stream(),
-                                 singletonList(emptyTable).stream()).collect(toList());
+                    singletonList(emptyTable).stream())
+                    .collect(toList());
         }
     }
 
-    private GeneratedPdfTable createEmptyTable(TableBuilder tableBuilder, String wardName, String wardCode, String constituencyName) {
+    private GeneratedPdfTable createEmptyBackPageTable(TableBuilder tableBuilder, String wardName, String wardCode, String constituencyName) {
         return tableBuilder.generateTableRows(EMPTY_ROWS, "", wardName, wardCode, constituencyName).get();
     }
 
@@ -71,15 +72,15 @@ public class PdfJetTableGenerator implements PDFTableGenerator {
     }
 
     private String extractStreetFromFirstProperty(List<Property> properties) {
-            return properties.stream()
-                    .findFirst()
-                    .map(property -> {
-                        String street = property.street();
-                        String postCode = property.postCode();
-                        return isNullOrEmpty(street)
-                                ? postCode
-                                : street + ", " + postCode;
-                    })
-                    .orElse("");
+        return properties.stream()
+                .findFirst()
+                .map(property -> {
+                    String street = property.street();
+                    String postCode = property.postCode();
+                    return isNullOrEmpty(street)
+                            ? postCode
+                            : street + ", " + postCode;
+                })
+                .orElse("");
     }
 }

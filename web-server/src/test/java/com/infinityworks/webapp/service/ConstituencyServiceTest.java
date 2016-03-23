@@ -28,7 +28,7 @@ public class ConstituencyServiceTest {
     public void setUp() throws Exception {
         constituencyRepository = mock(ConstituencyRepository.class);
         UserRepository userRepository = mock(UserRepository.class);
-        underTest = new ConstituencyService(constituencyRepository, userRepository);
+        underTest = new ConstituencyService(constituencyRepository);
     }
 
     @Test
