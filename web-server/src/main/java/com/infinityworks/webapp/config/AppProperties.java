@@ -5,7 +5,7 @@ import org.springframework.context.annotation.Configuration;
 
 @Configuration
 @ConfigurationProperties(prefix="canvass")
-public class CanvassConfig {
+public class AppProperties {
     private String pafApiBaseUrl;
     private String pafApiTimeout;
     private String pafApiToken;

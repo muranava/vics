@@ -84,7 +84,7 @@ public class WardController {
                 .fold(errorHandler::mapToResponseEntity, ResponseEntity::ok);
     }
 
-    @PreAuthorize("hasAuthority('ADMIN')")
+    @PreAuthorize("isAuthenticated()")
     @RequestMapping(method = GET, value = "/search")
     public ResponseEntity<?> wardsSearch(
             Principal principal,
@@ -95,7 +95,7 @@ public class WardController {
                 .fold(errorHandler::mapToResponseEntity, ResponseEntity::ok);
     }
 
-    @PreAuthorize("hasAuthority('ADMIN')")
+    @PreAuthorize("isAuthenticated()")
     @RequestMapping(method = POST, value = "/{wardID}/user/{userID}")
     public ResponseEntity<?> addUserAssociation(
             Principal principal,
@@ -106,7 +106,7 @@ public class WardController {
                 .fold(errorHandler::mapToResponseEntity, ResponseEntity::ok);
     }
 
-    @PreAuthorize("hasAuthority('ADMIN')")
+    @PreAuthorize("isAuthenticated()")
     @RequestMapping(method = POST, value = "/associate")
     public ResponseEntity<?> addUserAssociationByUsernameAndWardCode(
             Principal principal,
@@ -117,7 +117,7 @@ public class WardController {
                 .fold(errorHandler::mapToResponseEntity, ResponseEntity::ok);
     }
 
-    @PreAuthorize("hasAuthority('ADMIN')")
+    @PreAuthorize("isAuthenticated()")
     @RequestMapping(method = DELETE, value = "/{wardID}/user/{userID}")
     public ResponseEntity<?> removeUserAssociation(
             Principal principal,

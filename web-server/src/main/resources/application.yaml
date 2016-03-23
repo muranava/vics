@@ -44,6 +44,7 @@ canvass:
 logging.level.: INFO
 logging.level:
   com.infinityworks: TRACE
+  org.springframework.cache: DEBUG
 
 logstash:
   port: 4560

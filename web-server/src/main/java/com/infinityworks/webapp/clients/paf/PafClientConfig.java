@@ -1,7 +1,7 @@
 package com.infinityworks.webapp.clients.paf;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.infinityworks.webapp.config.CanvassConfig;
+import com.infinityworks.webapp.config.AppProperties;
 import com.infinityworks.webapp.clients.paf.command.*;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
@@ -19,9 +19,9 @@ public class PafClientConfig {
     }
 
     @Bean
-    public OkHttpClient okHttpClient(CanvassConfig canvassConfig) {
+    public OkHttpClient okHttpClient(AppProperties appProperties) {
         return new OkHttpClient.Builder().addInterceptor(chain -> {
-            Request request = chain.request().newBuilder().addHeader("X-Authorization", canvassConfig.getPafApiToken()).build();
+            Request request = chain.request().newBuilder().addHeader("X-Authorization", appProperties.getPafApiToken()).build();
             return chain.proceed(request);
         }).build();
     }
@@ -32,42 +32,42 @@ public class PafClientConfig {
     }
 
     @Bean
-    public Retrofit retrofit(OkHttpClient client, ObjectMapper objectMapper, CanvassConfig canvassConfig) {
+    public Retrofit retrofit(OkHttpClient client, ObjectMapper objectMapper, AppProperties appProperties) {
         return new Retrofit.Builder()
                 .addConverterFactory(JacksonConverterFactory.create(objectMapper))
-                .baseUrl(canvassConfig.getPafApiBaseUrl())
+                .baseUrl(appProperties.getPafApiBaseUrl())
                 .client(client)
                 .build();
     }
 
     // TODO provide better abstraction for these factories
     @Bean
-    public GetVotersCommandFactory getVotersCommandFactory(PafClient pafClient, PafRequestExecutor requestExecutor, CanvassConfig canvassConfig) {
-        return new GetVotersCommandFactory(pafClient, canvassConfig.getPafApiTimeout(), requestExecutor);
+    public GetVotersCommandFactory getVotersCommandFactory(PafClient pafClient, PafRequestExecutor requestExecutor, AppProperties appProperties) {
+        return new GetVotersCommandFactory(pafClient, appProperties.getPafApiTimeout(), requestExecutor);
     }
 
     @Bean
-    public RecordVoteCommandFactory recordVoteCommandFactory(PafClient pafClient, PafRequestExecutor requestExecutor, CanvassConfig canvassConfig) {
-        return new RecordVoteCommandFactory(pafClient, canvassConfig.getPafApiTimeout(), requestExecutor);
+    public RecordVoteCommandFactory recordVoteCommandFactory(PafClient pafClient, PafRequestExecutor requestExecutor, AppProperties appProperties) {
+        return new RecordVoteCommandFactory(pafClient, appProperties.getPafApiTimeout(), requestExecutor);
     }
 
     @Bean
-    public RecordContactCommandFactory recordContactCommandFactory(PafClient pafClient, PafRequestExecutor requestExecutor, CanvassConfig canvassConfig) {
-        return new RecordContactCommandFactory(pafClient, canvassConfig.getPafApiTimeout(), requestExecutor);
+    public RecordContactCommandFactory recordContactCommandFactory(PafClient pafClient, PafRequestExecutor requestExecutor, AppProperties appProperties) {
+        return new RecordContactCommandFactory(pafClient, appProperties.getPafApiTimeout(), requestExecutor);
     }
 
     @Bean
-    public GetStreetsCommandFactory getStreetsCommandFactory(PafClient pafClient, PafRequestExecutor requestExecutor, CanvassConfig canvassConfig) {
-        return new GetStreetsCommandFactory(pafClient, canvassConfig.getPafApiTimeout(), requestExecutor);
+    public GetStreetsCommandFactory getStreetsCommandFactory(PafClient pafClient, PafRequestExecutor requestExecutor, AppProperties appProperties) {
+        return new GetStreetsCommandFactory(pafClient, appProperties.getPafApiTimeout(), requestExecutor);
     }
 
     @Bean
-    public SearchVotersCommandFactory searchVotersCommandFactory(PafClient pafClient, PafRequestExecutor requestExecutor, CanvassConfig canvassConfig) {
-        return new SearchVotersCommandFactory(pafClient, canvassConfig.getPafApiTimeout(), requestExecutor);
+    public SearchVotersCommandFactory searchVotersCommandFactory(PafClient pafClient, PafRequestExecutor requestExecutor, AppProperties appProperties) {
+        return new SearchVotersCommandFactory(pafClient, appProperties.getPafApiTimeout(), requestExecutor);
     }
 
     @Bean
-    public DeleteContactCommandFactory deleteContactCommandFactory(PafClient pafClient, PafRequestExecutor requestExecutor, CanvassConfig canvassConfig) {
-        return new DeleteContactCommandFactory(pafClient, canvassConfig.getPafApiTimeout(), requestExecutor);
+    public DeleteContactCommandFactory deleteContactCommandFactory(PafClient pafClient, PafRequestExecutor requestExecutor, AppProperties appProperties) {
+        return new DeleteContactCommandFactory(pafClient, appProperties.getPafApiTimeout(), requestExecutor);
     }
 }

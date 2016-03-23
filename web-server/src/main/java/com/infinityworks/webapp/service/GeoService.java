@@ -6,9 +6,12 @@ import com.infinityworks.webapp.clients.gmaps.command.AddressLookupCommandFactor
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
+
 @Service
 public class GeoService {
-
+    private Map<String, Object> cache = new ConcurrentHashMap<>();
     private final AddressLookupCommandFactory addressLookupCommandFactory;
 
     @Autowired
@@ -17,7 +20,14 @@ public class GeoService {
     }
 
     public Try<Object> reverseGeolocateAddress(String searchTerm) {
+        if (cache.containsKey(searchTerm)) {
+            return Try.success(cache.get(searchTerm));
+        }
+
         AddressLookupCommand lookupCommand = addressLookupCommandFactory.create(searchTerm);
-        return lookupCommand.execute();
+        Try<Object> result = lookupCommand.execute();
+        result.map(address -> cache.put(searchTerm, address));
+
+        return result;
     }
 }

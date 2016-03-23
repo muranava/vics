@@ -25,14 +25,15 @@ import static org.mockito.Mockito.mock;
 public class AddressServiceTest {
 
     private AddressService underTest;
-    private PafClient pafClient;
     private WardService wardService;
 
     @Before
     public void setUp() throws Exception {
-        pafClient = mock(PafClient.class);
+        PafClient pafClient = mock(PafClient.class);
         wardService = mock(WardService.class);
-        underTest = new AddressService(wardService, new GetStreetsCommandFactory(pafClient, 30000, new PafRequestExecutor(){}), new PafToStreetConverter());
+        PafAddressService pafAddressService = new PafAddressService(new GetStreetsCommandFactory(pafClient, 30000, new PafRequestExecutor() {
+        }), new PafToStreetConverter());
+        underTest = new AddressService(wardService, pafAddressService);
     }
 
     @Test
