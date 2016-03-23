@@ -1,5 +1,6 @@
 package com.infinityworks.webapp.clients.paf.command;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.infinityworks.common.lang.Try;
 import com.infinityworks.webapp.clients.paf.PafClient;
 import com.infinityworks.webapp.clients.paf.PafRequestExecutor;
@@ -29,6 +30,7 @@ public class RecordContactCommand extends HystrixCommand<Try<RecordContactRespon
 
     @Override
     protected Try<RecordContactResponse> run() throws Exception {
+        System.out.println(new ObjectMapper().writeValueAsString(recordContactRequest));
         Call<RecordContactResponse> call = pafClient.recordContact(ern, recordContactRequest);
         return requestExecutor.execute(call);
     }

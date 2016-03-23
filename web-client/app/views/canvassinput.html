@@ -43,9 +43,7 @@
               <div class="form-group">
                 <div class="alert alert-callout alert-danger" role="alert" ng-show="errors.length">
                   <p ng-repeat="error in errors">
-                    <i class="fa fa-warning"></i> &nbsp;{{error}} <a class="btn btn-icon-toggle btn-refresh"
-                                                                     data-toggle="modal" data-target="#simpleModal"><i
-                    class="fa fa-question"></i></a>
+                    <i class="fa fa-warning"></i> &nbsp;{{error}}
                   </p>
                 </div>
               </div>
@@ -102,18 +100,39 @@
 
               <!-- Likelihood to vote -->
               <div class="form-group">
-                <label class="control-label">Voting Likelihood</label>
-                <select name="likelihood"
-                        class="form-control hl-focus"
-                        ng-options="item for item in [
-                          '0 - N/A',
-                          '1 - Definitely won\'t vote',
-                          '2 - Probably won\'t vote',
-                          '3 - Undecided',
-                          '4 - Probably will vote',
-                          '5 - Definitely will vote'] track by item"
-                        ng-model="inputRecordModel.likelihood">
-                </select>
+                <label class="control-label" style="padding-bottom: 10px">Voting Likelihood</label>
+                <div class="row">
+                  <div class="col-xs-2">
+                    <label class="radio-inline radio-styled">
+                      <input type="radio" ng-model="inputRecordModel.likelihood" name="inlineRadioOptions" value="0"><span>N/A</span>
+                    </label>
+                  </div>
+                  <div class="col-xs-2">
+                    <label class="radio-inline radio-styled">
+                      <input type="radio" ng-model="inputRecordModel.likelihood" name="inlineRadioOptions" value="1"><span>1</span>
+                    </label>
+                  </div>
+                  <div class="col-xs-2">
+                    <label class="radio-inline radio-styled">
+                      <input type="radio" ng-model="inputRecordModel.likelihood" name="inlineRadioOptions" value="2"><span>2</span>
+                    </label>
+                  </div>
+                  <div class="col-xs-2">
+                    <label class="radio-inline radio-styled">
+                      <input type="radio" ng-model="inputRecordModel.likelihood" name="inlineRadioOptions" value="3"><span>3</span>
+                    </label>
+                  </div>
+                  <div class="col-xs-2">
+                    <label class="radio-inline radio-styled">
+                      <input type="radio" ng-model="inputRecordModel.likelihood" name="inlineRadioOptions" value="4"><span>4</span>
+                    </label>
+                  </div>
+                  <div class="col-xs-2">
+                    <label class="radio-inline radio-styled">
+                      <input type="radio" ng-model="inputRecordModel.likelihood" name="inlineRadioOptions" value="5"><span>5</span>
+                    </label>
+                  </div>
+                </div>
               </div>
 
               <!-- Key issues checkboxes -->
@@ -140,20 +159,41 @@
                 </div>
               </div>
 
-              <!-- Intention to vote select -->
+              <!-- Intention to vote -->
               <div class="form-group">
-                <label class="control-label">Intention to Vote</label>
-                <select name="intention"
-                        class="form-control hl-focus"
-                        ng-options="item for item in [
-                          '0 - N/A',
-                          '1 - Definitely remain',
-                          '2 - Probably remain',
-                          '3 - Undecided',
-                          '4 - Probably leave',
-                          '5 - Definitely leave'] track by item"
-                        ng-model="inputRecordModel.intention">
-                </select>
+                <label class="control-label">Voting Intention</label>
+                <div class="row">
+                  <div class="col-xs-2">
+                    <label class="radio-inline radio-styled">
+                      <input type="radio" ng-model="inputRecordModel.intention" name="likelihoodOpt" value="0"><span>N/A</span>
+                    </label>
+                  </div>
+                  <div class="col-xs-2">
+                    <label class="radio-inline radio-styled">
+                      <input type="radio" ng-model="inputRecordModel.intention" name="likelihoodOpt" value="1"><span>1</span>
+                    </label>
+                  </div>
+                  <div class="col-xs-2">
+                    <label class="radio-inline radio-styled">
+                      <input type="radio" ng-model="inputRecordModel.intention" name="likelihoodOpt" value="2"><span>2</span>
+                    </label>
+                  </div>
+                  <div class="col-xs-2">
+                    <label class="radio-inline radio-styled">
+                      <input type="radio" ng-model="inputRecordModel.intention" name="likelihoodOpt" value="3"><span>3</span>
+                    </label>
+                  </div>
+                  <div class="col-xs-2">
+                    <label class="radio-inline radio-styled">
+                      <input type="radio" ng-model="inputRecordModel.intention" name="likelihoodOpt" value="4"><span>4</span>
+                    </label>
+                  </div>
+                  <div class="col-xs-2">
+                    <label class="radio-inline radio-styled">
+                      <input type="radio" ng-model="inputRecordModel.intention" name="likelihoodOpt" value="5"><span>5</span>
+                    </label>
+                  </div>
+                </div>
               </div>
 
               <!-- flags checkboxes -->
@@ -186,17 +226,16 @@
                 </div>
                 <div class="checkbox  checkbox-styled checkbox-focus-visible">
                   <label>
-                    <input type="checkbox" ng-model="inputRecordModel.deceased" value="">
-                    <span>Deceased</span>
-                  </label>
-                </div>
-                <div class="checkbox  checkbox-styled checkbox-focus-visible">
-                  <label>
                     <input type="checkbox" ng-model="inputRecordModel.inaccessible" value="">
                     <span>Inaccessible</span>
                   </label>
                 </div>
-
+                <div class="checkbox  checkbox-styled checkbox-focus-visible">
+                  <label>
+                    <input type="checkbox" ng-model="inputRecordModel.deceased" value="">
+                    <span>Deceased</span>
+                  </label>
+                </div>
                 <!-- This intentionally isn't hooked up -->
                 <div class="checkbox  checkbox-styled checkbox-focus-visible">
                   <label>
@@ -210,7 +249,7 @@
               <div class="form-group">
                 <!-- phone -->
                 <div class="row">
-                  <div class="col-md-6">
+                  <div class="col-xs-6">
                     <div class="input-group">
                       <div class="input-group-content ern-spacing">
                         <input id="phone" type="text" class="form-control" ng-model="inputRecordModel.telephone">
@@ -219,7 +258,7 @@
                     </div>
                   </div>
                   <!-- email -->
-                  <div class="col-md-6">
+                  <div class="col-xs-6">
                     <div class="input-group">
                       <div class="input-group-content ern-spacing">
                         <input id="email" type="text" class="form-control" ng-model="inputRecordModel.email">

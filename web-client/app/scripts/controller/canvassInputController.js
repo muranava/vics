@@ -26,8 +26,8 @@ angular
           number: '',
           suffix: ''
         },
-        likelihood: '3 - Undecided',
-        intention: '3 - Undecided',
+        intention: null,
+        likelihood: null,
         cost: false,
         border: false,
         sovereignty: false,
@@ -138,8 +138,8 @@ angular
 
     function mapFormToRequest(formModel) {
       var copy = $.extend(true, {}, formModel);
-      copy.intention = _.parseInt(formModel.intention.charAt(0));
-      copy.likelihood = _.parseInt(formModel.likelihood.charAt(0));
+      copy.intention = _.parseInt(formModel.intention);
+      copy.likelihood = _.parseInt(formModel.likelihood);
       delete copy.ward;
 
       return copy;
@@ -172,6 +172,14 @@ angular
 
       if (!util.validErn(ern)) {
         errors.push("Elector ID is invalid");
+      }
+
+      if (!$scope.inputRecordModel.intention) {
+        errors.push("Please set the voting intention");
+      }
+
+      if (!$scope.inputRecordModel.likelihood) {
+        errors.push("Please set the voting likelihood");
       }
 
       return errors;

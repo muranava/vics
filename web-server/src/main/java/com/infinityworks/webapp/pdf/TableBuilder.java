@@ -123,10 +123,10 @@ public class TableBuilder {
      * @return the house that is generated for the current house
      */
     private String createRow(PdfPTable table, String prevHouse, ElectorRow row) {
-        boolean houseChanges = prevHouse != null && !Objects.equals(prevHouse, row.getHouse());
+        boolean shouldAddHouseChangeRow = prevHouse != null && !Objects.equals(prevHouse, row.getHouse());
         prevHouse = row.getHouse();
 
-        if (houseChanges) {
+        if (shouldAddHouseChangeRow) {
             addChangeRow(table);
         }
 
