@@ -35,7 +35,7 @@ public class PafAddressService {
         Try<List<Street>> streets = getStreetsCommand.execute().map(str -> str.response().stream()
                 .map(pafToStreetConverter)
                 .collect(toList()));
-        streets.map(s -> cache.putIfAbsent(wardCode, s));
+        streets.map(s -> cache.put(wardCode, s));
         return streets;
     }
 }
