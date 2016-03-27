@@ -1,4 +1,4 @@
-package com.infinityworks.webapp.service;
+package com.infinityworks.webapp.converter;
 
 import com.infinityworks.common.lang.StringExtras;
 import com.infinityworks.common.lang.Try;

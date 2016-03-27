@@ -1,6 +1,7 @@
 package com.infinityworks.webapp.service;
 
 import com.infinityworks.common.lang.Try;
+import com.infinityworks.webapp.converter.ErnShortFormToLongFormConverter;
 import com.infinityworks.webapp.error.BadRequestFailure;
 import org.junit.Test;
 
