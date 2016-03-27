@@ -17,7 +17,7 @@ PostgreSQL is used for persistence.
 
 ## Build & Test
 
-Install redis and ensure the redis server is running locally.
+Install redis and ensure the redis server is running locally. This is needed to run integration tests (it would be nicer to use the embedded redis server for testing...)
 
     redis-server
     
