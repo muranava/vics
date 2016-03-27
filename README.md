@@ -17,6 +17,12 @@ PostgreSQL is used for persistence.
 
 ## Build & Test
 
+Install redis and ensure the redis server is running locally.
+
+    redis-server
+    
+Install postgres and create a database locally called ```canvassapp``` with username ```postgres``` and password ```postgres```
+
 Install maven 3 and Java 8, then test and build the entire project from the root directory as follows
 
     mvn clean install
