@@ -6,6 +6,9 @@
 server:
   context-path: /api/canvass
   port: 18080
+  compression:
+    enabled: true
+    mime-types: application/pdf
 
 spring:
   application:

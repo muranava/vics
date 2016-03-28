@@ -1,7 +1,6 @@
 package com.infinityworks.webapp.rest;
 
 import com.infinityworks.webapp.error.RestErrorHandler;
-import com.infinityworks.webapp.rest.dto.AssociateUserConstituency;
 import com.infinityworks.webapp.rest.dto.AssociateUserWard;
 import com.infinityworks.webapp.service.AddressService;
 import com.infinityworks.webapp.service.SessionService;
