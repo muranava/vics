@@ -1,6 +1,6 @@
 # canvass
 
-Application to generate canvass cards and record canvassing activities.
+Application to generate canvass cards and record canvassing activities
 
 ## Stack
 
