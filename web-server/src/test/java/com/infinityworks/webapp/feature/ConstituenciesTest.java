@@ -6,6 +6,7 @@ import com.infinityworks.webapp.domain.User;
 import com.infinityworks.webapp.error.RestErrorHandler;
 import com.infinityworks.webapp.repository.ConstituencyRepository;
 import com.infinityworks.webapp.rest.ConstituencyController;
+import com.infinityworks.webapp.rest.dto.AssociateUserConstituency;
 import com.infinityworks.webapp.service.ConstituencyAssociationService;
 import com.infinityworks.webapp.service.ConstituencyService;
 import com.infinityworks.webapp.service.SessionService;
@@ -20,6 +21,7 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import java.security.Principal;
 import java.util.UUID;
 
+import static com.infinityworks.webapp.common.Json.asJson;
 import static java.util.Collections.emptyList;
 import static java.util.Collections.singletonList;
 import static org.hamcrest.core.Is.is;
@@ -104,8 +106,28 @@ public class ConstituenciesTest extends WebApplicationTest {
                 .accept(MediaType.APPLICATION_JSON))
                 .andDo(print())
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$..constituencies[?(@.name =~ /.*Rugby/i)].id",
-                           is(singletonList(c.getId().toString()))));
+                .andExpect(jsonPath("$..constituencies[?(@.name =~ /.*Rugby/i)].id", is(singletonList(c.getId().toString()))))
+                .andExpect(jsonPath("$.username", is("cov@south.cov")));
+    }
+
+    @Test
+    public void addsAUserAssociationByUsername() throws Exception {
+        Constituency c = constituencyRepository.findOne(UUID.fromString("5e2636a6-991c-4455-b08f-93309533a2ab"));
+        AssociateUserConstituency association = new AssociateUserConstituency("cov@south.cov", c.getCode());
+        User admin = admin();
+        String endpoint = "/constituency/associate";
+
+        when(sessionService.extractUserFromPrincipal(any(Principal.class)))
+                .thenReturn(Try.success(admin));
+
+        mockMvc.perform(post(endpoint)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(asJson(association))
+                .accept(MediaType.APPLICATION_JSON))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$..constituencies[?(@.name =~ /.*Rugby/i)].id", is(singletonList(c.getId().toString()))))
+                .andExpect(jsonPath("$.username", is("cov@south.cov")));
     }
 
     @Test
