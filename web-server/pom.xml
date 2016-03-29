@@ -195,6 +195,30 @@
                     </execution>
                 </executions>
             </plugin>
+            <plugin>
+                <!-- NOTE: We don't need a groupId specification because the group is org.apache.maven.plugins ...which is assumed by default. -->
+                <artifactId>maven-assembly-plugin</artifactId>
+                <version>2.6</version>
+                <executions>
+                    <execution>
+                        <id>make-zip</id>
+                        <!-- this is used for inheritance merges -->
+                        <phase>package</phase>
+                        <!-- bind to the packaging phase -->
+                        <goals>
+                            <goal>
+                                single
+                            </goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <configuration>
+                    <appendAssemblyId>false</appendAssemblyId>
+                    <descriptors>
+                        <descriptor>src/main/assembly/zip.xml</descriptor>
+                    </descriptors>
+                </configuration>
+            </plugin>
 
             <!-- copy the built jar to the staging area, so it can be deployed later by the assembly plugin -->
             <plugin>
@@ -208,6 +232,7 @@
                                 <copy todir="${project.basedir}/../dist/server">
                                     <fileset dir="${project.basedir}/">
                                         <include name="target/web-server-*.jar"/>
+                                        <include name="target/web-server-*.zip"/>
                                         <exclude name="target/web-server-*-sources.jar"/>
                                     </fileset>
                                     <flattenmapper/>
