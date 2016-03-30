@@ -1,4 +1,4 @@
-<header id="header" ng-show="streets && streets.length">
+<header id="header" ng-show="streets && streets.length && showSubMenu">
   <div class="headerbar">
     <div class="headerbar-left">
       <ul class="header-nav header-nav-options">
@@ -111,6 +111,16 @@
                   </div>
                 </div>
                 <div class="card">
+                  <div class="card-actionbar">
+                    <div class="card-actionbar-row">
+                      <br>
+                      <button type="button" class="btn btn-primary btn-sm raised pull-left" ng-click="onPrintSelected()"
+                              ng-disabled="numStreetsSelected === 0">Print Selected
+                      </button>
+                      <a class="btn btn-danger btn-sm raised pull-left button-group-spacing" data-toggle="modal"
+                         data-target="#simpleModal">Print All</a>
+                    </div>
+                  </div>
                   <div class="card-body">
 
                     <div class="form">
@@ -132,10 +142,10 @@
                         <th>Street</th>
                         <th class="hidden-xs stats-cell"># Voters</th>
                         <th class="hidden-xs stats-cell">% Canvassed</th>
-                        <th>Actions</th>
+                        <th class="stats-cell">Actions</th>
                       </tr>
                       </thead>
-                      <tbody>
+                      <tbody id="streetsList">
                       <tr ng-repeat="street in streets | filter:streetFilter">
                         <td>
                           <div class="checkbox checkbox-inline checkbox-styled">
@@ -153,8 +163,8 @@
                         <td class="hidden-xs stats-cell">
                           <span class="text-default text-xl">{{street.numCanvassed}}</span>
                         </td>
-                        <td class="text-right">
-                          <button ng-click="onShowMap(street)" type="button" class="btn btn-icon-toggle" data-toggle="tooltip" data-placement="top" data-original-title="Delete row"><i class="fa fa-map-marker"></i></button>
+                        <td class="text-center">
+                          <button ng-click="onShowMap(street)" type="button" class="btn btn-icon-toggle" data-toggle="tooltip" data-placement="top" data-original-title="Delete row"><i class="fa icon-med fa-map-marker"></i></button>
                         </td>
                       </tr>
                       </tbody>
@@ -206,6 +216,7 @@
 
   </div>
   <div class="modal-footer">
-    <a class="btn btn-danger raised" type="button" ng-click="cancel()">Close</a>
+    <a class="btn btn-danger raised visible-xs pull-left" type="button" ng-click="cancel()">Close</a>
+    <a class="btn btn-danger raised hidden-xs" type="button" ng-click="cancel()">Close</a>
   </div>
 </script>

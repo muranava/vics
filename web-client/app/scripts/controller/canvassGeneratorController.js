@@ -1,4 +1,3 @@
-
 /**
  * Controller for the main canvass generator
  */
@@ -11,6 +10,7 @@ angular
       $scope.wardSearchModel = '';
       $scope.numStreetsSelected = 0;
       $scope.errorLoadingData = false;
+      var streetsContainerPos = null;
 
       $scope.onSelectConstituency = function () {
         resetErrors();
@@ -25,7 +25,7 @@ angular
       };
 
       function determineIfPrintMenuDisplayed() {
-        $scope.showSubMenu = $window.scrollY > 100;
+        $scope.showSubMenu = streetsContainerPos && $window.scrollY > streetsContainerPos;
         if (!$scope.$$phase) {
           $scope.$apply();
         }
@@ -57,6 +57,7 @@ angular
 
       function scrollToPrintSection() {
         _.defer(function () {
+          streetsContainerPos = $('#streetsList').offset().top;
           $("html, body").animate({scrollTop: $('#printCards').offset().top - 140}, 500);
         });
       }

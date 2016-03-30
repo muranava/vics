@@ -8,7 +8,7 @@
       <div class="col-lg-8">
         <article class="lead">
           <p>
-            Create and delete users and associate permissions.
+            Create, delete and modify users.
           </p>
         </article>
       </div>
@@ -92,7 +92,7 @@
           </div><!--end .card -->
         </div>
 
-        <div class="row" ng-if="!editMode">
+        <div class="row" ng-if="!editMode && createUserMode">
 
           <form class="form form-validate" novalidate="novalidate" ng-submit="onCreateUser(createUserModel)">
             <div class="card ">
@@ -137,15 +137,14 @@
                     </div>
                     <div class="input-group-content">
                       <input type="text" class="form-control" name="pw1" ng-model="createUserModel.password" id="pw1"
-                             data-rule-min="12" data-rule-max="50" required>
+                             data-rule-min="12" data-rule-max="50" required ng-disabled="true">
                       <label for="pw1">Password</label>
-                      <p class="help-block">At least 12 characters with at least one number and uppercase character</p>
                     </div>
                   </div>
                 </div>
                 <div class="form-group">
                   <input type="text" class="form-control" ng-model="createUserModel.repeatPassword" id="pw2" name="pw2"
-                         data-rule-min="8" data-rule-max="50" required>
+                         data-rule-min="8" data-rule-max="50" required ng-disabled="true">
                   <label for="pw2">Repeat Password</label>
                 </div>
 
@@ -161,6 +160,7 @@
               </div><!--end .card-body -->
               <div class="card-actionbar">
                 <div class="card-actionbar-row">
+                  <button type="button" class="btn btn-sm btn-primary raised" ng-click="setCreateUserMode(false)">CANCEL</button>
                   <button type="button" class="btn btn-sm btn-primary raised" ng-click="onCsvUpload()">CSV UPLOAD</button>
                   <button type="submit" class="btn btn-sm btn-danger raised">CREATE USER</button>
                 </div>
@@ -168,10 +168,7 @@
             </div><!--end .card -->
           </form>
         </div>
-        <div class="row" ng-if="!editMode">
-          <div class="col-lg-12">
-            <h2 class="text-primary">Users</h2>
-          </div><!--end .col -->
+
 
           <div class="col-lg-12">
             <div class="alert alert-callout alert-danger" role="alert" ng-show="deleteUserFailed">
@@ -179,32 +176,30 @@
             </div>
           </div>
 
-          <div class="row">
+          <div ng-if="!createUserMode && !editMode" class="row">
             <div class="col-lg-12">
               <div class="card">
-                <div class="card-body no-padding">
+                <div class="card-body">
+
+                  <div class="card-actionbar">
+                    <div class="card-actionbar-row">
+                      <button type="button" ng-click="setCreateUserMode(true)" class="btn btn-sm btn-danger raised">CREATE USER</button>
+                    </div>
+                  </div>
 
                   <table class="table table-hover no-margin">
                     <thead>
                     <tr>
-                      <th class="stats-cell hidden-xs">Type</th>
-                      <th class="stats-cell hidden-xs">Write Access</th>
                       <th>Username</th>
                       <th>Last Name</th>
                       <th>First Name</th>
+                      <th class="stats-cell hidden-xs">Role</th>
+                      <th class="stats-cell hidden-xs">Write Access</th>
                       <th class="stats-cell">Actions</th>
                     </tr>
                     </thead>
                     <tbody>
                     <tr ng-repeat="user in users">
-                      <td class="stats-cell hidden-xs">
-                        <i ng-if="user.role === 'ADMIN'" class="fa fa-lock"></i>
-                        <i ng-if="user.role === 'USER'" class="fa fa-user"></i>
-                      </td>
-                      <td class="stats-cell hidden-xs">
-                        <i ng-if="user.writeAccess" class="fa fa-check"></i>
-                        <i ng-if="!user.writeAccess" class="fa fa-remove"></i>
-                      </td>
                       <td>{{user.username}}</td>
                       <td>
                         {{user.lastName}}
@@ -212,11 +207,20 @@
                       <td>
                         {{user.firstName}}
                       </td>
-                      <td class="stats-cell">
-                        <a ng-href="#/associations/{{user.id}}" type="button" class="btn btn-icon-toggle" data-toggle="tooltip" data-placement="top" data-original-title="Associate"><i class="fa fa-sitemap"></i></a>
-                        <a ng-if="user.role === 'USER'" ng-click="onEditUser(user.id)" type="button" class="btn btn-icon-toggle" data-toggle="tooltip" data-placement="top" data-original-title="Edit"><i class="fa fa-pencil"></i></a>
-                        <a ng-if="user.role === 'USER'" ng-click="preDeleteUser(user)" type="button" class="btn btn-icon-toggle" data-toggle="modal" data-target="#simpleModal" data-placement="top" data-original-title="Delete"><i class="fa fa-remove"></i></a>
+                      <td class="stats-cell hidden-xs">
+                        <i ng-if="user.role === 'ADMIN'" class="fa fa-2x icon-med fa-shield text-warning" data-toggle="tooltip" data-placement="top" title="Admin user"></i>
+                        <i ng-if="user.role === 'USER'" class="fa icon-med fa-user" data-toggle="tooltip" data-placement="top" title="Basic User"></i>
                       </td>
+                      <td class="stats-cell hidden-xs">
+                        <i ng-if="user.writeAccess" class="fa fa-check icon-med text-success"></i>
+                        <i ng-if="!user.writeAccess" class="fa fa-remove icon-med text-danger"></i>
+                      </td>
+                      <td class="stats-cell">
+                        <a ng-href="#/associations/{{user.id}}" type="button" class="btn btn-icon-toggle" data-toggle="tooltip" data-placement="top" data-original-title="Permissions"><i class="fa fa-sitemap icon-med"></i></a>
+                        <a ng-if="user.role === 'USER'" ng-click="onEditUser(user.id)" type="button" class="btn btn-icon-toggle" data-toggle="tooltip" data-placement="top" data-original-title="Edit"><i class="fa fa-pencil icon-med"></i></a>
+                        <a ng-if="user.role === 'USER'" ng-click="preDeleteUser(user)" type="button" class="btn btn-icon-toggle" data-toggle="modal" data-target="#simpleModal" data-placement="top" data-original-title="Delete"><i class="fa fa-remove icon-med "></i></a>
+                      </td>
+
                     </tr>
                     </tbody>
                   </table>
@@ -226,8 +230,6 @@
             </div>
           </div>
           <br><br>
-
-        </div>
 
       </div>
     </div>

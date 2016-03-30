@@ -20,6 +20,16 @@ angular
     }
     $scope.createUserModel = initCreateUserModel();
 
+    $scope.setCreateUserMode = function(enabled) {
+      $scope.createUserMode = enabled;
+    };
+
+    _.defer(function() {
+      $(function () {
+        $('[data-toggle="tooltip"]').tooltip()
+      })
+    });
+
     $scope.onConfirmDeleteUser = function (user) {
       clearMessages();
       if (user.role === 'ADMIN') {
