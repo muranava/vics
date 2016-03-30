@@ -188,6 +188,8 @@
                     <li class="tile" ng-repeat="user in users">
                       <a class="tile-content ink-reaction">
                         <div class="tile-icon">
+                          <i ng-if="user.writeAccess" class="fa fa-check"></i>
+                          <i ng-if="!user.writeAccess" class="fa fa-remove"></i>
                           <i ng-if="user.role === 'ADMIN'" class="fa fa-lock"></i>
                           <i ng-if="user.role === 'USER'" class="fa fa-user"></i>
                         </div>

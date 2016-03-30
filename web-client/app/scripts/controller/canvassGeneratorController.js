@@ -89,7 +89,7 @@ angular
 
               var mapData = {
                 street: streetLabel,
-                berlin: {
+                location: {
                   lat: geom.location.lat,
                   lng: geom.location.lng,
                   zoom: 16
