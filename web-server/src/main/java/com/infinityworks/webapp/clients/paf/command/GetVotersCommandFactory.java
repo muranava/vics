@@ -2,7 +2,8 @@ package com.infinityworks.webapp.clients.paf.command;
 
 import com.infinityworks.webapp.clients.paf.PafClient;
 import com.infinityworks.webapp.clients.paf.PafRequestExecutor;
-import com.infinityworks.webapp.clients.paf.dto.PafStreet;
+import com.infinityworks.webapp.clients.paf.dto.PafStreetRequest;
+import com.infinityworks.webapp.clients.paf.dto.PafStreetResponse;
 
 import java.util.List;
 
@@ -17,7 +18,7 @@ public class GetVotersCommandFactory {
         this.responseHandler = responseHandler;
     }
 
-    public GetVotersCommand create(List<PafStreet> streets, String wardCode) {
+    public GetVotersCommand create(List<PafStreetRequest> streets, String wardCode) {
         return new GetVotersCommand(streets, wardCode, pafClient, timeoutMSecs, responseHandler);
     }
 }

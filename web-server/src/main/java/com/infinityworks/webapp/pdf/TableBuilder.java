@@ -67,7 +67,7 @@ public class TableBuilder {
 
         table.addCell(likelihood);
         table.addCell(createHeaderCell("Cost", TableProperties.HORIZONTAL_TEXT_ANGLE));
-        table.addCell(createHeaderCell("Sovereignty", TableProperties.HORIZONTAL_TEXT_ANGLE));
+        table.addCell(createHeaderCell("Control", TableProperties.HORIZONTAL_TEXT_ANGLE));
         table.addCell(createHeaderCell("Border", TableProperties.HORIZONTAL_TEXT_ANGLE));
 
         PdfPCell intention = createHeaderCell("Voting\nIntention", TableProperties.HORIZONTAL_TEXT_ANGLE);

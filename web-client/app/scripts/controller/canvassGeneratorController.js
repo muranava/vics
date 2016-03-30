@@ -25,7 +25,6 @@ angular
       };
 
       function determineIfPrintMenuDisplayed() {
-        $scope.showSubMenu = $window.scrollY > 100;
         if (!$scope.$$phase) {
           $scope.$apply();
         }
@@ -51,13 +50,19 @@ angular
           })
           .error(function () {
             $scope.errorLoadingStreets = true;
+            scrollToNoVoters();
           });
       };
 
       function scrollToPrintSection() {
         _.defer(function () {
           $("html, body").animate({scrollTop: $('#printCards').offset().top - 140}, 500);
-          $scope.showSubMenu = true;
+        });
+      }
+
+      function scrollToNoVoters() {
+        _.defer(function () {
+          $("html, body").animate({scrollTop: $('#noVoters').offset().top - 140}, 500);
         });
       }
 

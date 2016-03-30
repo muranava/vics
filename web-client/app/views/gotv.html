@@ -1,11 +1,10 @@
 <header id="header" ng-show="streets && streets.length && showSubMenu">
-  <!--<header id="header" ng-show="streets && streets.length">-->
   <div class="headerbar">
     <div class="headerbar-left">
       <ul class="header-nav header-nav-options">
         <li class="header-nav-brand">
           <div class="brand-holder">
-            <h4>{{numStreetsSelected}} of {{streets.length}} streets selected</h4>
+            <h4>{{numStreetsSelected}} of {{streets.length}} streets <span class="hidden-xs">selected</span></h4>
           </div>
         </li>
       </ul>

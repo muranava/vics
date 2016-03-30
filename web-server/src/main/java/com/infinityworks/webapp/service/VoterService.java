@@ -5,11 +5,8 @@ import com.infinityworks.webapp.clients.paf.command.GetVotersCommand;
 import com.infinityworks.webapp.clients.paf.command.GetVotersCommandFactory;
 import com.infinityworks.webapp.clients.paf.command.SearchVotersCommand;
 import com.infinityworks.webapp.clients.paf.command.SearchVotersCommandFactory;
-import com.infinityworks.webapp.clients.paf.converter.StreetToPafConverter;
-import com.infinityworks.webapp.clients.paf.dto.PafStreet;
-import com.infinityworks.webapp.clients.paf.dto.Property;
-import com.infinityworks.webapp.clients.paf.dto.PropertyResponse;
-import com.infinityworks.webapp.clients.paf.dto.SearchVoterResponse;
+import com.infinityworks.webapp.clients.paf.converter.PafStreetRequestConverter;
+import com.infinityworks.webapp.clients.paf.dto.*;
 import com.infinityworks.webapp.domain.User;
 import com.infinityworks.webapp.domain.Ward;
 import com.infinityworks.webapp.error.NotFoundFailure;
@@ -41,14 +38,14 @@ public class VoterService {
     private final PDFTableGenerator pdfTableGenerator;
     private final GetVotersCommandFactory getVotersCommandFactory;
     private final SearchVotersCommandFactory searchVotersCommandFactory;
-    private final StreetToPafConverter streetToPafConverter;
+    private final PafStreetRequestConverter streetToPafConverter;
 
     @Autowired
     public VoterService(WardService wardService,
                         PDFTableGenerator pdfTableGenerator,
                         GetVotersCommandFactory getVotersCommandFactory,
                         SearchVotersCommandFactory searchVotersCommandFactory,
-                        StreetToPafConverter streetToPafConverter) {
+                        PafStreetRequestConverter streetToPafConverter) {
         this.wardService = wardService;
         this.pdfTableGenerator = pdfTableGenerator;
         this.getVotersCommandFactory = getVotersCommandFactory;
@@ -92,7 +89,7 @@ public class VoterService {
 
         return wardService.getByCode(wardCode, user)
                 .flatMap(ward -> {
-                    List<PafStreet> pafStreets = request.getStreets()
+                    List<PafStreetRequest> pafStreets = request.getStreets()
                             .stream()
                             .map(streetToPafConverter)
                             .collect(toList());

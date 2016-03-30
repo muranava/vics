@@ -14,5 +14,5 @@ import java.util.List;
 @JsonDeserialize(as = ImmutableStreetsResponse.class)
 @JsonSerialize(as = ImmutableStreetsResponse.class)
 public interface StreetsResponse {
-    @JsonProperty("response") List<PafStreet> response();
+    @JsonProperty("response") List<PafStreetResponse> response();
 }

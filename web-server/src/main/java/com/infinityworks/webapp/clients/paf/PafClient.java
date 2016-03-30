@@ -30,7 +30,7 @@ public interface PafClient {
      */
     @POST("wards/{wardCode}/streets")
     Call<PropertyResponse> votersByStreets(@Path("wardCode") String wardCode,
-                                           @Body List<PafStreet> streets);
+                                           @Body List<PafStreetRequest> streets);
 
     /**
      * Searches a voter by attributes
