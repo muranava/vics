@@ -158,10 +158,10 @@
                         </td>
                         <td class="streetsText">{{street | streetSingleLineFilter}}</td>
                         <td class="hidden-xs stats-cell">
-                          <span class="text-default text-xl">{{street.numVoters}}</span>
+                          <span class="text-default text-xl">{{street.numVoters !== 0 ? street.numVoters : '-'}}</span>
                         </td>
                         <td class="hidden-xs stats-cell">
-                          <span class="text-default text-xl">{{street.numCanvassed}}</span>
+                          <span class="text-default text-xl">{{street.numCanvassed !== 0 ? street.numCanvassed : '-'}}</span>
                         </td>
                         <td class="text-center">
                           <button ng-click="onShowMap(street)" type="button" class="btn btn-icon-toggle" data-toggle="tooltip" data-placement="top" data-original-title="Delete row"><i class="fa icon-med fa-map-marker"></i></button>
