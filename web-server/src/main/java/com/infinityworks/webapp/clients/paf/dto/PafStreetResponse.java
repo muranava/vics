@@ -9,8 +9,8 @@ import org.immutables.value.Value;
 @Value.Immutable
 @JsonIgnoreProperties(ignoreUnknown = true)
 @Value.Style(init = "with*")
-@JsonDeserialize(as = ImmutablePafStreet.class)
-@JsonSerialize(as = ImmutablePafStreet.class)
+@JsonDeserialize(as = ImmutablePafStreetResponse.class)
+@JsonSerialize(as = ImmutablePafStreetResponse.class)
 public interface PafStreetResponse {
     @JsonProperty("main_street") String mainStreet();
     @JsonProperty("post_town") String postTown();
