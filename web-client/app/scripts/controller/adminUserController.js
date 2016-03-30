@@ -24,12 +24,6 @@ angular
       $scope.createUserMode = enabled;
     };
 
-    _.defer(function() {
-      $(function () {
-        $('[data-toggle="tooltip"]').tooltip();
-      });
-    });
-
     $scope.onConfirmDeleteUser = function (user) {
       clearMessages();
       if (user.role === 'ADMIN') {
@@ -145,6 +139,11 @@ angular
       userService.retrieveAllUsers()
         .success(function (response) {
           $scope.users = response;
+          _.delay(function() {
+            $(function () {
+              $('[data-toggle="tooltip"]').tooltip();
+            }, 1000);
+          });
         });
     }
 
