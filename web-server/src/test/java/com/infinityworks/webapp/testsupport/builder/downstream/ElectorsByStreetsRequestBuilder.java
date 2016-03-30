@@ -2,7 +2,7 @@ package com.infinityworks.webapp.testsupport.builder.downstream;
 
 import com.infinityworks.webapp.rest.dto.Flags;
 import com.infinityworks.webapp.rest.dto.ElectorsByStreetsRequest;
-import com.infinityworks.webapp.rest.dto.Street;
+import com.infinityworks.webapp.rest.dto.StreetRequest;
 
 import java.util.List;
 
@@ -10,7 +10,7 @@ import static com.infinityworks.webapp.testsupport.builder.downstream.StreetBuil
 import static java.util.Arrays.asList;
 
 public class ElectorsByStreetsRequestBuilder {
-    private List<Street> streets;
+    private List<StreetRequest> streets;
     private Flags flags;
 
     public ElectorsByStreetsRequestBuilder withDefaults() {
@@ -26,7 +26,7 @@ public class ElectorsByStreetsRequestBuilder {
         return new ElectorsByStreetsRequestBuilder().withDefaults();
     }
 
-    public ElectorsByStreetsRequestBuilder withStreets(List<Street> streets) {
+    public ElectorsByStreetsRequestBuilder withStreets(List<StreetRequest> streets) {
         this.streets = streets;
         return this;
     }

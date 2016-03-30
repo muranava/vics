@@ -10,7 +10,7 @@ import com.infinityworks.webapp.pdf.renderer.LogoRenderer;
 import com.infinityworks.webapp.rest.VoterController;
 import com.infinityworks.webapp.rest.dto.ElectorsByStreetsRequest;
 import com.infinityworks.webapp.rest.dto.RecordVote;
-import com.infinityworks.webapp.rest.dto.Street;
+import com.infinityworks.webapp.rest.dto.StreetRequest;
 import com.infinityworks.webapp.service.ContactService;
 import com.infinityworks.webapp.service.RecordVotedService;
 import com.infinityworks.webapp.service.SessionService;
@@ -78,7 +78,7 @@ public class VoterTest extends WebApplicationTest {
                 .thenReturn(Try.success(earlsdon()));
         pafApiStub.willReturnVotersByWardByTownAndByStreet(wardCode, "Coventry");
 
-        List<Street> townStreets = emptyList();
+        List<StreetRequest> townStreets = emptyList();
         ElectorsByStreetsRequest request = electorsByStreets().withStreets(townStreets).build();
         String url = "/elector/ward/" + wardCode + "/street/pdf";
 
@@ -96,7 +96,7 @@ public class VoterTest extends WebApplicationTest {
         when(sessionService.extractUserFromPrincipal(any(Principal.class)))
                 .thenReturn(Try.success(admin()));
 
-        List<Street> townStreets = null;
+        List<StreetRequest> townStreets = null;
         String url = "/elector/ward/" + wardCode + "/street/pdf";
 
         mockMvc.perform(post(url)

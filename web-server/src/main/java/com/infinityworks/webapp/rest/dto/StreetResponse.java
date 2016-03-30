@@ -3,24 +3,29 @@ package com.infinityworks.webapp.rest.dto;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.google.common.base.MoreObjects;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class Street {
+public class StreetResponse {
     private final String mainStreet;
     private final String postTown;
     private final String dependentStreet;
     private final String dependentLocality;
+    private final Integer numVoters;
+    private final Integer numCanvassed;
 
     @JsonCreator
-    public Street(@JsonProperty("mainStreet") String mainStreet,
-                  @JsonProperty("postTown") String postTown,
-                  @JsonProperty("dependentStreet") String dependentStreet,
-                  @JsonProperty("dependentLocality") String dependentLocality) {
+    public StreetResponse(@JsonProperty("mainStreet") String mainStreet,
+                          @JsonProperty("postTown") String postTown,
+                          @JsonProperty("dependentStreet") String dependentStreet,
+                          @JsonProperty("dependentLocality") String dependentLocality,
+                          @JsonProperty("numVoters") Integer numVoters,
+                          @JsonProperty("numCanvassed") Integer numCanvassed) {
         this.mainStreet = mainStreet;
         this.postTown = postTown;
         this.dependentStreet = dependentStreet;
         this.dependentLocality = dependentLocality;
+        this.numVoters = numVoters;
+        this.numCanvassed = numCanvassed;
     }
 
     public String getMainStreet() {
@@ -39,13 +44,11 @@ public class Street {
         return dependentLocality;
     }
 
-    @Override
-    public String toString() {
-        return MoreObjects.toStringHelper(this)
-                .add("mainStreet", mainStreet)
-                .add("postTown", postTown)
-                .add("dependentStreet", dependentStreet)
-                .add("dependentLocality", dependentLocality)
-                .toString();
+    public Integer getNumVoters() {
+        return numVoters;
+    }
+
+    public Integer getNumCanvassed() {
+        return numCanvassed;
     }
 }

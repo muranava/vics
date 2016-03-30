@@ -7,7 +7,7 @@ import com.infinityworks.webapp.error.RestErrorHandler;
 import com.infinityworks.webapp.repository.UserRepository;
 import com.infinityworks.webapp.rest.UserController;
 import com.infinityworks.webapp.rest.WardController;
-import com.infinityworks.webapp.rest.dto.Street;
+import com.infinityworks.webapp.rest.dto.StreetRequest;
 import com.infinityworks.webapp.rest.dto.UserRestrictedWards;
 import com.infinityworks.webapp.rest.dto.WardSummary;
 import com.infinityworks.webapp.service.*;
@@ -116,7 +116,7 @@ public class WardsTest extends WebApplicationTest {
 
         MvcResult result = resultActions.andExpect(status().isOk()).andReturn();
 
-        List<Street> streets = asList(objectMapper.readValue(result.getResponse().getContentAsString(), Street[].class));
+        List<StreetRequest> streets = asList(objectMapper.readValue(result.getResponse().getContentAsString(), StreetRequest[].class));
         assertThat(streets.size(), is(6));
     }
 

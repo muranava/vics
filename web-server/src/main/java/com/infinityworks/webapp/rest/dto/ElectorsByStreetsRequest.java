@@ -14,20 +14,20 @@ public class ElectorsByStreetsRequest {
     @Valid
     @NotNull
     @Size(min = 1)
-    private final List<Street> streets;
+    private final List<StreetRequest> streets;
 
     // optional (used for gotv requests)
     @Valid
     private final Flags flags;
 
     @JsonCreator
-    public ElectorsByStreetsRequest(@JsonProperty("streets") List<Street> streets,
+    public ElectorsByStreetsRequest(@JsonProperty("streets") List<StreetRequest> streets,
                                     @JsonProperty("flags") Flags flags) {
         this.streets = streets;
         this.flags = flags;
     }
 
-    public List<Street> getStreets() {
+    public List<StreetRequest> getStreets() {
         return streets;
     }
 

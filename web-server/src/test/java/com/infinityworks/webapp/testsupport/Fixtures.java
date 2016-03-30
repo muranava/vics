@@ -1,7 +1,7 @@
 package com.infinityworks.webapp.testsupport;
 
 import com.infinityworks.webapp.clients.paf.dto.*;
-import com.infinityworks.webapp.rest.dto.Street;
+import com.infinityworks.webapp.rest.dto.StreetRequest;
 
 public class Fixtures {
 
@@ -74,11 +74,11 @@ public class Fixtures {
                 .build();
     }
 
-    public static Street kirbyRoad() {
-        return new Street("Kirby Road", "Coventry", "Northern Quarter", "");
+    public static StreetRequest kirbyRoad() {
+        return new StreetRequest("Kirby Road", "Coventry", "Northern Quarter", "");
     }
 
-    public static Street abbotRoad() {
-        return new Street("Abbot Road", "Coventry", "Southern Quarter", "");
+    public static StreetRequest abbotRoad() {
+        return new StreetRequest("Abbot Road", "Coventry", "Southern Quarter", "");
     }
 }

@@ -25,6 +25,7 @@ angular
       };
 
       function determineIfPrintMenuDisplayed() {
+        $scope.showSubMenu = $window.scrollY > 100;
         if (!$scope.$$phase) {
           $scope.$apply();
         }

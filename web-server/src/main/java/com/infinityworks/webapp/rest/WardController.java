@@ -44,8 +44,8 @@ public class WardController {
 
     @PreAuthorize("isAuthenticated()")
     @RequestMapping(method = GET)
-    public ResponseEntity<?> userRestrictedWards(Principal principal, @RequestParam(value = "summary", defaultValue = "false") boolean summary) {
-
+    public ResponseEntity<?> userRestrictedWards(Principal principal,
+                                                 @RequestParam(value = "summary", defaultValue = "false") boolean summary) {
         return sessionService.extractUserFromPrincipal(principal)
                 .map(user -> {
                     if (summary) {

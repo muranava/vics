@@ -188,3 +188,9 @@ div.game-center {
 .table > tbody > tr > td {
   vertical-align: middle;
 }
+
+.stats-cell {
+  display:table-cell;
+  width:20%;
+  text-align: center;
+}

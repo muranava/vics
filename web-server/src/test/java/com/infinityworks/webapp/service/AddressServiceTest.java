@@ -1,14 +1,14 @@
 package com.infinityworks.webapp.service;
 
 import com.infinityworks.common.lang.Try;
-import com.infinityworks.webapp.converter.PafToStreetConverter;
-import com.infinityworks.webapp.domain.User;
-import com.infinityworks.webapp.error.NotAuthorizedFailure;
-import com.infinityworks.webapp.error.NotFoundFailure;
 import com.infinityworks.webapp.clients.paf.PafClient;
 import com.infinityworks.webapp.clients.paf.PafRequestExecutor;
 import com.infinityworks.webapp.clients.paf.command.GetStreetsCommandFactory;
-import com.infinityworks.webapp.rest.dto.Street;
+import com.infinityworks.webapp.converter.PafToStreetResponseConverter;
+import com.infinityworks.webapp.domain.User;
+import com.infinityworks.webapp.error.NotAuthorizedFailure;
+import com.infinityworks.webapp.error.NotFoundFailure;
+import com.infinityworks.webapp.rest.dto.StreetResponse;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -32,7 +32,7 @@ public class AddressServiceTest {
         PafClient pafClient = mock(PafClient.class);
         wardService = mock(WardService.class);
         PafAddressService pafAddressService = new PafAddressService(new GetStreetsCommandFactory(pafClient, 30000, new PafRequestExecutor() {
-        }), new PafToStreetConverter());
+        }), new PafToStreetResponseConverter());
         underTest = new AddressService(wardService, pafAddressService);
     }
 
@@ -42,7 +42,7 @@ public class AddressServiceTest {
         String wardCode = "E0911135";
         given(wardService.getByCode(wardCode, u)).willReturn(Try.failure(new NotFoundFailure("failed")));
 
-        Try<List<Street>> streets = underTest.getTownStreetsByWardCode(wardCode, u);
+        Try<List<StreetResponse>> streets = underTest.getTownStreetsByWardCode(wardCode, u);
 
         assertThat(streets.isSuccess(), is(false));
         assertThat(streets.getFailure(), instanceOf(NotFoundFailure.class));
@@ -57,7 +57,7 @@ public class AddressServiceTest {
         String wardCode = "E0911135";
         given(wardService.getByCode(wardCode, userWithoutWardPermissions)).willReturn(Try.failure(new NotAuthorizedFailure("unauthorized")));
 
-        Try<List<Street>> streets = underTest.getTownStreetsByWardCode(wardCode, userWithoutWardPermissions);
+        Try<List<StreetResponse>> streets = underTest.getTownStreetsByWardCode(wardCode, userWithoutWardPermissions);
 
         assertThat(streets.isSuccess(), is(false));
         assertThat(streets.getFailure(), instanceOf(NotAuthorizedFailure.class));

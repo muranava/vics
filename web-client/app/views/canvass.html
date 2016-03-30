@@ -52,6 +52,7 @@
                  on-select-constituency="onSelectConstituency"
                  on-select-ward="onSelectWard"
                  on-loaded-constituencies="onLoadedConstituencies"></ward-search>
+
     <!-- Download Cards -->
     <div id="printCards" class="row" ng-if="streets && streets.length">
       <div class="col-md-12">
@@ -129,14 +130,14 @@
                       <tr>
                         <th></th>
                         <th>Street</th>
-                        <th></th>
-                        <th></th>
+                        <th class="hidden-xs stats-cell"># Voters</th>
+                        <th class="hidden-xs stats-cell">% Canvassed</th>
+                        <th>Actions</th>
                       </tr>
                       </thead>
                       <tbody>
                       <tr ng-repeat="street in streets | filter:streetFilter">
                         <td>
-
                           <div class="checkbox checkbox-inline checkbox-styled">
                             <label>
                               <input ng-change="getNumStreetsSelected()"
@@ -144,16 +145,16 @@
                                      ng-model="street.selected"><span></span>
                             </label>
                           </div>
-
                         </td>
                         <td class="streetsText">{{street | streetSingleLineFilter}}</td>
-                        <td>
-
+                        <td class="hidden-xs stats-cell">
+                          <span class="text-default text-xl">{{street.numVoters}}</span>
                         </td>
-                        <td class="cursor-hand">
-                          <a ng-click="onShowMap(street)">
-                            <i style="font-size: 16pt;" class="md md-map"></i>
-                          </a>
+                        <td class="hidden-xs stats-cell">
+                          <span class="text-default text-xl">{{street.numCanvassed}}</span>
+                        </td>
+                        <td class="text-right">
+                          <button ng-click="onShowMap(street)" type="button" class="btn btn-icon-toggle" data-toggle="tooltip" data-placement="top" data-original-title="Delete row"><i class="fa fa-map-marker"></i></button>
                         </td>
                       </tr>
                       </tbody>

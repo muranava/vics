@@ -1,6 +1,6 @@
 package com.infinityworks.webapp.testsupport.builder.downstream;
 
-import com.infinityworks.webapp.rest.dto.Street;
+import com.infinityworks.webapp.rest.dto.StreetRequest;
 
 public class StreetBuilder {
     private String mainStreet;
@@ -40,7 +40,7 @@ public class StreetBuilder {
         return this;
     }
 
-    public Street build() {
-        return new Street(mainStreet, postTown, dependentStreet, dependentLocality);
+    public StreetRequest build() {
+        return new StreetRequest(mainStreet, postTown, dependentStreet, dependentLocality);
     }
 }
