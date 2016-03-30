@@ -183,34 +183,44 @@
             <div class="col-lg-12">
               <div class="card">
                 <div class="card-body no-padding">
-                  <ul class="list divider-full-bleed">
 
-                    <li class="tile" ng-repeat="user in users">
-                      <a class="tile-content ink-reaction">
-                        <div class="tile-icon">
-                          <i ng-if="user.writeAccess" class="fa fa-check"></i>
-                          <i ng-if="!user.writeAccess" class="fa fa-remove"></i>
-                          <i ng-if="user.role === 'ADMIN'" class="fa fa-lock"></i>
-                          <i ng-if="user.role === 'USER'" class="fa fa-user"></i>
-                        </div>
-                        <div class="tile-text">{{user.username}}<small>{{user.lastName}}, {{user.firstName}}</small></div>
-                      </a>
-                      <a class="btn btn-flat ink-reaction"
-                         ng-href="#/associations/{{user.id}}">
-                        <i class="fa fa-sitemap"></i>
-                      </a>
-                      &nbsp;
-                      <a ng-if="user.role === 'USER'" class="btn btn-flat ink-reaction" ng-click="onEditUser(user.id)">
-                        <i class="fa fa-edit"></i>
-                      </a>
-                      &nbsp;
-                      <a ng-if="user.role === 'USER'" class="btn btn-flat ink-reaction">
-                        <i class="fa fa-trash" data-toggle="modal" data-target="#simpleModal"
-                           ng-click="preDeleteUser(user)"></i>
-                      </a>
-                    </li>
+                  <table class="table table-hover no-margin">
+                    <thead>
+                    <tr>
+                      <th class="stats-cell hidden-xs">Type</th>
+                      <th class="stats-cell hidden-xs">Write Access</th>
+                      <th>Username</th>
+                      <th>Last Name</th>
+                      <th>First Name</th>
+                      <th class="stats-cell">Actions</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr ng-repeat="user in users">
+                      <td class="stats-cell hidden-xs">
+                        <i ng-if="user.role === 'ADMIN'" class="fa fa-lock"></i>
+                        <i ng-if="user.role === 'USER'" class="fa fa-user"></i>
+                      </td>
+                      <td class="stats-cell hidden-xs">
+                        <i ng-if="user.writeAccess" class="fa fa-check"></i>
+                        <i ng-if="!user.writeAccess" class="fa fa-remove"></i>
+                      </td>
+                      <td>{{user.username}}</td>
+                      <td>
+                        {{user.lastName}}
+                      </td>
+                      <td>
+                        {{user.firstName}}
+                      </td>
+                      <td class="stats-cell">
+                        <a ng-href="#/associations/{{user.id}}" type="button" class="btn btn-icon-toggle" data-toggle="tooltip" data-placement="top" data-original-title="Associate"><i class="fa fa-sitemap"></i></a>
+                        <a ng-if="user.role === 'USER'" ng-click="onEditUser(user.id)" type="button" class="btn btn-icon-toggle" data-toggle="tooltip" data-placement="top" data-original-title="Edit"><i class="fa fa-pencil"></i></a>
+                        <a ng-if="user.role === 'USER'" ng-click="preDeleteUser(user)" type="button" class="btn btn-icon-toggle" data-toggle="modal" data-target="#simpleModal" data-placement="top" data-original-title="Delete"><i class="fa fa-remove"></i></a>
+                      </td>
+                    </tr>
+                    </tbody>
+                  </table>
 
-                  </ul>
                 </div><!--end .card-body -->
               </div><!--end .card -->
             </div>
