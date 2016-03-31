@@ -139,10 +139,8 @@ angular
       userService.retrieveAllUsers()
         .success(function (response) {
           $scope.users = response;
-          _.delay(function() {
-            $(function () {
-              $('[data-toggle="tooltip"]').tooltip();
-            }, 1000);
+          $timeout(function () {
+            $('[data-toggle="tooltip"]').tooltip();
           });
         });
     }

@@ -1,9 +1,9 @@
 
-CREATE USER vics;
-CREATE DATABASE canvassapp WITH ENCODING = 'UTF8' LC_COLLATE = 'en_US.UTF-8' LC_CTYPE = 'en_US.UTF-8' TABLESPACE = pg_default TEMPLATE template0;
-GRANT ALL PRIVILEGES ON DATABASE canvassapp to vics;
-
-\connect canvassapp;
+-- CREATE USER vics;
+-- CREATE DATABASE canvassapp WITH ENCODING = 'UTF8' LC_COLLATE = 'en_US.UTF-8' LC_CTYPE = 'en_US.UTF-8' TABLESPACE = pg_default TEMPLATE template0;
+-- GRANT ALL PRIVILEGES ON DATABASE canvassapp to vics;
+--
+-- \connect canvassapp;
 
 CREATE TABLE constituencies
 (
@@ -53,4 +53,12 @@ CREATE TABLE users_constituencies (
   users_id          UUID REFERENCES users (id)                      NOT NULL,
   constituencies_id UUID REFERENCES constituencies (id)             NOT NULL,
   PRIMARY KEY (users_id, constituencies_id)
+);
+
+CREATE TABLE record_vote_log (
+  id UUID PRIMARY KEY,
+  users_id UUID REFERENCES users (id) NOT NULL,
+  wards_id UUID REFERENCES wards (id) NOT NULL,
+  ern TEXT NOT NULL,
+  added TIMESTAMP WITHOUT TIME ZONE NOT NULL
 );

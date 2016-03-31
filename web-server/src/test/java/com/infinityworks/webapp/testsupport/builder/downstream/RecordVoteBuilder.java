@@ -1,6 +1,6 @@
 package com.infinityworks.webapp.testsupport.builder.downstream;
 
-import com.infinityworks.webapp.rest.dto.RecordVote;
+import com.infinityworks.webapp.rest.dto.RecordVoteRequest;
 
 public class RecordVoteBuilder {
     private String wardCode;
@@ -40,7 +40,7 @@ public class RecordVoteBuilder {
         return this;
     }
 
-    public RecordVote build() {
-        return new RecordVote(wardCode, wardName, ern, success);
+    public RecordVoteRequest build() {
+        return new RecordVoteRequest(wardCode, wardName, ern, success);
     }
 }

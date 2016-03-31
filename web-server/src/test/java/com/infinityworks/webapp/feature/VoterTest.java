@@ -7,9 +7,10 @@ import com.infinityworks.webapp.pdf.CanvassTableConfig;
 import com.infinityworks.webapp.pdf.DocumentBuilder;
 import com.infinityworks.webapp.pdf.TableBuilder;
 import com.infinityworks.webapp.pdf.renderer.LogoRenderer;
+import com.infinityworks.webapp.repository.RecordVoteLogRepository;
 import com.infinityworks.webapp.rest.VoterController;
 import com.infinityworks.webapp.rest.dto.ElectorsByStreetsRequest;
-import com.infinityworks.webapp.rest.dto.RecordVote;
+import com.infinityworks.webapp.rest.dto.RecordVoteRequest;
 import com.infinityworks.webapp.rest.dto.StreetRequest;
 import com.infinityworks.webapp.service.ContactService;
 import com.infinityworks.webapp.service.RecordVotedService;
@@ -32,6 +33,7 @@ import java.util.List;
 import static com.infinityworks.webapp.common.Json.objectMapper;
 import static com.infinityworks.webapp.testsupport.builder.downstream.ElectorsByStreetsRequestBuilder.electorsByStreets;
 import static java.util.Collections.emptyList;
+import static junit.framework.TestCase.assertTrue;
 import static org.hamcrest.CoreMatchers.is;
 import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.mock;
@@ -178,7 +180,7 @@ public class VoterTest extends WebApplicationTest {
                 .thenReturn(Try.success(covs()));
         pafApiStub.willRecordVoterVoted("E05001221-ADD-1313-1");
 
-        RecordVote request = new RecordVoteBuilder().withWardCode("E05001221").withWardName("Earlsdon").withErn("ADD-1313-1").withSuccess(true).build();
+        RecordVoteRequest request = new RecordVoteBuilder().withWardCode("E05001221").withWardName("Earlsdon").withErn("ADD-1313-1").withSuccess(true).build();
         String requestBody = objectMapper.writeValueAsString(request);
 
         mockMvc.perform(post("/elector/voted")
@@ -191,5 +193,8 @@ public class VoterTest extends WebApplicationTest {
                 .andExpect(jsonPath("wardName", is("Earlsdon")))
                 .andExpect(jsonPath("ern", is("ADD-1313-1")))
                 .andExpect(jsonPath("success", is(true)));
+
+        RecordVoteLogRepository recordVoteLogRepository = getBean(RecordVoteLogRepository.class);
+        assertTrue(recordVoteLogRepository.findAll().stream().anyMatch(log -> log.getErn().equals("ADD-1313-1")));
     }
 }

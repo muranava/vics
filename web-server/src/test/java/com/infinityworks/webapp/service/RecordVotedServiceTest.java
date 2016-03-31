@@ -10,7 +10,7 @@ import com.infinityworks.webapp.clients.paf.PafRequestExecutor;
 import com.infinityworks.webapp.clients.paf.command.RecordVoteCommandFactory;
 import com.infinityworks.webapp.clients.paf.dto.ImmutableRecordVotedResponse;
 import com.infinityworks.webapp.clients.paf.dto.RecordVotedResponse;
-import com.infinityworks.webapp.rest.dto.RecordVote;
+import com.infinityworks.webapp.rest.dto.RecordVoteRequest;
 import com.infinityworks.webapp.testsupport.mocks.CallStub;
 import org.junit.Before;
 import org.junit.Test;
@@ -31,6 +31,7 @@ public class RecordVotedServiceTest {
 
     private final ErnShortFormToLongFormConverter ernFormatEnricher = new ErnShortFormToLongFormConverter();
     private RecordVotedService underTest;
+    private RecordVotedLogService recordVotedLogService;
     private PafClient pafClient;
     private WardService wardService;
 
@@ -38,19 +39,20 @@ public class RecordVotedServiceTest {
     public void setUp() throws Exception {
         pafClient = mock(PafClient.class);
         wardService = mock(WardService.class);
-        underTest = new RecordVotedService(wardService, ernFormatEnricher, new RecordVoteCommandFactory(pafClient, 30000, new PafRequestExecutor(){}));
+        recordVotedLogService = mock(RecordVotedLogService.class);
+        underTest = new RecordVotedService(wardService, ernFormatEnricher, new RecordVoteCommandFactory(pafClient, 30000, new PafRequestExecutor(){}), recordVotedLogService);
     }
 
     @Test
     public void recordsAVote() throws Exception {
         User user = user().withWriteAccess(true).build();
-        RecordVote recordVote = recordVote().withErn("PD-123-1").build();
+        RecordVoteRequest recordVote = recordVote().withErn("PD-123-1").build();
         Ward ward = ward().withWardCode("E05001221").build();
         Call<RecordVotedResponse> call = CallStub.success(ImmutableRecordVotedResponse.builder().withSuccess(true).build());
         given(pafClient.recordVote("E05001221-PD-123-1")).willReturn(call);
         given(wardService.getByCode(recordVote.getWardCode(), user)).willReturn(Try.success(ward));
 
-        Try<RecordVote> recordVoteResponse = underTest.recordVote(user, recordVote);
+        Try<RecordVoteRequest> recordVoteResponse = underTest.recordVote(user, recordVote);
 
         assertThat(recordVoteResponse, isSuccess(equalTo(recordVote)));
     }
@@ -58,11 +60,11 @@ public class RecordVotedServiceTest {
     @Test
     public void failsToRecordVoteIfUserDoesNotHaveWardPermission() throws Exception {
         User user = user().withWriteAccess(true).build();
-        RecordVote recordVote = recordVote().build();
+        RecordVoteRequest recordVote = recordVote().build();
         Call<RecordVotedResponse> call = CallStub.success(ImmutableRecordVotedResponse.builder().withSuccess(true).build());        given(pafClient.recordVote(recordVote.getErn())).willReturn(call);
         given(wardService.getByCode(recordVote.getWardCode(), user)).willReturn(Try.failure(new NotAuthorizedFailure("failure")));
 
-        Try<RecordVote> recordVoteResponse = underTest.recordVote(user, recordVote);
+        Try<RecordVoteRequest> recordVoteResponse = underTest.recordVote(user, recordVote);
 
         assertThat(recordVoteResponse, isFailure(instanceOf(NotAuthorizedFailure.class)));
     }
@@ -70,9 +72,9 @@ public class RecordVotedServiceTest {
     @Test
     public void failsToRecordVoteIfUserDoesNotHaveWriteAccess() throws Exception {
         User user = user().withWriteAccess(false).build();
-        RecordVote recordVote = recordVote().build();
+        RecordVoteRequest recordVote = recordVote().build();
 
-        Try<RecordVote> recordVoteResponse = underTest.recordVote(user, recordVote);
+        Try<RecordVoteRequest> recordVoteResponse = underTest.recordVote(user, recordVote);
 
         assertThat(recordVoteResponse, isFailure(instanceOf(NotAuthorizedFailure.class)));
     }

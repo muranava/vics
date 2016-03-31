@@ -8,7 +8,7 @@ import com.google.common.base.Objects;
 import org.hibernate.validator.constraints.NotEmpty;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class RecordVote {
+public class RecordVoteRequest {
     @NotEmpty
     private final String wardCode;
     @NotEmpty
@@ -18,10 +18,10 @@ public class RecordVote {
     private final Boolean success;
 
     @JsonCreator
-    public RecordVote(@JsonProperty("wardCode") String wardCode,
-                      @JsonProperty("wardName") String wardName,
-                      @JsonProperty("ern") String ern,
-                      @JsonProperty("success") Boolean success) {
+    public RecordVoteRequest(@JsonProperty("wardCode") String wardCode,
+                             @JsonProperty("wardName") String wardName,
+                             @JsonProperty("ern") String ern,
+                             @JsonProperty("success") Boolean success) {
         this.wardCode = wardCode;
         this.wardName = wardName;
         this.ern = ern;
@@ -47,8 +47,8 @@ public class RecordVote {
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof RecordVote)) return false;
-        RecordVote that = (RecordVote) o;
+        if (!(o instanceof RecordVoteRequest)) return false;
+        RecordVoteRequest that = (RecordVoteRequest) o;
         return Objects.equal(wardCode, that.wardCode) &&
                 Objects.equal(wardName, that.wardName) &&
                 Objects.equal(ern, that.ern) &&

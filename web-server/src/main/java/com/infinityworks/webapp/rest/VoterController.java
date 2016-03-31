@@ -7,7 +7,7 @@ import com.infinityworks.webapp.pdf.DocumentBuilder;
 import com.infinityworks.webapp.pdf.TableBuilder;
 import com.infinityworks.webapp.rest.dto.ElectorsByStreetsRequest;
 import com.infinityworks.webapp.rest.dto.RecordContactRequest;
-import com.infinityworks.webapp.rest.dto.RecordVote;
+import com.infinityworks.webapp.rest.dto.RecordVoteRequest;
 import com.infinityworks.webapp.rest.dto.SearchElectors;
 import com.infinityworks.webapp.service.ContactService;
 import com.infinityworks.webapp.service.RecordVotedService;
@@ -97,7 +97,7 @@ public class VoterController {
 
     @PreAuthorize("isAuthenticated()")
     @RequestMapping(method = POST, value = "/voted")
-    public ResponseEntity<?> recordVote(@RequestBody @Valid RecordVote ern,
+    public ResponseEntity<?> recordVote(@RequestBody @Valid RecordVoteRequest ern,
                                         Principal principal) {
         return sessionService.extractUserFromPrincipal(principal)
                 .flatMap(user -> recordVotedService.recordVote(user, ern))

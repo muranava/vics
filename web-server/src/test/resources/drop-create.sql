@@ -1,10 +1,9 @@
 
-DROP TABLE IF EXISTS electors;
-DROP TABLE IF EXISTS electors_enriched;
+DROP TABLE IF EXISTS record_vote_log;
 DROP TABLE IF EXISTS users_privileges;
 DROP TABLE IF EXISTS users_constituencies;
-DROP TABLE IF EXISTS users_wards;
 DROP TABLE IF EXISTS privileges;
+DROP TABLE IF EXISTS users_wards;
 DROP TABLE IF EXISTS users;
 DROP TABLE IF EXISTS wards;
 DROP TABLE IF EXISTS constituencies;
@@ -57,4 +56,12 @@ CREATE TABLE users_constituencies (
   users_id          UUID REFERENCES users (id)                      NOT NULL,
   constituencies_id UUID REFERENCES constituencies (id)             NOT NULL,
   PRIMARY KEY (users_id, constituencies_id)
+);
+
+CREATE TABLE record_vote_log (
+  id UUID PRIMARY KEY,
+  users_id UUID REFERENCES users (id) NOT NULL,
+  wards_id UUID REFERENCES wards (id) NOT NULL,
+  ern TEXT NOT NULL,
+  added TIMESTAMP WITHOUT TIME ZONE NOT NULL
 );
