@@ -2,7 +2,8 @@ package com.infinityworks.webapp.clients.paf.command;
 
 import com.infinityworks.webapp.clients.paf.PafClient;
 import com.infinityworks.webapp.clients.paf.PafRequestExecutor;
-import com.infinityworks.webapp.clients.paf.dto.RecordContactRequest;
+
+import java.util.UUID;
 
 public class DeleteContactCommandFactory {
     private final int timeoutMsecs;
@@ -15,7 +16,7 @@ public class DeleteContactCommandFactory {
         this.requestExecutor = requestExecutor;
     }
 
-    public DeleteContactCommand create(String ern, String contactId) {
+    public DeleteContactCommand create(String ern, UUID contactId) {
         return new DeleteContactCommand(ern, contactId, pafClient, timeoutMsecs, requestExecutor);
     }
 }

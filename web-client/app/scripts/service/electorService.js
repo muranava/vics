@@ -33,9 +33,9 @@ angular
       });
     };
 
-    api.undoCanvassInput = function (ern, contactId) {
+    api.undoCanvassInput = function (ern, contactId, localId) {
       return $http({
-        url: apiUrl + '/elector/' + ern + '/contact/' + contactId,
+        url: apiUrl + '/elector/' + ern + '/contact/' + contactId + '/localId/' + localId,
         method: 'DELETE',
         withCredentials: true
       });

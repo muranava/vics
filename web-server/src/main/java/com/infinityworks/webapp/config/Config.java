@@ -1,6 +1,7 @@
 package com.infinityworks.webapp.config;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.ObjectWriter;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.datatype.guava.GuavaModule;
 import com.fasterxml.jackson.datatype.jdk8.Jdk8Module;
@@ -34,6 +35,17 @@ import static java.util.Arrays.asList;
 @Configuration
 @EnableAsync
 public class Config {
+    public static final ObjectMapper objectMapper;
+    public static final ObjectWriter objectWriter;
+
+    static {
+        objectMapper = new ObjectMapper()
+                .registerModules(new JavaTimeModule(), new Jdk8Module(), new GuavaModule())
+                .configure(SerializationFeature.FAIL_ON_EMPTY_BEANS, false)
+                .configure(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, false);
+        objectWriter = objectMapper.writer();
+    }
+
     @Bean
     public RestErrorHandler errorHandler() {
         return new RestErrorHandler();
@@ -41,10 +53,7 @@ public class Config {
 
     @Bean
     public ObjectMapper objectMapper() {
-        return new ObjectMapper()
-                .registerModules(new JavaTimeModule(), new Jdk8Module(), new GuavaModule())
-                .configure(SerializationFeature.FAIL_ON_EMPTY_BEANS, false)
-                .configure(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, false);
+        return objectMapper;
     }
 
     @Bean

@@ -78,7 +78,8 @@ angular
     };
 
     $scope.onUndo = function(model) {
-      electorService.undoCanvassInput(model.fullErn, model.contactId)
+      console.log(model);
+      electorService.undoCanvassInput(model.fullErn, model.contactId, model.localId)
         .success(function() {
           model.reason = 'Undone';
         })
@@ -104,7 +105,8 @@ angular
               ern: stripWardCodeFromErn(response.ern),
               reason: '-',
               fullErn: ern,
-              contactId: response.id,
+              contactId: response.contactId,
+              localId: response.localId,
               success: true
             });
             resetForm();

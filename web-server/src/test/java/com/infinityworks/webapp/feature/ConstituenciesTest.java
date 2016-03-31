@@ -21,7 +21,7 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import java.security.Principal;
 import java.util.UUID;
 
-import static com.infinityworks.webapp.common.Json.stringify;
+import static com.infinityworks.webapp.common.JsonUtil.stringify;
 import static java.util.Collections.emptyList;
 import static java.util.Collections.singletonList;
 import static org.hamcrest.core.Is.is;

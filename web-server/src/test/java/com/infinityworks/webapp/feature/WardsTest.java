@@ -24,7 +24,7 @@ import java.security.Principal;
 import java.util.List;
 import java.util.UUID;
 
-import static com.infinityworks.webapp.common.Json.objectMapper;
+import static com.infinityworks.webapp.common.JsonUtil.objectMapper;
 import static java.util.Arrays.asList;
 import static java.util.Collections.singletonList;
 import static org.hamcrest.CoreMatchers.not;

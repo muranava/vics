@@ -8,14 +8,16 @@ import com.netflix.hystrix.HystrixCommand;
 import com.netflix.hystrix.HystrixCommandGroupKey;
 import retrofit2.Call;
 
+import java.util.UUID;
+
 public class DeleteContactCommand extends HystrixCommand<Try<DeleteContactResponse>> {
     private final String ern;
-    private final String contactId;
+    private final UUID contactId;
     private final PafClient pafClient;
     private final PafRequestExecutor requestExecutor;
 
     public DeleteContactCommand(String ern,
-                                String contactId,
+                                UUID contactId,
                                 PafClient pafClient,
                                 int timeoutMSecs,
                                 PafRequestExecutor responseHandler) {

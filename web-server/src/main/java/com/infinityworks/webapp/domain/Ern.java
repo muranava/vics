@@ -1,5 +1,9 @@
 package com.infinityworks.webapp.domain;
 
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.infinityworks.webapp.converter.ErnSerializer;
+
+@JsonSerialize(using = ErnSerializer.class)
 public class Ern {
     private static final String ERN_REGEX = "^\\w{1,10}-\\w{1,4}-\\d{1,7}-\\w{1,2}$";
 

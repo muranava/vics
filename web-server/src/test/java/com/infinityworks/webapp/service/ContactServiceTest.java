@@ -9,7 +9,6 @@ import com.infinityworks.webapp.clients.paf.converter.RecordContactToPafConverte
 import com.infinityworks.webapp.clients.paf.dto.ImmutableRecordContactResponse;
 import com.infinityworks.webapp.clients.paf.dto.RecordContactResponse;
 import com.infinityworks.webapp.domain.Ern;
-import com.infinityworks.webapp.domain.RecordContactLog;
 import com.infinityworks.webapp.domain.User;
 import com.infinityworks.webapp.domain.Ward;
 import com.infinityworks.webapp.error.NotAuthorizedFailure;
@@ -62,7 +61,7 @@ public class ContactServiceTest {
         Call<RecordContactResponse> success = CallStub.success(ImmutableRecordContactResponse.builder().withId(UUID.randomUUID()).withErn("E05001221-PD-123-4").build());
         given(pafClient.recordContact("E05001221-PD-123-4", contactRecord)).willReturn(success);
 
-        Try<RecordContactLog> contact = underTest.recordContact(user, Ern.valueOf("E05001221-PD-123-4"), request);
+        Try<com.infinityworks.webapp.rest.dto.RecordContactResponse> contact = underTest.recordContact(user, Ern.valueOf("E05001221-PD-123-4"), request);
 
         assertThat(contact.isSuccess(), is(true));
     }
@@ -81,7 +80,7 @@ public class ContactServiceTest {
                 .build();
         given(wardService.getByCode("E05001221", user)).willReturn(Try.success(earlsdon));
 
-        Try<RecordContactLog> contact = underTest.recordContact(user, Ern.valueOf("E05001221-PD-123-1"), request);
+        Try<com.infinityworks.webapp.rest.dto.RecordContactResponse> contact = underTest.recordContact(user, Ern.valueOf("E05001221-PD-123-1"), request);
 
         assertThat(contact, isFailure(instanceOf(NotAuthorizedFailure.class)));
     }
@@ -98,7 +97,7 @@ public class ContactServiceTest {
                 .build();
         given(wardService.getByCode("E05001221", user)).willReturn(Try.failure(new NotAuthorizedFailure("forbidden")));
 
-        Try<RecordContactLog> contact = underTest.recordContact(user, Ern.valueOf("E05001221-PD-123-1"), request);
+        Try<com.infinityworks.webapp.rest.dto.RecordContactResponse> contact = underTest.recordContact(user, Ern.valueOf("E05001221-PD-123-1"), request);
 
         assertThat(contact, isFailure(instanceOf(NotAuthorizedFailure.class)));
     }

@@ -17,7 +17,7 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import java.security.Principal;
 
 import static com.infinityworks.webapp.testsupport.builder.downstream.FlagsBuilder.flags;
-import static com.infinityworks.webapp.common.Json.objectMapper;
+import static com.infinityworks.webapp.common.JsonUtil.objectMapper;
 import static com.infinityworks.webapp.testsupport.builder.downstream.ElectorsByStreetsRequestBuilder.electorsByStreets;
 import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.mock;

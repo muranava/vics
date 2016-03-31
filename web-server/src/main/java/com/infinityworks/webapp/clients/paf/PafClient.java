@@ -6,6 +6,7 @@ import retrofit2.http.*;
 
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 /**
  * Client for core API (PAF) containing voter and address data
@@ -59,7 +60,7 @@ public interface PafClient {
      * @return no content
      */
     @DELETE("voter/{ern}/contact/{contactId}")
-    Call<DeleteContactResponse> deleteContact(@Path("ern") String ern, @Path("contactId") String contactId);
+    Call<DeleteContactResponse> deleteContact(@Path("ern") String ern, @Path("contactId") UUID contactId);
 
     /**
      * Records that a voter has voted

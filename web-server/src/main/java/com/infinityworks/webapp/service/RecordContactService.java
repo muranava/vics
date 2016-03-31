@@ -17,6 +17,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.UUID;
+
 @Service
 public class RecordContactService {
 
@@ -48,7 +50,7 @@ public class RecordContactService {
      * @param contactRequest the contact data
      * @return the updated contact data, or a failure object if the operation failed
      */
-    public Try<RecordContactLog> recordContact(User user,
+    public Try<com.infinityworks.webapp.rest.dto.RecordContactResponse> recordContact(User user,
                                               Ern ern,
                                               RecordContactRequest contactRequest) {
         if (!user.getWriteAccess()) {
@@ -64,12 +66,12 @@ public class RecordContactService {
                             .map(response -> {
                                 RecordContactLog recordContactLog = new RecordContactLog(user, ward, ern.get());
                                 recordContactLogService.logRecordContactAsync(recordContactLog);
-                                return recordContactLog;
+                                return new com.infinityworks.webapp.rest.dto.RecordContactResponse(recordContactLog.getId(), ern, response.id());
                             });
                 });
     }
 
-    public Try<DeleteContactResponse> deleteContact(User user, Ern ern, String contactId) {
+    public Try<DeleteContactResponse> deleteContact(User user, Ern ern, UUID contactId, UUID localId) {
         if (!user.getWriteAccess()) {
             log.warn("User={} tried to delete contact for ern={} but does not have write access", user, ern);
             return Try.failure(new NotAuthorizedFailure("Forbidden"));
@@ -77,9 +79,11 @@ public class RecordContactService {
         return wardService
                 .getByCode(ern.getWardCode(), user)
                 .flatMap(ward -> {
-                    DeleteContactCommand recordContactCommand = deleteContactCommandFactory.create(
-                            ern.get(), contactId);
+                    DeleteContactCommand recordContactCommand = deleteContactCommandFactory.create(ern.get(), contactId);
                     return recordContactCommand.execute();
+                }).map(deleteResponse -> {
+                    recordContactLogService.deleteRecordContact(localId);
+                    return deleteResponse;
                 });
     }
 }

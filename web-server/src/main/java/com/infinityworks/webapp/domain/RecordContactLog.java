@@ -1,11 +1,18 @@
 package com.infinityworks.webapp.domain;
 
+import org.hibernate.annotations.Type;
+
 import javax.persistence.*;
 import java.util.Date;
+import java.util.UUID;
 
 @Entity
 @Table(name = "record_contact_log")
-public class RecordContactLog extends BaseEntity {
+public class RecordContactLog {
+    @Id
+    @Type(type = "pg-uuid")
+    private UUID id;
+
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "users_id")
     private User user;
@@ -27,6 +34,7 @@ public class RecordContactLog extends BaseEntity {
     }
 
     public RecordContactLog(User user, Ward ward, String ern) {
+        this.id = UUID.randomUUID();
         this.user = user;
         this.ward = ward;
         this.ern = ern;
@@ -72,5 +80,9 @@ public class RecordContactLog extends BaseEntity {
 
     public void setOperation(RecordContactOperationType operation) {
         this.operation = operation;
+    }
+
+    public UUID getId() {
+        return id;
     }
 }

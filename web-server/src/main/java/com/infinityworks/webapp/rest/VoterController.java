@@ -25,6 +25,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.security.Principal;
+import java.util.UUID;
 
 import static org.springframework.web.bind.annotation.RequestMethod.*;
 
@@ -86,12 +87,13 @@ public class VoterController {
     }
 
     @PreAuthorize("isAuthenticated()")
-    @RequestMapping(value = "/{ern}/contact/{contactId}", method = DELETE)
+    @RequestMapping(value = "/{ern}/contact/{contactId}/localId/{localId}", method = DELETE)
     public ResponseEntity<?> deleteContact(Principal principal,
                                            @PathVariable("ern") Ern ern,
-                                           @PathVariable("contactId") String contactId) throws DocumentException {
+                                           @PathVariable("contactId") UUID contactId,
+                                           @PathVariable("localId") UUID localId) throws DocumentException {
         return sessionService.extractUserFromPrincipal(principal)
-                .flatMap(user -> contactService.deleteContact(user, ern, contactId))
+                .flatMap(user -> contactService.deleteContact(user, ern, contactId, localId))
                 .fold(errorHandler::mapToResponseEntity, ResponseEntity::ok);
     }
 

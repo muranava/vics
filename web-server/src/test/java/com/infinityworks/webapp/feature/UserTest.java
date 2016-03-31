@@ -20,7 +20,7 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import java.security.Principal;
 import java.util.Optional;
 
-import static com.infinityworks.webapp.common.Json.objectMapper;
+import static com.infinityworks.webapp.common.JsonUtil.objectMapper;
 import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.assertThat;
 import static org.mockito.Matchers.any;

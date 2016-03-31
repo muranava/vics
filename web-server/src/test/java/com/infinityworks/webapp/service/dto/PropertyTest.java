@@ -4,7 +4,7 @@ import com.google.common.io.Resources;
 import com.infinityworks.webapp.clients.paf.dto.Property;
 import org.junit.Test;
 
-import static com.infinityworks.webapp.common.Json.objectMapper;
+import static com.infinityworks.webapp.common.JsonUtil.objectMapper;
 import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.assertThat;
 

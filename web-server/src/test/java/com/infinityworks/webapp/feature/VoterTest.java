@@ -29,7 +29,7 @@ import org.springframework.web.util.UriComponentsBuilder;
 import java.security.Principal;
 import java.util.List;
 
-import static com.infinityworks.webapp.common.Json.objectMapper;
+import static com.infinityworks.webapp.common.JsonUtil.objectMapper;
 import static com.infinityworks.webapp.testsupport.builder.downstream.ElectorsByStreetsRequestBuilder.electorsByStreets;
 import static java.util.Collections.emptyList;
 import static org.hamcrest.CoreMatchers.is;
