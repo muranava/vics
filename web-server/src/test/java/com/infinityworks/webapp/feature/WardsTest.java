@@ -117,7 +117,7 @@ public class WardsTest extends WebApplicationTest {
         MvcResult result = resultActions.andExpect(status().isOk()).andReturn();
 
         List<StreetRequest> streets = asList(objectMapper.readValue(result.getResponse().getContentAsString(), StreetRequest[].class));
-        assertThat(streets.size(), is(6));
+        assertThat(streets.size(), is(81));
     }
 
     @Test

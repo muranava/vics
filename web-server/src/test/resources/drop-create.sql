@@ -1,5 +1,4 @@
-
-DROP TABLE IF EXISTS record_vote_log;
+DROP TABLE IF EXISTS record_contact_log;
 DROP TABLE IF EXISTS users_privileges;
 DROP TABLE IF EXISTS users_constituencies;
 DROP TABLE IF EXISTS privileges;
@@ -58,10 +57,11 @@ CREATE TABLE users_constituencies (
   PRIMARY KEY (users_id, constituencies_id)
 );
 
-CREATE TABLE record_vote_log (
-  id UUID PRIMARY KEY,
-  users_id UUID REFERENCES users (id) NOT NULL,
-  wards_id UUID REFERENCES wards (id) NOT NULL,
-  ern TEXT NOT NULL,
-  added TIMESTAMP WITHOUT TIME ZONE NOT NULL
+CREATE TABLE record_contact_log (
+  id        UUID PRIMARY KEY,
+  users_id  UUID REFERENCES users (id)                   NOT NULL,
+  wards_id  UUID REFERENCES wards (id)                   NOT NULL,
+  ern       TEXT                                         NOT NULL,
+  added     TIMESTAMP WITHOUT TIME ZONE                  NOT NULL,
+  operation TEXT CHECK (operation IN ('UNDO', 'CREATE')) NOT NULL DEFAULT 'CREATE'
 );

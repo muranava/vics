@@ -9,7 +9,7 @@ import com.infinityworks.webapp.rest.dto.ElectorsByStreetsRequest;
 import com.infinityworks.webapp.rest.dto.RecordContactRequest;
 import com.infinityworks.webapp.rest.dto.RecordVoteRequest;
 import com.infinityworks.webapp.rest.dto.SearchElectors;
-import com.infinityworks.webapp.service.ContactService;
+import com.infinityworks.webapp.service.RecordContactService;
 import com.infinityworks.webapp.service.RecordVotedService;
 import com.infinityworks.webapp.service.SessionService;
 import com.infinityworks.webapp.service.VoterService;
@@ -36,7 +36,7 @@ public class VoterController {
     private final VoterService voterService;
     private final RequestValidator requestValidator;
     private final RecordVotedService recordVotedService;
-    private final ContactService contactService;
+    private final RecordContactService contactService;
     private final SessionService sessionService;
     private final RestErrorHandler errorHandler;
 
@@ -46,7 +46,7 @@ public class VoterController {
                            VoterService voterService,
                            RequestValidator requestValidator,
                            RecordVotedService recordVotedService,
-                           ContactService contactService,
+                           RecordContactService contactService,
                            SessionService sessionService,
                            RestErrorHandler errorHandler) {
         this.tableBuilder = tableBuilder;

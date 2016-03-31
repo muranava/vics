@@ -11,7 +11,7 @@ public class Json {
             .registerModules(new JavaTimeModule(), new Jdk8Module())
             .configure(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, false);
 
-    public static String asJson(Object o) {
+    public static String stringify(Object o) {
         try {
             return objectMapper.writeValueAsString(o);
         } catch (JsonProcessingException e) {

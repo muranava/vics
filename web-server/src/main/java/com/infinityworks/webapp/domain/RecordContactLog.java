@@ -4,8 +4,8 @@ import javax.persistence.*;
 import java.util.Date;
 
 @Entity
-@Table(name = "record_vote_log")
-public class RecordVoteLog extends BaseEntity {
+@Table(name = "record_contact_log")
+public class RecordContactLog extends BaseEntity {
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "users_id")
     private User user;
@@ -19,8 +19,15 @@ public class RecordVoteLog extends BaseEntity {
     @Temporal(TemporalType.TIMESTAMP)
     private Date added;
 
-    public RecordVoteLog() {
+    @Enumerated(EnumType.STRING)
+    private RecordContactOperationType operation;
+
+    public RecordContactLog(User user, Ward ward, String ern) {
+        this.user = user;
+        this.ward = ward;
+        this.ern = ern;
         this.added = new Date();
+        this.setOperation(RecordContactOperationType.CREATE);
     }
 
     public Ward getWard() {
@@ -53,5 +60,13 @@ public class RecordVoteLog extends BaseEntity {
 
     public void setAdded(Date date) {
         this.added = date;
+    }
+
+    public RecordContactOperationType getOperation() {
+        return operation;
+    }
+
+    public void setOperation(RecordContactOperationType operation) {
+        this.operation = operation;
     }
 }

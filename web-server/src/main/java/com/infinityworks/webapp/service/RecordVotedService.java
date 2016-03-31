@@ -19,36 +19,31 @@ public class RecordVotedService {
     private final WardService wardService;
     private final ErnShortFormToLongFormConverter ernFormatEnricher;
     private final RecordVoteCommandFactory recordVoteCommandFactory;
-    private final RecordVotedLogService recordVoteLogService;
 
     @Autowired
     public RecordVotedService(WardService wardService,
                               ErnShortFormToLongFormConverter ernFormatEnricher,
-                              RecordVoteCommandFactory recordVoteCommandFactory,
-                              RecordVotedLogService recordVoteLogService) {
+                              RecordVoteCommandFactory recordVoteCommandFactory) {
         this.wardService = wardService;
         this.ernFormatEnricher = ernFormatEnricher;
         this.recordVoteCommandFactory = recordVoteCommandFactory;
-        this.recordVoteLogService = recordVoteLogService;
     }
 
     /**
      * Records that a voter has voted
      *
-     * @param user       the activist entering the elector information
-     * @param recordVote the voter details
+     * @param user the activist entering the elector information
+     * @param recordVote  the voter details
      * @return the recorded vote if success, else a failure object
      */
     public Try<RecordVoteRequest> recordVote(User user, RecordVoteRequest recordVote) {
         log.debug("user={} recording vote for ern={}", user.getId(), recordVote.getErn());
 
-        return user.ensureWriteAccess()
+        return user
+                .ensureWriteAccess()
                 .flatMap(u -> wardService.getByCode(recordVote.getWardCode(), user)
-                        .flatMap(ward -> ernFormatEnricher.apply(ward.getCode(), recordVote.getErn())
-                                .flatMap(ern -> recordVoteCommandFactory.create(ern).execute())
-                                .map(success -> {
-                                    recordVoteLogService.logRecordVote(recordVote, u, ward);
-                                    return recordVote;
-                                })));
+                .flatMap(ward -> ernFormatEnricher.apply(ward.getCode(), recordVote.getErn()))
+                .flatMap(ern -> recordVoteCommandFactory.create(ern).execute())
+                .map(success -> recordVote));
     }
 }

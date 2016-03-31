@@ -2,11 +2,13 @@ package com.infinityworks.webapp.feature
 
 import com.infinityworks.webapp.common.RequestValidator
 import com.infinityworks.webapp.error.RestErrorHandler
+import com.infinityworks.webapp.feature.testsupport.JsonUtil
 import com.infinityworks.webapp.feature.testsupport.api.{BasicUser, MockHttp, SessionApi}
-import com.infinityworks.webapp.pdf.renderer.{FlagsKeyRenderer, LogoRenderer}
+import com.infinityworks.webapp.pdf.renderer.LogoRenderer
 import com.infinityworks.webapp.pdf.{CanvassTableConfig, DocumentBuilder, TableBuilder}
 import com.infinityworks.webapp.rest.VoterController
-import com.infinityworks.webapp.service.{ContactService, _}
+import com.infinityworks.webapp.rest.dto.RecordContactRequest
+import com.infinityworks.webapp.service.{RecordContactService, _}
 import org.junit.{Before, Test}
 import org.mockito.Mockito._
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers._
@@ -25,7 +27,7 @@ class VoterFeatureTest extends ApplicationTest {
     val voterService: VoterService = getBean(classOf[VoterService])
     val requestValidator: RequestValidator = getBean(classOf[RequestValidator])
     val recordVotedService: RecordVotedService = getBean(classOf[RecordVotedService])
-    val contactService: ContactService = getBean(classOf[ContactService])
+    val contactService: RecordContactService = getBean(classOf[RecordContactService])
     val tableBuilder: TableBuilder = new TableBuilder(new CanvassTableConfig)
     val documentBuilder: DocumentBuilder = new DocumentBuilder(mock(classOf[LogoRenderer]), new CanvassTableConfig)
     val voterController: VoterController = new VoterController(tableBuilder, documentBuilder, voterService, requestValidator, recordVotedService, contactService, sessionService, new RestErrorHandler)
@@ -45,6 +47,17 @@ class VoterFeatureTest extends ApplicationTest {
     (http DELETE s"/elector/$ern/contact/$contactId").andExpect(
       status().isOk
     )
+  }
 
+  @Test
+  def recordsAContact(): Unit = {
+    session withUser BasicUser
+    val ern = "E05001221-PD-123-4"
+    val body = new RecordContactRequest(3, 3, false, false, false, false, false, false, false, false, false, "", "")
+    pafStub.willCreateANewContactRecord(ern)
+
+    (http POST (s"/elector/$ern/contact", JsonUtil.stringify(body))).andExpect(
+      status().isOk
+    )
   }
 }

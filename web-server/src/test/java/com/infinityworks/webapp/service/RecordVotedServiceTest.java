@@ -1,15 +1,15 @@
 package com.infinityworks.webapp.service;
 
 import com.infinityworks.common.lang.Try;
-import com.infinityworks.webapp.converter.ErnShortFormToLongFormConverter;
-import com.infinityworks.webapp.domain.User;
-import com.infinityworks.webapp.domain.Ward;
-import com.infinityworks.webapp.error.NotAuthorizedFailure;
 import com.infinityworks.webapp.clients.paf.PafClient;
 import com.infinityworks.webapp.clients.paf.PafRequestExecutor;
 import com.infinityworks.webapp.clients.paf.command.RecordVoteCommandFactory;
 import com.infinityworks.webapp.clients.paf.dto.ImmutableRecordVotedResponse;
 import com.infinityworks.webapp.clients.paf.dto.RecordVotedResponse;
+import com.infinityworks.webapp.converter.ErnShortFormToLongFormConverter;
+import com.infinityworks.webapp.domain.User;
+import com.infinityworks.webapp.domain.Ward;
+import com.infinityworks.webapp.error.NotAuthorizedFailure;
 import com.infinityworks.webapp.rest.dto.RecordVoteRequest;
 import com.infinityworks.webapp.testsupport.mocks.CallStub;
 import org.junit.Before;
@@ -31,7 +31,6 @@ public class RecordVotedServiceTest {
 
     private final ErnShortFormToLongFormConverter ernFormatEnricher = new ErnShortFormToLongFormConverter();
     private RecordVotedService underTest;
-    private RecordVotedLogService recordVotedLogService;
     private PafClient pafClient;
     private WardService wardService;
 
@@ -39,8 +38,7 @@ public class RecordVotedServiceTest {
     public void setUp() throws Exception {
         pafClient = mock(PafClient.class);
         wardService = mock(WardService.class);
-        recordVotedLogService = mock(RecordVotedLogService.class);
-        underTest = new RecordVotedService(wardService, ernFormatEnricher, new RecordVoteCommandFactory(pafClient, 30000, new PafRequestExecutor(){}), recordVotedLogService);
+        underTest = new RecordVotedService(wardService, ernFormatEnricher, new RecordVoteCommandFactory(pafClient, 30000, new PafRequestExecutor(){}));
     }
 
     @Test

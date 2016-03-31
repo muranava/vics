@@ -21,6 +21,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.support.PropertySourcesPlaceholderConfigurer;
 import org.springframework.core.env.Environment;
+import org.springframework.scheduling.annotation.EnableAsync;
 
 import javax.validation.Validation;
 import javax.validation.ValidatorFactory;
@@ -31,6 +32,7 @@ import java.util.Set;
 import static java.util.Arrays.asList;
 
 @Configuration
+@EnableAsync
 public class Config {
     @Bean
     public RestErrorHandler errorHandler() {

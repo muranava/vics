@@ -21,7 +21,7 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import java.security.Principal;
 import java.util.UUID;
 
-import static com.infinityworks.webapp.common.Json.asJson;
+import static com.infinityworks.webapp.common.Json.stringify;
 import static java.util.Collections.emptyList;
 import static java.util.Collections.singletonList;
 import static org.hamcrest.core.Is.is;
@@ -122,7 +122,7 @@ public class ConstituenciesTest extends WebApplicationTest {
 
         mockMvc.perform(post(endpoint)
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(asJson(association))
+                .content(stringify(association))
                 .accept(MediaType.APPLICATION_JSON))
                 .andDo(print())
                 .andExpect(status().isOk())
