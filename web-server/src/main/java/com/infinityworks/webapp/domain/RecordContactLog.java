@@ -22,6 +22,10 @@ public class RecordContactLog extends BaseEntity {
     @Enumerated(EnumType.STRING)
     private RecordContactOperationType operation;
 
+    public RecordContactLog() {
+        // required by hibernate
+    }
+
     public RecordContactLog(User user, Ward ward, String ern) {
         this.user = user;
         this.ward = ward;

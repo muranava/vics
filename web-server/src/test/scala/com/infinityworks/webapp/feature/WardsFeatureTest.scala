@@ -12,8 +12,6 @@ import com.infinityworks.webapp.service._
 import org.hamcrest.collection.IsCollectionWithSize._
 import org.hamcrest.core.Is._
 import org.junit.{Before, Test}
-import org.springframework.security.authentication.AuthenticationManager
-import org.springframework.security.core.userdetails.UserDetailsService
 import org.springframework.test.context.jdbc.{Sql, SqlGroup}
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers._
 import org.springframework.test.web.servlet.setup.MockMvcBuilders
