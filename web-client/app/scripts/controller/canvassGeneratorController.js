@@ -166,16 +166,15 @@ angular
         electorService.retrievePdfOfElectorsByStreets($scope.wardSearchModel.code, {streets: streets})
           .success(function (response) {
             var file = new Blob([response], {type: 'application/pdf'});
-            saveAs(file, createPdfFileName(streets.length) + '.pdf');
+            saveAs(file, createPdfFileName() + '.pdf');
           })
           .error(function (error) {
             handleErrorResponse(error);
           });
       }
 
-      function createPdfFileName(numStreetsSelected) {
-        var streets = numStreetsSelected + ' of ' + $scope.streets.length;
-        return $scope.wardSearchModel.name + ' in ' + $scope.constituencySearchModel.name + ' (' + streets + ' streets)';
+      function createPdfFileName() {
+        return $scope.wardSearchModel.name + ' in ' + $scope.constituencySearchModel.name + ' ' + new Date().toISOString();
       }
 
       function resetErrors() {
