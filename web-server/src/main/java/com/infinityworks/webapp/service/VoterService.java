@@ -54,7 +54,7 @@ public class VoterService {
     }
 
     /**
-     * Searches for electors by attributes.
+     * Searches for properties by attributes.
      *
      * @param user           the current user
      * @param searchElectors the search criteria
@@ -85,8 +85,6 @@ public class VoterService {
                                                                ElectorsByStreetsRequest request,
                                                                String wardCode,
                                                                User user) {
-        log.info("Get voters by ward={} numStreets={} for user={}", wardCode, request.getStreets(), user);
-
         return wardService.getByCode(wardCode, user)
                 .flatMap(ward -> {
                     List<PafStreetRequest> pafStreets = request.getStreets()
@@ -94,10 +92,14 @@ public class VoterService {
                             .map(streetToPafConverter)
                             .collect(toList());
                     GetVotersCommand getVotersCommand = getVotersCommandFactory.create(pafStreets, ward.getCode());
-                    Try<PropertyResponse> execute = getVotersCommand.execute();
+                    Try<PropertyResponse> propertiesGroupedByStreet = getVotersCommand.execute();
 
-                    return execute.flatMap((PropertyResponse properties) -> renderPdfOfElectorsByStreets(
-                            tableBuilder, documentBuilder, request, ward, properties.response()));
+                    return propertiesGroupedByStreet.flatMap(properties -> renderPdfOfElectorsByStreets(
+                            tableBuilder, documentBuilder, request, ward, properties.response())).map(pdfContent -> {
+
+                        log.info("User={} Generated PDF of voters for ward={} numStreets={}", wardCode, request.getStreets(), user);
+                        return pdfContent;
+                    });
                 });
     }
 
@@ -105,9 +107,9 @@ public class VoterService {
                                                                     DocumentBuilder documentBuilder,
                                                                     ElectorsByStreetsRequest request,
                                                                     Ward ward,
-                                                                    List<List<Property>> electors) {
+                                                                    List<List<Property>> properties) {
         List<GeneratedPdfTable> generatedPdfTables = pdfTableGenerator.generateTables(tableBuilder,
-                electors, ward.getCode(), ward.getName(), ward.getConstituency().getName());
+                properties, ward.getCode(), ward.getName(), ward.getConstituency().getName());
 
         if (generatedPdfTables.isEmpty()) {
             log.info("No voters found for ward={} streets={}", ward, request);

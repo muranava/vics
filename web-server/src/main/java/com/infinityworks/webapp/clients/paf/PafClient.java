@@ -12,7 +12,6 @@ import java.util.UUID;
  * Client for core API (PAF) containing voter and address data
  */
 public interface PafClient {
-
     /**
      * Gets the streets in the given ward
      *
@@ -52,6 +51,7 @@ public interface PafClient {
     @POST("voter/{ern}/contact")
     Call<RecordContactResponse> recordContact(@Path("ern") String ern,
                                               @Body RecordContactRequest contactRequest);
+
     /**
      * Deletes an existing contact record
      *
@@ -60,7 +60,8 @@ public interface PafClient {
      * @return no content
      */
     @DELETE("voter/{ern}/contact/{contactId}")
-    Call<DeleteContactResponse> deleteContact(@Path("ern") String ern, @Path("contactId") UUID contactId);
+    Call<DeleteContactResponse> deleteContact(@Path("ern") String ern,
+                                              @Path("contactId") UUID contactId);
 
     /**
      * Records that a voter has voted

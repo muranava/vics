@@ -46,7 +46,7 @@ canvass:
 
 logging.level.: INFO
 logging.level:
-  com.infinityworks: TRACE
+  com.infinityworks: DEBUG
   org.springframework.cache: DEBUG
 
 logstash:

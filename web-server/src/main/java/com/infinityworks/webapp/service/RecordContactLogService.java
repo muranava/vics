@@ -23,7 +23,7 @@ public class RecordContactLogService {
     }
 
     @Async
-    public void deleteRecordContact(UUID log) {
+    public void deleteRecordContactAsync(UUID log) {
         recordVoteLogRepository.delete(log);
     }
 }

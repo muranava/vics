@@ -225,7 +225,6 @@ public class User extends BaseEntity {
                 .add("id", getId())
                 .add("username", username)
                 .add("role", role)
-                .add("permissions", permissions)
                 .toString();
     }
 }

@@ -37,13 +37,14 @@ public class RecordVotedService {
      * @return the recorded vote if success, else a failure object
      */
     public Try<RecordVoteRequest> recordVote(User user, RecordVoteRequest recordVote) {
-        log.debug("user={} recording vote for ern={}", user.getId(), recordVote.getErn());
-
         return user
                 .ensureWriteAccess()
                 .flatMap(u -> wardService.getByCode(recordVote.getWardCode(), user)
                 .flatMap(ward -> ernFormatEnricher.apply(ward.getCode(), recordVote.getErn()))
                 .flatMap(ern -> recordVoteCommandFactory.create(ern).execute())
-                .map(success -> recordVote));
+                .map(success -> {
+                    log.debug("user={} recorded vote for ern={}", user.getId(), recordVote.getErn());
+                    return recordVote;
+                }));
     }
 }

@@ -37,7 +37,11 @@ public class PdfJetTableGenerator implements PDFTableGenerator {
      * a parallelStream since the number of streets is typically small.
      */
     @Override
-    public List<GeneratedPdfTable> generateTables(TableBuilder tableBuilder, List<List<Property>> votersByStreets, String wardCode, String wardName, String constituencyName) {
+    public List<GeneratedPdfTable> generateTables(TableBuilder tableBuilder,
+                                                  List<List<Property>> votersByStreets,
+                                                  String wardCode,
+                                                  String wardName,
+                                                  String constituencyName) {
         List<GeneratedPdfTable> pdfTables = votersByStreets.stream()
                 .map(street -> createTableFromStreet(tableBuilder, street, wardCode, wardName, constituencyName))
                 .filter(Optional::isPresent)
@@ -55,11 +59,18 @@ public class PdfJetTableGenerator implements PDFTableGenerator {
         }
     }
 
-    private GeneratedPdfTable createEmptyBackPageTable(TableBuilder tableBuilder, String wardName, String wardCode, String constituencyName) {
+    private GeneratedPdfTable createEmptyBackPageTable(TableBuilder tableBuilder,
+                                                       String wardName,
+                                                       String wardCode,
+                                                       String constituencyName) {
         return tableBuilder.generateTableRows(EMPTY_ROWS, "", wardName, wardCode, constituencyName).get();
     }
 
-    private Optional<GeneratedPdfTable> createTableFromStreet(TableBuilder tableBuilder, List<Property> properties, String wardCode, String wardName, String constituencyName) {
+    private Optional<GeneratedPdfTable> createTableFromStreet(TableBuilder tableBuilder,
+                                                              List<Property> properties,
+                                                              String wardCode,
+                                                              String wardName,
+                                                              String constituencyName) {
         List<ElectorRow> electors = properties
                 .stream()
                 .map(property -> propertyToRowsConverter.apply(wardCode, property))

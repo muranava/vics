@@ -56,34 +56,42 @@ public class RecordContactService {
         if (!user.getWriteAccess()) {
             log.warn("User={} tried to add contact for ern={} but does not have write access", user, ern);
             return Try.failure(new NotAuthorizedFailure("Forbidden"));
+        } else {
+            return wardService
+                    .getByCode(ern.getWardCode(), user)
+                    .flatMap(ward -> {
+                        com.infinityworks.webapp.clients.paf.dto.RecordContactRequest pafRequest = recordContactToPafConverter.apply(user, contactRequest);
+                        Try<RecordContactResponse> execute = recordContactCommandFactory.create(ern.get(), pafRequest).execute();
+                        return execute
+                                .map(response -> {
+                                    RecordContactLog recordContactLog = new RecordContactLog(user, ward, ern.get());
+                                    recordContactLogService.logRecordContactAsync(recordContactLog);
+
+                                    log.info("User={} recorded contact for ern={}", ern.get());
+                                    return new com.infinityworks.webapp.rest.dto.RecordContactResponse(recordContactLog.getId(), ern, response.id());
+                                });
+                    });
         }
-        return wardService
-                .getByCode(ern.getWardCode(), user)
-                .flatMap(ward -> {
-                    com.infinityworks.webapp.clients.paf.dto.RecordContactRequest pafRequest = recordContactToPafConverter.apply(user, contactRequest);
-                    Try<RecordContactResponse> execute = recordContactCommandFactory.create(ern.get(), pafRequest).execute();
-                    return execute
-                            .map(response -> {
-                                RecordContactLog recordContactLog = new RecordContactLog(user, ward, ern.get());
-                                recordContactLogService.logRecordContactAsync(recordContactLog);
-                                return new com.infinityworks.webapp.rest.dto.RecordContactResponse(recordContactLog.getId(), ern, response.id());
-                            });
-                });
+
     }
 
     public Try<DeleteContactResponse> deleteContact(User user, Ern ern, UUID contactId, UUID localId) {
         if (!user.getWriteAccess()) {
             log.warn("User={} tried to delete contact for ern={} but does not have write access", user, ern);
             return Try.failure(new NotAuthorizedFailure("Forbidden"));
+        } else {
+            return wardService
+                    .getByCode(ern.getWardCode(), user)
+                    .flatMap(ward -> {
+                        DeleteContactCommand recordContactCommand = deleteContactCommandFactory.create(ern.get(), contactId);
+                        return recordContactCommand.execute();
+                    }).map(deleteResponse -> {
+
+                        log.info("User={} deleted recorded contact for ern={}", ern);
+                        recordContactLogService.deleteRecordContactAsync(localId);
+                        return deleteResponse;
+                    });
         }
-        return wardService
-                .getByCode(ern.getWardCode(), user)
-                .flatMap(ward -> {
-                    DeleteContactCommand recordContactCommand = deleteContactCommandFactory.create(ern.get(), contactId);
-                    return recordContactCommand.execute();
-                }).map(deleteResponse -> {
-                    recordContactLogService.deleteRecordContact(localId);
-                    return deleteResponse;
-                });
+
     }
 }

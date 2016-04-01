@@ -125,21 +125,6 @@ angular
           });
       };
 
-      $scope.onPrintSelected = function () {
-        resetErrors();
-        var selected = _.filter($scope.streets, function (s) {
-          return s.selected;
-        });
-        electorService.retrievePdfOfElectorsByStreets($scope.wardSearchModel.code, {streets: selected})
-          .success(function (response) {
-            var file = new Blob([response], {type: 'application/pdf'});
-            saveAs(file, $scope.wardSearchModel.code + '.pdf');
-          })
-          .error(function (error) {
-            handleErrorResponse(error);
-          });
-      };
-
       /**
        * Sorts the streets by the given field
        * @param field - either [mainStreet, numVoters, numCanvassed]
@@ -150,7 +135,7 @@ angular
         $scope.streets = _.orderBy($scope.streets, field, direction);
       };
 
-      $scope.getRatioCanvassed = function(numCanvassed, numVoters) {
+      $scope.getRatioCanvassed = function (numCanvassed, numVoters) {
         if (numCanvassed === 0 && numVoters === 0) {
           return 100;
         }
@@ -165,17 +150,33 @@ angular
         }
       }
 
+      $scope.onPrintSelected = function () {
+        var selected = _.filter($scope.streets, function (s) {
+          return s.selected;
+        });
+        printCanvassCard(selected);
+      };
+
       $scope.onPrintAll = function () {
-        $scope.errorLoadingData = null;
-        electorService.retrievePdfOfElectorsByStreets($scope.wardSearchModel.code, {streets: $scope.streets})
+        printCanvassCard($scope.streets);
+      };
+
+      function printCanvassCard(streets) {
+        resetErrors();
+        electorService.retrievePdfOfElectorsByStreets($scope.wardSearchModel.code, {streets: streets})
           .success(function (response) {
             var file = new Blob([response], {type: 'application/pdf'});
-            saveAs(file, $scope.wardSearchModel.code + '.pdf');
+            saveAs(file, createPdfFileName(streets.length) + '.pdf');
           })
           .error(function (error) {
             handleErrorResponse(error);
           });
-      };
+      }
+
+      function createPdfFileName(numStreetsSelected) {
+        var streets = numStreetsSelected + ' of ' + $scope.streets.length;
+        return $scope.wardSearchModel.name + ' in ' + $scope.constituencySearchModel.name + ' (' + streets + ' streets)';
+      }
 
       function resetErrors() {
         $scope.failedToLoadStreets = null;
