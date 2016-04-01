@@ -2,8 +2,8 @@
   "stats": {
     "towns": 1,
     "streets": 81,
-    "voters": 0,
-    "canvassed": 0
+    "voters": 550,
+    "canvassed": 221
   },
   "response": [
     {
@@ -12,8 +12,8 @@
       "dependent_locality": "",
       "post_town": "KINGSTON UPON THAMES",
       "id": "e08c9d77",
-      "voters": 0,
-      "canvassed": 0
+      "voters": 23,
+      "canvassed": 12
     },
     {
       "dependent_street": "",
@@ -21,8 +21,8 @@
       "dependent_locality": "",
       "post_town": "KINGSTON UPON THAMES",
       "id": "2e492ef1",
-      "voters": 0,
-      "canvassed": 0
+      "voters": 31,
+      "canvassed": 1
     },
     {
       "dependent_street": "",
@@ -30,8 +30,8 @@
       "dependent_locality": "",
       "post_town": "KINGSTON UPON THAMES",
       "id": "da861eca",
-      "voters": 0,
-      "canvassed": 0
+      "voters": 44,
+      "canvassed": 32
     },
     {
       "dependent_street": "",
@@ -39,8 +39,8 @@
       "dependent_locality": "",
       "post_town": "KINGSTON UPON THAMES",
       "id": "ca9cd988",
-      "voters": 0,
-      "canvassed": 0
+      "voters": 35,
+      "canvassed": 12
     },
     {
       "dependent_street": "",
@@ -48,7 +48,7 @@
       "dependent_locality": "",
       "post_town": "KINGSTON UPON THAMES",
       "id": "09457460",
-      "voters": 0,
+      "voters": 2,
       "canvassed": 0
     },
     {
@@ -57,8 +57,8 @@
       "dependent_locality": "",
       "post_town": "KINGSTON UPON THAMES",
       "id": "5347feb1",
-      "voters": 0,
-      "canvassed": 0
+      "voters": 44,
+      "canvassed": 5
     },
     {
       "dependent_street": "",
@@ -66,8 +66,8 @@
       "dependent_locality": "",
       "post_town": "KINGSTON UPON THAMES",
       "id": "094c6bfa",
-      "voters": 0,
-      "canvassed": 0
+      "voters": 23,
+      "canvassed": 11
     },
     {
       "dependent_street": "",
@@ -75,8 +75,8 @@
       "dependent_locality": "",
       "post_town": "KINGSTON UPON THAMES",
       "id": "f0e15c06",
-      "voters": 0,
-      "canvassed": 0
+      "voters": 66,
+      "canvassed": 7
     },
     {
       "dependent_street": "",
@@ -84,7 +84,7 @@
       "dependent_locality": "",
       "post_town": "KINGSTON UPON THAMES",
       "id": "2f973218",
-      "voters": 0,
+      "voters": 22,
       "canvassed": 0
     },
     {
@@ -93,7 +93,7 @@
       "dependent_locality": "",
       "post_town": "KINGSTON UPON THAMES",
       "id": "e25a890b",
-      "voters": 0,
+      "voters": 52,
       "canvassed": 0
     },
     {
@@ -102,8 +102,8 @@
       "dependent_locality": "",
       "post_town": "KINGSTON UPON THAMES",
       "id": "89bf990d",
-      "voters": 0,
-      "canvassed": 0
+      "voters": 55,
+      "canvassed": 12
     },
     {
       "dependent_street": "",
@@ -111,8 +111,8 @@
       "dependent_locality": "",
       "post_town": "KINGSTON UPON THAMES",
       "id": "96ab0db0",
-      "voters": 0,
-      "canvassed": 0
+      "voters": 20,
+      "canvassed": 18
     },
     {
       "dependent_street": "",
@@ -120,8 +120,8 @@
       "dependent_locality": "",
       "post_town": "KINGSTON UPON THAMES",
       "id": "5f076d32",
-      "voters": 0,
-      "canvassed": 0
+      "voters": 1,
+      "canvassed": 1
     },
     {
       "dependent_street": "",
@@ -129,8 +129,8 @@
       "dependent_locality": "",
       "post_town": "KINGSTON UPON THAMES",
       "id": "149e5fd6",
-      "voters": 0,
-      "canvassed": 0
+      "voters": 10,
+      "canvassed": 3
     },
     {
       "dependent_street": "",
@@ -138,8 +138,8 @@
       "dependent_locality": "",
       "post_town": "KINGSTON UPON THAMES",
       "id": "8d035248",
-      "voters": 0,
-      "canvassed": 0
+      "voters": 15,
+      "canvassed": 12
     },
     {
       "dependent_street": "",
@@ -147,8 +147,8 @@
       "dependent_locality": "",
       "post_town": "KINGSTON UPON THAMES",
       "id": "69ba31be",
-      "voters": 0,
-      "canvassed": 0
+      "voters": 6,
+      "canvassed": 6
     },
     {
       "dependent_street": "",
@@ -156,8 +156,8 @@
       "dependent_locality": "",
       "post_town": "KINGSTON UPON THAMES",
       "id": "0abc46cc",
-      "voters": 0,
-      "canvassed": 0
+      "voters": 41,
+      "canvassed": 5
     },
     {
       "dependent_street": "",
@@ -165,8 +165,8 @@
       "dependent_locality": "",
       "post_town": "KINGSTON UPON THAMES",
       "id": "b7e327a3",
-      "voters": 0,
-      "canvassed": 0
+      "voters": 61,
+      "canvassed": 18
     },
     {
       "dependent_street": "Clifton Place",
@@ -174,8 +174,8 @@
       "dependent_locality": "",
       "post_town": "KINGSTON UPON THAMES",
       "id": "11dd89a0",
-      "voters": 0,
-      "canvassed": 0
+      "voters": 14,
+      "canvassed": 4
     },
     {
       "dependent_street": "",
@@ -183,8 +183,8 @@
       "dependent_locality": "",
       "post_town": "KINGSTON UPON THAMES",
       "id": "eb3ad710",
-      "voters": 0,
-      "canvassed": 0
+      "voters": 52,
+      "canvassed": 2
     },
     {
       "dependent_street": "",
@@ -192,8 +192,8 @@
       "dependent_locality": "",
       "post_town": "KINGSTON UPON THAMES",
       "id": "b128102a",
-      "voters": 0,
-      "canvassed": 0
+      "voters": 41,
+      "canvassed": 25
     },
     {
       "dependent_street": "",
@@ -219,8 +219,8 @@
       "dependent_locality": "",
       "post_town": "KINGSTON UPON THAMES",
       "id": "9caa0e66",
-      "voters": 0,
-      "canvassed": 0
+      "voters": 22,
+      "canvassed": 11
     },
     {
       "dependent_street": "",
@@ -228,8 +228,8 @@
       "dependent_locality": "",
       "post_town": "KINGSTON UPON THAMES",
       "id": "75d5dbc8",
-      "voters": 0,
-      "canvassed": 0
+      "voters": 1,
+      "canvassed": 1
     },
     {
       "dependent_street": "",
@@ -237,8 +237,8 @@
       "dependent_locality": "",
       "post_town": "KINGSTON UPON THAMES",
       "id": "1e51d8bb",
-      "voters": 0,
-      "canvassed": 0
+      "voters": 23,
+      "canvassed": 4
     },
     {
       "dependent_street": "",
@@ -246,7 +246,7 @@
       "dependent_locality": "",
       "post_town": "KINGSTON UPON THAMES",
       "id": "360148ce",
-      "voters": 0,
+      "voters": 8,
       "canvassed": 0
     },
     {
@@ -255,7 +255,7 @@
       "dependent_locality": "",
       "post_town": "KINGSTON UPON THAMES",
       "id": "7da0fdd2",
-      "voters": 0,
+      "voters": 8,
       "canvassed": 0
     },
     {
@@ -264,7 +264,7 @@
       "dependent_locality": "",
       "post_town": "KINGSTON UPON THAMES",
       "id": "3e997c59",
-      "voters": 0,
+      "voters": 81,
       "canvassed": 0
     },
     {
@@ -273,8 +273,8 @@
       "dependent_locality": "",
       "post_town": "KINGSTON UPON THAMES",
       "id": "5cd80735",
-      "voters": 0,
-      "canvassed": 0
+      "voters": 22,
+      "canvassed": 2
     },
     {
       "dependent_street": "The Ashway Centre",
@@ -282,8 +282,8 @@
       "dependent_locality": "",
       "post_town": "KINGSTON UPON THAMES",
       "id": "bf6bdccf",
-      "voters": 0,
-      "canvassed": 0
+      "voters": 33,
+      "canvassed": 20
     },
     {
       "dependent_street": "Canbury 2000 Business Park",
@@ -291,8 +291,8 @@
       "dependent_locality": "",
       "post_town": "KINGSTON UPON THAMES",
       "id": "4b58104b",
-      "voters": 0,
-      "canvassed": 0
+      "voters": 33,
+      "canvassed": 4
     },
     {
       "dependent_street": "",
@@ -300,8 +300,8 @@
       "dependent_locality": "",
       "post_town": "KINGSTON UPON THAMES",
       "id": "7bbb6988",
-      "voters": 0,
-      "canvassed": 0
+      "voters": 65,
+      "canvassed": 15
     },
     {
       "dependent_street": "",
@@ -309,8 +309,8 @@
       "dependent_locality": "",
       "post_town": "KINGSTON UPON THAMES",
       "id": "d9ea532d",
-      "voters": 0,
-      "canvassed": 0
+      "voters": 36,
+      "canvassed": 33
     },
     {
       "dependent_street": "",
@@ -318,8 +318,8 @@
       "dependent_locality": "",
       "post_town": "KINGSTON UPON THAMES",
       "id": "023c8b14",
-      "voters": 0,
-      "canvassed": 0
+      "voters": 40,
+      "canvassed": 20
     },
     {
       "dependent_street": "Willow Terrace",
@@ -579,8 +579,8 @@
       "dependent_locality": "",
       "post_town": "KINGSTON UPON THAMES",
       "id": "cf9ff526",
-      "voters": 0,
-      "canvassed": 0
+      "voters": 31,
+      "canvassed": 1
     },
     {
       "dependent_street": "",

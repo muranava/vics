@@ -7,19 +7,19 @@ import java.util.concurrent.Executors;
  * App for running a stub PAF api (for demo purposes only)
  */
 public class PafServerRunner {
-    static Runnable pathServer = () -> {
+    private static Runnable pafServer = () -> {
         PafServerStub pafApiStub = new PafServerStub(9002);
         pafApiStub.start();
         try {
             pafApiStub.willReturnStreets();
-            pafApiStub.willReturnVotersByStreets();
             pafApiStub.willRecordVoterVoted();
+            pafApiStub.willReturnVotersByWardByTownAndByStreet("E05000403", "Kingston");
         } catch (IOException e) {
             throw new IllegalStateException("Could not start PAF mock server");
         }
     };
 
     public static void main(String... args) {
-        Executors.newSingleThreadExecutor().execute(pathServer);
+        Executors.newSingleThreadExecutor().execute(pafServer);
     }
 }

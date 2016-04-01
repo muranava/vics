@@ -11,6 +11,7 @@ angular
       $scope.numStreetsSelected = 0;
       $scope.errorLoadingData = false;
       var streetsContainerPos = null;
+      $scope.currentSort = "Street asc";
 
       $scope.onSelectConstituency = function () {
         resetErrors();
@@ -46,8 +47,14 @@ angular
 
         wardService.findStreetsByWard($scope.wardSearchModel.code)
           .success(function (streets) {
-            $scope.streets = streets;
+            $scope.streets = _.map(streets, function (street) {
+              street.numNotCanvassed = street.numVoters - street.numCanvassed;
+              return street;
+            });
             scrollToPrintSection();
+            $timeout(function () {
+              $('[data-toggle="tooltip"]').tooltip();
+            });
           })
           .error(function () {
             $scope.errorLoadingStreets = true;
@@ -131,6 +138,23 @@ angular
           .error(function (error) {
             handleErrorResponse(error);
           });
+      };
+
+      /**
+       * Sorts the streets by the given field
+       * @param field - either [mainStreet, numVoters, numCanvassed]
+       * @param direction - either asc or desc
+       */
+      $scope.sortStreets = function (field, direction, label) {
+        $scope.currentSort = label;
+        $scope.streets = _.orderBy($scope.streets, field, direction);
+      };
+
+      $scope.getRatioCanvassed = function(numCanvassed, numVoters) {
+        if (numCanvassed === 0 && numVoters === 0) {
+          return 100;
+        }
+        return Math.round(numCanvassed / numVoters * 100);
       };
 
       function handleErrorResponse(error) {

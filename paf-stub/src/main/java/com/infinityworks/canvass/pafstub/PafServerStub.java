@@ -34,6 +34,7 @@ public class PafServerStub {
     static {
         files.put("E05001221", "json/paf-streets-earlsdon.json");
         files.put("E05001221,Coventry", "json/paf-voters-multiple-streets.json");
+        files.put("E05000403,Kingston", "json/paf-voters-kingston.json");
         files.put("voted,E05001221-ADD-1313-1", "json/paf-record-voted.json");
         files.put("search,McCall,KT25BU", "json/paf-search-voter.json");
         files.put("postContact,E05001221-PD-123-4", "json/paf-record-contact-response.json");
@@ -65,7 +66,7 @@ public class PafServerStub {
      * Returns the same streets no matter what ward you request
      */
     public void willReturnStreets() throws IOException {
-        String jsonData = Resources.toString(getResource("json/paf-streets-E05001233.json"), UTF_8);
+        String jsonData = Resources.toString(getResource("json/paf-streets-earlsdon.json"), UTF_8);
 
         String urlPath = "/v1/wards/.*/streets";
         wireMock.register(get(urlPathMatching(urlPath))
@@ -176,8 +177,5 @@ public class PafServerStub {
                         .withStatus(200)
                         .withHeader(CONTENT_TYPE, "application/json")
                         .withBody(jsonData)));
-    }
-
-    private static class Nil {
     }
 }

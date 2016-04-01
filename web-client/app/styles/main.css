@@ -197,3 +197,9 @@ div.game-center {
 .icon-med {
   font-size: 14pt;
 }
+.dropdown-override {
+  opacity: 1; -moz-opacity: 1; filter: alpha(opacity=100);
+}
+.table {
+  background-color: white !important;
+}

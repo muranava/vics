@@ -117,6 +117,7 @@
                       <button type="button" class="btn btn-primary btn-sm raised pull-left" ng-click="onPrintSelected()"
                               ng-disabled="numStreetsSelected === 0">Print Selected
                       </button>
+
                       <a class="btn btn-danger btn-sm raised pull-left button-group-spacing" data-toggle="modal"
                          data-target="#simpleModal">Print All</a>
                     </div>
@@ -134,15 +135,32 @@
                       </div>
                     </div>
 
+                    <div class="btn-group pull-right">
+                      <button type="button" class="btn ink-reaction btn-flat dropdown-toggle" data-toggle="dropdown">
+                        {{currentSort}} <i class="fa fa-caret-down text-default-light"></i>
+                      </button>
+                      <ul class="dropdown-menu animation-expand" role="menu">
+                        <li><a ng-click="sortStreets('mainStreet', 'asc', 'Street ASC')"><i class="md md-keyboard-arrow-up"></i> Street</a></li>
+                        <li><a ng-click="sortStreets('mainStreet', 'desc', 'Street DESC')"><i class="md md-keyboard-arrow-down"></i> Street</a></li>
+                        <li><a ng-click="sortStreets('numVoters', 'asc', 'Voters ASC')"><i class="md md-keyboard-arrow-up"></i> # Voters</a></li>
+                        <li><a ng-click="sortStreets('numVoters', 'desc', 'Voters DESC')"><i class="md md-keyboard-arrow-down"></i> # Voters</a></li>
+                        <li><a ng-click="sortStreets('numCanvassed', 'asc', 'Canvassed ASC')"><i class="md md-keyboard-arrow-up"></i> # Canvassed</a></li>
+                        <li><a ng-click="sortStreets('numCanvassed', 'desc', 'Canvassed DESC')"><i class="md md-keyboard-arrow-down"></i> # Canvassed</a></li>
+                        <li><a ng-click="sortStreets('numNotCanvassed', 'asc', 'Not Canvassed ASC')"><i class="md md-keyboard-arrow-up"></i> # Not Canvassed</a></li>
+                        <li><a ng-click="sortStreets('numNotCanvassed', 'desc', 'Not Canvassed DESC')"><i class="md md-keyboard-arrow-down"></i> # Not Canvassed</a></li>
+                      </ul>
+                    </div>
+
                     <!-- Streets table -->
                     <table class="table table-hover no-margin">
                       <thead>
                       <tr>
-                        <th></th>
+                        <th>
+                        </th>
                         <th>Street</th>
-                        <th class="hidden-xs stats-cell"># Voters</th>
-                        <th class="hidden-xs stats-cell"># Canvassed</th>
-                        <th class="stats-cell">Actions</th>
+                        <th class="hidden-xs stats-cell">Canvass Stats</th>
+                        <th class="stats-cell">Tools
+                        </th>
                       </tr>
                       </thead>
                       <tbody id="streetsList">
@@ -158,13 +176,12 @@
                         </td>
                         <td class="streetsText">{{street | streetSingleLineFilter}}</td>
                         <td class="hidden-xs stats-cell">
-                          <span class="text-default text-xl">{{street.numVoters !== 0 ? street.numVoters : '-'}}</span>
-                        </td>
-                        <td class="hidden-xs stats-cell">
-                          <span class="text-default text-xl">{{street.numCanvassed !== 0 ? street.numCanvassed : '-'}}</span>
+                          <span class="text-default text-xl"><span class="text-light" data-toggle="tooltip" data-placement="top" title="Voters Canvassed">{{street.numCanvassed}}</span> /
+                            <span data-toggle="tooltip" data-placement="top" title="Total Voters">{{street.numVoters}}</span>
+                            <span class="text-default-light text-light">({{getRatioCanvassed(street.numCanvassed, street.numVoters)}}%)</span></span>
                         </td>
                         <td class="text-center">
-                          <button ng-click="onShowMap(street)" type="button" class="btn btn-icon-toggle" data-toggle="tooltip" data-placement="top" data-original-title="Delete row"><i class="fa icon-med fa-map-marker"></i></button>
+                          <button ng-click="onShowMap(street)" type="button" class="btn btn-icon-toggle"><i class="fa icon-med fa-map-marker"></i></button>
                         </td>
                       </tr>
                       </tbody>
