@@ -41,7 +41,8 @@ angular
       {route: '/admin', role: 'ADMIN'},
       {route: '/associations', role: 'ADMIN'},
       {route: '/users', role: 'ADMIN'},
-      {route: '/csvupload', role: 'ADMIN'}
+      {route: '/csvupload', role: 'ADMIN'},
+      {route: '/stats', role: 'ADMIN'}
     ];
 
     /**
@@ -90,7 +91,7 @@ angular
         }
       })
       .when('/admin', {
-        templateUrl: 'views/admin.html',
+        templateUrl: 'views/stats.html',
         resolve: {
           auth: userAuth
         }
@@ -144,6 +145,13 @@ angular
       .when('/csvupload', {
         templateUrl: 'views/csvupload.html',
         controller: 'csvUploadController',
+        resolve: {
+          auth: userAuth
+        }
+      })
+      .when('/stats', {
+        templateUrl: 'views/stats.html',
+        controller: 'statsController',
         resolve: {
           auth: userAuth
         }

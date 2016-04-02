@@ -1,77 +1,168 @@
 <section>
   <div class="section-body">
     <br>
-      <div class="row">
-        <div class="col-xs-12 text-center">
-          <h1 class="text-light"><i class="fa fa-clock-o fa-fw fa-2x text-danger"> </i>Referendum <strong class="text-danger">Countdown</strong></h1>
-        </div>
+    <div class="row">
+      <div class="col-xs-12 text-center">
+        <h1 class="text-light"><i class="fa fa-clock-o fa-fw fa-2x text-danger"> </i>Referendum <strong
+          class="text-danger">Countdown</strong></h1>
       </div>
-      <br/><br>
+    </div>
+    <br/><br>
 
-      <!-- Days -->
-      <div class="row">
-        <div class="col-sm-3 col-md-3">
-          <div class="card text-center">
+    <!-- Days -->
+    <div class="row">
+      <div class="col-sm-3 col-md-3">
+        <div class="card text-center">
 
-            <div class="card-body style-gray">
-              <h2 class="text-light">Days</h2>
-              <div class="price">
-                <h2><span class="text-xxl">{{days}}</span></h2>
-              </div>
-              <br/>
-            </div><!--end .card-body -->
+          <div class="card-body style-gray">
+            <h2 class="text-light">Days</h2>
+            <div class="price">
+              <h2><span class="text-xxl">{{days}}</span></h2>
+            </div>
+            <br/>
+          </div><!--end .card-body -->
 
-          </div><!--end .card -->
+        </div><!--end .card -->
+      </div><!--end .col -->
+
+      <!-- Hours -->
+      <div class="col-sm-3 col-md-3">
+        <div class="card text-center">
+
+          <div class="card-body style-gray">
+            <h2 class="text-light">Hours</h2>
+            <div class="price">
+              <h2><span class="text-xxl">{{hours}}</span></h2>
+            </div>
+            <br/>
+          </div><!--end .card-body -->
+
+        </div><!--end .card -->
+      </div><!--end .col -->
+
+      <!-- Minutes -->
+      <div class="col-sm-3 col-md-3">
+        <div class="card text-center">
+
+          <div class="card-body style-gray">
+            <h2 class="text-light">Minutes</h2>
+            <div class="price">
+              <h2><span class="text-xxl">{{minutes}}</span></h2>
+            </div>
+            <br/>
+          </div><!--end .card-body -->
+
+        </div><!--end .card -->
+      </div><!--end .col -->
+
+      <!-- Seconds -->
+      <div class="col-sm-3 col-md-3">
+        <div class="card text-center">
+
+          <div class="card-body style-gray">
+            <h2 class="text-light">Seconds</h2>
+            <div class="price">
+              <h2><span class="text-xxl">{{seconds | number:0}}</span></h2>
+            </div>
+            <br/>
+          </div><!--end .card-body -->
+
+        </div><!--end .card -->
+      </div><!--end .col -->
+    </div><!--end .row -->
+    <!-- END PRICING CARDS 1 -->
+
+    <br>
+
+    <div class="row">
+      <!-- BEGIN NEW REGISTRATIONS -->
+      <div class="col-sm-4">
+        <div class="card">
+          <div class="card-head">
+            <header>Most Canvassed Constituencies</header>
+          </div><!--end .card-head -->
+
+          <div class="card-body no-padding height-9 scroll">
+            <ul class="list divider-full-bleed">
+              <li ng-repeat="c in topConstituencies" class="tile">
+                <a class="tile-content ink-reaction">
+                  <div class="tile-icon">
+                    <i ng-if="$index === 0" class="fa fa-trophy gold-trophy"></i>
+                    <i ng-if="$index === 1" class="fa fa-trophy silver-trophy"></i>
+                    <i ng-if="$index === 2" class="fa fa-trophy bronze-trophy"></i>
+                    <i ng-if="$index === 3" class="md md-filter-4"></i>
+                    <i ng-if="$index === 4" class="md md-filter-5"></i>
+                    <i ng-if="$index === 5" class="md md-filter-6"></i>
+                    <i ng-if="$index === 6" class="md md-filter-7"></i>
+                  </div>
+                  <div class="tile-text">{{c.key}}</div>
+                  <div class="tile-text">{{c.count}}</div>
+                </a>
+              </li>
+            </ul>
+          </div><!--end .card-body -->
+
+        </div><!--end .card -->
+      </div><!--end .col -->
+      <!-- END NEW REGISTRATIONS -->
+
+      <!-- BEGIN NEW REGISTRATIONS -->
+      <div class="col-sm-4">
+        <div class="card">
+          <div class="card-head">
+            <header>Most Canvassed Wards</header>
+          </div><!--end .card-head -->
+          <div class="card-body no-padding height-9 scroll">
+            <ul class="list divider-full-bleed">
+              <li ng-repeat="w in topWards" class="tile">
+                <a class="tile-content ink-reaction">
+                  <div class="tile-icon">
+                    <i ng-if="$index === 0" class="fa fa-trophy gold-trophy"></i>
+                    <i ng-if="$index === 1" class="fa fa-trophy silver-trophy"></i>
+                    <i ng-if="$index === 2" class="fa fa-trophy bronze-trophy"></i>
+                    <i ng-if="$index === 3" class="md md-filter-4"></i>
+                    <i ng-if="$index === 4" class="md md-filter-5"></i>
+                    <i ng-if="$index === 5" class="md md-filter-6"></i>
+                    <i ng-if="$index === 6" class="md md-filter-7"></i>
+                  </div>
+                  <div class="tile-text">{{w.key}}</div>
+                  <div class="tile-text">{{w.count}}</div>
+                </a>
+              </li>
+            </ul>
+          </div><!--end .card-body -->
+        </div><!--end .card -->
+      </div><!--end .col -->
+      <!-- END NEW REGISTRATIONS -->
+      <!-- BEGIN NEW REGISTRATIONS -->
+      <div class="col-sm-4">
+        <div class="card">
+          <div class="card-head">
+            <header>Top Canvassers</header>
+          </div><!--end .card-head -->
+          <div class="card-body no-padding height-9 scroll">
+            <ul class="list divider-full-bleed">
+              <li ng-repeat="c in topCanvassers" class="tile">
+                <a class="tile-content ink-reaction">
+                  <div class="tile-icon">
+                    <i ng-if="$index === 0" class="fa fa-trophy gold-trophy"></i>
+                    <i ng-if="$index === 1" class="fa fa-trophy silver-trophy"></i>
+                    <i ng-if="$index === 2" class="fa fa-trophy bronze-trophy"></i>
+                    <i ng-if="$index === 3" class="md md-filter-4"></i>
+                    <i ng-if="$index === 4" class="md md-filter-5"></i>
+                    <i ng-if="$index === 5" class="md md-filter-6"></i>
+                    <i ng-if="$index === 6" class="md md-filter-7"></i>
+                  </div>
+                  <div class="tile-text">{{c.key}}</div>
+                  <div class="tile-text">{{c.count}}</div>
+                </a>
+              </li>
+            </ul>
+          </div><!--end .card-body -->
         </div><!--end .col -->
+        <!-- END NEW REGISTRATIONS -->
 
-        <!-- Hours -->
-        <div class="col-sm-3 col-md-3">
-          <div class="card text-center">
+      </div>
 
-            <div class="card-body style-gray">
-              <h2 class="text-light">Hours</h2>
-              <div class="price">
-                <h2><span class="text-xxl">{{hours}}</span></h2>
-              </div>
-              <br/>
-            </div><!--end .card-body -->
-
-          </div><!--end .card -->
-        </div><!--end .col -->
-
-        <!-- Minutes -->
-        <div class="col-sm-3 col-md-3">
-          <div class="card text-center">
-
-            <div class="card-body style-gray">
-              <h2 class="text-light">Minutes</h2>
-              <div class="price">
-                <h2><span class="text-xxl">{{minutes}}</span></h2>
-              </div>
-              <br/>
-            </div><!--end .card-body -->
-
-          </div><!--end .card -->
-        </div><!--end .col -->
-
-        <!-- Seconds -->
-        <div class="col-sm-3 col-md-3">
-          <div class="card text-center">
-
-            <div class="card-body style-gray">
-              <h2 class="text-light">Seconds</h2>
-              <div class="price">
-                <h2><span class="text-xxl">{{seconds | number:0}}</span></h2>
-              </div>
-              <br/>
-            </div><!--end .card-body -->
-
-          </div><!--end .card -->
-        </div><!--end .col -->
-      </div><!--end .row -->
-      <!-- END PRICING CARDS 1 -->
-
-
-
-  </div><!--end .section-body -->
+    </div><!--end .section-body -->
 </section>

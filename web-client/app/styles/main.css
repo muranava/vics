@@ -203,3 +203,13 @@ div.game-center {
 .table {
   background-color: white !important;
 }
+
+.gold-trophy {
+  color: #ddaa2d;
+}
+.silver-trophy {
+  color: #8a8789;
+}
+.bronze-trophy {
+  color: #8a6c47;
+}

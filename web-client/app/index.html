@@ -174,6 +174,12 @@
             <span class="title">Profile</span>
           </a>
         </li>
+        <li ng-show="currentUser.authorities[0].authority === 'ADMIN'">
+          <a href="#/stats">
+            <div class="gui-icon"><i class="md md-insert-chart"></i></div>
+            <span class="title">Stats</span>
+          </a>
+        </li>
       </ul>
 
       <div class="menubar-foot-panel">
@@ -229,7 +235,9 @@
 <script src="scripts/controller/dashboardController.js"></script>
 <script src="scripts/controller/loginController.js"></script>
 <script src="scripts/controller/canvassInputController.js"></script>
+<script src="scripts/controller/statsController.js"></script>
 <script src="scripts/controller/adminUserController.js"></script>
+<script src="scripts/service/statsService.js"></script>
 <script src="scripts/controller/profileController.js"></script>
 <script src="scripts/controller/recordVoteController.js"></script>
 <script src="scripts/controller/associationsController.js"></script>
