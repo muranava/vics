@@ -158,6 +158,7 @@
                         <th>
                         </th>
                         <th>Street</th>
+                        <th class="stats-cell">Priority</th>
                         <th class="hidden-xs stats-cell">Canvass Stats</th>
                         <th class="stats-cell">Tools
                         </th>
@@ -175,6 +176,11 @@
                           </div>
                         </td>
                         <td class="streetsText">{{street | streetSingleLineFilter}}</td>
+                        <td class="stats-cell">
+                          <span data-toggle="tooltip" data-placement="top" title="Low" ng-if="street.priority === 'LOW'"><i class="md md-star gold-trophy"></i></span>
+                          <span data-toggle="tooltip" data-placement="top" title="Medium" ng-if="street.priority === 'MED'"><i class="md md-star gold-trophy"></i><i class="md md-star gold-trophy"></i></span>
+                          <span data-toggle="tooltip" data-placement="top" title="High" ng-if="street.priority === 'HIGH'"><i class="md md-star gold-trophy"></i><i class="md md-star gold-trophy"></i><i class="md md-star gold-trophy"></i></span>
+                        </td>
                         <td class="hidden-xs stats-cell">
                           <span class="text-default text-xl"><span class="text-light" data-toggle="tooltip" data-placement="top" title="Voters Canvassed">{{street.numCanvassed}}</span> /
                             <span data-toggle="tooltip" data-placement="top" title="Total Voters">{{street.numVoters}}</span>

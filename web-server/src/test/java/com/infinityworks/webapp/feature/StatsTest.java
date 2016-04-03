@@ -13,11 +13,13 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 import java.security.Principal;
 
+import static org.hamcrest.CoreMatchers.is;
 import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @SqlGroup({
@@ -46,13 +48,55 @@ public class StatsTest extends WebApplicationTest {
     }
 
     @Test
-    public void returns() throws Exception {
+    public void returnsTheTopCanvassers() throws Exception {
         when(sessionService.extractUserFromPrincipal(any(Principal.class)))
                 .thenReturn(Try.success(covs()));
 
         mockMvc.perform(get("/stats/topcanvassers")
                 .accept(MediaType.APPLICATION_JSON))
-                .andDo(print()).andExpect(status().isOk()).andReturn();
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$[0].key", is("Dion Dublin")))
+                .andExpect(jsonPath("$[0].count", is(6)))
+                .andExpect(jsonPath("$[1].key", is("Ava McCall")))
+                .andExpect(jsonPath("$[1].count", is(2)))
+                .andExpect(jsonPath("$[2].key", is("Samir Ginola")))
+                .andExpect(jsonPath("$[2].count", is(1)))
+                .andExpect(jsonPath("$[3].key", is("Martin Freeman")))
+                .andExpect(jsonPath("$[3].count", is(1)))
+                .andExpect(jsonPath("$[4].key", is("Peter Ndlovu")))
+                .andExpect(jsonPath("$[4].count", is(1)));
     }
 
+    @Test
+    public void returnsTheTopWards() throws Exception {
+        when(sessionService.extractUserFromPrincipal(any(Principal.class)))
+                .thenReturn(Try.success(covs()));
+
+        mockMvc.perform(get("/stats/topwards")
+                .accept(MediaType.APPLICATION_JSON))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$[0].key", is("Wainbody")))
+                .andExpect(jsonPath("$[0].count", is(9)))
+                .andExpect(jsonPath("$[1].key", is("Canbury")))
+                .andExpect(jsonPath("$[1].count", is(2)))
+                .andExpect(jsonPath("$[2].key", is("Binley and Willenhall")))
+                .andExpect(jsonPath("$[2].count", is(1)));
+    }
+
+    @Test
+    public void returnsTheTopConstituencies() throws Exception {
+        when(sessionService.extractUserFromPrincipal(any(Principal.class)))
+                .thenReturn(Try.success(covs()));
+
+        mockMvc.perform(get("/stats/topconstituencies")
+                .accept(MediaType.APPLICATION_JSON))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$[0].key", is("Coventry South")))
+                .andExpect(jsonPath("$[0].count", is(10)))
+                .andExpect(jsonPath("$[1].key", is("Richmond Park")))
+                .andExpect(jsonPath("$[1].count", is(2)));
+    }
 }

@@ -184,15 +184,26 @@
         <div ng-if="!createUserMode && !editMode" class="row">
           <div class="col-lg-12">
             <div class="card">
+
+              <!-- BEGIN SEARCH BAR -->
+              <div class="card-body style-gray-dark no-y-padding">
+                <form class="form form-inverse">
+                  <div class="form-group">
+                    <div class="input-group input-group-lg">
+                      <div class="input-group-content">
+                        <input type="text" class="form-control" ng-model="userSearch" id="searchInput" placeholder="Search Users">
+                        <div class="form-control-line"></div>
+                      </div>
+                      <div class="input-group-btn">
+                      </div>
+                    </div>
+                  </div><!--end .form-group -->
+                </form>
+              </div><!--end .card-body -->
+              <!-- END SEARCH BAR -->
               <div class="card-body">
 
                 <div class="card-actionbar">
-                  <div class="form">
-                    <div class="form-group">
-                      <input type="text" ng-model="userSearch" class="form-control">
-                      <label for="edusername">Filter Users</label>
-                    </div>
-                  </div>
                   <div class="card-actionbar-row">
                     <button type="button" ng-click="setCreateUserMode(true)" class="btn btn-sm btn-danger raised">CREATE
                       USER
@@ -241,7 +252,6 @@
                          class="btn btn-icon-toggle" data-toggle="modal" data-target="#simpleModal" data-placement="top"
                          data-original-title="Delete"><i class="fa fa-remove icon-med "></i></a>
                     </td>
-
                   </tr>
                   </tbody>
                 </table>

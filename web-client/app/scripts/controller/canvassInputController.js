@@ -155,10 +155,12 @@ angular
 
     function resetForm() {
       var prefix = $scope.inputRecordModel.ern.pollingDistrict,
-        suffix = $scope.inputRecordModel.ern.suffix;
+        suffix = $scope.inputRecordModel.ern.suffix,
+        electorID = $scope.inputRecordModel.ern.number;
       initForm();
       $scope.inputRecordModel.ern.pollingDistrict = prefix;
       $scope.inputRecordModel.ern.suffix = suffix;
+      $scope.inputRecordModel.ern.number = electorID;
     }
 
     function constructErnFromParts(model, wardCode) {

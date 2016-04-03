@@ -16,6 +16,7 @@ public class PafToStreetResponseConverter implements Function<PafStreetResponse,
                 pafStreet.dependentStreet(),
                 pafStreet.dependentLocality(),
                 pafStreet.voters(),
-                pafStreet.canvassed());
+                pafStreet.canvassed(),
+                pafStreet.priority());
     }
 }
