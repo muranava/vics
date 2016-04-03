@@ -140,6 +140,8 @@
                         {{currentSort}} <i class="fa fa-caret-down text-default-light"></i>
                       </button>
                       <ul class="dropdown-menu animation-expand" role="menu">
+                        <li><a ng-click="sortStreets('priority', 'asc', 'Priority ASC')"><i class="md md-keyboard-arrow-up"></i> Priority</a></li>
+                        <li><a ng-click="sortStreets('priority', 'desc', 'Priority DESC')"><i class="md md-keyboard-arrow-down"></i> Priority</a></li>
                         <li><a ng-click="sortStreets('mainStreet', 'asc', 'Street ASC')"><i class="md md-keyboard-arrow-up"></i> Street</a></li>
                         <li><a ng-click="sortStreets('mainStreet', 'desc', 'Street DESC')"><i class="md md-keyboard-arrow-down"></i> Street</a></li>
                         <li><a ng-click="sortStreets('numVoters', 'asc', 'Voters ASC')"><i class="md md-keyboard-arrow-up"></i> # Voters</a></li>
@@ -177,9 +179,9 @@
                         </td>
                         <td class="streetsText">{{street | streetSingleLineFilter}}</td>
                         <td class="stats-cell">
-                          <span data-toggle="tooltip" data-placement="top" title="Low" ng-if="street.priority === 'LOW'"><i class="md md-star gold-trophy"></i></span>
-                          <span data-toggle="tooltip" data-placement="top" title="Medium" ng-if="street.priority === 'MED'"><i class="md md-star gold-trophy"></i><i class="md md-star gold-trophy"></i></span>
-                          <span data-toggle="tooltip" data-placement="top" title="High" ng-if="street.priority === 'HIGH'"><i class="md md-star gold-trophy"></i><i class="md md-star gold-trophy"></i><i class="md md-star gold-trophy"></i></span>
+                          <span data-toggle="tooltip" data-placement="top" title="Low" ng-if="street.priority === 1"><i class="md md-star gold-trophy icon-med"></i></span>
+                          <span data-toggle="tooltip" data-placement="top" title="Medium" ng-if="street.priority === 2"><i class="md md-star gold-trophy icon-med"></i><i class="md md-star icon-med gold-trophy"></i></span>
+                          <span data-toggle="tooltip" data-placement="top" title="High" ng-if="street.priority === 3"><i class="md md-star icon-med gold-trophy"></i><i class="md md-star icon-med gold-trophy"></i><i class="md md-star icon-med gold-trophy"></i></span>
                         </td>
                         <td class="hidden-xs stats-cell">
                           <span class="text-default text-xl"><span class="text-light" data-toggle="tooltip" data-placement="top" title="Voters Canvassed">{{street.numCanvassed}}</span> /

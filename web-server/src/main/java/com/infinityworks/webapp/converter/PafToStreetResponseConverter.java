@@ -1,6 +1,7 @@
 package com.infinityworks.webapp.converter;
 
 import com.infinityworks.webapp.clients.paf.dto.PafStreetResponse;
+import com.infinityworks.webapp.clients.paf.dto.Priority;
 import com.infinityworks.webapp.rest.dto.StreetResponse;
 import org.springframework.stereotype.Component;
 
@@ -17,6 +18,17 @@ public class PafToStreetResponseConverter implements Function<PafStreetResponse,
                 pafStreet.dependentLocality(),
                 pafStreet.voters(),
                 pafStreet.canvassed(),
-                pafStreet.priority());
+                mapPriority(pafStreet.priority()));
+    }
+
+    private int mapPriority(Priority priority) {
+        switch (priority) {
+            case LOW:
+                return 1;
+            case HIGH:
+                return 3;
+            default:
+                return 2;
+        }
     }
 }

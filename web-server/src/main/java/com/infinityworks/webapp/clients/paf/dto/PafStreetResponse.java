@@ -18,7 +18,7 @@ public interface PafStreetResponse {
     @JsonProperty("dependent_locality") String dependentLocality();
     @JsonProperty("canvassed") Integer canvassed();
     @JsonProperty("voters") Integer voters();
-    @JsonProperty("priority") @Value.Default default String priority() {
-        return "MED";
+    @JsonProperty("priority") @Value.Default default Priority priority() {
+        return Priority.MED;
     }
 }

@@ -11,7 +11,7 @@ angular
       $scope.numStreetsSelected = 0;
       $scope.errorLoadingData = false;
       var streetsContainerPos = null;
-      $scope.currentSort = "Street asc";
+      $scope.currentSort = "Priority DESC";
 
       $scope.onSelectConstituency = function () {
         resetErrors();
@@ -47,10 +47,10 @@ angular
 
         wardService.findStreetsByWard($scope.wardSearchModel.code)
           .success(function (streets) {
-            $scope.streets = _.map(streets, function (street) {
+            $scope.streets = _.orderBy(_.map(streets, function (street) {
               street.numNotCanvassed = street.numVoters - street.numCanvassed;
               return street;
-            });
+            }), 'priority', 'desc');
             scrollToPrintSection();
             $timeout(function () {
               $('[data-toggle="tooltip"]').tooltip();

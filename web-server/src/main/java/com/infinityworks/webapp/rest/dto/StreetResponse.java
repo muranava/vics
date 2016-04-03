@@ -12,7 +12,7 @@ public class StreetResponse {
     private final String dependentLocality;
     private final Integer numVoters;
     private final Integer numCanvassed;
-    private final String priority;
+    private final Integer priority;
 
     @JsonCreator
     public StreetResponse(@JsonProperty("mainStreet") String mainStreet,
@@ -21,7 +21,7 @@ public class StreetResponse {
                           @JsonProperty("dependentLocality") String dependentLocality,
                           @JsonProperty("numVoters") Integer numVoters,
                           @JsonProperty("numCanvassed") Integer numCanvassed,
-                          @JsonProperty("priority") String priority) {
+                          @JsonProperty("priority") Integer priority) {
         this.mainStreet = mainStreet;
         this.postTown = postTown;
         this.dependentStreet = dependentStreet;
@@ -55,7 +55,7 @@ public class StreetResponse {
         return numCanvassed;
     }
 
-    public String getPriority() {
+    public Integer getPriority() {
         return priority;
     }
 }

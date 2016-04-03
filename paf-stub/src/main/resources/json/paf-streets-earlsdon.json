@@ -13,7 +13,8 @@
       "post_town": "KINGSTON UPON THAMES",
       "id": "e08c9d77",
       "voters": 23,
-      "canvassed": 12
+      "canvassed": 12,
+      "priority": "LOW"
     },
     {
       "dependent_street": "",
@@ -22,7 +23,8 @@
       "post_town": "KINGSTON UPON THAMES",
       "id": "2e492ef1",
       "voters": 31,
-      "canvassed": 1
+      "canvassed": 1,
+      "priority": "LOW"
     },
     {
       "dependent_street": "",
@@ -31,7 +33,8 @@
       "post_town": "KINGSTON UPON THAMES",
       "id": "da861eca",
       "voters": 44,
-      "canvassed": 32
+      "canvassed": 32,
+      "priority": "LOW"
     },
     {
       "dependent_street": "",
@@ -40,7 +43,8 @@
       "post_town": "KINGSTON UPON THAMES",
       "id": "ca9cd988",
       "voters": 35,
-      "canvassed": 12
+      "canvassed": 12,
+      "priority": "HIGH"
     },
     {
       "dependent_street": "",
@@ -49,7 +53,8 @@
       "post_town": "KINGSTON UPON THAMES",
       "id": "09457460",
       "voters": 2,
-      "canvassed": 0
+      "canvassed": 0,
+      "priority": "HIGH"
     },
     {
       "dependent_street": "",
