@@ -1,0 +1,15 @@
+version: 0.1
+os: linux
+files:
+  - source: /
+    destination: /tmp/
+hooks:
+  AfterInstall:
+    - location: scripts/createLinuxService.sh
+      runas: root
+  ApplicationStart:
+    - location: scripts/startApp.sh
+      runas: root
+  ApplicationStop:
+    - location: scripts/stopApp.sh
+      runas: root

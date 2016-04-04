@@ -2,5 +2,5 @@
 
 host=134.213.209.158
 
-scp -r -i ~/.ssh/vote_leave.pub ../dist/ forge@134.213.209.158:/home/forge/deploy
+scp -r -i ~/.ssh/vl_devbox.pub ../dist/ forge@134.213.209.158:/home/forge/deploy
 

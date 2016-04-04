@@ -232,7 +232,7 @@
                                 <copy todir="${project.basedir}/../dist/server">
                                     <fileset dir="${project.basedir}/">
                                         <include name="target/web-server-*.jar"/>
-                                        <include name="target/web-server-*.zip"/>
+                                        <exclude name="target/web-server-*.zip"/>
                                         <exclude name="target/web-server-*-sources.jar"/>
                                     </fileset>
                                     <flattenmapper/>

@@ -6,7 +6,7 @@ public interface DbConfig {
     String getDbPassword();
 
     class Default implements DbConfig {
-        String DB_URL = "jdbc:postgresql://localhost:5432/canvass";
+        String DB_URL = "jdbc:postgresql://localhost:5432/canvassapp";
         String DB_USER = "postgres";
         String DB_PASSWORD = "postgres";
 

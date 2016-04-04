@@ -21,7 +21,7 @@ import static java.util.stream.Collectors.toList;
  */
 public class ConstituenciesImporter {
     private static final Logger log = LoggerFactory.getLogger(ConstituenciesImporter.class);
-    private static final String CSV_FILE = "master-ward-council-lookup.csv";
+    private static final String CSV_FILE = "const-ward.csv";
 
     public static void main(String... args) throws IOException {
         DatabaseOperationExecutor setup = new DatabaseOperationExecutor(new DbConfig.Default());
@@ -35,6 +35,7 @@ public class ConstituenciesImporter {
                          groupingBy(WardCsvRecord::getConstituencyName)))
                 .forEach((constCode, constNameKey) -> {
                     Constituency constituency = new Constituency(constCode, constNameKey.keySet().iterator().next());
+                    log.info(constituency.getName());
                     constituencies.add(constituency);
                 });
 
