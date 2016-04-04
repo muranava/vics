@@ -213,6 +213,9 @@ div.game-center {
 .bronze-trophy {
   color: #8a6c47;
 }
+.empty-trophy {
+  color: #e3dde3;
+}
 .form-control-line::after {
   background-color: #D92C27 !important;
 }

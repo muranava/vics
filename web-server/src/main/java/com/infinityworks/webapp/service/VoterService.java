@@ -97,7 +97,7 @@ public class VoterService {
                     return propertiesGroupedByStreet.flatMap(properties -> renderPdfOfElectorsByStreets(
                             tableBuilder, documentBuilder, request, ward, properties.response())).map(pdfContent -> {
 
-                        log.info("User={} Generated PDF of voters for ward={} numStreets={}", wardCode, request.getStreets(), user);
+                        log.info("User={} Generated PDF of voters for ward={} numStreets={}", user, wardCode, request.getStreets().size());
                         return pdfContent;
                     });
                 });

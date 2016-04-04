@@ -179,9 +179,15 @@
                         </td>
                         <td class="streetsText">{{street | streetSingleLineFilter}}</td>
                         <td class="stats-cell">
-                          <span data-toggle="tooltip" data-placement="top" title="Low" ng-if="street.priority === 1"><i class="md md-star gold-trophy icon-med"></i></span>
-                          <span data-toggle="tooltip" data-placement="top" title="Medium" ng-if="street.priority === 2"><i class="md md-star gold-trophy icon-med"></i><i class="md md-star icon-med gold-trophy"></i></span>
-                          <span data-toggle="tooltip" data-placement="top" title="High" ng-if="street.priority === 3"><i class="md md-star icon-med gold-trophy"></i><i class="md md-star icon-med gold-trophy"></i><i class="md md-star icon-med gold-trophy"></i></span>
+                          <span data-toggle="tooltip" data-placement="top" title="Low" ng-if="street.priority === 1">
+                            <i class="md md-star gold-trophy icon-med"></i><i class="md md-star icon-med empty-trophy"></i><i class="md md-star icon-med empty-trophy"></i>
+                          </span>
+                          <span data-toggle="tooltip" data-placement="top" title="Medium" ng-if="street.priority === 2">
+                            <i class="md md-star gold-trophy icon-med"></i><i class="md md-star icon-med gold-trophy"></i><i class="md md-star icon-med empty-trophy"></i>
+                          </span>
+                          <span data-toggle="tooltip" data-placement="top" title="High" ng-if="street.priority === 3">
+                            <i class="md md-star icon-med gold-trophy"></i><i class="md md-star icon-med gold-trophy"></i><i class="md md-star icon-med gold-trophy"></i>
+                          </span>
                         </td>
                         <td class="hidden-xs stats-cell">
                           <span class="text-default text-xl"><span class="text-light" data-toggle="tooltip" data-placement="top" title="Voters Canvassed">{{street.numCanvassed}}</span> /

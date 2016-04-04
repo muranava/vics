@@ -67,7 +67,7 @@ public class RecordContactService {
                                     RecordContactLog recordContactLog = new RecordContactLog(user, ward, ern.get());
                                     recordContactLogService.logRecordContactAsync(recordContactLog);
 
-                                    log.info("User={} recorded contact for ern={}", ern.get());
+                                    log.info("User={} recorded contact for ern={}", user, ern.get());
                                     return new com.infinityworks.webapp.rest.dto.RecordContactResponse(recordContactLog.getId(), ern, response.id());
                                 });
                     });
