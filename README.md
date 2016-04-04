@@ -1,6 +1,6 @@
 # vics
 
-Application to generate canvass cards and record canvassing activities.
+Voter Intention Collection System. An application to generate canvass cards and record canvass activities.
 
 ## Stack
 
