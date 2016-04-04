@@ -1,4 +1,4 @@
-# canvass
+# vics
 
 Application to generate canvass cards and record canvassing activities.
 
