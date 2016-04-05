@@ -12,11 +12,16 @@
 
     <div class="headerbar-right">
       <div class="print-button-bar" style="margin: 13px 10px 13px 0;">
-        <button type="button" class="btn btn-primary btn-sm raised pull-left" ng-click="onPrintSelected()"
-                ng-disabled="numStreetsSelected === 0">Print Selected
-        </button>
-        <a class="btn btn-danger btn-sm raised pull-left button-group-spacing" data-toggle="modal"
-           data-target="#simpleModal">Print All</a>
+
+        <div class="btn-group pull-right">
+          <button type="button" ng-click="onPrintSelected()" class="btn ink-reaction btn-default-light">Print Selected</button>
+          <button type="button" class="btn ink-reaction btn-danger dropdown-toggle" data-toggle="dropdown"><i class="fa fa-caret-down"></i></button>
+          <ul class="dropdown-menu" role="menu">
+            <li><a data-toggle="modal" data-target="#simpleModal">Print All</a></li>
+            <li><a ng-click="onPrintPriority()">Print Priority</a></li>
+          </ul>
+        </div>
+
       </div>
     </div>
   </div>
@@ -101,38 +106,30 @@
                   </div><!--end .col -->
                 </div>
                 <br>
-                <div class="row">
-                  <div class="col-lg-12">
-                    <p>Select individual streets or download all</p>
-                    <br>
-                    <div id="noVoters" ng-if="errorLoadingData" class="alert alert-callout alert-danger" role="alert">
-                      <strong>Sorry!</strong> We could not find any voters for the selected streets.
-                    </div>
-                  </div>
-                </div>
                 <div class="card">
-                  <div class="card-actionbar">
-                    <div class="card-actionbar-row">
-                      <br>
-                      <button type="button" class="btn btn-primary btn-sm raised pull-left" ng-click="onPrintSelected()"
-                              ng-disabled="numStreetsSelected === 0">Print Selected
-                      </button>
-
-                      <a class="btn btn-danger btn-sm raised pull-left button-group-spacing" data-toggle="modal"
-                         data-target="#simpleModal">Print All</a>
-                    </div>
-                  </div>
-                  <div class="card-body">
-
-                    <div class="form">
+                  <div class="card-body style-gray-dark no-y-padding">
+                    <form class="form form-inverse">
                       <div class="form-group">
-                        <div class="input-group">
+                        <div class="input-group input-group-lg">
                           <div class="input-group-content">
-                            <input type="text" class="form-control" id="filter" placeholder="Filter streets"
-                                   ng-model="streetFilter">
+                            <input type="text" class="form-control" ng-model="streetFilter" id="searchInput" placeholder="Filter Streets">
+                            <div class="form-control-line"></div>
+                          </div>
+                          <div class="input-group-btn">
                           </div>
                         </div>
                       </div>
+                    </form>
+                  </div>
+                  <div class="card-body">
+                    <br>
+                    <div class="btn-group pull-left">
+                      <button type="button" ng-click="onPrintSelected()" class="btn ink-reaction btn-default-light">Print Selected</button>
+                      <button type="button" class="btn ink-reaction btn-danger dropdown-toggle" data-toggle="dropdown"><i class="fa fa-caret-down"></i></button>
+                      <ul class="dropdown-menu" role="menu">
+                        <li><a data-toggle="modal" data-target="#simpleModal">Print All</a></li>
+                        <li><a ng-click="onPrintPriority()" ng-disabled="numStreetsSelected === 0">Print Priority</a></li>
+                      </ul>
                     </div>
 
                     <div class="btn-group pull-right">
@@ -152,6 +149,8 @@
                         <li><a ng-click="sortStreets('numNotCanvassed', 'desc', 'Not Canvassed DESC')"><i class="md md-keyboard-arrow-down"></i> # Not Canvassed</a></li>
                       </ul>
                     </div>
+
+                    <br><br>
 
                     <!-- Streets table -->
                     <table class="table table-hover no-margin">
@@ -224,12 +223,12 @@
       <div class="modal-body">
         <div class="alert alert-callout alert-danger" role="alert">
           <strong>Warning</strong> Downloading a large number of streets may take several minutes depending on the speed
-          of your internet connection
+          of your internet connection.  If possible please print selected streets instead.
         </div>
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn raised btn-sm btn-primary" data-dismiss="modal">Cancel</button>
-        <button type="button" class="btn raised btn-sm btn-danger" data-dismiss="modal" ng-click="onPrintAll()">
+        <button type="button" class="btn btn-sm btn-primary" data-dismiss="modal">Cancel</button>
+        <button type="button" class="btn btn-sm btn-danger" data-dismiss="modal" ng-click="onPrintAll()">
           Continue
         </button>
       </div>
@@ -247,7 +246,7 @@
 
   </div>
   <div class="modal-footer">
-    <a class="btn btn-danger raised visible-xs pull-left" type="button" ng-click="cancel()">Close</a>
-    <a class="btn btn-danger raised hidden-xs" type="button" ng-click="cancel()">Close</a>
+    <a class="btn btn-danger visible-xs pull-left" type="button" ng-click="cancel()">Close</a>
+    <a class="btn btn-danger hidden-xs" type="button" ng-click="cancel()">Close</a>
   </div>
 </script>

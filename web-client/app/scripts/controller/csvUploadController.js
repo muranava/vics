@@ -22,7 +22,7 @@ angular
     // workaround to set file upload style
     function styleFileUploadButton() {
       $timeout(function() {
-        $("input").addClass("btn-sm").addClass("btn-danger").addClass("raised");
+        $("input").addClass("btn-sm").addClass("btn-danger");
       }, 1);
     }
     styleFileUploadButton();

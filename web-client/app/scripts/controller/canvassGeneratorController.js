@@ -3,18 +3,16 @@
  */
 angular
   .module('canvass')
-  .controller('canvassGeneratorController', function ($window, geoService, $scope, $timeout, $uibModal, wardService, constituencyService, electorService, $filter) {
+  .controller('canvassGeneratorController', function ($window, geoService, $scope, $timeout, $uibModal, wardService, constituencyService, electorService, $filter, toastr) {
 
       $scope.wards = [];
       $scope.constituencySearchModel = '';
       $scope.wardSearchModel = '';
       $scope.numStreetsSelected = 0;
-      $scope.errorLoadingData = false;
       var streetsContainerPos = null;
       $scope.currentSort = "Priority DESC";
 
       $scope.onSelectConstituency = function () {
-        resetErrors();
         $scope.streets = [];
       };
 
@@ -38,7 +36,6 @@ angular
       });
 
       $scope.onSelectWard = function (model) {
-        resetErrors();
         $scope.streets = [];
         $scope.numStreetsSelected = 0;
 
@@ -144,9 +141,9 @@ angular
 
       function handleErrorResponse(error) {
         if (error) {
-          $scope.errorLoadingData = error.message;
+          toastr.error('Unfortunately we do not have data for the selected streets', 'No data');
         } else {
-          $scope.errorLoadingData = "Failed to contact server";
+          toastr.error('Failed to contact server');
         }
       }
 
@@ -157,29 +154,34 @@ angular
         printCanvassCard(selected);
       };
 
+      $scope.onPrintPriority = function() {
+        var priority = _.filter($scope.streets, function(s) {
+          return s.priority === 3;
+        });
+        printCanvassCard(priority);
+      };
+
       $scope.onPrintAll = function () {
         printCanvassCard($scope.streets);
       };
 
       function printCanvassCard(streets) {
-        resetErrors();
-        electorService.retrievePdfOfElectorsByStreets($scope.wardSearchModel.code, {streets: streets})
-          .success(function (response) {
-            var file = new Blob([response], {type: 'application/pdf'});
-            saveAs(file, createPdfFileName() + '.pdf');
-          })
-          .error(function (error) {
-            handleErrorResponse(error);
-          });
+        if (!_.isEmpty(streets)) {
+          electorService.retrievePdfOfElectorsByStreets($scope.wardSearchModel.code, {streets: streets})
+            .success(function (response) {
+              var file = new Blob([response], {type: 'application/pdf'});
+              saveAs(file, createPdfFileName() + '.pdf');
+            })
+            .error(function (error) {
+              handleErrorResponse(error);
+            });
+        } else {
+          toastr.error('Please change your selection', 'No streets selected');
+        }
       }
 
       function createPdfFileName() {
         return $scope.wardSearchModel.name + ' in ' + $scope.constituencySearchModel.name + ' ' + new Date().toISOString();
-      }
-
-      function resetErrors() {
-        $scope.failedToLoadStreets = null;
-        $scope.errorLoadingData = null;
       }
     }
   );
