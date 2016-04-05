@@ -60,7 +60,7 @@
                     </div>
                     <div class="input-group-content">
                       <input type="text" class="form-control" name="editpw1" ng-model="editUser.password" id="editpw1"
-                             data-rule-min="8" data-rule-max="50" required>
+                             data-rule-min="8" data-rule-max="50" required ng-disabled="true">
                       <label for="editpw1">Password</label>
                       <p class="help-block">Leave empty to keep existing password</p>
                     </div>
@@ -68,7 +68,7 @@
                 </div>
                 <div class="form-group">
                   <input type="text" class="form-control" ng-model="editUser.repeatPassword" id="editpw2" name="editpw2"
-                         data-rule-min="8" data-rule-max="50" required>
+                         data-rule-min="8" data-rule-max="50" required ng-disabled="true">
                   <label for="editpw2">Repeat Password</label>
                 </div>
                 <div class="form-group">
