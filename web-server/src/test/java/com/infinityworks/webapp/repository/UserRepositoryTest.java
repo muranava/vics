@@ -1,7 +1,11 @@
 package com.infinityworks.webapp.repository;
 
+import com.infinityworks.webapp.converter.AllUsersQueryConverter;
 import com.infinityworks.webapp.domain.Privilege;
+import com.infinityworks.webapp.domain.Role;
 import com.infinityworks.webapp.domain.User;
+import com.infinityworks.webapp.rest.dto.ImmutableUserSummary;
+import com.infinityworks.webapp.rest.dto.UserSummary;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.jdbc.Sql;
@@ -12,6 +16,7 @@ import java.util.Set;
 
 import static com.infinityworks.webapp.domain.Permission.EDIT_VOTER;
 import static com.infinityworks.webapp.domain.Permission.READ_VOTER;
+import static java.util.stream.Collectors.toList;
 import static org.hamcrest.Matchers.*;
 import static org.junit.Assert.assertThat;
 
@@ -42,5 +47,22 @@ public class UserRepositoryTest extends RepositoryTest {
         Set<Privilege> privileges = user.getPermissions();
         assertThat(privileges, hasItem(new Privilege(EDIT_VOTER)));
         assertThat(privileges, hasItem(new Privilege(READ_VOTER)));
+    }
+
+    @Test
+    public void returnsAllTheUserSummaries() throws Exception {
+        List<Object[]> user = userRepository.allUserSummaries();
+        List<UserSummary> userSummaries = user.stream()
+                .map(new AllUsersQueryConverter())
+                .collect(toList());
+
+        assertThat(userSummaries, hasItem(ImmutableUserSummary.builder()
+                .withFirstName("Dion")
+                .withLastName("Dublin")
+                .withUsername("earlsdon@cov.uk")
+                .withRole(Role.USER)
+                .withWriteAccess(true)
+                .withId("196af608-6d7a-4981-a6a0-ed8999b3b89c")
+                .build()));
     }
 }

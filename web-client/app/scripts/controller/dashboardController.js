@@ -1,7 +1,7 @@
 angular
   .module('canvass')
   .controller('dashboardController', function ($interval, $scope, statsService) {
-    var referendumDate = new Date(2016, 5, 23, 8, 0),
+    var referendumDate = new Date(2016, 5, 23, 22, 0),
       secondsInDay = 86400,
       secondsInHour = 3600;
 

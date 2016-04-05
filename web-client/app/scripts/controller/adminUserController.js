@@ -1,10 +1,9 @@
 
 angular
   .module('canvass')
-  .controller('adminUserController', function (util, $timeout, $scope, userService, $location) {
+  .controller('adminUserController', function (util, $timeout, $scope, userService, $location, toastr) {
 
     $scope.editMode = false;
-    $scope.createdUserEmail = '';
     $scope.validationErrors = [];
 
     function initCreateUserModel() {
@@ -32,6 +31,7 @@ angular
 
       userService.delete(user.id)
         .success(function() {
+          toastr.success('Deleted User ' + user.username, 'Success');
           loadUsers();
         })
         .error(function() {
@@ -60,6 +60,7 @@ angular
             $scope.editUser = null;
             $scope.editMode = false;
             loadUsers();
+            toastr.success('Updated User ' + user.username, 'Success');
           })
           .error(function (err) {
             if (err && _.includes(err.message, 'exists')) {
@@ -68,7 +69,6 @@ angular
           });
       }
     };
-
 
     $scope.onCancelEdit = function() {
       $scope.editMode = false;
@@ -82,10 +82,10 @@ angular
         userService
           .create(user)
           .success(function () {
-            $scope.createUserModel = initCreateUserModel();
-            $scope.successfullyCreatedUser = true;
-            $scope.createdUserEmail = user.username;
             loadUsers();
+            toastr.success('Created user ' + user.username, 'Success');
+            $scope.editMode = false;
+            $scope.createUserMode = false;
           })
           .error(function (err) {
             if (err && _.includes(err.message, 'exists')) {
@@ -101,7 +101,6 @@ angular
 
     function clearMessages() {
       $scope.deleteUserFailed = false;
-      $scope.successfullyCreatedUser = false;
       $scope.userExistsError = false;
     }
 

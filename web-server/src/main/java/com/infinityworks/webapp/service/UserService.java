@@ -1,6 +1,7 @@
 package com.infinityworks.webapp.service;
 
 import com.infinityworks.common.lang.Try;
+import com.infinityworks.webapp.converter.AllUsersQueryConverter;
 import com.infinityworks.webapp.domain.User;
 import com.infinityworks.webapp.error.BadRequestFailure;
 import com.infinityworks.webapp.error.NotAuthorizedFailure;
@@ -8,24 +9,32 @@ import com.infinityworks.webapp.error.NotFoundFailure;
 import com.infinityworks.webapp.repository.UserRepository;
 import com.infinityworks.webapp.rest.dto.CreateUserRequest;
 import com.infinityworks.webapp.rest.dto.UpdateUserRequest;
+import com.infinityworks.webapp.rest.dto.UserSummary;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Sort;
 import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.*;
+import java.util.Collection;
+import java.util.Objects;
+import java.util.Optional;
+import java.util.UUID;
+
+import static java.util.stream.Collectors.toList;
 
 @Service
 public class UserService {
     private final Logger log = LoggerFactory.getLogger(UserService.class);
     private final UserRepository userRepository;
+    private final AllUsersQueryConverter converter;
 
     @Autowired
-    public UserService(UserRepository userRepository) {
+    public UserService(UserRepository userRepository,
+                       AllUsersQueryConverter converter) {
         this.userRepository = userRepository;
+        this.converter = converter;
     }
 
     public Try<User> getByEmail(String email) {
@@ -37,12 +46,15 @@ public class UserService {
         }
     }
 
-    public Try<Collection<User>> getAll(User user) {
+    public Try<Collection<UserSummary>> getAll(User user) {
         if (!user.isAdmin()) {
             log.warn("Non admin tried to retrieve all users. User={}", user);
             return Try.failure(new NotAuthorizedFailure("Forbidden"));
         }
-        return Try.of(() -> userRepository.findAll(new Sort("username")));
+        return Try.of(() -> userRepository.allUserSummaries()
+                .stream()
+                .map(converter)
+                .collect(toList()));
     }
 
     public Try<User> getByID(User user, UUID id) {

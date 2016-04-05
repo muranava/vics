@@ -1,6 +1,7 @@
 package com.infinityworks.webapp.service;
 
 import com.infinityworks.common.lang.Try;
+import com.infinityworks.webapp.converter.AllUsersQueryConverter;
 import com.infinityworks.webapp.domain.Role;
 import com.infinityworks.webapp.domain.User;
 import com.infinityworks.webapp.error.NotAuthorizedFailure;
@@ -28,7 +29,7 @@ public class UserServiceTest {
     @Before
     public void setUp() throws Exception {
         userRepository = mock(UserRepository.class);
-        underTest = new UserService(userRepository);
+        underTest = new UserService(userRepository, new AllUsersQueryConverter());
     }
 
     @Test
