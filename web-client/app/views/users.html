@@ -235,9 +235,8 @@
                     </td>
                     <td class="stats-cell hidden-xs">
                       <i ng-if="user.role === 'ADMIN'" class="fa fa-2x icon-med fa-shield text-warning"
-                         data-toggle="tooltip" data-placement="top" title="Admin user"></i>
-                      <i ng-if="user.role === 'USER'" class="fa icon-med fa-user" data-toggle="tooltip"
-                         data-placement="top" title="Basic User"></i>
+                         uib-tooltip="Admin user"></i>
+                      <i ng-if="user.role === 'USER'" class="fa icon-med fa-user" uib-tooltip="Basic User"></i>
                     </td>
                     <td class="stats-cell hidden-xs">
                       <i ng-if="user.writeAccess" class="fa fa-check icon-med text-success"></i>
@@ -245,14 +244,13 @@
                     </td>
                     <td class="stats-cell">
                       <a ng-href="#/associations/{{user.id}}" type="button" class="btn btn-icon-toggle"
-                         data-toggle="tooltip" data-placement="top" data-original-title="Permissions"><i
+                         uib-tooltip="Permissions"><i
                         class="fa fa-sitemap icon-med"></i></a>
                       <a ng-if="user.role === 'USER'" ng-click="onEditUser(user.id)" type="button"
-                         class="btn btn-icon-toggle" data-toggle="tooltip" data-placement="top"
-                         data-original-title="Edit"><i class="fa fa-pencil icon-med"></i></a>
+                         class="btn btn-icon-toggle" uib-tooltip="Edit"><i class="fa fa-pencil icon-med"></i></a>
                       <a ng-if="user.role === 'USER'" ng-click="preDeleteUser(user)" type="button"
                          class="btn btn-icon-toggle" data-toggle="modal" data-target="#simpleModal" data-placement="top"
-                         data-original-title="Delete"><i class="fa fa-remove icon-med "></i></a>
+                         data-original-title="Delete" uib-tooltip="Delete"><i class="fa fa-remove icon-med "></i></a>
                     </td>
                   </tr>
                   </tbody>

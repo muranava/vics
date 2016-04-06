@@ -9,10 +9,7 @@ import com.infinityworks.webapp.rest.dto.ElectorsByStreetsRequest;
 import com.infinityworks.webapp.rest.dto.RecordContactRequest;
 import com.infinityworks.webapp.rest.dto.RecordVoteRequest;
 import com.infinityworks.webapp.rest.dto.SearchElectors;
-import com.infinityworks.webapp.service.RecordContactService;
-import com.infinityworks.webapp.service.RecordVotedService;
-import com.infinityworks.webapp.service.SessionService;
-import com.infinityworks.webapp.service.VoterService;
+import com.infinityworks.webapp.service.*;
 import com.lowagie.text.DocumentException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -24,6 +21,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.io.ByteArrayOutputStream;
 import java.security.Principal;
 import java.util.UUID;
 
@@ -35,6 +33,7 @@ public class VoterController {
     private final TableBuilder tableBuilder;
     private final DocumentBuilder documentBuilder;
     private final VoterService voterService;
+    private final LabelService labelService;
     private final RequestValidator requestValidator;
     private final RecordVotedService recordVotedService;
     private final RecordContactService contactService;
@@ -45,6 +44,7 @@ public class VoterController {
     public VoterController(@Qualifier("canvass") TableBuilder tableBuilder,
                            @Qualifier("canvass") DocumentBuilder documentBuilder,
                            VoterService voterService,
+                           LabelService labelService,
                            RequestValidator requestValidator,
                            RecordVotedService recordVotedService,
                            RecordContactService contactService,
@@ -53,6 +53,7 @@ public class VoterController {
         this.tableBuilder = tableBuilder;
         this.documentBuilder = documentBuilder;
         this.voterService = voterService;
+        this.labelService = labelService;
         this.requestValidator = requestValidator;
         this.recordVotedService = recordVotedService;
         this.contactService = contactService;
@@ -107,6 +108,18 @@ public class VoterController {
     }
 
     @PreAuthorize("isAuthenticated()")
+    @RequestMapping(value = "/ward/{wardCode}/street/labels", method = POST)
+    public ResponseEntity<?> getLabelsPdfOfElectorsByTownStreet(
+            @RequestBody @Valid ElectorsByStreetsRequest electorsByStreetsRequest,
+            @PathVariable("wardCode") String wardCode,
+            Principal principal) throws DocumentException {
+        return requestValidator.validate(electorsByStreetsRequest)
+                .flatMap(streets -> sessionService.extractUserFromPrincipal(principal))
+                .flatMap(user -> labelService.generateLabelsPdf(electorsByStreetsRequest, wardCode, user))
+                .fold(errorHandler::mapToResponseEntity, this::handlePdfResponse);
+    }
+
+    @PreAuthorize("isAuthenticated()")
     @RequestMapping(value = "/ward/{wardCode}/street/pdf", method = POST)
     public ResponseEntity<?> getPdfOfElectorsByTownStreet(
             @RequestBody @Valid ElectorsByStreetsRequest electorsByStreetsRequest,
@@ -115,10 +128,12 @@ public class VoterController {
         return requestValidator.validate(electorsByStreetsRequest)
                 .flatMap(streets -> sessionService.extractUserFromPrincipal(principal))
                 .flatMap(user -> voterService.getPdfOfElectorsByStreet(tableBuilder, documentBuilder, electorsByStreetsRequest, wardCode, user))
-                .fold(errorHandler::mapToResponseEntity, pdfData -> {
-                    HttpHeaders responseHeaders = new HttpHeaders();
-                    responseHeaders.setContentType(MediaType.valueOf("application/pdf"));
-                    return new ResponseEntity<>(pdfData.toByteArray(), responseHeaders, HttpStatus.OK);
-                });
+                .fold(errorHandler::mapToResponseEntity, this::handlePdfResponse);
+    }
+
+    private ResponseEntity<byte[]> handlePdfResponse(ByteArrayOutputStream outputStream) {
+        HttpHeaders responseHeaders = new HttpHeaders();
+        responseHeaders.setContentType(MediaType.valueOf("application/pdf"));
+        return new ResponseEntity<>(outputStream.toByteArray(), responseHeaders, HttpStatus.OK);
     }
 }
