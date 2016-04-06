@@ -9,11 +9,48 @@
     </div>
     <br/><br>
 
+    <div class="row visible-xs">
+      <div class="col-sm-12">
+        <div class="card text-center">
+          <div class="card-body style-gray">
+
+            <div class="row">
+              <div class="col-xs-3">
+                <h2 class="text-light">Days</h2>
+                <div class="price">
+                  <h2><span class="text-normal">{{days}}</span></h2>
+                </div>
+              </div>
+              <div class="col-xs-3">
+                <h2 class="text-light">Hours</h2>
+                <div class="price">
+                  <h2><span class="text-normal">{{hours}}</span></h2>
+                </div>
+              </div>
+              <div class="col-xs-3">
+                <h2 class="text-light">Min</h2>
+                <div class="price">
+                  <h2><span class="text-normal">{{minutes}}</span></h2>
+                </div>
+              </div>
+              <div class="col-xs-3">
+                <h2 class="text-light">Sec</h2>
+                <div class="price">
+                  <h2><span class="text-normal">{{seconds | number:0}}</span></h2>
+                </div>
+              </div>
+            </div>
+
+          </div><!--end .card-body -->
+
+        </div><!--end .card -->
+      </div><!--end .col -->
+    </div><!--end .row -->
+
     <!-- Days -->
-    <div class="row">
+    <div class="row hidden-xs">
       <div class="col-sm-3 col-md-3">
         <div class="card text-center">
-
           <div class="card-body style-gray">
             <h2 class="text-light">Days</h2>
             <div class="price">
