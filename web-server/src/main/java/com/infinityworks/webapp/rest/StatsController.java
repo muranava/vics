@@ -22,7 +22,7 @@ public class StatsController {
     @PreAuthorize("isAuthenticated()")
     @RequestMapping(value = "/topcanvassers", method = RequestMethod.GET)
     public ResponseEntity<?> topCanvassers() {
-        return ResponseEntity.ok(statsService.topCanvassersStats());
+        return ResponseEntity.ok(statsService.topCanvassers());
     }
 
     @PreAuthorize("isAuthenticated()")
@@ -35,5 +35,11 @@ public class StatsController {
     @RequestMapping(value = "/topwards", method = RequestMethod.GET)
     public ResponseEntity<?> mostCanavassedWards() {
         return ResponseEntity.ok(statsService.mostCanvassedWards());
+    }
+
+    @PreAuthorize("isAuthenticated()")
+    @RequestMapping(method = RequestMethod.GET)
+    public ResponseEntity<?> allStats() {
+        return ResponseEntity.ok(statsService.allStats());
     }
 }

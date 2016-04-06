@@ -5,21 +5,9 @@ angular
       secondsInDay = 86400,
       secondsInHour = 3600;
 
-    statsService.topCanvassers()
+    statsService.allStats()
       .success(function (response) {
-        $scope.topCanvassers = response;
-      });
-
-    statsService.topWards()
-      .success(function (response) {
-        $scope.topWards = _.orderBy(response, function(e) {
-          return e.count;
-        }, 'desc');
-      });
-
-    statsService.topConstituencies()
-      .success(function (response) {
-        $scope.topConstituencies = response;
+        $scope.stats = response;
       });
 
     function updateCountdown() {
@@ -43,5 +31,5 @@ angular
     }
 
     updateCountdown();
-    $interval(updateCountdown, 450, 0, true);
+    $interval(updateCountdown, 250, 0, true);
   });

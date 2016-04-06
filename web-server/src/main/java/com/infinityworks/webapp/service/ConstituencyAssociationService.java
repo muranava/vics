@@ -38,7 +38,7 @@ public class ConstituencyAssociationService {
     @Transactional
     public Try<User> associateToUser(User permissible, UUID constituencyID, UUID userID) {
         if (!permissible.isAdmin()) {
-            log.error("Non admin attempted to associate loggedInUser={} to constituency={}. loggedInUser={}", userID, constituencyID, permissible);
+            log.error("Non admin attempted to associate user={} to constituency={}. loggedInUser={}", userID, constituencyID, permissible);
             return Try.failure(new NotAuthorizedFailure("Forbidden content"));
         }
 
@@ -51,20 +51,20 @@ public class ConstituencyAssociationService {
 
         User foundUser = userRepository.findOne(userID);
         if (foundUser == null) {
-            return Try.failure(new NotFoundFailure("No loggedInUser with ID " + userID));
+            return Try.failure(new NotFoundFailure("No user with ID " + userID));
         }
 
         foundUser.getConstituencies().add(constituency);
         User updatedUser = userRepository.saveAndFlush(foundUser);
 
-        log.debug("Added association constituency={}, loggedInUser={}", constituencyID, userID);
+        log.debug("Added association constituency={}, user={}", constituencyID, userID);
         return Try.success(updatedUser);
     }
 
     @Transactional
     public Try<User> removeUserAssociation(User user, UUID constituencyID, UUID userID) {
         if (!user.isAdmin()) {
-            log.error("Non admin attempted to remove association of loggedInUser={} to constituency={}. loggedInUser={}", userID, constituencyID, user);
+            log.error("Non admin attempted to remove association of user={} to constituency={}. user={}", userID, constituencyID, user);
             return Try.failure(new NotAuthorizedFailure("Forbidden content"));
         }
 
@@ -77,7 +77,7 @@ public class ConstituencyAssociationService {
 
         User foundUser = userRepository.findOne(userID);
         if (foundUser == null) {
-            String msg = "No loggedInUser=" + userID;
+            String msg = "No user=" + userID;
             log.debug(msg);
             return Try.failure(new NotFoundFailure(msg));
         }
@@ -85,7 +85,7 @@ public class ConstituencyAssociationService {
         foundUser.removeConstituency(constituency);
         User updatedUser = userRepository.saveAndFlush(foundUser);
 
-        log.debug("Removed association constituency={}, loggedInUser={}", constituencyID, userID);
+        log.debug("Removed association constituency={}, user={}", constituencyID, userID);
         return Try.success(updatedUser);
     }
 

@@ -2,7 +2,10 @@ package com.infinityworks.webapp.service;
 
 import com.infinityworks.webapp.converter.MostCanvassedQueryConverter;
 import com.infinityworks.webapp.converter.TopCanvasserQueryConverter;
+import com.infinityworks.webapp.repository.StatsJdbcRepository;
 import com.infinityworks.webapp.repository.StatsRepository;
+import com.infinityworks.webapp.rest.dto.AllStatsResponse;
+import com.infinityworks.webapp.rest.dto.ImmutableAllStatsResponse;
 import com.infinityworks.webapp.rest.dto.StatsResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -15,20 +18,23 @@ import static java.util.stream.Collectors.toList;
 public class StatsService {
 
     private final StatsRepository repository;
+    private final StatsJdbcRepository statsJdbcRepository;
     private final TopCanvasserQueryConverter topCanvasserQueryConverter;
     private final MostCanvassedQueryConverter mostCanvassedQueryConverter;
     private static final int LIMIT = 7;
 
     @Autowired
     public StatsService(StatsRepository repository,
+                        StatsJdbcRepository statsJdbcRepository,
                         TopCanvasserQueryConverter topCanvasserQueryConverter,
                         MostCanvassedQueryConverter mostCanvassedQueryConverter) {
         this.repository = repository;
+        this.statsJdbcRepository = statsJdbcRepository;
         this.topCanvasserQueryConverter = topCanvasserQueryConverter;
         this.mostCanvassedQueryConverter = mostCanvassedQueryConverter;
     }
 
-    public List<StatsResponse> topCanvassersStats() {
+    public List<StatsResponse> topCanvassers() {
         return repository.countRecordContactByUser(LIMIT)
                 .stream()
                 .map(topCanvasserQueryConverter)
@@ -47,5 +53,21 @@ public class StatsService {
                 .stream()
                 .map(mostCanvassedQueryConverter)
                 .collect(toList());
+    }
+
+    public int canvassedPastNDays(int days) {
+        return statsJdbcRepository.countCanvassedPastDays(days);
+    }
+
+    /**
+     * TODO combine into a single query
+     */
+    public AllStatsResponse allStats() {
+        return ImmutableAllStatsResponse.builder()
+                .withCanvassedThisWeek(canvassedPastNDays(LIMIT))
+                .withTopWards(mostCanvassedWards())
+                .withTopConstituencies(mostCanvassedConstituencies())
+                .withTopCanvassers(topCanvassers())
+                .build();
     }
 }

@@ -1,5 +1,6 @@
 package com.infinityworks.webapp.repository;
 
+import com.infinityworks.webapp.domain.RecordContactLog;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.jdbc.Sql;
@@ -9,6 +10,7 @@ import java.math.BigInteger;
 import java.util.List;
 
 import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.lessThanOrEqualTo;
 import static org.junit.Assert.assertThat;
@@ -25,8 +27,11 @@ import static org.junit.Assert.assertThat;
 })
 public class StatsRepositoryTest extends RepositoryTest {
 
-    @Autowired
-    private StatsRepository repository;
+    @Autowired private StatsRepository repository;
+    @Autowired private StatsJdbcRepository jdbcRepository;
+    @Autowired private RecordContactLogRepository contactLogRepository;
+    @Autowired private UserRepository userRepository;
+    @Autowired private WardRepository wardRepository;
 
     @Test
     public void returnsTheTopCanvassers() throws Exception {
@@ -71,5 +76,19 @@ public class StatsRepositoryTest extends RepositoryTest {
 
         assertThat(logsByUser.get(2)[0], is("Binley and Willenhall"));
         assertThat(logsByUser.get(2)[1], is(BigInteger.valueOf(1)));
+    }
+
+    @Test
+    public void returnsTheCanvassedContactsOverThePast7Days() throws Exception {
+
+        RecordContactLog log1 = new RecordContactLog(userRepository.findAll().get(0), wardRepository.findAll().get(0), "E00900001-ADD-123-0");
+        RecordContactLog log2 = new RecordContactLog(userRepository.findAll().get(1), wardRepository.findAll().get(0), "E00900001-BUU-321-0");
+
+        contactLogRepository.save(log1);
+        contactLogRepository.save(log2);
+
+        int count = jdbcRepository.countCanvassedPastDays(7);
+
+        assertThat(count, equalTo(2));
     }
 }
