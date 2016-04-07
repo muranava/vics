@@ -5,7 +5,6 @@ import com.infinityworks.webapp.domain.Ward;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -18,14 +17,12 @@ public interface WardRepository extends JpaRepository<Ward, UUID> {
 
     List<Ward> findByConstituencyOrderByNameAsc(Constituency constituency);
 
-    List<Ward> findByCodeOrderByNameAsc(String code);
-
     Optional<Ward> findByCode(String code);
 
-    Set<Ward> findByConstituencyIn(Set<Constituency> constituencies);
+    Set<Ward> findByConstituencyInOrderByName(Set<Constituency> constituencies);
 
     @Query("SELECT w from Ward w LEFT JOIN w.constituency c " +
-            "WHERE c = ?1 AND w.name like CONCAT(?2, '%')")
+           "WHERE c = ?1 AND w.name like CONCAT(?2, '%')")
     List<Ward> findByConstituencyAndNameLike(Constituency constituency, String wardName);
 
     List<Ward> findByNameIgnoreCaseContainingOrderByNameAsc(String name, Pageable pageable);

@@ -122,7 +122,7 @@
                   <div class="card-body">
                     <br>
                     <div class="btn-group pull-left">
-                      <button type="button" ng-click="onPrintSelected()" class="btn ink-reaction btn-default-light">Print Selected</button>
+                      <button type="button" ng-click="onPrintSelected()" class="btn ink-reaction btn-default-light">Print <span class="hidden-xs">selected</span></button>
                       <button type="button" class="btn ink-reaction btn-danger dropdown-toggle" data-toggle="dropdown"><i class="fa fa-caret-down"></i></button>
                       <ul class="dropdown-menu" role="menu">
                         <li><a data-toggle="modal" data-target="#simpleModal">Print All</a></li>
@@ -176,19 +176,19 @@
                         </td>
                         <td class="streetsText">{{street | streetSingleLineFilter}}</td>
                         <td class="stats-cell">
-                          <span data-toggle="tooltip" data-placement="top" title="Low" ng-if="street.priority === 1">
+                          <span uib-tooltip="Low" ng-if="street.priority === 1">
                             <i class="md md-star gold-trophy icon-med"></i><i class="md md-star icon-med empty-trophy"></i><i class="md md-star icon-med empty-trophy"></i>
                           </span>
-                          <span data-toggle="tooltip" data-placement="top" title="Medium" ng-if="street.priority === 2">
+                          <span uib-tooltip="Medium" ng-if="street.priority === 2">
                             <i class="md md-star gold-trophy icon-med"></i><i class="md md-star icon-med gold-trophy"></i><i class="md md-star icon-med empty-trophy"></i>
                           </span>
-                          <span data-toggle="tooltip" data-placement="top" title="High" ng-if="street.priority === 3">
+                          <span uib-tooltip="High" ng-if="street.priority === 3">
                             <i class="md md-star icon-med gold-trophy"></i><i class="md md-star icon-med gold-trophy"></i><i class="md md-star icon-med gold-trophy"></i>
                           </span>
                         </td>
                         <td class="hidden-xs stats-cell">
-                          <span class="text-default text-xl"><span class="text-light" data-toggle="tooltip" data-placement="top" title="Voters Canvassed">{{street.numCanvassed}}</span> /
-                            <span data-toggle="tooltip" data-placement="top" title="Total Voters">{{street.numVoters}}</span>
+                          <span class="text-default text-xl"><span class="text-light" uib-tooltip="Voters Canvassed">{{street.numCanvassed}}</span> /
+                            <span uib-tooltip="Total Voters">{{street.numVoters}}</span>
                             <span class="text-default-light text-light">({{getRatioCanvassed(street.numCanvassed, street.numVoters)}}%)</span></span>
                         </td>
                         <td class="text-center">

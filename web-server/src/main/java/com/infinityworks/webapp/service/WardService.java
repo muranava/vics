@@ -92,7 +92,7 @@ public class WardService {
     public UserRestrictedWards getByUser(User user) {
         log.debug("Getting wards by user={}", user);
 
-        Set<Ward> wards = wardRepository.findByConstituencyIn(user.getConstituencies());
+        Set<Ward> wards = wardRepository.findByConstituencyInOrderByName(user.getConstituencies());
         wards.addAll(user.getWards());
         return new UserRestrictedWards(new ArrayList<>(wards));
     }
@@ -100,7 +100,7 @@ public class WardService {
     public List<WardSummary> getSummaryByUser(User user) {
         log.debug("Getting wards summary by user={}", user);
 
-        Set<Ward> wards = wardRepository.findByConstituencyIn(user.getConstituencies());
+        Set<Ward> wards = wardRepository.findByConstituencyInOrderByName(user.getConstituencies());
         wards.addAll(user.getWards());
         return wards.stream().map(wardSummaryConverter).collect(toList());
     }
@@ -116,7 +116,8 @@ public class WardService {
     }
 
     public Try<User> associateToUserByUsername(User permissible, String wardCode, String username) {
-        return userService.getByEmail(username)
+        return userService
+                .getByEmail(username)
                 .flatMap(user -> getByCode(wardCode, permissible)
                         .flatMap(ward -> wardAssociationService.associateToUser(permissible, ward.getId(), user.getId())));
     }
