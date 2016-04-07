@@ -3,7 +3,6 @@ package com.infinityworks.webapp.pdf;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-import com.infinityworks.webapp.domain.ImmutableAddressLabel;
 import org.immutables.value.Value;
 
 @Value.Immutable
