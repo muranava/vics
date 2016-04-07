@@ -59,7 +59,7 @@ egg.addCode("up,up,down,down,left,right,left,right,b,a", function () {
               </thead>
               <tbody>
               <tr ng-repeat="c in user.constituencies">
-                <td>1</td>
+                <td>{{$index + 1}}</td>
                 <td>{{c.code}}</td>
                 <td>{{c.name}}</td>
               </tr>
@@ -97,7 +97,7 @@ egg.addCode("up,up,down,down,left,right,left,right,b,a", function () {
               </thead>
               <tbody>
               <tr ng-repeat="w in user.wards">
-                <td>1</td>
+                <td>{{$index + 1}}</td>
                 <td>{{w.code}}</td>
                 <td>{{w.name}}</td>
               </tr>
