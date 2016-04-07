@@ -122,16 +122,20 @@ angular
       doPrint($scope.ward.code, selected);
     };
 
+    $scope.onPrintLabels = function () {
+      doPrint($scope.ward.code, selected);
+    };
+
     $scope.onPrintAll = function () {
       $scope.errorLoadingData = null;
       doPrint($scope.ward.code, $scope.streets);
     };
 
-    function doPrint(wardCode, streets) {
+    function doPrint(wardCode, streets, isLabels) {
       $scope.validationErrors = validateFlagsRadios();
       if (_.isEmpty($scope.validationErrors)) {
         var data = buildRequest(streets);
-        gotvService.retrievePdfOfElectorsByStreets(wardCode, data)
+        gotvService.retrievePdfOfElectorsByStreets(wardCode, data, isLabels)
           .success(function (response) {
             var file = new Blob([response], {type: 'application/pdf'});
             saveAs(file, $scope.ward.code + '.pdf');

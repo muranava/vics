@@ -12,11 +12,17 @@
 
     <div class="headerbar-right">
       <div class="print-button-bar" style="margin: 13px 10px 13px 0;">
-        <button type="button" class="btn btn-primary btn-sm pull-left" ng-click="onPrintSelected()"
-                ng-disabled="numStreetsSelected === 0">Print Selected
-        </button>
-        <a class="btn btn-danger btn-sm pull-left button-group-spacing" data-toggle="modal"
-           data-target="#simpleModal">Print All</a>
+
+        <div class="btn-group pull-right">
+          <button type="button" ng-click="onPrintSelected()" class="btn ink-reaction btn-default-light">Print Selected</button>
+          <button type="button" class="btn ink-reaction btn-danger dropdown-toggle" data-toggle="dropdown"><i class="fa fa-caret-down"></i></button>
+          <ul class="dropdown-menu" role="menu">
+            <li><a data-toggle="modal" data-target="#simpleModal">Print All</a></li>
+            <li><a ng-click="onPrintPriority()">Print Priority</a></li>
+            <li><a ng-click="onPrintLabels()">Print Labels</a></li>
+          </ul>
+        </div>
+
       </div>
     </div>
   </div>
@@ -260,29 +266,98 @@
                 </div>
 
                 <div class="card">
-                  <div class="card-body">
-                    <div class="form">
+                  <div class="card-body style-gray-dark no-y-padding">
+                    <form class="form form-inverse">
                       <div class="form-group">
-                        <div class="input-group">
+                        <div class="input-group input-group-lg col-xs-12">
                           <div class="input-group-content">
-                            <input type="text" class="form-control" id="filter" placeholder="Filter streets"
-                                   ng-model="streetFilter">
+                            <input type="text" class="form-control" ng-model="streetFilter" id="searchInput" placeholder="Filter Streets">
+                            <div class="form-control-line"></div>
                           </div>
                         </div>
                       </div>
+                    </form>
+                  </div>
+                  <div class="card-body">
+                    <br>
+                    <div class="btn-group pull-left">
+                      <button type="button" ng-click="onPrintSelected()" class="btn ink-reaction btn-default-light">Print Selected</button>
+                      <button type="button" class="btn ink-reaction btn-danger dropdown-toggle" data-toggle="dropdown"><i class="fa fa-caret-down"></i></button>
+                      <ul class="dropdown-menu" role="menu">
+                        <li><a data-toggle="modal" data-target="#simpleModal">Print All</a></li>
+                        <li><a ng-click="onPrintPriority()">Print Priority</a></li>
+                        <li><a ng-click="onPrintLabels()">Print Labels</a></li>
+                      </ul>
                     </div>
 
-                    <ul class="list" data-sortable="true">
-                      <li class="tile" ng-repeat="street in streets | filter:streetFilter">
-                        <div class="checkbox checkbox-styled tile-text">
-                          <label>
-                            <input ng-change="getNumStreetsSelected()" type="checkbox" ng-model="street.selected">
-														<span>
-															{{street | streetSingleLineFilter}}
-														</span>
-                          </label>
-                        </div>
-                    </ul>
+                    <div class="btn-group pull-right">
+                      <button type="button" class="btn ink-reaction btn-flat dropdown-toggle" data-toggle="dropdown">
+                        {{currentSort}} <i class="fa fa-caret-down text-default-light"></i>
+                      </button>
+                      <ul class="dropdown-menu animation-expand" role="menu">
+                        <li><a ng-click="sortStreets('priority', 'asc', 'Priority ASC')"><i class="md md-keyboard-arrow-up"></i> Priority</a></li>
+                        <li><a ng-click="sortStreets('priority', 'desc', 'Priority DESC')"><i class="md md-keyboard-arrow-down"></i> Priority</a></li>
+                        <li><a ng-click="sortStreets('mainStreet', 'asc', 'Street ASC')"><i class="md md-keyboard-arrow-up"></i> Street</a></li>
+                        <li><a ng-click="sortStreets('mainStreet', 'desc', 'Street DESC')"><i class="md md-keyboard-arrow-down"></i> Street</a></li>
+                        <li><a ng-click="sortStreets('numVoters', 'asc', 'Voters ASC')"><i class="md md-keyboard-arrow-up"></i> # Voters</a></li>
+                        <li><a ng-click="sortStreets('numVoters', 'desc', 'Voters DESC')"><i class="md md-keyboard-arrow-down"></i> # Voters</a></li>
+                        <li><a ng-click="sortStreets('numCanvassed', 'asc', 'Canvassed ASC')"><i class="md md-keyboard-arrow-up"></i> # Canvassed</a></li>
+                        <li><a ng-click="sortStreets('numCanvassed', 'desc', 'Canvassed DESC')"><i class="md md-keyboard-arrow-down"></i> # Canvassed</a></li>
+                        <li><a ng-click="sortStreets('numNotCanvassed', 'asc', 'Not Canvassed ASC')"><i class="md md-keyboard-arrow-up"></i> # Not Canvassed</a></li>
+                        <li><a ng-click="sortStreets('numNotCanvassed', 'desc', 'Not Canvassed DESC')"><i class="md md-keyboard-arrow-down"></i> # Not Canvassed</a></li>
+                      </ul>
+                    </div>
+
+                    <br><br>
+
+                    <!-- Streets table -->
+                    <table class="table table-hover no-margin">
+                      <thead>
+                      <tr>
+                        <th>
+                        </th>
+                        <th>Street</th>
+                        <th class="stats-cell">Priority</th>
+                        <th class="hidden-xs stats-cell">Canvass Stats</th>
+                        <th class="stats-cell">Tools
+                        </th>
+                      </tr>
+                      </thead>
+                      <tbody id="streetsList">
+                      <tr ng-repeat="street in streets | filter:streetFilter">
+                        <td>
+                          <div class="checkbox checkbox-inline checkbox-styled">
+                            <label>
+                              <input ng-change="getNumStreetsSelected()"
+                                     type="checkbox"
+                                     ng-model="street.selected"><span></span>
+                            </label>
+                          </div>
+                        </td>
+                        <td class="streetsText">{{street | streetSingleLineFilter}}</td>
+                        <td class="stats-cell">
+                          <span uib-tooltip="Low" ng-if="street.priority === 1">
+                            <i class="md md-star gold-trophy icon-med"></i><i class="md md-star icon-med empty-trophy"></i><i class="md md-star icon-med empty-trophy"></i>
+                          </span>
+                          <span uib-tooltip="Medium" ng-if="street.priority === 2">
+                            <i class="md md-star gold-trophy icon-med"></i><i class="md md-star icon-med gold-trophy"></i><i class="md md-star icon-med empty-trophy"></i>
+                          </span>
+                          <span uib-tooltip="High" ng-if="street.priority === 3">
+                            <i class="md md-star icon-med gold-trophy"></i><i class="md md-star icon-med gold-trophy"></i><i class="md md-star icon-med gold-trophy"></i>
+                          </span>
+                        </td>
+                        <td class="hidden-xs stats-cell">
+                          <span class="text-default text-xl"><span class="text-light" uib-tooltip="Voters Canvassed">{{street.numCanvassed}}</span> /
+                            <span uib-tooltip="Total Voters">{{street.numVoters}}</span>
+                            <span class="text-default-light text-light">({{getRatioCanvassed(street.numCanvassed, street.numVoters)}}%)</span></span>
+                        </td>
+                        <td class="text-center">
+                          <button ng-click="onShowMap(street)" type="button" class="btn btn-icon-toggle"><i class="fa icon-med fa-map-marker"></i></button>
+                        </td>
+                      </tr>
+                      </tbody>
+                    </table>
+
                   </div>
                 </div>
               </div>

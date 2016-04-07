@@ -12,4 +12,3 @@ public class AveryLabelGenerator implements AddressLabelGenerator {
         return null;
     }
 }
-

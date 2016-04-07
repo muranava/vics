@@ -68,9 +68,10 @@ angular
     /**
      * Retrieves the households and electors in the given streets
      */
-    api.retrievePdfOfElectorsByStreets = function (wardCode, data) {
+    api.retrievePdfOfElectorsByStreets = function (wardCode, data, isLabels) {
+      var urlSuffix = isLabels ? 'label' : 'pdf';
       return $http({
-          url: apiUrl + '/elector/ward/' + wardCode + '/street/pdf',
+          url: apiUrl + '/elector/ward/' + wardCode + '/street/' + urlSuffix,
           method: 'POST',
           responseType: 'arraybuffer',
           headers: {

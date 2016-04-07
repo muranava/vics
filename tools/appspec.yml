@@ -1,9 +1,12 @@
-version: 0.1
+version: 0.0
 os: linux
 files:
   - source: /
     destination: /tmp/
 hooks:
+  BeforeInstall:
+    - location: scripts/cleanupBeforeInstall.sh
+      runas: root
   AfterInstall:
     - location: scripts/createLinuxService.sh
       runas: root
