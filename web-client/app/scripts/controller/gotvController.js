@@ -122,10 +122,6 @@ angular
       doPrint($scope.ward.code, selected);
     };
 
-    $scope.onPrintLabels = function () {
-      doPrint($scope.ward.code, selected);
-    };
-
     $scope.onPrintAll = function () {
       $scope.errorLoadingData = null;
       doPrint($scope.ward.code, $scope.streets);

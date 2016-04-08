@@ -149,7 +149,6 @@
                       <i ng-if="$index === 3" class="md md-filter-4"></i>
                       <i ng-if="$index === 4" class="md md-filter-5"></i>
                       <i ng-if="$index === 5" class="md md-filter-6"></i>
-                      <i ng-if="$index === 6" class="md md-filter-7"></i>
                     </div>
                     <div class="tile-text">{{w.key}}</div>
                     <div class="tile-text">{{w.count}}</div>
@@ -170,7 +169,6 @@
                       <i ng-if="$index === 3" class="md md-filter-4"></i>
                       <i ng-if="$index === 4" class="md md-filter-5"></i>
                       <i ng-if="$index === 5" class="md md-filter-6"></i>
-                      <i ng-if="$index === 6" class="md md-filter-7"></i>
                     </div>
                     <div class="tile-text">{{c.key}}</div>
                     <div class="tile-text">{{c.count}}</div>
@@ -215,8 +213,8 @@
               <leaflet center="mapData.location" markers="mapData.markers" height="250px"
                        width="100%"></leaflet>
               <div class="worldmap box" ng-if="constituencyName">
-                <span class="text-bold">Constituency</span>&nbsp;{{constituencyName}}<br>
-                <span class="text-bold">Ward</span>&nbsp;{{wardName}}
+                <span class="text-bold">Constituency</span>&nbsp;&nbsp;{{constituencyName}}<br>
+                <span class="text-bold">Ward</span>&nbsp;&nbsp;{{wardName}}
               </div>
             </div>
 

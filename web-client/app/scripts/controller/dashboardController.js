@@ -34,7 +34,7 @@ angular
       geoService.findWardFromPostCode($scope.postCode)
         .success(function(response) {
           if (response && response.wgs84_lat) {
-            $scope.constituencyName = response.areas[response.shortcuts.WMC].name
+            $scope.constituencyName = response.areas[response.shortcuts.WMC].name;
             if (_.isObject(response.shortcuts.ward)) {
               $scope.wardName = response.areas[response.shortcuts.ward.district].name;
             } else {

@@ -21,7 +21,7 @@ public class StatsService {
     private final StatsJdbcRepository statsJdbcRepository;
     private final TopCanvasserQueryConverter topCanvasserQueryConverter;
     private final MostCanvassedQueryConverter mostCanvassedQueryConverter;
-    private static final int LIMIT = 7;
+    private static final int LIMIT = 6;
 
     @Autowired
     public StatsService(StatsRepository repository,

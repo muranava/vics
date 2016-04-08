@@ -84,7 +84,7 @@ public class PDFGen {
         init();
     }
 
-    public static void main(String[] args) throws DocumentException, FileNotFoundException {
+    public void main(String[] args) throws DocumentException, FileNotFoundException {
         PDFGen pdfGen = new PDFGen("labels1.pdf"); // 5160 || 8160
         pdfGen.setAlignment(9, 1); // sets the default alignment properties for the cells
         String text1 = "Mark Cooper" + LINE_SEPARATOR + "32 Regent Street" + LINE_SEPARATOR + "City of Westminster" + LINE_SEPARATOR + "London" + LINE_SEPARATOR +  "KT6 3UB";

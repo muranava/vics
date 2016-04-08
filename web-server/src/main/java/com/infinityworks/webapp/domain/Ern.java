@@ -5,7 +5,7 @@ import com.infinityworks.webapp.converter.ErnSerializer;
 
 @JsonSerialize(using = ErnSerializer.class)
 public class Ern {
-    private static final String ERN_REGEX = "^\\w{1,10}-\\w{1,4}-\\d{1,7}-\\w{1,2}$";
+    private static final String ERN_REGEX = "^\\w{1,10}-\\w{1,7}-\\d{1,7}-\\w{1,2}$";
 
     private final String wardCode;
     private final String pollingDistrict;
