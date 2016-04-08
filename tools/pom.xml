@@ -58,6 +58,7 @@
                                     <fileset dir="${project.basedir}/">
                                         <include name="appspec.yml"/>
                                         <include name="web-server-0.0.1.conf"/>
+                                        <include name="application.properties"/>
                                     </fileset>
                                 </copy>
                             </tasks>
