@@ -8,6 +8,6 @@ chmod +x /tmp/web-server-0.0.1.jar
 mkdir -p /var/tmp
 cp -f /tmp/web-server-0.0.1.jar /var/tmp/vics.jar
 cp -f /tmp/web-server-0.0.1.conf /var/tmp/vics.conf
-cp -f /tmp/application.properties /var/tmp/application.properties
+cp -f /tmp/target.properties /var/tmp/application.properties
 ln -fs /var/tmp/vics.jar /etc/init.d/vics
 update-rc.d vics defaults

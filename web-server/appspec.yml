@@ -16,3 +16,6 @@ hooks:
   ApplicationStop:
     - location: scripts/stopApp.sh
       runas: root
+  ValidateService:
+    - location: scripts/validateInstall.sh
+      runas: root

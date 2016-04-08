@@ -201,9 +201,9 @@
                 <version>2.6</version>
                 <executions>
                     <execution>
-                        <id>make-zip</id>
+                        <id>make-tar</id>
                         <!-- this is used for inheritance merges -->
-                        <phase>package</phase>
+                        <phase>prepare-package</phase>
                         <!-- bind to the packaging phase -->
                         <goals>
                             <goal>
@@ -215,25 +215,22 @@
                 <configuration>
                     <appendAssemblyId>false</appendAssemblyId>
                     <descriptors>
-                        <descriptor>src/main/assembly/zip.xml</descriptor>
+                        <descriptor>src/main/assembly/package.xml</descriptor>
                     </descriptors>
                 </configuration>
             </plugin>
-
             <!-- copy the built jar to the staging area, so it can be deployed later by the assembly plugin -->
             <plugin>
                 <artifactId>maven-antrun-plugin</artifactId>
                 <version>1.8</version>
                 <executions>
                     <execution>
-                        <phase>install</phase>
+                        <phase>package</phase>
                         <configuration>
                             <tasks>
-                                <copy todir="${project.basedir}/../dist/server">
+                                <copy tofile="${project.basedir}/../dist/vics-api.tar.gz">
                                     <fileset dir="${project.basedir}/">
-                                        <include name="target/web-server-*.jar"/>
-                                        <exclude name="target/web-server-*.zip"/>
-                                        <exclude name="target/web-server-*-sources.jar"/>
+                                        <include name="target/web-server-*.tar.gz"/>
                                     </fileset>
                                     <flattenmapper/>
                                 </copy>

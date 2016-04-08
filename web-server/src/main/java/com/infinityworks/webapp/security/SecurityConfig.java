@@ -16,6 +16,7 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.session.data.redis.config.ConfigureRedisAction;
 import org.springframework.session.data.redis.config.annotation.web.http.EnableRedisHttpSession;
 
 @Configuration
@@ -58,5 +59,15 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         JedisConnectionFactory jedis = new JedisConnectionFactory();
         jedis.setHostName(host);
         return jedis;
+    }
+
+    /**
+     * Prevents spring from trying to configure redis on startup.  By default in some environments (AWS)
+     * redis disables remote connections from updating config, which can cause startup to fail as spring
+     * can't configure redis.
+     */
+    @Bean
+    public static ConfigureRedisAction configureRedisAction() {
+        return ConfigureRedisAction.NO_OP;
     }
 }
