@@ -105,96 +105,123 @@
     </div><!--end .row -->
     <!-- END PRICING CARDS 1 -->
 
-    <br>
-
     <div class="row">
-      <!-- BEGIN NEW REGISTRATIONS -->
-      <div class="col-sm-4">
+      <!-- BEGIN LAYOUT JUSTIFIED -->
+      <div class="col-md-6 col-sm-6 col-xs-12">
         <div class="card">
           <div class="card-head">
-            <header>Most Canvassed Constituencies</header>
-          </div><!--end .card-head -->
-
-          <div class="card-body no-padding height-9 scroll">
-            <ul class="list divider-full-bleed">
-              <li ng-repeat="c in stats.topConstituencies" class="tile">
-                <a class="tile-content ink-reaction">
-                  <div class="tile-icon">
-                    <i ng-if="$index === 0" class="fa fa-trophy gold-trophy"></i>
-                    <i ng-if="$index === 1" class="fa fa-trophy silver-trophy"></i>
-                    <i ng-if="$index === 2" class="fa fa-trophy bronze-trophy"></i>
-                    <i ng-if="$index === 3" class="md md-filter-4"></i>
-                    <i ng-if="$index === 4" class="md md-filter-5"></i>
-                    <i ng-if="$index === 5" class="md md-filter-6"></i>
-                    <i ng-if="$index === 6" class="md md-filter-7"></i>
-                  </div>
-                  <div class="tile-text">{{c.key}}</div>
-                  <div class="tile-text">{{c.count}}</div>
-                </a>
-              </li>
+            <ul class="nav nav-tabs nav-justified" data-toggle="tabs">
+              <li ng-class="{'tab-pane': true, 'active': currentTab === 'activists'}"><a class="cursor-hand" ng-click="changeLeaderboardTab('activists')">Activists</a></li>
+              <li ng-class="{'tab-pane': true, 'active': currentTab === 'wards'}"><a class="cursor-hand" ng-click="changeLeaderboardTab('wards')">Wards</a></li>
+              <li ng-class="{'tab-pane': true, 'active': currentTab === 'constituencies'}"><a class="cursor-hand" ng-click="changeLeaderboardTab('constituencies')">Constituencies</a></li>
             </ul>
+          </div><!--end .card-head -->
+          <div class="card-body tab-content height-9">
+            <div ng-if="currentTab === 'activists'" id="first4">
+              <p>
+              <ul class="list divider-full-bleed">
+                <li ng-repeat="c in stats.topCanvassers" class="tile">
+                  <a class="tile-content ink-reaction">
+                    <div class="tile-icon">
+                      <i ng-if="$index === 0" class="fa fa-trophy gold-trophy"></i>
+                      <i ng-if="$index === 1" class="fa fa-trophy silver-trophy"></i>
+                      <i ng-if="$index === 2" class="fa fa-trophy bronze-trophy"></i>
+                      <i ng-if="$index === 3" class="md md-filter-4"></i>
+                      <i ng-if="$index === 4" class="md md-filter-5"></i>
+                      <i ng-if="$index === 5" class="md md-filter-6"></i>
+                    </div>
+                    <div class="tile-text">{{c.key}}</div>
+                    <div class="tile-text">{{c.count}}</div>
+                  </a>
+                </li>
+              </ul>
+              </p>
+            </div>
+            <div ng-if="currentTab === 'wards'" id="second4">
+              <p>
+              <ul class="list divider-full-bleed">
+                <li ng-repeat="w in stats.topWards" class="tile">
+                  <a class="tile-content ink-reaction">
+                    <div class="tile-icon">
+                      <i ng-if="$index === 0" class="fa fa-trophy gold-trophy"></i>
+                      <i ng-if="$index === 1" class="fa fa-trophy silver-trophy"></i>
+                      <i ng-if="$index === 2" class="fa fa-trophy bronze-trophy"></i>
+                      <i ng-if="$index === 3" class="md md-filter-4"></i>
+                      <i ng-if="$index === 4" class="md md-filter-5"></i>
+                      <i ng-if="$index === 5" class="md md-filter-6"></i>
+                      <i ng-if="$index === 6" class="md md-filter-7"></i>
+                    </div>
+                    <div class="tile-text">{{w.key}}</div>
+                    <div class="tile-text">{{w.count}}</div>
+                  </a>
+                </li>
+              </ul>
+              </p>
+            </div>
+            <div ng-if="currentTab === 'constituencies'" id="third4">
+              <p>
+              <ul class="list divider-full-bleed">
+                <li ng-repeat="c in stats.topConstituencies" class="tile">
+                  <a class="tile-content ink-reaction">
+                    <div class="tile-icon">
+                      <i ng-if="$index === 0" class="fa fa-trophy gold-trophy"></i>
+                      <i ng-if="$index === 1" class="fa fa-trophy silver-trophy"></i>
+                      <i ng-if="$index === 2" class="fa fa-trophy bronze-trophy"></i>
+                      <i ng-if="$index === 3" class="md md-filter-4"></i>
+                      <i ng-if="$index === 4" class="md md-filter-5"></i>
+                      <i ng-if="$index === 5" class="md md-filter-6"></i>
+                      <i ng-if="$index === 6" class="md md-filter-7"></i>
+                    </div>
+                    <div class="tile-text">{{c.key}}</div>
+                    <div class="tile-text">{{c.count}}</div>
+                  </a>
+                </li>
+              </ul>
+              </p>
+            </div>
           </div><!--end .card-body -->
-
         </div><!--end .card -->
+        <em class="text-caption">Leaderboards based on data entry</em>
       </div><!--end .col -->
-      <!-- END NEW REGISTRATIONS -->
 
-      <!-- BEGIN NEW REGISTRATIONS -->
-      <div class="col-sm-4">
-        <div class="card">
+      <div class="col-md-6 col-sm-6 col-xs-12">
+        <div class="card style-primary">
           <div class="card-head">
-            <header>Most Canvassed Wards</header>
+            <header>Where's my ward?</header>
           </div><!--end .card-head -->
-          <div class="card-body no-padding height-9 scroll">
-            <ul class="list divider-full-bleed">
-              <li ng-repeat="w in stats.topWards" class="tile">
-                <a class="tile-content ink-reaction">
-                  <div class="tile-icon">
-                    <i ng-if="$index === 0" class="fa fa-trophy gold-trophy"></i>
-                    <i ng-if="$index === 1" class="fa fa-trophy silver-trophy"></i>
-                    <i ng-if="$index === 2" class="fa fa-trophy bronze-trophy"></i>
-                    <i ng-if="$index === 3" class="md md-filter-4"></i>
-                    <i ng-if="$index === 4" class="md md-filter-5"></i>
-                    <i ng-if="$index === 5" class="md md-filter-6"></i>
-                    <i ng-if="$index === 6" class="md md-filter-7"></i>
-                  </div>
-                  <div class="tile-text">{{w.key}}</div>
-                  <div class="tile-text">{{w.count}}</div>
-                </a>
-              </li>
-            </ul>
-          </div><!--end .card-body -->
-        </div><!--end .card -->
-      </div><!--end .col -->
-      <!-- END NEW REGISTRATIONS -->
-      <!-- BEGIN NEW REGISTRATIONS -->
-      <div class="col-sm-4">
-        <div class="card">
-          <div class="card-head">
-            <header>Top Canvassers</header>
-          </div><!--end .card-head -->
-          <div class="card-body no-padding height-9 scroll">
-            <ul class="list divider-full-bleed">
-              <li ng-repeat="c in stats.topCanvassers" class="tile">
-                <a class="tile-content ink-reaction">
-                  <div class="tile-icon">
-                    <i ng-if="$index === 0" class="fa fa-trophy gold-trophy"></i>
-                    <i ng-if="$index === 1" class="fa fa-trophy silver-trophy"></i>
-                    <i ng-if="$index === 2" class="fa fa-trophy bronze-trophy"></i>
-                    <i ng-if="$index === 3" class="md md-filter-4"></i>
-                    <i ng-if="$index === 4" class="md md-filter-5"></i>
-                    <i ng-if="$index === 5" class="md md-filter-6"></i>
-                    <i ng-if="$index === 6" class="md md-filter-7"></i>
-                  </div>
-                  <div class="tile-text">{{c.key}}</div>
-                  <div class="tile-text">{{c.count}}</div>
-                </a>
-              </li>
-            </ul>
+          <div class="card-body height-9">
+
+            <div class="row">
+                <form class="form" ng-submit="findWard()">
+                  <div class="form-group">
+                    <div class="input-group">
+                      <div class="input-group-content">
+                        <input type="text" class="form-control" id="groupbutton9" style="color: white;"
+                               ng-model="postCode"
+                               uppercased>
+                        <label for="groupbutton9" style="color: white;">Post Code</label>
+                      </div>
+                      <div class="input-group-btn">
+                        <button class="btn btn-accent-light btn-sm" style="background-color: white; color: black;"
+                                type="submit">Search
+                        </button>
+                      </div>
+                    </div>
+                  </div><!--end .form-group -->
+                </form>
+            </div>
+
+            <div class="row" style="color: black;">
+              <leaflet center="mapData.location" markers="mapData.markers" height="250px"
+                       width="100%"></leaflet>
+              <div class="worldmap box" ng-if="constituencyName">
+                <span class="text-bold">Constituency</span>&nbsp;{{constituencyName}}<br>
+                <span class="text-bold">Ward</span>&nbsp;{{wardName}}
+              </div>
+            </div>
+
           </div><!--end .card-body -->
         </div><!--end .col -->
-        <!-- END NEW REGISTRATIONS -->
-
       </div>
     </div>
 
