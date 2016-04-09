@@ -203,7 +203,7 @@
                     <execution>
                         <id>make-tar</id>
                         <!-- this is used for inheritance merges -->
-                        <phase>prepare-package</phase>
+                        <phase>install</phase>
                         <!-- bind to the packaging phase -->
                         <goals>
                             <goal>
@@ -225,7 +225,7 @@
                 <version>1.8</version>
                 <executions>
                     <execution>
-                        <phase>package</phase>
+                        <phase>install</phase>
                         <configuration>
                             <tasks>
                                 <copy tofile="${project.basedir}/../dist/vics-api.tar.gz">
