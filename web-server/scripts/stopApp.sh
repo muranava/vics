@@ -1,3 +1,5 @@
 #!/usr/bin/env bash
 
-service vics stop
+if [ -f /etc/init.d/vics ]; then
+    service vics stop
+fi
