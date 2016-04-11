@@ -28,6 +28,7 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -54,6 +55,24 @@ public class UserTest extends WebApplicationTest {
                 .standaloneSetup(votedController)
                 .build();
         pafApiStub.start();
+    }
+
+    @Test
+    public void findsTheUsers() throws Exception {
+        String endpoint = "/user";
+        when(sessionService.extractUserFromPrincipal(any(Principal.class)))
+                .thenReturn(Try.success(admin()));
+
+        mockMvc.perform(get(endpoint)
+                .accept(APPLICATION_JSON))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$[0].id", is("0c9b160d-f178-4d40-ae21-94ba78ab748f")))
+                .andExpect(jsonPath("$[0].username", is("ada@ada.uk")))
+                .andExpect(jsonPath("$[0].firstName", is("Samir")))
+                .andExpect(jsonPath("$[0].lastName", is("Ginola")))
+                .andExpect(jsonPath("$[0].role", is("USER")))
+                .andExpect(jsonPath("$[0].writeAccess", is(true)));
     }
 
     @Test

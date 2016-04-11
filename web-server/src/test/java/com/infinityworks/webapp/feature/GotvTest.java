@@ -33,7 +33,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
                         "classpath:drop-create.sql",
                         "classpath:constituencies.sql",
                         "classpath:wards.sql",
-                        "classpath:users.sql"})
+                        "classpath:users.sql",
+                        "classpath:record-contact-logs.sql"})
 })
 public class GotvTest extends WebApplicationTest {
     private SessionService sessionService;

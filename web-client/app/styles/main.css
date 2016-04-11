@@ -43,14 +43,14 @@ input:-webkit-autofill {
 /* Fancy blur effect */
 #loading-bar .peg {
   -moz-box-shadow: #c63e32 1px 0 6px 1px;
-  -ms-box-shadow: #C5443B 1px 0 6px 1px;
-  -webkit-box-shadow: #C5443B 1px 0 6px 1px;
-  box-shadow: #C5443B 1px 0 6px 1px;
+  -ms-box-shadow: #D92C27 1px 0 6px 1px;
+  -webkit-box-shadow: #D92C27 1px 0 6px 1px;
+  box-shadow: #D92C27 1px 0 6px 1px;
 }
 
 #loading-bar-spinner .spinner-icon {
-  border-top-color: #C5443B;
-  border-left-color: #C5443B;
+  border-top-color: #D92C27;
+  border-left-color: #D92C27;
 }
 
 .countdown {
@@ -164,7 +164,7 @@ div.egg {
 div.game-center {
   width: 100px;
   height: 100px;
-  background-color: red;
+  background-color: #D92C27;
 
   position: absolute;
   top: 100px;
@@ -247,4 +247,20 @@ div.worldmap.box {
   z-index: 100;
   padding: 1em;
   text-align: left;
+}
+
+.wheres-label {
+  color: white !important;
+}
+.wheres-input {
+  color: white;
+}
+.nav-tabs > li {
+  background-color: #f9fafa;
+}
+.nav-tabs .active {
+  background-color: white !important;
+}
+.dropdown-menu > .active > a {
+  background-color: #D92C27 !important;
 }
