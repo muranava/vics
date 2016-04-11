@@ -14,6 +14,7 @@ public class PafServerRunner {
             pafApiStub.willReturnStreets();
             pafApiStub.willRecordVoterVoted();
             pafApiStub.willReturnVotersByWardByTownAndByStreet("E05000403", "Kingston");
+            pafApiStub.willSearchVoters("E05000403", "kt25bu", "fletcher");
         } catch (IOException e) {
             throw new IllegalStateException("Could not start PAF mock server");
         }

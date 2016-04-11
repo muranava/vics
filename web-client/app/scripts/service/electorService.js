@@ -36,20 +36,11 @@ angular
       });
     };
 
-    api.search = function (searchParams, limit) {
+    api.search = function (searchParams, wardCode, limit) {
       var params = {};
-      if (util.notEmpty(searchParams.firstName)) {
-        params.firstName = searchParams.firstName;
-      }
-      if (util.notEmpty(searchParams.lastName)) {
-        params.lastName = searchParams.lastName;
-      }
-      if (util.notEmpty(searchParams.address)) {
-        params.address = searchParams.address;
-      }
-      if (util.notEmpty(searchParams.postCode)) {
-        params.postCode = searchParams.postCode;
-      }
+      params.surname = searchParams.surname;
+      params.postcode = searchParams.postcode;
+      params.wardCode = wardCode;
       params.limit = limit;
 
       return $http({

@@ -6,18 +6,18 @@ import com.infinityworks.webapp.rest.validation.ValidSearchElectorsRequest;
 
 import java.util.Map;
 
-import static com.google.common.base.Strings.nullToEmpty;
-
 @ValidSearchElectorsRequest
 public class SearchElectors {
     private final String surname;
     private final String postcode;
     private final String wardCode;
+    private final int limit;
 
-    public SearchElectors(String surname, String postcode, String wardCode) {
-        this.surname = nullToEmpty(surname);
-        this.postcode = nullToEmpty(postcode);
-        this.wardCode = nullToEmpty(wardCode);
+    public SearchElectors(String surname, String postcode, String wardCode, int limit) {
+        this.surname =  surname;
+        this.postcode = postcode;
+        this.wardCode = wardCode;
+        this.limit = limit;
     }
 
     public String getWardCode() {
@@ -30,6 +30,10 @@ public class SearchElectors {
 
     public String getPostcode() {
         return postcode;
+    }
+
+    public int getLimit() {
+        return limit;
     }
 
     /**

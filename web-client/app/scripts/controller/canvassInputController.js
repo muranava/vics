@@ -12,10 +12,8 @@ angular
     $scope.logs = RingBuffer.newInstance(logSize);
 
     $scope.searchForm = {
-      firstName: '',
-      lastName: '',
-      address: '',
-      postCode: ''
+      surname: '',
+      postcode: ''
     };
 
     function initForm() {
@@ -72,7 +70,7 @@ angular
         $scope.searchFailed = true;
       }
 
-      electorService.search($scope.searchForm, searchLimit)
+      electorService.search($scope.searchForm, $scope.inputRecordModel.ward.code, searchLimit)
         .success(handleSuccess)
         .error(handleError);
     };
