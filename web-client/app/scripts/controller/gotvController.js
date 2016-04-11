@@ -1,6 +1,6 @@
 angular
   .module('canvass')
-  .controller('gotvController', function ($scope, wardService, gotvService, $window) {
+  .controller('gotvController', function ($scope, wardService, electorService, $window) {
 
     $scope.numStreetsSelected = 0;
     $scope.validationErrors = [];
@@ -124,14 +124,21 @@ angular
 
     $scope.onPrintAll = function () {
       $scope.errorLoadingData = null;
-      doPrint($scope.ward.code, $scope.streets);
+      doPrint($scope.ward.code, $scope.streets, false);
+    };
+
+    $scope.onPrintLabels = function() {
+      var selected = _.filter($scope.streets, function (s) {
+        return s.selected;
+      });
+      doPrint($scope.ward.code, selected, true);
     };
 
     function doPrint(wardCode, streets, isLabels) {
       $scope.validationErrors = validateFlagsRadios();
       if (_.isEmpty($scope.validationErrors)) {
         var data = buildRequest(streets);
-        gotvService.retrievePdfOfElectorsByStreets(wardCode, data, isLabels)
+        electorService.retrievePdfOfElectorsByStreets(wardCode, data, isLabels)
           .success(function (response) {
             var file = new Blob([response], {type: 'application/pdf'});
             saveAs(file, $scope.ward.code + '.pdf');

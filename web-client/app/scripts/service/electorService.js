@@ -3,11 +3,6 @@ angular
   .service('electorService', function (config, $http, util) {
     var api = {}, apiUrl = config.apiUrl;
 
-    /**
-     * Retrieves the elector records for the given ward
-     * @param {String[]} wardCode
-     * @return {Object[]}
-     */
     api.retrieveLocalElectorsByWards = function (wardCode) {
       return $http({
         url: apiUrl + '/ward/' + wardCode + '/elector',
@@ -69,7 +64,7 @@ angular
      * Retrieves the households and electors in the given streets
      */
     api.retrievePdfOfElectorsByStreets = function (wardCode, data, isLabels) {
-      var urlSuffix = isLabels ? 'label' : 'pdf';
+      var urlSuffix = isLabels ? 'labels' : 'pdf';
       return $http({
           url: apiUrl + '/elector/ward/' + wardCode + '/street/' + urlSuffix,
           method: 'POST',
@@ -79,7 +74,7 @@ angular
           },
           withCredentials: true,
           data: data,
-          transformResponse: function(data, header, status) {
+          transformResponse: function (data, header, status) {
             if (status === 404) {
               return {
                 status: 404,

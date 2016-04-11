@@ -60,7 +60,7 @@ public class VoterService {
      * @param searchElectors the search criteria
      * @return a list of voters for the given search criteria
      */
-    public Try<SearchVoterResponse> search(User user, SearchElectors searchElectors) {
+    public Try<List<Voter>> search(User user, SearchElectors searchElectors) {
         log.info("Search voters user={} criteria={}", user, searchElectors);
 
         return wardService

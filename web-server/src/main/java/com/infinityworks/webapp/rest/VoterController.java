@@ -65,12 +65,10 @@ public class VoterController {
     @RequestMapping(method = GET)
     public ResponseEntity<?> searchByAttributes(
             @RequestParam(required = false, name = "wardCode") String wardCode,
-            @RequestParam(required = false, name = "firstName") String firstName,
-            @RequestParam(required = false, name = "lastName") String lastName,
-            @RequestParam(required = false, name = "address") String address,
-            @RequestParam(required = false, name = "postCode") String postCode,
+            @RequestParam(required = false, name = "surname") String surname,
+            @RequestParam(required = false, name = "postcode") String postcode,
             Principal principal) {
-        SearchElectors searchRequest = new SearchElectors(firstName, lastName, address, postCode, wardCode);
+        SearchElectors searchRequest = new SearchElectors(surname, postcode, wardCode);
         return requestValidator.validate(searchRequest)
                 .flatMap(request -> sessionService.extractUserFromPrincipal(principal))
                 .flatMap(user -> voterService.search(user, searchRequest))

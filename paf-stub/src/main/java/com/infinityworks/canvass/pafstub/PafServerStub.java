@@ -38,6 +38,7 @@ public class PafServerStub {
         files.put("voted,E05001221-ADD-1313-1", "json/paf-record-voted.json");
         files.put("search,McCall,KT25BU", "json/paf-search-voter.json");
         files.put("postContact,E05001221-PD-123-4", "json/paf-record-contact-response.json");
+        files.put("voterSearch", "json/");
     }
 
     public void start() {
@@ -163,19 +164,17 @@ public class PafServerStub {
                         .withHeader(CONTENT_TYPE, "application/json")));
     }
 
-    public void willSearchVoters(String lastName, String postCode) throws IOException {
-        String fileName = String.format("search,%s,%s", lastName, postCode);
-        String file = requireNonNull(files.get(fileName),
-                String.format("No json file for voted request lastName=%s, postCode=%s", lastName, postCode));
-        String jsonData = Resources.toString(getResource(file), UTF_8);
+    public void willSearchVoters(String wardCode, String postCode, String lastName) throws IOException {
+        String jsonData = Resources.toString(getResource("json/paf-voter-search-response.json"), UTF_8);
 
-        String urlPath = "/v1/voter";
-        wireMock.register(get(urlPathMatching(urlPath))
-                .withQueryParam("lastName", equalTo("McCall"))
-                .withQueryParam("postCode", equalTo("KT25BU"))
+        String url = "/v1/voter/search";
+        wireMock.register(get(urlPathMatching(url))
+                .withQueryParam("postcode", equalTo(postCode))
+                .withQueryParam("ward_code", equalTo(wardCode))
+                .withQueryParam("surname", equalTo(lastName))
                 .willReturn(aResponse()
-                        .withStatus(200)
                         .withHeader(CONTENT_TYPE, "application/json")
+                        .withStatus(200)
                         .withBody(jsonData)));
     }
 }

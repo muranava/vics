@@ -109,11 +109,11 @@ public class VoterTest extends WebApplicationTest {
     public void returnsTheElectorsWhenSearchingByAttributes() throws Exception {
         when(sessionService.extractUserFromPrincipal(any(Principal.class)))
                 .thenReturn(Try.success(earlsdon()));
-        pafApiStub.willSearchVoters("McCall", "KT25BU");
+        pafApiStub.willSearchVoters("E05001221", "KT25BU", "McCall");
 
         MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
-        params.add("lastName", "McCall");
-        params.add("postCode", "KT25BU");
+        params.add("surname", "McCall");
+        params.add("postcode", "KT25BU");
         params.add("wardCode", "E05001221");
         UriComponents uriComponents = UriComponentsBuilder.fromPath("/elector")
                 .queryParams(params)
@@ -131,11 +131,11 @@ public class VoterTest extends WebApplicationTest {
     public void searchReturnsNotAuthorizedIfElectorHasNoWardPermission() throws Exception {
         when(sessionService.extractUserFromPrincipal(any(Principal.class)))
                 .thenReturn(Try.success(covs()));
-        pafApiStub.willSearchVoters("McCall", "KT25BU");
+        pafApiStub.willSearchVoters("A05001235", "KT25BU", "McCall");
 
         MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
-        params.add("lastName", "McCall");
-        params.add("postCode", "KT25BU");
+        params.add("surname", "McCall");
+        params.add("postcode", "KT25BU");
         params.add("wardCode", "E05001235");
         UriComponents uriComponents = UriComponentsBuilder.fromPath("/elector")
                 .queryParams(params)
@@ -153,11 +153,11 @@ public class VoterTest extends WebApplicationTest {
     public void searchReturnsNotFoundIfWardInvalid() throws Exception {
         when(sessionService.extractUserFromPrincipal(any(Principal.class)))
                 .thenReturn(Try.success(covs()));
-        pafApiStub.willSearchVoters("McCall", "KT25BU");
+        pafApiStub.willSearchVoters("A05001235", "KT25BU", "McCall");
 
         MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
-        params.add("lastName", "McCall");
-        params.add("postCode", "KT25BU");
+        params.add("surname", "McCall");
+        params.add("postcode", "KT25BU");
         params.add("wardCode", "A05001235");
         UriComponents uriComponents = UriComponentsBuilder.fromPath("/elector")
                 .queryParams(params)
@@ -177,7 +177,12 @@ public class VoterTest extends WebApplicationTest {
                 .thenReturn(Try.success(covs()));
         pafApiStub.willRecordVoterVoted("E05001221-ADD-1313-1");
 
-        RecordVoteRequest request = new RecordVoteBuilder().withWardCode("E05001221").withWardName("Earlsdon").withErn("ADD-1313-1").withSuccess(true).build();
+        RecordVoteRequest request = new RecordVoteBuilder()
+                .withWardCode("E05001221")
+                .withWardName("Earlsdon")
+                .withErn("ADD-1313-1")
+                .withSuccess(true)
+                .build();
         String requestBody = objectMapper.writeValueAsString(request);
 
         mockMvc.perform(post("/elector/voted")

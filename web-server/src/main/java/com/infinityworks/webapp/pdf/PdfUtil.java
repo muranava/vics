@@ -7,8 +7,8 @@ import com.lowagie.text.pdf.PdfReader;
 import java.io.ByteArrayOutputStream;
 import java.util.List;
 
-public class PdfUtil {
-    public static ByteArrayOutputStream mergePdfs(List<byte[]> pdfs) throws Exception {
+class PdfUtil {
+    static ByteArrayOutputStream mergePdfs(List<byte[]> pdfs) throws Exception {
         Document document = new Document();
         ByteArrayOutputStream os = new ByteArrayOutputStream();
         PdfCopy copy = new PdfCopy(document, os);

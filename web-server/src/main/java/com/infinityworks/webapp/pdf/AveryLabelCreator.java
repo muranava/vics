@@ -1,20 +1,20 @@
 package com.infinityworks.webapp.pdf;
 
+import com.infinityworks.common.lang.Try;
 import com.lowagie.text.*;
 import com.lowagie.text.pdf.*;
 
+import javax.annotation.concurrent.NotThreadSafe;
+import java.io.ByteArrayOutputStream;
 import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 
 /**
  * Avery PDF label generator
- *
  * Not thread safe (create a new instance per use)
- *
- * @author steinfletcher <steinfletcher@gmail.com>
- *  Forked from Sean K Anderson http://datavirtue.com/Software/dev/PDFLabels.java
+ * Forked from Sean K Anderson http://datavirtue.com/Software/dev/PDFLabels.java
  */
-public class PDFGen {
+@NotThreadSafe
+class AveryLabelCreator {
     private float labelHeight = 1.0f * INCHES_TO_POINTS_CONVERSION;
     private float labelWidth = 2.6f * INCHES_TO_POINTS_CONVERSION;
     private float leftRightMargin = .17f * INCHES_TO_POINTS_CONVERSION;  // The PdfPCells are left-padded by add(PdfPCell cell)  to 8.0f points
@@ -26,9 +26,6 @@ public class PDFGen {
 
     private int cellPosInRow = 0;
     private float across = 0;
-
-    private static final String LINE_SEPARATOR = System.getProperty("line.separator");
-    private String fileName = "Labels.pdf";
 
     private Document document = new Document(PageSize.LETTER);
 
@@ -52,58 +49,16 @@ public class PDFGen {
     private boolean showBorders;
 
     private static final float CELL_LEFT_PADDING = 8.0f;
+    private final ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
 
-    /**
-     * Custom label dimensions - in inches.
-     * Creates a new instance of PDFLabels.
-     */
-    public PDFGen(float labelHeight,
-                  float labelWidth,
-                  float leftRightMargin,
-                  float topBottomMargin,
-                  float labelGap,
-                  String file) throws FileNotFoundException, DocumentException {
-
-        /* Multiply by 72 to convert inches to points */
-        this.labelHeight = labelHeight * INCHES_TO_POINTS_CONVERSION;
-        this.labelWidth = labelWidth * INCHES_TO_POINTS_CONVERSION;
-        this.leftRightMargin = leftRightMargin * INCHES_TO_POINTS_CONVERSION;
-        this.topBottomMargin = topBottomMargin * INCHES_TO_POINTS_CONVERSION;
-        this.labelGap = labelGap * INCHES_TO_POINTS_CONVERSION;
-        this.fileName = file;
-
+    AveryLabelCreator() throws FileNotFoundException, DocumentException {
         init();
-    }
-
-    /**
-     * Custom label dimensions - in inches.
-     * Creates a new instance of PDFLabels.
-     */
-    public PDFGen(String fileName) throws FileNotFoundException, DocumentException {
-        this.fileName = fileName;
-        init();
-    }
-
-    public void main(String[] args) throws DocumentException, FileNotFoundException {
-        PDFGen pdfGen = new PDFGen("labels1.pdf"); // 5160 || 8160
-        pdfGen.setAlignment(9, 1); // sets the default alignment properties for the cells
-        String text1 = "Mark Cooper" + LINE_SEPARATOR + "32 Regent Street" + LINE_SEPARATOR + "City of Westminster" + LINE_SEPARATOR + "London" + LINE_SEPARATOR +  "KT6 3UB";
-        String text2 = "Sean Anderson" + LINE_SEPARATOR + "138 Seven Kings Way" + LINE_SEPARATOR + "Kingston Upon Thames" + LINE_SEPARATOR + "KT6 3UB";
-
-        for (int r = 0; r < 300; r++) {
-            if (r % 2 == 0) {
-                pdfGen.createLabel(text1);
-            } else {
-                pdfGen.createLabel(text2);
-            }
-        }
-        pdfGen.finish();
     }
 
     private void init() throws DocumentException, FileNotFoundException {
-        FileOutputStream outputStream = new FileOutputStream(fileName);
-        PdfWriter writer = PdfWriter.getInstance(document, outputStream);
+        this.setAlignment(9, 1);
 
+        PdfWriter writer = PdfWriter.getInstance(document, outputStream);
         setDocumentMetaData();
         document.open();
 
@@ -156,16 +111,18 @@ public class PDFGen {
         document.addSubject("Nevitium Labels - datavirtue.com");
     }
 
-    public void add(PdfPTable nt) {
-        /* adds the actual cell to the table  */
-        /* Every add() calls this method */
-        cellPosInRow++;  // 'int cellPosInRow' keeps track of how many times
-        // this method is called within a range of X (X = across)
+    /**
+     * Adds the cell to the table
+     *
+     * @param table the pdf table holding all labels
+     */
+    public void add(PdfPTable table) {
+        cellPosInRow++;
 
-        table.addCell("");
-        table.addCell(nt);
+        this.table.addCell("");
+        this.table.addCell(table);
         if (cellPosInRow == across) {
-            table.addCell("");  //at the end
+            this.table.addCell("");  // at the end
         }
 
         if (cellPosInRow == across) {
@@ -173,12 +130,7 @@ public class PDFGen {
         }
     }
 
-    /**
-     * Adds a cell
-     * TODO > Remove empty cell creation whilst preserving dimensions (this postnet was deleted from the original
-     * TODO > but removing it causes the dimensions to change)
-     */
-    private void createLabel(String label) {
+    public void createLabel(String label) {
         PdfPTable table = new PdfPTable(1);
 
         PdfPCell cell = new PdfPCell(new Phrase(label, DEFAULT_FONT));
@@ -205,15 +157,11 @@ public class PDFGen {
         cell.setBorder(Rectangle.NO_BORDER);  //show table borders in DEBUG mode
     }
 
-    private void writeLabels() throws DocumentException {
-        document.add(table);
-    }
-
     /**
      * Call finish() when you are done adding labels.
      * Catch the boolean return value to make sure everything went as planned.
      */
-    private void finish() throws DocumentException {
+    Try<ByteArrayOutputStream> finish() {
         /* Fill out lat row */
         if (cellPosInRow < across) {
             for (int i = cellPosInRow; i < across; i++) {
@@ -224,8 +172,13 @@ public class PDFGen {
             table.addCell("");  // last cell
         }
 
-        writeLabels();
-        document.close();
+        try {
+            document.add(table);
+            document.close();
+            return Try.of(() -> outputStream);
+        } catch (DocumentException e) {
+            return Try.failure(e);
+        }
     }
 
     /**

@@ -1,6 +1,7 @@
 package com.infinityworks.common.lang;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.function.Supplier;
 
@@ -12,8 +13,8 @@ public final class ListExtras {
         return underTest == null || underTest.isEmpty();
     }
 
-    public static boolean noneNull(List<?> underTest) {
-        return underTest != null && underTest.stream().allMatch(elem -> elem != null);
+    public static boolean noneNull(Collection<?> underTest) {
+        return underTest != null && underTest.stream().allMatch(o -> o != null);
     }
 
     /**

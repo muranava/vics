@@ -52,7 +52,7 @@ public class LabelService {
 
                     GetVotersCommand votersCommand = getVotersCommandFactory.create(pafStreets, wardCode);
                     Try<PropertyResponse> properties = votersCommand.execute();
-                    return properties.map(response -> {
+                    return properties.flatMap(response -> {
                         List<AddressLabel> addressLabels = voterAddressConverter.apply(response);
                         return addressLabelGenerator.generateAddressLabels(addressLabels);
                     });
