@@ -43,4 +43,12 @@ class PasswordResetTest extends ApplicationTest {
       status().isOk
     )
   }
+
+  @Test
+  def passwordResetFailsIfUserIsNotRegistered(): Unit = {
+    val request = ImmutablePasswordResetRequest.builder().withUsername("i_dont_exist@voteleave.uk").build()
+    (http POST (s"/user/passwordreset", JsonUtil.stringify(request))).andExpect(
+      status().is4xxClientError()
+    )
+  }
 }
