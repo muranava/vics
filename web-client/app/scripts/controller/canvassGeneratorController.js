@@ -86,6 +86,7 @@ angular
 
       $scope.onShowMap = function (street) {
         var streetLabel = $filter('streetSingleLineFilter')(street);
+        console.log(street);
         geoService.reverseLookupAddress(street.mainStreet + " " + street.postTown + " UK")
           .success(function (response) {
 

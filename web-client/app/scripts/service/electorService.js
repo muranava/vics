@@ -1,6 +1,6 @@
 angular
   .module('canvass')
-  .service('electorService', function (config, $http, util) {
+  .service('electorService', function (config, $http) {
     var api = {}, apiUrl = config.apiUrl;
 
     api.retrieveLocalElectorsByWards = function (wardCode) {

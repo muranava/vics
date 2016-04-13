@@ -5,6 +5,8 @@ import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import org.immutables.value.Value;
 
+import java.util.StringJoiner;
+
 @Value.Immutable
 @JsonIgnoreProperties(ignoreUnknown = true)
 @Value.Style(init = "with*")
@@ -16,4 +18,14 @@ public interface AddressLabel {
     String addressLine2();
     String postTown();
     String postCode();
+
+    default String printFormat() {
+        return new StringJoiner(", ")
+                .add(name())
+                .add(addressLine1())
+                .add(addressLine2())
+                .add(postTown())
+                .add(postCode())
+                .toString();
+    }
 }
