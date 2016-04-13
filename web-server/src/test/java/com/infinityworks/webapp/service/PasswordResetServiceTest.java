@@ -8,13 +8,13 @@ import com.infinityworks.webapp.error.NotFoundFailure;
 import com.infinityworks.webapp.repository.PasswordResetTokenRepository;
 import com.infinityworks.webapp.rest.dto.ImmutablePasswordResetRequest;
 import com.infinityworks.webapp.rest.dto.PasswordResetRequest;
+import com.infinityworks.webapp.rest.dto.ResetPasswordToken;
 import com.infinityworks.webapp.security.PasswordResetTokenGenerator;
 import org.junit.Before;
 import org.junit.Test;
 
 import static com.infinityworks.webapp.testsupport.Fixtures.token;
 import static com.infinityworks.webapp.testsupport.matcher.TryFailureMatcher.isFailure;
-import static com.infinityworks.webapp.testsupport.matcher.TrySuccessMatcher.isSuccess;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.instanceOf;
 import static org.junit.Assert.assertThat;
@@ -48,9 +48,9 @@ public class PasswordResetServiceTest {
         given(userService.getByUsername(token.getUser().getUsername())).willReturn(Try.success(token.getUser()));
         PasswordResetRequest request = ImmutablePasswordResetRequest.builder().withUsername(token.getUser().getUsername()).build();
 
-        Try<String> uname = underTest.resetPassword(request);
+        Try<ResetPasswordToken> uname = underTest.resetPassword(request);
 
-        assertThat(uname, isSuccess(equalTo(token.getToken())));
+        assertThat(uname.get().token(), equalTo(token.getToken()));
         verify(passwordResetNotifier, times(1)).sendPasswordResetNotification(token.getUser(), token.getToken());
     }
 
@@ -60,7 +60,7 @@ public class PasswordResetServiceTest {
         given(userService.getByUsername(username)).willReturn(Try.failure(new NotFoundFailure("No user with name")));
         PasswordResetRequest request = ImmutablePasswordResetRequest.builder().withUsername(username).build();
 
-        Try<String> uname = underTest.resetPassword(request);
+        Try<ResetPasswordToken> uname = underTest.resetPassword(request);
 
         assertThat(uname, isFailure(instanceOf(NotFoundFailure.class)));
         verifyZeroInteractions(passwordResetNotifier);

@@ -14,13 +14,15 @@ import org.springframework.stereotype.Component;
 
 import java.util.Arrays;
 
+import static com.infinityworks.common.lang.Try.*;
+
 @Component
-class SendGridEmailClient implements EmailClient {
-    private final Logger log = LoggerFactory.getLogger(SendGridEmailClient.class);
+class SendGridClient implements EmailClient {
+    private final Logger log = LoggerFactory.getLogger(SendGridClient.class);
     private final SendGrid sendGrid;
 
     @Autowired
-    public SendGridEmailClient(SendGrid sendGrid) {
+    public SendGridClient(SendGrid sendGrid) {
         this.sendGrid = sendGrid;
     }
 
@@ -46,14 +48,14 @@ class SendGridEmailClient implements EmailClient {
             Response response = sendGrid.send(email);
             if (!response.getStatus()) {
                 log.info(String.format("Failed to send password reset notification to %s (using SendGrid). %s", recipients, response.getMessage()));
-                return Try.failure(new PasswordNotificationFailure("Failed to send password to username " + recipients));
+                return failure(new PasswordNotificationFailure("Failed to send password to username " + recipients));
             } else {
                 log.info(String.format("Emailed password reset to %s", recipients));
-                return Try.success(ImmutableEmailResponse.builder().withMessage(response.getMessage()).build());
+                return success(ImmutableEmailResponse.builder().withMessage(response.getMessage()).build());
             }
         } catch (SendGridException e) {
             log.error(String.format("Failed to contact SendGrid to send password reset notification. Recipients=%s", recipients), e);
-            return Try.failure(new SendGridApiFailure("Failed to send password"));
+            return failure(new SendGridApiFailure("Failed to send password"));
         }
     }
 }

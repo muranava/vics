@@ -101,6 +101,10 @@ angular
         templateUrl: 'views/login.html',
         controller: 'loginController'
       })
+      .when('/resetpassword', {
+        templateUrl: 'views/resetpassword.html',
+        controller: 'resetPasswordController'
+      })
       .when('/users', {
         templateUrl: 'views/users.html',
         controller: 'adminUserController',

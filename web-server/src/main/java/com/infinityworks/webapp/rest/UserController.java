@@ -122,7 +122,9 @@ public class UserController {
 
     @RequestMapping(value = "/passwordreset", method = POST)
     public ResponseEntity<?> resetPassword(@RequestBody PasswordResetRequest request) {
-        return passwordResetService.resetPassword(request).fold(errorHandler::mapToResponseEntity, ResponseEntity::ok);
+        return passwordResetService
+                .resetPassword(request)
+                .fold(errorHandler::mapToResponseEntity, ResponseEntity::ok);
     }
 
     @RequestMapping(value = "/logout", method = POST)
