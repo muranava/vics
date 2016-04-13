@@ -60,7 +60,7 @@ public class WardsTest extends WebApplicationTest {
         AddressService addressService = getBean(AddressService.class);
         WardController wardController = new WardController(sessionService, wardService, wardAssociationService, new RestErrorHandler(), addressService);
         UserController userController = new UserController(getBean(UserService.class), new RestErrorHandler()
-                , sessionService, getBean(RequestValidator.class), getBean(LoginService.class));
+                , sessionService, getBean(RequestValidator.class), getBean(LoginService.class), getBean(PasswordResetService.class));
         mockMvc = MockMvcBuilders
                 .standaloneSetup(wardController, userController)
                 .build();

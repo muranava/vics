@@ -34,17 +34,17 @@ class SessionApi(context: ApplicationContext) {
 
   protected def admin(): User = {
     val userService: UserService = context.getBean(classOf[UserService])
-    userService.getByEmail("me@admin.uk").get
+    userService.getByUsername("me@admin.uk").get
   }
 
   protected def covs(): User = {
     val userService: UserService = context.getBean(classOf[UserService])
-    userService.getByEmail("cov@south.cov").get
+    userService.getByUsername("cov@south.cov").get
   }
 
   protected def earlsdon(): User = {
     val userService: UserService = context.getBean(classOf[UserService])
-    userService.getByEmail("earlsdon@cov.uk").get
+    userService.getByUsername("earlsdon@cov.uk").get
   }
 }
 

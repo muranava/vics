@@ -47,6 +47,10 @@
             <artifactId>hystrix-metrics-event-stream</artifactId>
         </dependency>
         <dependency>
+            <groupId>com.sendgrid</groupId>
+            <artifactId>sendgrid-java</artifactId>
+        </dependency>
+        <dependency>
             <groupId>com.squareup.retrofit2</groupId>
             <artifactId>converter-jackson</artifactId>
         </dependency>

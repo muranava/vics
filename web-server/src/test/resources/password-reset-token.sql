@@ -1,0 +1,2 @@
+INSERT INTO password_reset_tokens(id, users_id, token, expires) VALUES
+  ('d9035568-44a4-4449-89f3-6ee02e668043', 'c48f187f-ef5f-4a0d-a42b-206eec26aed3', 'h0o3sce1727mse8556sm698upe', '2025-04-13 16:22:38.627');

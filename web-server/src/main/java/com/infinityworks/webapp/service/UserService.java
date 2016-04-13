@@ -37,7 +37,7 @@ public class UserService {
         this.converter = converter;
     }
 
-    public Try<User> getByEmail(String email) {
+    public Try<User> getByUsername(String email) {
         Optional<User> user = userRepository.findOneByUsername(email);
         if (user.isPresent()) {
             return Try.success(user.get());

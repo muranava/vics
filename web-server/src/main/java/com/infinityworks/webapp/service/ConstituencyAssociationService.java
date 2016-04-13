@@ -90,7 +90,7 @@ public class ConstituencyAssociationService {
     }
 
     public Try<User> associateToUserByUsername(User loggedInUser, String constituencyCode, String username) {
-        return userService.getByEmail(username)
+        return userService.getByUsername(username)
                 .flatMap(userToAssociate -> constituencyService.getByCode(constituencyCode)
                         .flatMap(constituency -> associateToUser(loggedInUser, constituency.getId(), userToAssociate.getId())));
     }

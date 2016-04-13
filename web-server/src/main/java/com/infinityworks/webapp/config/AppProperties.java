@@ -11,6 +11,25 @@ public class AppProperties {
     private String pafApiToken;
     private String addressLookupBaseUrl;
     private String addressLookupToken;
+    private String sendGridKey;
+    private String passwordResetEndpoint;
+    private int passwordResetExpirationMins;
+
+    public int getPasswordResetExpirationMins() {
+        return passwordResetExpirationMins;
+    }
+
+    public void setPasswordResetExpirationMins(int passwordResetExpirationMins) {
+        this.passwordResetExpirationMins = passwordResetExpirationMins;
+    }
+
+    public String getPasswordResetEndpoint() {
+        return passwordResetEndpoint;
+    }
+
+    public void setPasswordResetEndpoint(String passwordResetEndpoint) {
+        this.passwordResetEndpoint = passwordResetEndpoint;
+    }
 
     public void setPafApiToken(String pafApiToken) {
         this.pafApiToken = pafApiToken;
@@ -50,5 +69,13 @@ public class AppProperties {
 
     public void setAddressLookupBaseUrl(String addressLookupBaseUrl) {
         this.addressLookupBaseUrl = addressLookupBaseUrl;
+    }
+
+    public String getSendGridKey() {
+        return sendGridKey;
+    }
+
+    public void setSendGridKey(String sendGridKey) {
+        this.sendGridKey = sendGridKey;
     }
 }

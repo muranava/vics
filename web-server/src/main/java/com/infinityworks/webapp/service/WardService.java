@@ -117,7 +117,7 @@ public class WardService {
 
     public Try<User> associateToUserByUsername(User permissible, String wardCode, String username) {
         return userService
-                .getByEmail(username)
+                .getByUsername(username)
                 .flatMap(user -> getByCode(wardCode, permissible)
                         .flatMap(ward -> wardAssociationService.associateToUser(permissible, ward.getId(), user.getId())));
     }

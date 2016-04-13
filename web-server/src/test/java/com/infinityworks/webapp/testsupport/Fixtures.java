@@ -1,9 +1,23 @@
 package com.infinityworks.webapp.testsupport;
 
 import com.infinityworks.webapp.clients.paf.dto.*;
-import com.infinityworks.webapp.rest.dto.StreetRequest;
+import com.infinityworks.webapp.domain.PasswordResetToken;
+import com.infinityworks.webapp.domain.User;
+
+import java.time.LocalDateTime;
+
+import static com.infinityworks.webapp.testsupport.builder.UserBuilder.user;
 
 public class Fixtures {
+
+    public static PasswordResetToken token() {
+        User user = user().withUsername("covs@south.cov").build();
+        PasswordResetToken token = new PasswordResetToken();
+        token.setUser(user);
+        token.setExpires(LocalDateTime.now().plusMinutes(30));
+        token.setToken("12345");
+        return token;
+    }
 
     public static ImmutableVoter.Builder voterWithDefaults() {
         return ImmutableVoter.builder()
@@ -74,11 +88,5 @@ public class Fixtures {
                 .build();
     }
 
-    public static StreetRequest kirbyRoad() {
-        return new StreetRequest("Kirby Road", "Coventry", "Northern Quarter", "");
-    }
-
-    public static StreetRequest abbotRoad() {
-        return new StreetRequest("Abbot Road", "Coventry", "Southern Quarter", "");
-    }
 }
+

@@ -3,16 +3,12 @@ package com.infinityworks.webapp.feature
 import com.infinityworks.webapp.common.RequestValidator
 import com.infinityworks.webapp.error.RestErrorHandler
 import com.infinityworks.webapp.feature.testsupport.JsonUtil
-import com.infinityworks.webapp.feature.testsupport.api.{BasicUser, MockHttp, SessionApi}
+import com.infinityworks.webapp.feature.testsupport.api.{MockHttp, SessionApi}
 import com.infinityworks.webapp.rest.UserController
-import com.infinityworks.webapp.rest.dto.{ImmutablePasswordResetRequest, PasswordResetRequest}
+import com.infinityworks.webapp.rest.dto.ImmutablePasswordResetRequest
 import com.infinityworks.webapp.service._
-import org.hamcrest.core.Is._
 import org.junit.{Before, Test}
-import org.springframework.http.MediaType.APPLICATION_JSON
 import org.springframework.test.context.jdbc.{Sql, SqlGroup}
-import org.springframework.test.web.servlet.request.MockMvcRequestBuilders._
-import org.springframework.test.web.servlet.result.MockMvcResultHandlers._
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers._
 import org.springframework.test.web.servlet.setup.MockMvcBuilders
 
@@ -24,7 +20,7 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders
       "classpath:wards.sql",
       "classpath:users.sql"))
 ))
-class UsersFeatureTest extends ApplicationTest {
+class PasswordResetTest extends ApplicationTest {
   var session: SessionApi = _
   var sessionService: SessionService = _
   var http: MockHttp = _
@@ -38,39 +34,6 @@ class UsersFeatureTest extends ApplicationTest {
     mockMvc = MockMvcBuilders.standaloneSetup(userController).build
     http = new MockHttp(mockMvc)
     pafStub.start()
-  }
-
-  @Test
-  def retrieveAllUsersFailsIfNotAdmin(): Unit = {
-    session withUser BasicUser
-
-    (http GET "/user")
-      .andExpect(status.isUnauthorized)
-  }
-
-  @Test
-  def shouldLoginTheUser(): Unit = {
-    val adminCreds = "Basic bWVAYWRtaW4udWs6YWRtaW4="
-
-    mockMvc.perform(
-      post("/user/login")
-        .header("Authorization", adminCreds)
-        .accept(APPLICATION_JSON))
-      .andDo(print())
-      .andExpect(status().isOk)
-      .andExpect(jsonPath("$.username", is("me@admin.uk")))
-  }
-
-  @Test
-  def shouldFailLoginIfCredentialsIncorrect(): Unit = {
-    val adminCreds = "Basic bWVAYWRtaW4udWs6YXNk"
-
-    mockMvc.perform(
-      post("/user/login")
-        .header("Authorization", adminCreds)
-        .accept(APPLICATION_JSON))
-      .andDo(print())
-      .andExpect(status().isUnauthorized)
   }
 
   @Test

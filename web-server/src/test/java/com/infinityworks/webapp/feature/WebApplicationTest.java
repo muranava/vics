@@ -39,17 +39,17 @@ public abstract class WebApplicationTest {
 
     protected User admin() {
         UserService userService = getBean(UserService.class);
-        return userService.getByEmail("me@admin.uk").get();
+        return userService.getByUsername("me@admin.uk").get();
     }
 
     protected User covs() {
         UserService userService = getBean(UserService.class);
-        return userService.getByEmail("cov@south.cov").get();
+        return userService.getByUsername("cov@south.cov").get();
     }
 
     protected User earlsdon() {
         UserService userService = getBean(UserService.class);
-        return userService.getByEmail("earlsdon@cov.uk").get();
+        return userService.getByUsername("earlsdon@cov.uk").get();
     }
 
     protected <T> T getBean(Class<T> clazz) {

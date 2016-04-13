@@ -43,6 +43,9 @@ canvass:
   pafApiTimeout: 60000
   addressLookupBaseUrl: https://maps.googleapis.com/maps/api/
   addressLookupToken: AIzaSyBdXzJ-korOOBRX8qZPRpxgo_yNvfpBXnU
+  sendGridKey: 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
+  passwordResetEndpoint: https://vics.voteleave.uk/#/resetpassword
+  passwordResetExpirationMins: 120
 
 logging.level.: INFO
 logging.level:

@@ -7,9 +7,11 @@ import com.infinityworks.webapp.domain.Role;
 import com.infinityworks.webapp.domain.User;
 import com.infinityworks.webapp.error.RestErrorHandler;
 import com.infinityworks.webapp.rest.dto.CreateUserRequest;
+import com.infinityworks.webapp.rest.dto.PasswordResetRequest;
 import com.infinityworks.webapp.rest.dto.UpdateUserRequest;
 import com.infinityworks.webapp.security.SecurityUtils;
 import com.infinityworks.webapp.service.LoginService;
+import com.infinityworks.webapp.service.PasswordResetService;
 import com.infinityworks.webapp.service.SessionService;
 import com.infinityworks.webapp.service.UserService;
 import org.slf4j.Logger;
@@ -39,18 +41,21 @@ public class UserController {
     private final SessionService sessionService;
     private final RestErrorHandler errorHandler;
     private final RequestValidator requestValidator;
+    private final PasswordResetService passwordResetService;
 
     @Autowired
     public UserController(UserService userService,
                           RestErrorHandler errorHandler,
                           SessionService sessionService,
                           RequestValidator requestValidator,
-                          LoginService loginService) {
+                          LoginService loginService,
+                          PasswordResetService passwordResetService) {
         this.userService = userService;
         this.loginService = loginService;
         this.errorHandler = errorHandler;
         this.sessionService = sessionService;
         this.requestValidator = requestValidator;
+        this.passwordResetService = passwordResetService;
     }
 
     @PreAuthorize("isAuthenticated()")
@@ -113,6 +118,11 @@ public class UserController {
                 .flatMap(credentials -> loginService.login(credentials, request.getSession(true)))
                 .fold(errorHandler::mapToResponseEntity, ResponseEntity::ok);
 
+    }
+
+    @RequestMapping(value = "/passwordreset", method = POST)
+    public ResponseEntity<?> resetPassword(@RequestBody PasswordResetRequest request) {
+        return passwordResetService.resetPassword(request).fold(errorHandler::mapToResponseEntity, ResponseEntity::ok);
     }
 
     @RequestMapping(value = "/logout", method = POST)

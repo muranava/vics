@@ -1,3 +1,4 @@
+DROP TABLE IF EXISTS password_reset_tokens;
 DROP TABLE IF EXISTS record_contact_log;
 DROP TABLE IF EXISTS users_privileges;
 DROP TABLE IF EXISTS users_constituencies;
@@ -64,4 +65,11 @@ CREATE TABLE record_contact_log (
   ern       TEXT                                         NOT NULL,
   added     TIMESTAMP WITHOUT TIME ZONE                  NOT NULL,
   operation TEXT CHECK (operation IN ('UNDO', 'CREATE')) NOT NULL DEFAULT 'CREATE'
+);
+
+CREATE TABLE password_reset_tokens (
+  id       UUID PRIMARY KEY,
+  users_id UUID REFERENCES users (id)                   NOT NULL,
+  token    TEXT                                         NOT NULL,
+  expires  TIMESTAMP WITHOUT TIME ZONE                  NOT NULL
 );
