@@ -101,7 +101,7 @@ angular
         templateUrl: 'views/login.html',
         controller: 'loginController'
       })
-      .when('/resetpassword', {
+      .when('/resetpassword/:token', {
         templateUrl: 'views/resetpassword.html',
         controller: 'resetPasswordController'
       })

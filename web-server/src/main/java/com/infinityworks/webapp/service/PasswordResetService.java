@@ -4,9 +4,9 @@ import com.infinityworks.common.lang.Try;
 import com.infinityworks.webapp.domain.PasswordResetToken;
 import com.infinityworks.webapp.domain.User;
 import com.infinityworks.webapp.repository.PasswordResetTokenRepository;
-import com.infinityworks.webapp.rest.dto.ImmutableResetPasswordToken;
+import com.infinityworks.webapp.rest.dto.ImmutableRequestPasswordResetResponse;
 import com.infinityworks.webapp.rest.dto.PasswordResetRequest;
-import com.infinityworks.webapp.rest.dto.ResetPasswordToken;
+import com.infinityworks.webapp.rest.dto.RequestPasswordResetResponse;
 import com.infinityworks.webapp.security.PasswordResetTokenGenerator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -43,7 +43,7 @@ public class PasswordResetService {
         this.passwordResetTokenRepository = passwordResetTokenRepository;
     }
 
-    public Try<ResetPasswordToken> resetPassword(PasswordResetRequest request) {
+    public Try<RequestPasswordResetResponse> resetPassword(PasswordResetRequest request) {
         return userService
                 .getByUsername(request.username())
                 .flatMap(user -> {
@@ -51,8 +51,8 @@ public class PasswordResetService {
                     return passwordResetNotifier
                             .sendPasswordResetNotification(user, resetToken.getToken())
                             .map(emailResponse -> {
-                                String token = persistToken(user, resetToken);
-                                return ImmutableResetPasswordToken.builder().withToken(token).build();
+                                persistToken(user, resetToken);
+                                return ImmutableRequestPasswordResetResponse.builder().withUsername(user.getUsername()).build();
                             });
                 });
     }

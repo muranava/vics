@@ -115,6 +115,7 @@ public class VoterTest extends WebApplicationTest {
         params.add("surname", "McCall");
         params.add("postcode", "KT25BU");
         params.add("wardCode", "E05001221");
+        params.add("limit", "10");
         UriComponents uriComponents = UriComponentsBuilder.fromPath("/elector")
                 .queryParams(params)
                 .build();
@@ -137,6 +138,7 @@ public class VoterTest extends WebApplicationTest {
         params.add("surname", "McCall");
         params.add("postcode", "KT25BU");
         params.add("wardCode", "E05001235");
+        params.add("limit", "10");
         UriComponents uriComponents = UriComponentsBuilder.fromPath("/elector")
                 .queryParams(params)
                 .build();
@@ -159,6 +161,7 @@ public class VoterTest extends WebApplicationTest {
         params.add("surname", "McCall");
         params.add("postcode", "KT25BU");
         params.add("wardCode", "A05001235");
+        params.add("limit", "12");
         UriComponents uriComponents = UriComponentsBuilder.fromPath("/elector")
                 .queryParams(params)
                 .build();

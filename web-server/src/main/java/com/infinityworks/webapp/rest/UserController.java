@@ -117,7 +117,6 @@ public class UserController {
         return SecurityUtils.credentialsFromAuthHeader(authorization)
                 .flatMap(credentials -> loginService.login(credentials, request.getSession(true)))
                 .fold(errorHandler::mapToResponseEntity, ResponseEntity::ok);
-
     }
 
     @RequestMapping(value = "/passwordreset", method = POST)

@@ -8,10 +8,12 @@ import com.infinityworks.webapp.error.NotFoundFailure;
 import com.infinityworks.webapp.repository.PasswordResetTokenRepository;
 import com.infinityworks.webapp.rest.dto.ImmutablePasswordResetRequest;
 import com.infinityworks.webapp.rest.dto.PasswordResetRequest;
-import com.infinityworks.webapp.rest.dto.ResetPasswordToken;
+import com.infinityworks.webapp.rest.dto.RequestPasswordResetResponse;
 import com.infinityworks.webapp.security.PasswordResetTokenGenerator;
 import org.junit.Before;
 import org.junit.Test;
+
+import java.util.Optional;
 
 import static com.infinityworks.webapp.testsupport.Fixtures.token;
 import static com.infinityworks.webapp.testsupport.matcher.TryFailureMatcher.isFailure;
@@ -27,13 +29,14 @@ public class PasswordResetServiceTest {
     private UserService userService;
     private PasswordResetNotifier passwordResetNotifier;
     private PasswordResetTokenGenerator passwordResetTokenGenerator;
+    private PasswordResetTokenRepository passwordResetTokenRepository;
 
     @Before
     public void setUp() throws Exception {
         AppProperties props = mock(AppProperties.class);
         when(props.getPasswordResetExpirationMins()).thenReturn(20);
         passwordResetNotifier = mock(PasswordResetNotifier.class);
-        PasswordResetTokenRepository passwordResetTokenRepository = mock(PasswordResetTokenRepository.class);
+        passwordResetTokenRepository = mock(PasswordResetTokenRepository.class);
         passwordResetTokenGenerator = mock(PasswordResetTokenGenerator.class);
         userService = mock(UserService.class);
         underTest = new PasswordResetService(userService, passwordResetNotifier, passwordResetTokenGenerator, passwordResetTokenRepository);
@@ -43,14 +46,16 @@ public class PasswordResetServiceTest {
     public void requestsPasswordReset() throws Exception {
         PasswordResetToken token = token();
 
+        given(passwordResetTokenRepository.findOneByUserUsername(token.getUser().getUsername())).willReturn(Optional.empty());
+        given(passwordResetTokenRepository.save((PasswordResetToken) notNull())).willReturn(token);
         given(passwordResetTokenGenerator.generateToken(token.getUser())).willReturn(token);
         given(passwordResetNotifier.sendPasswordResetNotification(token.getUser(), token.getToken())).willReturn(Try.success(ImmutableEmailResponse.builder().withMessage("message").build()));
         given(userService.getByUsername(token.getUser().getUsername())).willReturn(Try.success(token.getUser()));
         PasswordResetRequest request = ImmutablePasswordResetRequest.builder().withUsername(token.getUser().getUsername()).build();
 
-        Try<ResetPasswordToken> uname = underTest.resetPassword(request);
+        Try<RequestPasswordResetResponse> uname = underTest.resetPassword(request);
 
-        assertThat(uname.get().token(), equalTo(token.getToken()));
+        assertThat(uname.get().username(), equalTo(token.getUser().getUsername()));
         verify(passwordResetNotifier, times(1)).sendPasswordResetNotification(token.getUser(), token.getToken());
     }
 
@@ -60,7 +65,7 @@ public class PasswordResetServiceTest {
         given(userService.getByUsername(username)).willReturn(Try.failure(new NotFoundFailure("No user with name")));
         PasswordResetRequest request = ImmutablePasswordResetRequest.builder().withUsername(username).build();
 
-        Try<ResetPasswordToken> uname = underTest.resetPassword(request);
+        Try<RequestPasswordResetResponse> uname = underTest.resetPassword(request);
 
         assertThat(uname, isFailure(instanceOf(NotFoundFailure.class)));
         verifyZeroInteractions(passwordResetNotifier);
