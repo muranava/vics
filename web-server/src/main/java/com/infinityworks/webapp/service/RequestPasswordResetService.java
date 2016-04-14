@@ -4,6 +4,7 @@ import com.infinityworks.common.lang.Try;
 import com.infinityworks.webapp.domain.PasswordResetToken;
 import com.infinityworks.webapp.domain.User;
 import com.infinityworks.webapp.error.NotAuthorizedFailure;
+import com.infinityworks.webapp.notifications.PasswordResetNotifier;
 import com.infinityworks.webapp.repository.PasswordResetTokenRepository;
 import com.infinityworks.webapp.rest.dto.*;
 import com.infinityworks.webapp.security.PasswordResetTokenGenerator;

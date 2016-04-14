@@ -5,6 +5,7 @@ import com.infinityworks.webapp.clients.email.ImmutableEmailResponse;
 import com.infinityworks.webapp.config.AppProperties;
 import com.infinityworks.webapp.domain.PasswordResetToken;
 import com.infinityworks.webapp.error.NotFoundFailure;
+import com.infinityworks.webapp.notifications.PasswordResetNotifier;
 import com.infinityworks.webapp.repository.PasswordResetTokenRepository;
 import com.infinityworks.webapp.rest.dto.ImmutableGeneratePasswordResetResponse;
 import com.infinityworks.webapp.rest.dto.ImmutablePasswordResetRequest;
