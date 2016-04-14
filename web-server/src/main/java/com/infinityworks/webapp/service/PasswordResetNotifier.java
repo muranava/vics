@@ -16,7 +16,8 @@ public class PasswordResetNotifier {
     private final EmailClient emailClient;
     private final String resetPasswordPageUrl;
     private static final String MESSAGE_TEMPLATE =
-            "You requested a password reset, please visit %s and enter your email and the following password reset token: <br><br>%s";
+            "You requested a password reset, please visit %s and enter your email and the following password reset token: <br><br>%s<br><br>" +
+                    "Note: this token will expire within 2 hours of issue.";
 
     @Autowired
     public PasswordResetNotifier(EmailClient emailClient, AppProperties properties) {

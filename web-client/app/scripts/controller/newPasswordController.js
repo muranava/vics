@@ -6,7 +6,8 @@ angular
       $scope.invalidCredentials = false;
       resetPasswordService.generatePasswordFromToken($scope.username, $scope.token)
         .success(function(response) {
-          $scope.newPassword = response.password;
+          $scope.password = response.password;
+          $scope.showNewCredentials = true;
         })
         .error(function(error) {
           if (error && error.type === 'InvalidCredentials') {
