@@ -10,9 +10,7 @@ angular
           $scope.showNewCredentials = true;
         })
         .error(function(error) {
-          if (error && error.type === 'InvalidCredentials') {
-            $scope.invalidCredentials = true;
-          }
+          $scope.invalidCredentials = true;
         });
     };
   });
