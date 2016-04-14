@@ -5,7 +5,7 @@ server:
 spring:
   jpa:
     hibernate:
-      ddl-auto: create-drop
+      ddl-auto: validate
     database-platform: org.hibernate.dialect.PostgreSQLDialect
   datasource:
     driver: org.postgresql.Driver
@@ -30,7 +30,7 @@ canvass:
   sendGridKey: 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
   passwordResetEndpoint: http://localhost:9000/#/resetpassword
   passwordResetExpirationMins: 120
-
+  passwordTokenExpiryDeletedUpdateInterval: 10
 
 logging:
   level:

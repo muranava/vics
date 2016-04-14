@@ -46,6 +46,7 @@ canvass:
   sendGridKey: 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
   passwordResetEndpoint: http://localhost:9000/#/newpassword
   passwordResetExpirationMins: 120
+  passwordTokenExpiryDeletedUpdateInterval: 10
 
 logging.level.: INFO
 logging.level:

@@ -6,12 +6,15 @@ import com.infinityworks.webapp.rest.dto.GeneratePasswordResetResponse;
 import com.infinityworks.webapp.rest.dto.ImmutableGeneratePasswordResetResponse;
 import com.infinityworks.webapp.security.PasswordGenerator;
 import com.infinityworks.webapp.security.StrongPasswordEncoder;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class PasswordResetService {
+    private final Logger log = LoggerFactory.getLogger(PasswordResetService.class);
     private final StrongPasswordEncoder passwordEncoder;
     private final PasswordGenerator passwordGenerator;
     private final UserRepository userRepository;
@@ -27,6 +30,8 @@ public class PasswordResetService {
 
     @Transactional
     GeneratePasswordResetResponse resetPassword(User user) {
+        log.info("Generating new password for user={}. User performed self-reset via password reset loop", user);
+
         String newPassword = passwordGenerator.get();
         String passwordHash = passwordEncoder.encode(newPassword);
         user.setPasswordHash(passwordHash);
