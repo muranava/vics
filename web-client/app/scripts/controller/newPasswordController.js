@@ -9,7 +9,7 @@ angular
           $scope.password = response.password;
           $scope.showNewCredentials = true;
         })
-        .error(function(error) {
+        .error(function() {
           $scope.invalidCredentials = true;
         });
     };
