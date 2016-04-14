@@ -264,3 +264,7 @@ div.worldmap.box {
 .dropdown-menu > .active > a {
   background-color: #D92C27 !important;
 }
+.fullPageMargins {
+  padding-left: 10% !important;
+  padding-right: 10% !important;
+}

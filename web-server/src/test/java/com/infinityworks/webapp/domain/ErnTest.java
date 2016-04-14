@@ -12,4 +12,9 @@ public class ErnTest {
 
         assertThat(ern.get(), is("E0900123-T-123-4"));
     }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void failsIfInvalid() throws Exception {
+        Ern.valueOf("1234-11-44");
+    }
 }

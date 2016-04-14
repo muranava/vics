@@ -26,4 +26,22 @@ angular
       $rootScope.currentUser = null;
     };
 
+    // set the margins depending on the page type
+    var fullPageRoutes = ['/login', '/resetpassword', '/newpassword'];
+    $scope.$on('$routeChangeStart', function() {
+      var currentRoute = $location.path(),
+        isFullPage = false;
+      _.forEach(fullPageRoutes, function(fullPageRoute) {
+        if (_.startsWith(currentRoute, fullPageRoute)) {
+          isFullPage = true;
+        }
+      });
+
+      if (isFullPage) {
+        $('#base').attr('class', 'fullPageMargins');
+      } else {
+        $('#base').removeClass('fullPageMargins');
+      }
+    });
+
   });

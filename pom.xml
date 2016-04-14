@@ -28,6 +28,8 @@
         <java.version>1.8</java.version>
 
         <apache-http-client.version>4.5.1</apache-http-client.version>
+        <commons-csv.version>1.2</commons-csv.version>
+        <commons-lang3.version>3.0</commons-lang3.version>
         <db-setup.version>1.6.0</db-setup.version>
         <equals-verifier.version>1.7.8</equals-verifier.version>
         <guava.version>18.0</guava.version>
@@ -56,7 +58,6 @@
         <validation-api.version>1.1.0.Final</validation-api.version>
         <wiremock.version>1.57</wiremock.version>
 
-        <commons-csv.version>1.2</commons-csv.version>
         <json-path.version>2.1.0</json-path.version>
 
         <maven-compiler-plugin.version>3.3</maven-compiler-plugin.version>
@@ -187,6 +188,11 @@
                 <groupId>org.apache.commons</groupId>
                 <artifactId>commons-csv</artifactId>
                 <version>${commons-csv.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.commons</groupId>
+                <artifactId>commons-lang3</artifactId>
+                <version>${commons-lang3.version}</version>
             </dependency>
             <dependency>
                 <groupId>org.apache.httpcomponents</groupId>

@@ -30,7 +30,7 @@ class PasswordResetTest extends ApplicationTest {
     session = new SessionApi(applicationContext)
     sessionService = session.withSession()
 
-    val userController = new UserController(getBean(classOf[UserService]), getBean(classOf[RestErrorHandler]), sessionService, getBean(classOf[RequestValidator]), getBean(classOf[LoginService]), getBean(classOf[PasswordResetService]))
+    val userController = new UserController(getBean(classOf[UserService]), getBean(classOf[RestErrorHandler]), sessionService, getBean(classOf[RequestValidator]), getBean(classOf[LoginService]), getBean(classOf[RequestPasswordResetService]))
     mockMvc = MockMvcBuilders.standaloneSetup(userController).build
     http = new MockHttp(mockMvc)
     pafStub.start()

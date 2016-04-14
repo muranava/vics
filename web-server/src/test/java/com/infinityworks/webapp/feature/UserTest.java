@@ -9,7 +9,7 @@ import com.infinityworks.webapp.repository.UserRepository;
 import com.infinityworks.webapp.rest.UserController;
 import com.infinityworks.webapp.rest.dto.CreateUserRequest;
 import com.infinityworks.webapp.service.LoginService;
-import com.infinityworks.webapp.service.PasswordResetService;
+import com.infinityworks.webapp.service.RequestPasswordResetService;
 import com.infinityworks.webapp.service.SessionService;
 import com.infinityworks.webapp.service.UserService;
 import org.junit.Before;
@@ -50,7 +50,7 @@ public class UserTest extends WebApplicationTest {
     public void setup() {
         sessionService = mock(SessionService.class);
         UserController votedController = new UserController(getBean(UserService.class), new RestErrorHandler()
-                , sessionService, getBean(RequestValidator.class), getBean(LoginService.class), getBean(PasswordResetService.class));
+                , sessionService, getBean(RequestValidator.class), getBean(LoginService.class), getBean(RequestPasswordResetService.class));
 
         mockMvc = MockMvcBuilders
                 .standaloneSetup(votedController)

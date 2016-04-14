@@ -38,7 +38,7 @@ class SendGridClient implements EmailClient {
         email.addToName(message.name());
         email.setFrom(message.from());
         email.setSubject(message.subject());
-        email.setText(message.body());
+        email.setHtml(message.body());
         return email;
     }
 

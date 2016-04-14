@@ -8,9 +8,20 @@ angular
     api.resetPassword = function (username) {
       return $http({
         method: 'POST',
-        url: apiUrl + '/user/resetpassword',
+        url: apiUrl + '/user/passwordreset',
         data: {
           username: username
+        }
+      });
+    };
+
+    api.generatePasswordFromToken = function (username, token) {
+      return $http({
+        method: 'POST',
+        url: apiUrl + '/user/generatepassword',
+        data: {
+          username: username,
+          token: token
         }
       });
     };

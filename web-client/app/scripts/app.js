@@ -101,9 +101,13 @@ angular
         templateUrl: 'views/login.html',
         controller: 'loginController'
       })
-      .when('/resetpassword/:token', {
+      .when('/resetpassword', {
         templateUrl: 'views/resetpassword.html',
         controller: 'resetPasswordController'
+      })
+      .when('/newpassword', {
+        templateUrl: 'views/newpassword.html',
+        controller: 'newPasswordController'
       })
       .when('/users', {
         templateUrl: 'views/users.html',

@@ -5,9 +5,9 @@ import com.infinityworks.webapp.error.RestErrorHandler
 import com.infinityworks.webapp.feature.testsupport.JsonUtil
 import com.infinityworks.webapp.feature.testsupport.api.{BasicUser, MockHttp, SessionApi}
 import com.infinityworks.webapp.rest.UserController
-import com.infinityworks.webapp.rest.dto.{ImmutablePasswordResetRequest, PasswordResetRequest}
+import com.infinityworks.webapp.rest.dto.{ImmutableGeneratePasswordFromTokenRequest, ImmutablePasswordResetRequest, PasswordResetRequest}
 import com.infinityworks.webapp.service._
-import org.hamcrest.core.Is._
+import org.hamcrest.CoreMatchers._
 import org.junit.{Before, Test}
 import org.springframework.http.MediaType.APPLICATION_JSON
 import org.springframework.test.context.jdbc.{Sql, SqlGroup}
@@ -22,7 +22,9 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders
       "classpath:drop-create.sql",
       "classpath:constituencies.sql",
       "classpath:wards.sql",
-      "classpath:users.sql"))
+      "classpath:users.sql",
+      "classpath:password-reset-token.sql"
+    ))
 ))
 class UsersFeatureTest extends ApplicationTest {
   var session: SessionApi = _
@@ -34,7 +36,7 @@ class UsersFeatureTest extends ApplicationTest {
     session = new SessionApi(applicationContext)
     sessionService = session.withSession()
 
-    val userController = new UserController(getBean(classOf[UserService]), getBean(classOf[RestErrorHandler]), sessionService, getBean(classOf[RequestValidator]), getBean(classOf[LoginService]), getBean(classOf[PasswordResetService]))
+    val userController = new UserController(getBean(classOf[UserService]), getBean(classOf[RestErrorHandler]), sessionService, getBean(classOf[RequestValidator]), getBean(classOf[LoginService]), getBean(classOf[RequestPasswordResetService]))
     mockMvc = MockMvcBuilders.standaloneSetup(userController).build
     http = new MockHttp(mockMvc)
     pafStub.start()
@@ -58,7 +60,7 @@ class UsersFeatureTest extends ApplicationTest {
         .accept(APPLICATION_JSON))
       .andDo(print())
       .andExpect(status().isOk)
-      .andExpect(jsonPath("$.username", is("me@admin.uk")))
+      .andExpect(jsonPath("$.username", equalTo("me@admin.uk")))
   }
 
   @Test
@@ -76,8 +78,26 @@ class UsersFeatureTest extends ApplicationTest {
   @Test
   def shouldTriggerPasswordResetNotification(): Unit = {
     val request = ImmutablePasswordResetRequest.builder().withUsername("stein.fletcher@voteleave.uk").build()
-    (http POST (s"/user/passwordreset", JsonUtil.stringify(request))).andExpect(
-      status().isOk
-    )
+    (http POST("/user/passwordreset", JsonUtil.stringify(request)))
+      .andExpect(
+        status().isOk,
+        jsonPath("$.username", equalTo("stein.fletcher@voteleave.uk"))
+      )
+  }
+
+  @Test
+  def shouldGenerateANewPasswordFromAResetToken(): Unit = {
+    val currentPassword = "password"
+    val request = ImmutableGeneratePasswordFromTokenRequest.builder()
+      .withUsername("stein.fletcher@voteleave.uk")
+      .withToken("4up14eqg06n289crpit7muuvrr50pp1k9s29i476ger")
+      .build()
+
+    (http POST("/user/generatepassword", JsonUtil.stringify(request)))
+      .andExpect(
+        status().isOk,
+        jsonPath("$.password", instanceOf(classOf[String])),
+        jsonPath("$.password", not(equalTo(currentPassword)))
+      )
   }
 }

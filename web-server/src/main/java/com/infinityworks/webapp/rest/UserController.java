@@ -7,11 +7,12 @@ import com.infinityworks.webapp.domain.Role;
 import com.infinityworks.webapp.domain.User;
 import com.infinityworks.webapp.error.RestErrorHandler;
 import com.infinityworks.webapp.rest.dto.CreateUserRequest;
+import com.infinityworks.webapp.rest.dto.GeneratePasswordFromTokenRequest;
 import com.infinityworks.webapp.rest.dto.PasswordResetRequest;
 import com.infinityworks.webapp.rest.dto.UpdateUserRequest;
 import com.infinityworks.webapp.security.SecurityUtils;
 import com.infinityworks.webapp.service.LoginService;
-import com.infinityworks.webapp.service.PasswordResetService;
+import com.infinityworks.webapp.service.RequestPasswordResetService;
 import com.infinityworks.webapp.service.SessionService;
 import com.infinityworks.webapp.service.UserService;
 import org.slf4j.Logger;
@@ -41,7 +42,7 @@ public class UserController {
     private final SessionService sessionService;
     private final RestErrorHandler errorHandler;
     private final RequestValidator requestValidator;
-    private final PasswordResetService passwordResetService;
+    private final RequestPasswordResetService requestPasswordResetService;
 
     @Autowired
     public UserController(UserService userService,
@@ -49,13 +50,13 @@ public class UserController {
                           SessionService sessionService,
                           RequestValidator requestValidator,
                           LoginService loginService,
-                          PasswordResetService passwordResetService) {
+                          RequestPasswordResetService requestPasswordResetService) {
         this.userService = userService;
         this.loginService = loginService;
         this.errorHandler = errorHandler;
         this.sessionService = sessionService;
         this.requestValidator = requestValidator;
-        this.passwordResetService = passwordResetService;
+        this.requestPasswordResetService = requestPasswordResetService;
     }
 
     @PreAuthorize("isAuthenticated()")
@@ -120,9 +121,16 @@ public class UserController {
     }
 
     @RequestMapping(value = "/passwordreset", method = POST)
-    public ResponseEntity<?> resetPassword(@RequestBody PasswordResetRequest request) {
-        return passwordResetService
-                .resetPassword(request)
+    public ResponseEntity<?> requestPasswordReset(@RequestBody PasswordResetRequest request) {
+        return requestPasswordResetService
+                .requestPasswordReset(request)
+                .fold(errorHandler::mapToResponseEntity, ResponseEntity::ok);
+    }
+
+    @RequestMapping(value = "/generatepassword", method = POST)
+    public ResponseEntity<?> generateNewPasswordFromToken(@RequestBody GeneratePasswordFromTokenRequest request) {
+        return requestPasswordResetService
+                .generatePasswordFromToken(request)
                 .fold(errorHandler::mapToResponseEntity, ResponseEntity::ok);
     }
 

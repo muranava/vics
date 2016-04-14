@@ -14,21 +14,21 @@ import org.springframework.stereotype.Component;
 public class PasswordResetNotifier {
 
     private final EmailClient emailClient;
-    private final String endpointTemplate;
-    private static final String MESSAGE_TEMPLATE = "You requested a password reset, please visit %s to confirm.";
+    private final String resetPasswordPageUrl;
+    private static final String MESSAGE_TEMPLATE =
+            "You requested a password reset, please visit %s and enter your email and the following password reset token: <br><br>%s";
 
     @Autowired
     public PasswordResetNotifier(EmailClient emailClient, AppProperties properties) {
         this.emailClient = emailClient;
-        this.endpointTemplate = properties.getPasswordResetEndpoint() + "/%s";
+        this.resetPasswordPageUrl = properties.getPasswordResetEndpoint();
     }
 
     public Try<EmailResponse> sendPasswordResetNotification(User user, String token) {
-        String resetEndpoint = String.format(endpointTemplate, token);
         EmailMessage message = ImmutableEmailMessage.builder()
                 .withName(user.getFirstName() + " " + user.getLastName())
                 .withTo(user.getUsername())
-                .withBody(String.format(MESSAGE_TEMPLATE, resetEndpoint))
+                .withBody(String.format(MESSAGE_TEMPLATE, resetPasswordPageUrl, token))
                 .withSubject("Vics account password reset notification")
                 .withFrom("vicssupport@voteleave.uk")
                 .build();
