@@ -42,6 +42,7 @@ angular
       } else {
         $('#base').removeClass('fullPageMargins');
       }
+      resetMenu();
     });
 
   });
