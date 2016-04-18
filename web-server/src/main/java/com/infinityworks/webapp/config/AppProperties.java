@@ -14,6 +14,7 @@ public class AppProperties {
     private String sendGridKey;
     private String passwordResetEndpoint;
     private int passwordResetExpirationMins;
+    private String supportEmail;
 
     public int getPasswordResetExpirationMins() {
         return passwordResetExpirationMins;
@@ -77,5 +78,13 @@ public class AppProperties {
 
     public void setSendGridKey(String sendGridKey) {
         this.sendGridKey = sendGridKey;
+    }
+
+    public String getSupportEmail() {
+        return supportEmail;
+    }
+
+    public void setSupportEmail(String supportEmail) {
+        this.supportEmail = supportEmail;
     }
 }

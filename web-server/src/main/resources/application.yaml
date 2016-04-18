@@ -47,6 +47,7 @@ canvass:
   passwordResetEndpoint: http://localhost:9000/#/newpassword
   passwordResetExpirationMins: 120
   passwordTokenExpiryDeletedUpdateInterval: 10
+  supportEmail: vicssupport@voteleave.uk
 
 logging.level.: INFO
 logging.level:

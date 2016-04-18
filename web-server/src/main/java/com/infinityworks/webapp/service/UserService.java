@@ -6,6 +6,7 @@ import com.infinityworks.webapp.domain.User;
 import com.infinityworks.webapp.error.BadRequestFailure;
 import com.infinityworks.webapp.error.NotAuthorizedFailure;
 import com.infinityworks.webapp.error.NotFoundFailure;
+import com.infinityworks.webapp.notifications.NewAccountNotifier;
 import com.infinityworks.webapp.repository.UserRepository;
 import com.infinityworks.webapp.rest.dto.CreateUserRequest;
 import com.infinityworks.webapp.rest.dto.UpdateUserRequest;
@@ -29,12 +30,15 @@ public class UserService {
     private final Logger log = LoggerFactory.getLogger(UserService.class);
     private final UserRepository userRepository;
     private final AllUsersQueryConverter converter;
+    private final NewAccountNotifier newAccountNotifier;
 
     @Autowired
     public UserService(UserRepository userRepository,
-                       AllUsersQueryConverter converter) {
+                       AllUsersQueryConverter converter,
+                       NewAccountNotifier newAccountNotifier) {
         this.userRepository = userRepository;
         this.converter = converter;
+        this.newAccountNotifier = newAccountNotifier;
     }
 
     public Try<User> getByUsername(String email) {
@@ -145,6 +149,7 @@ public class UserService {
         User savedUser = userRepository.save(newUser);
 
         log.info("User={} created new user={}", user, newUser);
+        newAccountNotifier.sendAccountCreationInformation(newUser, request.getPassword());
 
         return  Try.success(savedUser);
     }

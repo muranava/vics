@@ -1,7 +1,10 @@
 package com.infinityworks.webapp.feature;
 
 import com.infinityworks.canvass.pafstub.PafServerStub;
+import com.infinityworks.common.lang.Try;
 import com.infinityworks.webapp.Application;
+import com.infinityworks.webapp.clients.email.EmailClient;
+import com.infinityworks.webapp.clients.email.ImmutableEmailResponse;
 import com.infinityworks.webapp.config.Config;
 import com.infinityworks.webapp.domain.User;
 import com.infinityworks.webapp.security.SecurityConfig;
@@ -11,6 +14,8 @@ import org.junit.Before;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.SpringApplicationConfiguration;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.data.repository.config.RepositoryConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
@@ -64,5 +69,16 @@ public abstract class WebApplicationTest {
     @After
     public void tearDown() throws Exception {
         pafApiStub.stop();
+    }
+}
+
+@Configuration
+class FeatureTestMock {
+    /**
+     * Mock the email client so we don't call out to SendGrid in tests
+     */
+    @Bean
+    public EmailClient emailClient() {
+        return content -> Try.success(ImmutableEmailResponse.builder().withMessage("success").build());
     }
 }

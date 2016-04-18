@@ -1,10 +1,14 @@
 package com.infinityworks.webapp.service;
 
 import com.infinityworks.common.lang.Try;
+import com.infinityworks.webapp.clients.email.EmailClient;
+import com.infinityworks.webapp.config.AppProperties;
 import com.infinityworks.webapp.converter.AllUsersQueryConverter;
 import com.infinityworks.webapp.domain.Role;
 import com.infinityworks.webapp.domain.User;
 import com.infinityworks.webapp.error.NotAuthorizedFailure;
+import com.infinityworks.webapp.notifications.NewAccountNotifier;
+import com.infinityworks.webapp.notifications.TemplateRenderer;
 import com.infinityworks.webapp.repository.UserRepository;
 import com.infinityworks.webapp.rest.dto.UpdateUserRequest;
 import org.junit.Before;
@@ -29,7 +33,9 @@ public class UserServiceTest {
     @Before
     public void setUp() throws Exception {
         userRepository = mock(UserRepository.class);
-        underTest = new UserService(userRepository, new AllUsersQueryConverter());
+        EmailClient emailClient = mock(EmailClient.class);
+        AppProperties appProperties = mock(AppProperties.class);
+        underTest = new UserService(userRepository, new AllUsersQueryConverter(), new NewAccountNotifier(emailClient, new TemplateRenderer(), appProperties));
     }
 
     @Test

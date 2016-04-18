@@ -50,7 +50,7 @@ class SendGridClient implements EmailClient {
                 log.info(String.format("Failed to send password reset notification to %s (using SendGrid). %s", recipients, response.getMessage()));
                 return failure(new PasswordNotificationFailure("Failed to send password to username " + recipients));
             } else {
-                log.info(String.format("Emailed password reset to %s", recipients));
+                log.info(String.format("Sent email to %s", recipients));
                 return success(ImmutableEmailResponse.builder().withMessage(response.getMessage()).build());
             }
         } catch (SendGridException e) {

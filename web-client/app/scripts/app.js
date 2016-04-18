@@ -175,7 +175,7 @@ angular
       }
       function error(response) {
         var status = response.status;
-        if (status === 401) {
+        if (status === 401 || status === 403) {
           return $location.path('/login');
         } else {
           return $q.reject(response);

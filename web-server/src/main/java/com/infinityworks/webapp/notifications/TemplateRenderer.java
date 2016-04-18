@@ -1,7 +1,10 @@
 package com.infinityworks.webapp.notifications;
 
-/**
- * Created by steinfletcher on 18/04/2016.
- */
+import org.springframework.stereotype.Component;
+
+@Component
 public class TemplateRenderer {
+    public String render(String template, Object... replacementParameters) {
+        return String.format(template, replacementParameters);
+    }
 }
