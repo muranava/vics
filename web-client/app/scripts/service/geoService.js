@@ -3,11 +3,11 @@ angular
   .service('geoService', function (config, $http) {
     var api = {}, apiUrl = config.apiUrl;
 
-    api.reverseLookupAddress = function (searchTerm) {
+    api.reverseLookupAddresses = function (addresses) {
       return $http({
-        method: 'GET',
+        method: 'POST',
         url: apiUrl + '/geo/addresslookup',
-        params: {q: searchTerm},
+        data: {addresses: addresses},
         withCredentials: true
       });
     };
@@ -16,6 +16,13 @@ angular
       return $http({
         method: 'GET',
         url: 'https://mapit.mysociety.org/postcode/' + postCode
+      });
+    };
+
+    api.findPostCodeFromCoordinates = function(lat, lng) {
+      return $http({
+        method: 'GET',
+        url: 'http://postcodes.io/postcodes?lat=' + lat + '&lon=' + lng
       });
     };
 

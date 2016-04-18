@@ -6,14 +6,12 @@ import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import org.immutables.value.Value;
 
-import java.util.List;
-
 @Value.Immutable
 @JsonIgnoreProperties(ignoreUnknown = true)
-@Value.Style(init = "with*", jdkOnly = true)
-@JsonDeserialize(as = ImmutableStreetsResponse.class)
-@JsonSerialize(as = ImmutableStreetsResponse.class)
-public interface StreetsResponse {
-    @JsonProperty("response") List<PafStreetResponse> response();
-    @JsonProperty("stats") Stats stats();
+@Value.Style(init = "with*")
+@JsonDeserialize(as = ImmutableStats.class)
+@JsonSerialize(as = ImmutableStats.class)
+public interface Stats {
+    @JsonProperty("voters") String voters();
+    @JsonProperty("canvassed") String canvassed();
 }

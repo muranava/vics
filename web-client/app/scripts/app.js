@@ -21,8 +21,8 @@ angular
     'uiSwitch',
     'rzModule',
     'ngCsvImport',
-    'ui-leaflet',
-    'toastr'
+    'toastr',
+    'uiGmapgoogle-maps'
   ])
   .constant('config', {
     apiUrl: 'http://localhost:18080/api/canvass',

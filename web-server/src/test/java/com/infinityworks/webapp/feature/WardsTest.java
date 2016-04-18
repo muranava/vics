@@ -7,7 +7,7 @@ import com.infinityworks.webapp.error.RestErrorHandler;
 import com.infinityworks.webapp.repository.UserRepository;
 import com.infinityworks.webapp.rest.UserController;
 import com.infinityworks.webapp.rest.WardController;
-import com.infinityworks.webapp.rest.dto.StreetRequest;
+import com.infinityworks.webapp.rest.dto.StreetsByWardResponse;
 import com.infinityworks.webapp.rest.dto.UserRestrictedWards;
 import com.infinityworks.webapp.rest.dto.WardSummary;
 import com.infinityworks.webapp.service.*;
@@ -21,13 +21,13 @@ import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 import java.security.Principal;
-import java.util.List;
 import java.util.UUID;
 
 import static com.infinityworks.webapp.common.JsonUtil.objectMapper;
-import static java.util.Arrays.asList;
 import static java.util.Collections.singletonList;
 import static org.hamcrest.CoreMatchers.not;
+import static org.hamcrest.Matchers.greaterThan;
+import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
@@ -116,8 +116,10 @@ public class WardsTest extends WebApplicationTest {
 
         MvcResult result = resultActions.andExpect(status().isOk()).andReturn();
 
-        List<StreetRequest> streets = asList(objectMapper.readValue(result.getResponse().getContentAsString(), StreetRequest[].class));
-        assertThat(streets.size(), is(81));
+        StreetsByWardResponse streets = objectMapper.readValue(result.getResponse().getContentAsString(), StreetsByWardResponse.class);
+        assertThat(streets.streets(), hasSize(greaterThan(0)));
+        assertThat(streets.stats().canvassed(), is(221));
+        assertThat(streets.stats().voters(), is(550));
     }
 
     @Test

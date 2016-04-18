@@ -1,6 +1,6 @@
 DELETE FROM wards;
 
-INSERT INTO wards(id, constituency_id, name, code) VALUES
+INSERT INTO wards (id, constituency_id, name, code) VALUES
   ('395b4d40-5074-4f2c-9c68-ea352f909402', '911a68a5-5689-418d-b63d-b21545345f03', 'Bablake', 'E05001218'),
   ('5e99c344-0c0a-4c77-a550-54581d8a8743', '0d338b99-3d15-44f7-904f-3ebc18a7ab4a', 'Binley and Willenhall', 'E05001219'),
   ('330b67f5-109e-42fc-adf2-388e0a980f4a', '0d338b99-3d15-44f7-904f-3ebc18a7ab4a', 'Cheylesmore', 'E05001220'),
@@ -20,4 +20,12 @@ INSERT INTO wards(id, constituency_id, name, code) VALUES
   ('4564fe48-9df5-4c11-a0ed-e9dd48778832', '911a68a5-5689-418d-b63d-b21545345f03', 'Woodlands', 'E05001234'),
   ('71f563da-4303-4603-b095-67255b1fc8fc', 'ee9733a9-6ad3-4066-a692-e6ebe21258e9', 'Wyken', 'E05001235'),
   ('52c59288-fc44-4b72-bca8-bc6c06416613', 'c087861b-809d-4277-a164-305c6e248928', 'Canbury', 'E05000403'),
-  ('ed662665-768e-402d-af7b-5eac8721fcee', '8dc960af-2263-43b0-a338-2572a92ced52', 'Beeston and Holbeck', 'E05001415');
+  ('ed662665-768e-402d-af7b-5eac8721fcee', '8dc960af-2263-43b0-a338-2572a92ced52', 'Beeston and Holbeck', 'E05001415'),
+  ('38e9a6af-f1e1-4eef-89ef-58e9a8c5c10c', '8e857ba9-9e7c-4376-9897-e1994b6a9f9a', 'Church End', 'E05000499'),
+  ('93754093-7787-4b0c-9eb3-890f96e4b9c3', '8e857ba9-9e7c-4376-9897-e1994b6a9f9a', 'Monkhams', 'E05000509'),
+  ('3c0d5cdc-c142-4155-9e0e-9719b9bd5d79', '8e857ba9-9e7c-4376-9897-e1994b6a9f9a', 'Chingford Green', 'E05000593'),
+  ('3594455b-e2a5-4176-afd7-a23972a150d8', '8e857ba9-9e7c-4376-9897-e1994b6a9f9a', 'Endlebury', 'E05000594'),
+  ('b82e0426-f0a1-4815-bbfa-8208994aaef4', '8e857ba9-9e7c-4376-9897-e1994b6a9f9a', 'Hale End and Highams Park', 'E05000597'),
+  ('7d9264e0-590a-4acf-bd24-a6ba56efcccf', '8e857ba9-9e7c-4376-9897-e1994b6a9f9a', 'Hatch Lane', 'E05000598'),
+  ('31043a01-8887-4ef3-bd05-96745fe1d4c8', '8e857ba9-9e7c-4376-9897-e1994b6a9f9a', 'Larkswood', 'E05000602'),
+  ('5006532d-113b-4da3-8aaf-a4783c6cba8f', '8e857ba9-9e7c-4376-9897-e1994b6a9f9a', 'Valley', 'E05000607');

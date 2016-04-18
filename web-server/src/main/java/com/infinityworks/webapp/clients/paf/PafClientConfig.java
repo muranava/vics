@@ -1,8 +1,8 @@
 package com.infinityworks.webapp.clients.paf;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.infinityworks.webapp.config.AppProperties;
 import com.infinityworks.webapp.clients.paf.command.*;
+import com.infinityworks.webapp.config.AppProperties;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import org.springframework.context.annotation.Bean;
@@ -21,9 +21,14 @@ public class PafClientConfig {
     @Bean
     public OkHttpClient okHttpClient(AppProperties appProperties) {
         return new OkHttpClient.Builder().addInterceptor(chain -> {
-            Request request = chain.request().newBuilder().addHeader("X-Authorization", appProperties.getPafApiToken()).build();
+            Request request = chain.request()
+                    .newBuilder()
+                    .addHeader("X-Authorization", appProperties.getPafApiToken())
+                    .build();
             return chain.proceed(request);
-        }).build();
+        })
+                .hostnameVerifier((s, sslSession) -> true)
+                .build();
     }
 
     @Bean

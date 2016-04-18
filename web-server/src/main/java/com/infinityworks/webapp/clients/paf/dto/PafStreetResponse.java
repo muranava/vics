@@ -6,6 +6,10 @@ import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import org.immutables.value.Value;
 
+import java.util.List;
+
+import static java.util.Collections.emptyList;
+
 @Value.Immutable
 @JsonIgnoreProperties(ignoreUnknown = true)
 @Value.Style(init = "with*")
@@ -18,7 +22,11 @@ public interface PafStreetResponse {
     @JsonProperty("dependent_locality") String dependentLocality();
     @JsonProperty("canvassed") Integer canvassed();
     @JsonProperty("voters") Integer voters();
-    @JsonProperty("priority") @Value.Default default Priority priority() {
-        return Priority.MED;
+    @JsonProperty("postcode") @Value.Default default List<String> postcode() {
+        return emptyList();
+    }
+    @JsonProperty("priority") @Value.Default
+    default int priority() {
+        return 0;
     }
 }

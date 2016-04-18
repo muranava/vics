@@ -16,6 +16,7 @@
     "jsPDF": false,
     "$": false,
     "saveAs": false,
-    "Egg": false
+    "Egg": false,
+    "google": false
   }
 }

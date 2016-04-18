@@ -9,30 +9,35 @@ angular
     $scope.constituencyName = '';
     $scope.wardName = '';
 
-    $scope.mapData = {
-      location: {
-        lat: 52.400251,
-        lng: -1.4497,
-        zoom: 12
-      }
+    $scope.map = {
+      center: {
+        latitude: 52.400251,
+        longitude: -1.4497
+      },
+      zoom: 12
     };
+    $scope.markers = [];
+
+    $scope.$on('$viewContentLoaded', function() {
+      $("#postcodeMap .angular-google-map-container").height(250);
+    });
 
     statsService.allStats()
       .success(function (response) {
         $scope.stats = response;
       });
 
-    $scope.changeLeaderboardTab = function(tabName) {
+    $scope.changeLeaderboardTab = function (tabName) {
       $scope.currentTab = tabName;
     };
 
-    $scope.findWard = function() {
-      if (_.isEmpty($scope.postCode)) {
+    $scope.findWard = function (postCode, suppressError) {
+      if (_.isEmpty(postCode)) {
         return;
       }
 
-      geoService.findWardFromPostCode($scope.postCode)
-        .success(function(response) {
+      geoService.findWardFromPostCode(postCode)
+        .success(function (response) {
           if (response && response.wgs84_lat) {
             $scope.constituencyName = response.areas[response.shortcuts.WMC].name;
             if (_.isObject(response.shortcuts.ward)) {
@@ -41,25 +46,51 @@ angular
               $scope.wardName = response.areas[response.shortcuts.ward].name;
             }
 
-            $scope.mapData = {
-              location: {
-                lat: response.wgs84_lat,
-                lng: response.wgs84_lon,
-                zoom: 12
+            $scope.map = {
+              center: {
+                latitude: response.wgs84_lat,
+                longitude: response.wgs84_lon
               },
-              markers: {
-                m1: {
-                  lat: response.wgs84_lat,
-                  lng: response.wgs84_lon
-                }
-              }
+              zoom: 12
             };
+            $scope.markers[0] = {id: 1, latitude: response.wgs84_lat, longitude: response.wgs84_lon};
           }
         })
-        .error(function() {
-          toastr.info('We could not find a location for that post code', 'Sorry');
+        .error(function () {
+          if (!suppressError) toastr.info('We could not find a location for that post code', 'Sorry');
         });
     };
+
+    /**
+     * Attempt to set the area to the users location
+     */
+    function getCurrentLocation() {
+      var options = {
+        enableHighAccuracy: true
+      };
+
+      if (navigator && navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(function(pos) {
+            $scope.position = new google.maps.LatLng(pos.coords.latitude, pos.coords.longitude);
+            var point = JSON.parse(JSON.stringify($scope.position));
+            if (_.isObject(point)) {
+              $scope.map.center = {
+                latitude: point.lat,
+                longitude: point.lng
+              };
+              geoService.findPostCodeFromCoordinates(point.lat, point.lng)
+                .success(function(response) {
+                  var result = _.head(response.result);
+                  if (result) {
+                    $scope.findWard(result.postcode, true);
+                  }
+
+                });
+            }
+          },
+          function() {}, options);
+      }
+    }
 
     function updateCountdown() {
       // get total seconds between the times
@@ -83,4 +114,6 @@ angular
 
     updateCountdown();
     $interval(updateCountdown, 250, 0, true);
+
+    getCurrentLocation();
   });

@@ -45,6 +45,11 @@ public interface Try<S> {
         public boolean isSuccess() {
             return true;
         }
+
+        @Override
+        public boolean isFailure() {
+            return false;
+        }
     }
 
     final class Failure<S> implements Try<S> {
@@ -67,6 +72,11 @@ public interface Try<S> {
         @Override
         public boolean isSuccess() {
             return false;
+        }
+
+        @Override
+        public boolean isFailure() {
+            return true;
         }
     }
 
@@ -230,4 +240,10 @@ public interface Try<S> {
      * @return true on success, false on failure
      */
     boolean isSuccess();
+
+
+    /**
+     * @return true on success, false on failure
+     */
+    boolean isFailure();
 }

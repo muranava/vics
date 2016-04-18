@@ -32,6 +32,16 @@ angular
       return !_.isEmpty(underTest);
     };
 
+    api.viewportDimensions = function() {
+      var w = Math.max(document.documentElement.clientWidth, window.innerWidth || 0),
+        h = Math.max(document.documentElement.clientHeight, window.innerHeight || 0);
+
+      return {
+        width: w,
+        height: h
+      };
+    };
+
     api.generatePassword = function () {
       var password = "";
       password += _.sample(chars);

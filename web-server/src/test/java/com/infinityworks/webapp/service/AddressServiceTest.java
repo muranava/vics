@@ -8,11 +8,9 @@ import com.infinityworks.webapp.converter.PafToStreetResponseConverter;
 import com.infinityworks.webapp.domain.User;
 import com.infinityworks.webapp.error.NotAuthorizedFailure;
 import com.infinityworks.webapp.error.NotFoundFailure;
-import com.infinityworks.webapp.rest.dto.StreetResponse;
+import com.infinityworks.webapp.rest.dto.StreetsByWardResponse;
 import org.junit.Before;
 import org.junit.Test;
-
-import java.util.List;
 
 import static com.google.common.collect.Sets.newHashSet;
 import static com.infinityworks.webapp.testsupport.builder.UserBuilder.user;
@@ -42,14 +40,14 @@ public class AddressServiceTest {
         String wardCode = "E0911135";
         given(wardService.getByCode(wardCode, u)).willReturn(Try.failure(new NotFoundFailure("failed")));
 
-        Try<List<StreetResponse>> streets = underTest.getTownStreetsByWardCode(wardCode, u);
+        Try<StreetsByWardResponse> streets = underTest.getTownStreetsByWardCode(wardCode, u);
 
         assertThat(streets.isSuccess(), is(false));
         assertThat(streets.getFailure(), instanceOf(NotFoundFailure.class));
     }
 
     @Test
-    public void returnsNotAuthorizedIfUserDOesNotHaveWwardPermissionWhenGettingTownStreetsByWardCode() throws Exception {
+    public void returnsNotAuthorizedIfUserDoesNotHaveWwardPermissionWhenGettingTownStreetsByWardCode() throws Exception {
         User userWithoutWardPermissions = user()
                 .withWards(newHashSet())
                 .withConstituencies(newHashSet())
@@ -57,7 +55,7 @@ public class AddressServiceTest {
         String wardCode = "E0911135";
         given(wardService.getByCode(wardCode, userWithoutWardPermissions)).willReturn(Try.failure(new NotAuthorizedFailure("unauthorized")));
 
-        Try<List<StreetResponse>> streets = underTest.getTownStreetsByWardCode(wardCode, userWithoutWardPermissions);
+        Try<StreetsByWardResponse> streets = underTest.getTownStreetsByWardCode(wardCode, userWithoutWardPermissions);
 
         assertThat(streets.isSuccess(), is(false));
         assertThat(streets.getFailure(), instanceOf(NotAuthorizedFailure.class));

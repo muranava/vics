@@ -109,10 +109,10 @@ class WardsFeatureTest extends ApplicationTest {
     (http GET s"/ward/E05001221/street")
       .andExpect(
         status.isOk,
-        jsonPath("$[0].mainStreet", is("Acre Road")),
-        jsonPath("$[0].postTown", is("KINGSTON UPON THAMES")),
-        jsonPath("$[0].dependentLocality", is("")),
-        jsonPath("$[0].dependentStreet", is("")))
+        jsonPath("$.streets[0].mainStreet", is("Acre Road")),
+        jsonPath("$.streets[0].postTown", is("KINGSTON UPON THAMES")),
+        jsonPath("$.streets[0].dependentLocality", is("")),
+        jsonPath("$.streets[0].dependentStreet", is("")))
   }
 
   @Test

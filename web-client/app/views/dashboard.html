@@ -107,7 +107,7 @@
 
     <div class="row">
       <!-- BEGIN LAYOUT JUSTIFIED -->
-      <div class="col-md-6 col-sm-6 col-xs-12">
+      <div class="col-sm-6 col-xs-12">
         <div class="card">
           <div class="card-head">
             <ul class="nav nav-tabs nav-justified" data-toggle="tabs">
@@ -182,15 +182,15 @@
         <em class="text-caption">Leaderboards based on data entry</em>
       </div><!--end .col -->
 
-      <div class="col-md-6 col-xs-12">
+      <div class="col-sm-6 col-xs-12">
         <div class="card style-primary">
           <div class="card-head">
             <header>Where's my ward?</header>
-          </div><!--end .card-head -->
+          </div>
           <div class="card-body height-9">
 
             <div class="row">
-                <form class="form" ng-submit="findWard()">
+                <form class="form" ng-submit="findWard(postCode)">
                   <div class="form-group">
                     <div class="input-group">
                       <div class="input-group-content">
@@ -210,8 +210,11 @@
             </div>
 
             <div class="row" style="color: black;">
-              <leaflet center="mapData.location" markers="mapData.markers" height="250px"
-                       width="100%"></leaflet>
+
+              <ui-gmap-google-map id="postcodeMap" center='map.center' options="map.options" zoom='map.zoom'>
+                <ui-gmap-markers models="markers" coords="'self'" modelsbyref="false"/>
+              </ui-gmap-google-map>
+
               <div class="worldmap box" ng-if="constituencyName">
                 <span class="text-bold">Constituency</span>&nbsp;&nbsp;{{constituencyName}}<br>
                 <span class="text-bold">Ward</span>&nbsp;&nbsp;{{wardName}}

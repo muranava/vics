@@ -14,7 +14,11 @@
       "id": "e08c9d77",
       "voters": 23,
       "canvassed": 12,
-      "priority": "LOW"
+      "priority": 2,
+      "postcode": [
+        "KT2 5BU",
+        "KT2 6HR"
+      ]
     },
     {
       "dependent_street": "",
@@ -24,7 +28,7 @@
       "id": "2e492ef1",
       "voters": 31,
       "canvassed": 1,
-      "priority": "LOW"
+      "priority": 2
     },
     {
       "dependent_street": "",
@@ -34,7 +38,7 @@
       "id": "da861eca",
       "voters": 44,
       "canvassed": 32,
-      "priority": "LOW"
+      "priority": 2
     },
     {
       "dependent_street": "",
@@ -44,7 +48,7 @@
       "id": "ca9cd988",
       "voters": 35,
       "canvassed": 12,
-      "priority": "HIGH"
+      "priority": 3
     },
     {
       "dependent_street": "",
@@ -54,7 +58,7 @@
       "id": "09457460",
       "voters": 2,
       "canvassed": 0,
-      "priority": "HIGH"
+      "priority": 3
     },
     {
       "dependent_street": "",

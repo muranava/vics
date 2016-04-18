@@ -6,4 +6,5 @@ INSERT INTO constituencies (id, name, code) VALUES
   ('0d338b99-3d15-44f7-904f-3ebc18a7ab4a', 'Coventry South', 'E14000651'),
   ('5e2636a6-991c-4455-b08f-93309533a2ab', 'Rugby', 'E14000633'),
   ('c087861b-809d-4277-a164-305c6e248928', 'Richmond Park', 'E14000896'),
-  ('8dc960af-2263-43b0-a338-2572a92ced52', 'Leeds Central', 'E14000777');
+  ('8dc960af-2263-43b0-a338-2572a92ced52', 'Leeds Central', 'E14000777'),
+  ('8e857ba9-9e7c-4376-9897-e1994b6a9f9a', 'Chingford and Woodford Green', 'E14000634');

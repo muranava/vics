@@ -1,5 +1,7 @@
 @import url(https://fonts.googleapis.com/css?family=Roboto:400,300italic,300,700,900);
 
+body, html { height: 100%; margin: 0;}
+
 .logo-text {
   margin-left: 12px;
   color: #000;
@@ -267,4 +269,7 @@ div.worldmap.box {
 .fullPageMargins {
   padding-left: 10% !important;
   padding-right: 10% !important;
+}
+.angular-google-map-container {
+  height: 600px;
 }
