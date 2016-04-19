@@ -57,7 +57,9 @@ angular
           }
         })
         .error(function () {
-          if (!suppressError) toastr.info('We could not find a location for that post code', 'Sorry');
+          if (!suppressError) {
+            toastr.info('We could not find a location for that post code', 'Sorry');
+          }
         });
     };
 
