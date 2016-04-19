@@ -3,9 +3,8 @@
  */
 angular
   .module('canvass')
-  .controller('canvassInputController', function (util, $scope, electorService, RingBuffer, wardService) {
-    var logSize = 5,
-      searchLimit = 10;
+  .controller('canvassInputController', function (util, $scope, electorService, RingBuffer, wardService, toastr) {
+    var logSize = 5;
 
     $scope.issues = [''];
     $scope.searchResults = [];
@@ -62,21 +61,33 @@ angular
     };
 
     $scope.onSearchVoter = function () {
-      function handleSuccess() {
-        $scope.searchResults.push({});
+      function handleSuccess(voters) {
+        console.log(voters);
+        $scope.searchResults = voters;
       }
 
       function handleError() {
         $scope.searchFailed = true;
       }
 
-      electorService.search($scope.searchForm, $scope.inputRecordModel.ward.code, searchLimit)
-        .success(handleSuccess)
-        .error(handleError);
+      if (!$scope.searchForm.surname || !$scope.searchForm.postcode) {
+        toastr.error('Please enter username and password', 'Validation Error');
+      } else {
+        var surname = _.capitalize($scope.searchForm.surname);
+        electorService.search(surname, $scope.searchForm.postcode)
+          .success(handleSuccess)
+          .error(handleError);
+      }
+    };
+
+    $scope.onSetSearchedVoter = function(voter) {
+      var ern = util.destructureErn(voter.ern);
+      $scope.inputRecordModel.ern.pollingDistrict = ern.pollingDistrict;
+      $scope.inputRecordModel.ern.number = ern.number;
+      $scope.inputRecordModel.ern.suffix = ern.suffix;
     };
 
     $scope.onUndo = function(model) {
-      console.log(model);
       electorService.undoCanvassInput(model.fullErn, model.contactId, model.localId)
         .success(function() {
           model.reason = 'Undone';

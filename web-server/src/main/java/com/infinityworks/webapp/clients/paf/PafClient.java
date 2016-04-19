@@ -39,7 +39,7 @@ public interface PafClient {
      * @return the voters matching the criteria
      */
     @GET("voter/search")
-    Call<List<Voter>> voterSearch(@QueryMap Map<String, String> parameters);
+    Call<List<SearchVoterResponse>> voterSearch(@QueryMap Map<String, String> parameters);
 
     /**
      * Records that a voter has been contacted

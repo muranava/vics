@@ -98,6 +98,17 @@
                 </div>
               </div>
 
+              <div class="card-actionbar">
+                <div class="card-actionbar-row">
+                  <button type="submit" class="btn btn-sm btn-danger pull-right">SUBMIT</button>
+                </div>
+                <br><br>
+              </div>
+
+              <hr>
+              <h4>Info</h4>
+              <br>
+
               <!-- Likelihood to vote -->
               <div class="form-group">
                 <label class="control-label" style="padding-bottom: 10px">Voting Likelihood</label>
@@ -284,6 +295,64 @@
 
       <div class="col-md-6">
         <div class="row">
+          <div class="card">
+            <div class="card-head card-head-xs style-primary">
+              <header>Search</header>
+
+            </div>
+            <div class="card-body">
+
+              <form class="form" ng-submit="onSearchVoter()">
+                <div class="form-group">
+                  <div class="input-group col-xs-12">
+                    <div class="input-group-content">
+                      <input type="text" ng-model="searchForm.surname" class="form-control ocl" id="groupbutton10">
+                      <label for="groupbutton10">Surname</label>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="form-group">
+                  <div class="input-group">
+                    <div class="input-group-content">
+                      <input type="text" ng-model="searchForm.postcode" class="form-control" id="doublegroupbutton10" uppercased>
+                      <label for="doublegroupbutton10">Postcode</label>
+                    </div>
+                    <div class="input-group-btn">
+                      <button type="submit" class="btn btn-danger btn-sm" tabindex="-1">SEARCH</button>
+                    </div>
+                  </div>
+                </div>
+              </form>
+
+              <!-- Search results -->
+              <table class="table no-margin table-hover" ng-show="searchResults.length">
+                <thead>
+                <tr>
+                  <th>Roll #</th>
+                  <th>Name</th>
+                  <th>Address</th>
+                  <th></th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr ng-repeat="voter in searchResults">
+                  <td style="min-width: 100px">{{voter.ern | ernToShortForm}}</td>
+                  <td>{{voter.full_name}}</td>
+                  <td>{{voter | voterAddressFormat }}</td>
+                  <td><button type="submit" class="btn btn-sm btn-danger" tabindex="-1"
+                              ng-click="onSetSearchedVoter(voter)">
+                    Set
+                  </button></td>
+                </tr>
+                </tbody>
+              </table>
+
+            </div>
+          </div>
+        </div>
+
+        <div class="row">
           <form class="form">
 
             <div class="card">
@@ -317,68 +386,7 @@
             </div>
           </form>
         </div>
-        <div class="row">
-            <div class="card">
-              <div class="card-head card-head-xs style-primary">
-                <header>Search</header>
-              </div>
-              <div class="card-body">
 
-                <form class="form" ng-submit="onSearchVoter()">
-                  <div class="form-group">
-                    <div class="input-group col-xs-12">
-                      <div class="input-group-content">
-                        <input type="text" ng-model="searchForm.surname" class="form-control ocl" id="groupbutton10">
-                        <label for="groupbutton10">Surname</label>
-                      </div>
-                    </div>
-                  </div>
-
-                  <div class="form-group">
-                    <div class="input-group">
-                      <div class="input-group-content">
-                        <input type="text" ng-model="searchForm.postcode" class="form-control" id="doublegroupbutton10">
-                        <label for="doublegroupbutton10">Postcode</label>
-                      </div>
-                      <div class="input-group-btn">
-                        <button type="submit" class="btn btn-danger btn-sm" tabindex="-1">SEARCH</button>
-                      </div>
-                    </div>
-                  </div>
-                </form>
-
-                <!-- Search results -->
-                <table class="table no-margin table-hover" ng-show="searchResults.length">
-                  <thead>
-                  <tr>
-                    <th>Roll #</th>
-                    <th>First Name</th>
-                    <th>Last Name</th>
-                    <th>Address</th>
-                    <th>Post Code</th>
-                    <th></th>
-                  </tr>
-                  </thead>
-                  <tbody>
-                  <tr ng-repeat="result in searchResults">
-                    <td>{{result.rollNum}}</td>
-                    <td>{{result.firstName}}</td>
-                    <td>{{result.lastName}}</td>
-                    <td>{{result.address}}</td>
-                    <td>{{result.postCode}}</td>
-                    <td>
-                      <button type="submit" class="btn btn-sm btn-danger" tabindex="-1"
-                              ng-click="onSearchVoted(result)">
-                        Select
-                      </button>
-                    </td>
-                  </tr>
-                  </tbody>
-                </table>
-
-              </div>
-            </div>
-        </div>
       </div>
     </div>
   </div>

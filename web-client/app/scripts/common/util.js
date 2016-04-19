@@ -32,6 +32,16 @@ angular
       return !_.isEmpty(underTest);
     };
 
+    api.destructureErn = function(longFormErn) {
+      var ern = longFormErn.split("-");
+      return {
+        wardCode: ern[0],
+        pollingDistrict: ern[1],
+        number: _.parseInt(ern[2]),
+        suffix: ern[3]
+      };
+    };
+
     api.viewportDimensions = function() {
       var w = Math.max(document.documentElement.clientWidth, window.innerWidth || 0),
         h = Math.max(document.documentElement.clientHeight, window.innerHeight || 0);

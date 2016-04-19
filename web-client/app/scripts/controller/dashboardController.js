@@ -14,6 +14,14 @@ angular
         latitude: 52.400251,
         longitude: -1.4497
       },
+      control: {
+        zoomControl: true,
+        mapTypeControl: false,
+        scaleControl: false,
+        streetViewControl: false,
+        rotateControl: false,
+        fullscreenControl: false
+      },
       zoom: 12
     };
     $scope.markers = [];

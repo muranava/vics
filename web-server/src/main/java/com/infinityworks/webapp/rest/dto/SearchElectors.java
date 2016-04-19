@@ -10,18 +10,10 @@ import java.util.Map;
 public class SearchElectors {
     private final String surname;
     private final String postcode;
-    private final String wardCode;
-    private final int limit;
 
-    public SearchElectors(String surname, String postcode, String wardCode, int limit) {
+    public SearchElectors(String surname, String postcode) {
         this.surname =  surname;
         this.postcode = postcode;
-        this.wardCode = wardCode;
-        this.limit = limit;
-    }
-
-    public String getWardCode() {
-        return wardCode;
     }
 
     public String getSurname() {
@@ -32,16 +24,11 @@ public class SearchElectors {
         return postcode;
     }
 
-    public int getLimit() {
-        return limit;
-    }
-
     /**
      * Converts to upstream request format
      */
     public Map<String, String> getParameters() {
         return ImmutableMap.<String, String>builder()
-                .put("ward_code", wardCode)
                 .put("postcode", postcode)
                 .put("surname", surname)
                 .build();
@@ -50,7 +37,6 @@ public class SearchElectors {
     @Override
     public String toString() {
         return MoreObjects.toStringHelper(this)
-                .add("wardCode", wardCode)
                 .add("surname", surname)
                 .add("postcode", postcode)
                 .toString();

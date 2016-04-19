@@ -109,13 +109,11 @@ public class VoterTest extends WebApplicationTest {
     public void returnsTheElectorsWhenSearchingByAttributes() throws Exception {
         when(sessionService.extractUserFromPrincipal(any(Principal.class)))
                 .thenReturn(Try.success(earlsdon()));
-        pafApiStub.willSearchVoters("E05001221", "KT25BU", "McCall");
+        pafApiStub.willSearchVoters("KT25BU", "McCall");
 
         MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
         params.add("surname", "McCall");
         params.add("postcode", "KT25BU");
-        params.add("wardCode", "E05001221");
-        params.add("limit", "10");
         UriComponents uriComponents = UriComponentsBuilder.fromPath("/elector")
                 .queryParams(params)
                 .build();
@@ -126,52 +124,6 @@ public class VoterTest extends WebApplicationTest {
                 .accept(APPLICATION_JSON))
                 .andDo(print())
                 .andExpect(status().isOk()); // TODO implement assertions when API defined
-    }
-
-    @Test
-    public void searchReturnsNotAuthorizedIfElectorHasNoWardPermission() throws Exception {
-        when(sessionService.extractUserFromPrincipal(any(Principal.class)))
-                .thenReturn(Try.success(covs()));
-        pafApiStub.willSearchVoters("A05001235", "KT25BU", "McCall");
-
-        MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
-        params.add("surname", "McCall");
-        params.add("postcode", "KT25BU");
-        params.add("wardCode", "E05001235");
-        params.add("limit", "10");
-        UriComponents uriComponents = UriComponentsBuilder.fromPath("/elector")
-                .queryParams(params)
-                .build();
-
-        String url = uriComponents.toUriString();
-
-        mockMvc.perform(get(url)
-                .accept(APPLICATION_JSON))
-                .andDo(print())
-                .andExpect(status().isUnauthorized());
-    }
-
-    @Test
-    public void searchReturnsNotFoundIfWardInvalid() throws Exception {
-        when(sessionService.extractUserFromPrincipal(any(Principal.class)))
-                .thenReturn(Try.success(covs()));
-        pafApiStub.willSearchVoters("A05001235", "KT25BU", "McCall");
-
-        MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
-        params.add("surname", "McCall");
-        params.add("postcode", "KT25BU");
-        params.add("wardCode", "A05001235");
-        params.add("limit", "12");
-        UriComponents uriComponents = UriComponentsBuilder.fromPath("/elector")
-                .queryParams(params)
-                .build();
-
-        String url = uriComponents.toUriString();
-
-        mockMvc.perform(get(url)
-                .accept(APPLICATION_JSON))
-                .andDo(print())
-                .andExpect(status().isNotFound());
     }
 
     @Test

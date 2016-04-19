@@ -133,10 +133,7 @@ angular
 
       function extractStreetInfoForGeocoding(streets) {
         function extractPostcode(postcode) {
-          if (_.isString(postcode)) {
-            var parts = postcode.split(",");
-            return _.head(parts);
-          } else if (_.isArray(postcode)) {
+          if (!_.isEmpty(postcode.length)) {
             return _.head(postcode);
           } else {
             return "";
@@ -144,7 +141,8 @@ angular
         }
 
         return _.map(streets, function (street) {
-          return street.mainStreet + " " + extractPostcode(street.postcode) + " " + street.postTown + " UK";
+          var postcode = extractPostcode(street.postcode);
+          return [street.mainStreet, postcode, street.postTown, " UK"].join(" ");
         });
       }
 

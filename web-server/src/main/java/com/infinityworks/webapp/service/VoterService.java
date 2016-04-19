@@ -60,15 +60,11 @@ public class VoterService {
      * @param searchElectors the search criteria
      * @return a list of voters for the given search criteria
      */
-    public Try<List<Voter>> search(User user, SearchElectors searchElectors) {
+    public Try<List<SearchVoterResponse>> search(User user, SearchElectors searchElectors) {
         log.info("Search voters user={} criteria={}", user, searchElectors);
 
-        return wardService
-                .getByCode(searchElectors.getWardCode(), user)
-                .flatMap(ward -> {
-                    SearchVotersCommand searchVotersCommand = searchVotersCommandFactory.create(searchElectors.getParameters());
-                    return  searchVotersCommand.execute();
-                });
+        SearchVotersCommand searchVotersCommand = searchVotersCommandFactory.create(searchElectors.getParameters());
+        return  searchVotersCommand.execute();
     }
 
     /**

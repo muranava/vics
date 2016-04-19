@@ -6,13 +6,15 @@ import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import org.immutables.value.Value;
 
-import java.util.List;
-
 @Value.Immutable
 @JsonIgnoreProperties(ignoreUnknown = true)
 @Value.Style(init = "with*")
 @JsonDeserialize(as = ImmutableSearchVoterResponse.class)
 @JsonSerialize(as = ImmutableSearchVoterResponse.class)
 public interface SearchVoterResponse {
-    @JsonProperty("response") List<VoterSummary> voters();
+    @JsonProperty("full_name") String fullName();
+    @JsonProperty("first_name") String firstName();
+    @JsonProperty("surname") String surname();
+    @JsonProperty("ern") String ern();
+    @JsonProperty("address") VoterAddress address();
 }

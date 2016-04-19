@@ -36,17 +36,14 @@ angular
       });
     };
 
-    api.search = function (searchParams, wardCode, limit) {
-      var params = {};
-      params.surname = searchParams.surname;
-      params.postcode = searchParams.postcode;
-      params.wardCode = wardCode;
-      params.limit = limit;
-
+    api.search = function (surname, postcode) {
       return $http({
         url: apiUrl + '/elector',
         method: 'GET',
-        params: params,
+        params: {
+          surname: surname,
+          postcode: postcode
+        },
         withCredentials: true
       });
     };

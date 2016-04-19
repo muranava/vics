@@ -164,13 +164,12 @@ public class PafServerStub {
                         .withHeader(CONTENT_TYPE, "application/json")));
     }
 
-    public void willSearchVoters(String wardCode, String postCode, String lastName) throws IOException {
-        String jsonData = Resources.toString(getResource("json/paf-voter-search-response.json"), UTF_8);
+    public void willSearchVoters(String postCode, String lastName) throws IOException {
+        String jsonData = Resources.toString(getResource("json/paf-search-voter.json"), UTF_8);
 
         String url = "/v1/voter/search";
         wireMock.register(get(urlPathMatching(url))
                 .withQueryParam("postcode", equalTo(postCode))
-                .withQueryParam("ward_code", equalTo(wardCode))
                 .withQueryParam("surname", equalTo(lastName))
                 .willReturn(aResponse()
                         .withHeader(CONTENT_TYPE, "application/json")

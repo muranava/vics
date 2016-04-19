@@ -23,6 +23,25 @@ angular
       }
     };
   })
+  .filter('voterAddressFormat', function() {
+    return function(voter) {
+      var address = voter.address;
+      var parts = [address.sub_building_name, address.building_name, address.dependent_street, address.main_street, _.capitalize(address.post_town)];
+      var presentParts =_.filter(parts, function(part) {
+        return !_.isEmpty(part);
+      });
+      return presentParts.join(", ");
+    };
+  })
+  .filter('ernToShortForm', function() {
+    return function (longForm) {
+      if (_.isString(longForm)) {
+        var parts = longForm.split("-");
+        parts.shift();
+        return parts.join("-");
+      }
+    };
+  })
   .filter('streetSingleLineFilter', function () {
     function toTitleCase(str) {
       return str.replace(/\w\S*/g, function (txt) {
