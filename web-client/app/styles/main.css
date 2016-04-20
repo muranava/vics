@@ -277,13 +277,22 @@ div.worldmap.box {
   padding-right: 10% !important;
 }
 .angular-google-map-container {
-  height: 600px;
+  height: 550px;
 }
-.app-wrapper {
+.loginWrapper {
   height: 100% !important;
   width: 100% !important;
+  -webkit-transition: none !important;
 }
-#content {
-  height: 100% !important;
+img {
+  transition: none !important;
 }
+.loginCard {
+  position: absolute;
+  top:0;
+  bottom: 0;
+  left: 0;
+  right: 0;
 
+  margin: auto;
+}

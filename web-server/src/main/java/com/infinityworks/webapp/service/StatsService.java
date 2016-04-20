@@ -2,6 +2,7 @@ package com.infinityworks.webapp.service;
 
 import com.infinityworks.webapp.converter.MostCanvassedQueryConverter;
 import com.infinityworks.webapp.converter.TopCanvasserQueryConverter;
+import com.infinityworks.webapp.repository.RecordContactLogRepository;
 import com.infinityworks.webapp.repository.StatsJdbcRepository;
 import com.infinityworks.webapp.repository.StatsRepository;
 import com.infinityworks.webapp.rest.dto.AllStatsResponse;
@@ -18,6 +19,7 @@ import static java.util.stream.Collectors.toList;
 public class StatsService {
 
     private final StatsRepository repository;
+    private final RecordContactLogRepository recordContactLogRepository;
     private final StatsJdbcRepository statsJdbcRepository;
     private final TopCanvasserQueryConverter topCanvasserQueryConverter;
     private final MostCanvassedQueryConverter mostCanvassedQueryConverter;
@@ -25,10 +27,11 @@ public class StatsService {
 
     @Autowired
     public StatsService(StatsRepository repository,
-                        StatsJdbcRepository statsJdbcRepository,
+                        RecordContactLogRepository recordContactLogRepository, StatsJdbcRepository statsJdbcRepository,
                         TopCanvasserQueryConverter topCanvasserQueryConverter,
                         MostCanvassedQueryConverter mostCanvassedQueryConverter) {
         this.repository = repository;
+        this.recordContactLogRepository = recordContactLogRepository;
         this.statsJdbcRepository = statsJdbcRepository;
         this.topCanvasserQueryConverter = topCanvasserQueryConverter;
         this.mostCanvassedQueryConverter = mostCanvassedQueryConverter;
@@ -59,6 +62,10 @@ public class StatsService {
         return statsJdbcRepository.countCanvassedPastDays(days);
     }
 
+    public List<Object[]> recordContactByDate() {
+        return repository.countRecordContactsByDate();
+    }
+
     /**
      * TODO combine into a single query
      */
@@ -68,6 +75,8 @@ public class StatsService {
                 .withTopWards(mostCanvassedWards())
                 .withTopConstituencies(mostCanvassedConstituencies())
                 .withTopCanvassers(topCanvassers())
+                .withTotalContacts(recordContactLogRepository.count())
+                .withRecordContactByDate(recordContactByDate())
                 .build();
     }
 }

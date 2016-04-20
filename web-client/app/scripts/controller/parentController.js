@@ -4,6 +4,8 @@
 angular
   .module('canvass')
   .controller('parentController', function ($location, $scope, authService, $rootScope) {
+    $rootScope.showPasswordReset = false;
+
     function resetMenu() {
       // Added to enforce menus are removed on logout
       if (!$scope.$$phase) {
@@ -29,6 +31,10 @@ angular
     $scope.$on('$routeChangeStart', function () {
       var currentRoute = $location.path(),
         isFullPage = false;
+
+      $rootScope.showPasswordReset = _.startsWith(currentRoute, '/resetpassword') ||
+        _.startsWith(currentRoute, '/newpassword');
+
       _.forEach(fullPageRoutes, function (fullPageRoute) {
         if (_.startsWith(currentRoute, fullPageRoute)) {
           isFullPage = true;

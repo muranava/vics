@@ -26,7 +26,7 @@ angular
     };
     $scope.markers = [];
 
-    $scope.$on('$viewContentLoaded', function() {
+    $scope.$on('$viewContentLoaded', function () {
       $("#postcodeMap .angular-google-map-container").height(250);
     });
 
@@ -80,7 +80,7 @@ angular
       };
 
       if (navigator && navigator.geolocation) {
-        navigator.geolocation.getCurrentPosition(function(pos) {
+        navigator.geolocation.getCurrentPosition(function (pos) {
             $scope.position = new google.maps.LatLng(pos.coords.latitude, pos.coords.longitude);
             var point = JSON.parse(JSON.stringify($scope.position));
             if (_.isObject(point)) {
@@ -89,7 +89,7 @@ angular
                 longitude: point.lng
               };
               geoService.findPostCodeFromCoordinates(point.lat, point.lng)
-                .success(function(response) {
+                .success(function (response) {
                   var result = _.head(response.result);
                   if (result) {
                     $scope.findWard(result.postcode, true);
@@ -98,7 +98,8 @@ angular
                 });
             }
           },
-          function() {}, options);
+          function () {
+          }, options);
       }
     }
 
@@ -126,4 +127,22 @@ angular
     $interval(updateCountdown, 250, 0, true);
 
     getCurrentLocation();
+
+    $scope.canvassedGraph = [
+      ["2016-04-01", 3],
+      ["2016-04-02", 145],
+      ["2016-04-03", 33],
+      ["2016-04-07", 4],
+      ["2016-04-08", 30],
+      ["2016-04-09", 41],
+      ["2016-04-10", 41],
+      ["2016-04-11", 37],
+      ["2016-04-13", 6],
+      ["2016-04-14", 5],
+      ["2016-04-15", 79],
+      ["2016-04-16", 144],
+      ["2016-04-17", 223],
+      ["2016-04-20", 1]
+    ];
+    
   });

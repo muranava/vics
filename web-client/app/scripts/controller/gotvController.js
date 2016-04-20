@@ -171,6 +171,13 @@ angular
       return flags;
     }
 
+    $scope.getRatioCanvassed = function (numCanvassed, numVoters) {
+      if (numCanvassed === 0 && numVoters === 0) {
+        return 100;
+      }
+      return Math.round(numCanvassed / numVoters * 100);
+    };
+
     $scope.onShowPopupMap = function (street) {
       var streetLabel = $filter('streetSingleLineFilter')(street);
       geoService.reverseLookupAddresses(extractStreetInfoForGeocoding([street]))

@@ -14,5 +14,7 @@ public interface AllStatsResponse {
     List<StatsResponse> topCanvassers();
     List<StatsResponse> topWards();
     List<StatsResponse> topConstituencies();
+    List<Object[]> recordContactByDate();
+    long totalContacts();
     long canvassedThisWeek();
 }

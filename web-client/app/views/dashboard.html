@@ -3,8 +3,9 @@
     <br>
     <div class="row">
       <div class="col-xs-12 text-center">
-        <h1 class="text-light"><i class="fa fa-clock-o fa-fw fa-2x text-danger"> </i>Referendum <strong
-          class="text-danger">Countdown</strong></h1>
+        <h1 class="text-light"><i class="fa fa-clock-o fa-fw fa-2x text-danger"> </i>
+          Referendum <strong class="text-danger">Countdown</strong>
+        </h1>
       </div>
     </div>
     <br/><br>
@@ -111,9 +112,15 @@
         <div class="card">
           <div class="card-head">
             <ul class="nav nav-tabs nav-justified" data-toggle="tabs">
-              <li ng-class="{'tab-pane': true, 'active': currentTab === 'activists'}"><a class="cursor-hand" ng-click="changeLeaderboardTab('activists')">Activists</a></li>
-              <li ng-class="{'tab-pane': true, 'active': currentTab === 'wards'}"><a class="cursor-hand" ng-click="changeLeaderboardTab('wards')">Wards</a></li>
-              <li ng-class="{'tab-pane': true, 'active': currentTab === 'constituencies'}"><a class="cursor-hand" ng-click="changeLeaderboardTab('constituencies')">Constituencies</a></li>
+              <li ng-class="{'tab-pane': true, 'active': currentTab === 'activists'}"><a class="cursor-hand"
+                                                                                         ng-click="changeLeaderboardTab('activists')">Activists</a>
+              </li>
+              <li ng-class="{'tab-pane': true, 'active': currentTab === 'wards'}"><a class="cursor-hand"
+                                                                                     ng-click="changeLeaderboardTab('wards')">Wards</a>
+              </li>
+              <li ng-class="{'tab-pane': true, 'active': currentTab === 'constituencies'}"><a class="cursor-hand"
+                                                                                              ng-click="changeLeaderboardTab('constituencies')">Constituencies</a>
+              </li>
             </ul>
           </div><!--end .card-head -->
           <div class="card-body tab-content height-9">
@@ -190,23 +197,23 @@
           <div class="card-body height-9">
 
             <div class="row">
-                <form class="form" ng-submit="findWard(postCode)">
-                  <div class="form-group">
-                    <div class="input-group">
-                      <div class="input-group-content">
-                        <input type="text" class="form-control wheres-input" id="groupbutton9"
-                               ng-model="postCode"
-                               uppercased>
-                        <label for="groupbutton9" class="wheres-label">Post Code</label>
-                      </div>
-                      <div class="input-group-btn">
-                        <button class="btn btn-accent-light btn-sm" style="background-color: white; color: black;"
-                                type="submit">Search
-                        </button>
-                      </div>
+              <form class="form" ng-submit="findWard(postCode)">
+                <div class="form-group">
+                  <div class="input-group">
+                    <div class="input-group-content">
+                      <input type="text" class="form-control wheres-input" id="groupbutton9"
+                             ng-model="postCode"
+                             uppercased>
+                      <label for="groupbutton9" class="wheres-label">Post Code</label>
                     </div>
-                  </div><!--end .form-group -->
-                </form>
+                    <div class="input-group-btn">
+                      <button class="btn btn-accent-light btn-sm" style="background-color: white; color: black;"
+                              type="submit">Search
+                      </button>
+                    </div>
+                  </div>
+                </div><!--end .form-group -->
+              </form>
             </div>
 
             <div class="row" style="color: black;">
@@ -226,5 +233,25 @@
       </div>
     </div>
 
-  </div><!--end .section-body -->
+    <div class="row">
+      <div class="col-md-3 col-sm-6">
+        <stat-card count="{{stats.totalContacts}}" label="Total Canvassed"></stat-card>
+      </div>
+      <div class="col-md-3 col-sm-6">
+        <stat-card count="{{stats.canvassedThisWeek}}" label="Canvassed This Week"></stat-card>
+      </div>
+
+      <div class="col-md-6 col-sm-12">
+        <div class="card text-white" style="display: none;">
+          <div class="card-head style-gray">
+            <header>Canvassed Over Time</header>
+          </div>
+          <div class="card-body  text-center style-gray">
+
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 </section>

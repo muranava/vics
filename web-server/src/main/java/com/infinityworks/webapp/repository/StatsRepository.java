@@ -42,4 +42,11 @@ public interface StatsRepository extends JpaRepository<User, UUID> {
                     "LIMIT :limit"
     )
     List<Object[]> countMostRecordContactByWard(@Param("limit") int limit);
+
+    @Query(nativeQuery = true, value =
+    "SELECT CAST(added AS DATE), count(*) " +
+            "FROM record_contact_log " +
+            "WHERE added >= '2010-04-01' AND added < '2016-07-01' " +
+            "GROUP BY CAST(added AS DATE) order by added")
+    List<Object[]> countRecordContactsByDate();
 }

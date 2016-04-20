@@ -1,11 +1,11 @@
-<section style="margin-top: 100px">
+<section style="padding-top: 200px">
   <div class="section-body contain-lg">
     <div class="row">
 
       <div class="col-sm-6">
         <div class="card">
           <div class="card-head">
-            <header>Login</header>
+            <header><strong>VICS</strong> Login</header>
           </div>
           <div class="card-body">
             <form class="form" accept-charset="utf-8" ng-submit="login()">
@@ -18,7 +18,7 @@
                 <input type="password" class="form-control login-input" id="password" name="password"
                        ng-model="credentials.password">
                 <label for="password">Password</label>
-                <p class="help-block"><a ng-href="#/resetpassword">Forgotten?</a>
+                <p class="help-block"><a href="#/resetpassword">Forgotten?</a>
                 </p>
               </div>
               <div class="alert alert-callout alert-danger" role="alert" ng-show="badCredentials">
