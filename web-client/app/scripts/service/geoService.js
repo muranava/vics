@@ -22,7 +22,7 @@ angular
     api.findPostCodeFromCoordinates = function(lat, lng) {
       return $http({
         method: 'GET',
-        url: 'http://postcodes.io/postcodes?lat=' + lat + '&lon=' + lng
+        url: 'https://postcodes.io/postcodes?lat=' + lat + '&lon=' + lng
       });
     };
 
