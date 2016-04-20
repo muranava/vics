@@ -4,6 +4,7 @@ angular
 
     $scope.numStreetsSelected = 0;
     $scope.validationErrors = [];
+    $scope.currentSort = "Priority DESC";
 
     function createRadioItem(name) {
       return {
@@ -16,11 +17,6 @@ angular
       };
     }
 
-    /**
-     * Model for radio buttons (it should be easier than this.
-     * I was able to almost render the UI dynamically from a model, but wan't able to
-     * get it to work with default values, so I went back to the primitive version - time).
-     */
     $scope.radios = [
       createRadioItem('wantsPV'),
       createRadioItem('hasPV'),
@@ -87,6 +83,17 @@ angular
       });
     }
 
+    /**
+     * Sorts the streets by the given field
+     * @param field - either [mainStreet, numVoters, numCanvassed]
+     * @param direction - either asc or desc
+     * @param label - visible label to display in the dropdown
+     */
+    $scope.sortStreets = function (field, direction, label) {
+      $scope.currentSort = label;
+      $scope.streets = _.orderBy($scope.streets, field, direction);
+    };
+
     $scope.onLoadedConstituencies = function (constituencies) {
       if (_.isEmpty(constituencies)) {
         $scope.userHasNoAssociations = true;
@@ -101,7 +108,7 @@ angular
 
       wardService.findStreetsByWard($scope.ward.code)
         .success(function (streets) {
-          $scope.streets = streets;
+          $scope.streets = _.orderBy(streets.streets, 'priority', 'desc');
           scrollToPrintSection();
         });
     };

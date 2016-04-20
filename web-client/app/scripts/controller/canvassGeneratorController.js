@@ -166,7 +166,7 @@ angular
 
       function handleErrorResponse(error) {
         if (error) {
-          toastr.error('Unfortunately we do not have data for the selected streets', 'No data');
+          toastr.warning('Unfortunately we do not have data for the selected streets', 'No data');
         } else {
           toastr.error('Failed to contact server');
         }

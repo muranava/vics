@@ -7,7 +7,6 @@ import com.infinityworks.webapp.error.RestErrorHandler;
 import com.infinityworks.webapp.repository.UserRepository;
 import com.infinityworks.webapp.rest.UserController;
 import com.infinityworks.webapp.rest.WardController;
-import com.infinityworks.webapp.rest.dto.StreetsByWardResponse;
 import com.infinityworks.webapp.rest.dto.UserRestrictedWards;
 import com.infinityworks.webapp.rest.dto.WardSummary;
 import com.infinityworks.webapp.service.*;
@@ -26,8 +25,6 @@ import java.util.UUID;
 import static com.infinityworks.webapp.common.JsonUtil.objectMapper;
 import static java.util.Collections.singletonList;
 import static org.hamcrest.CoreMatchers.not;
-import static org.hamcrest.Matchers.greaterThan;
-import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
@@ -114,12 +111,7 @@ public class WardsTest extends WebApplicationTest {
                 .andDo(print())
                 .andExpect(status().isOk());
 
-        MvcResult result = resultActions.andExpect(status().isOk()).andReturn();
-
-        StreetsByWardResponse streets = objectMapper.readValue(result.getResponse().getContentAsString(), StreetsByWardResponse.class);
-        assertThat(streets.streets(), hasSize(greaterThan(0)));
-        assertThat(streets.stats().canvassed(), is(221));
-        assertThat(streets.stats().voters(), is(550));
+        resultActions.andExpect(status().isOk());
     }
 
     @Test
@@ -135,8 +127,8 @@ public class WardsTest extends WebApplicationTest {
                 .accept(MediaType.APPLICATION_JSON))
                 .andDo(print())
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$[0].name", is("Westwood")))
-                .andExpect(jsonPath("$[1].name", is("Woodlands")));
+                .andExpect(jsonPath("$[0].name", is("Larkswood")))
+                .andExpect(jsonPath("$[1].name", is("Westwood")));
     }
 
     @Test
