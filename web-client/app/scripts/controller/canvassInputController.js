@@ -62,7 +62,6 @@ angular
 
     $scope.onSearchVoter = function () {
       function handleSuccess(voters) {
-        console.log(voters);
         $scope.searchResults = voters;
       }
 
@@ -73,8 +72,7 @@ angular
       if (!$scope.searchForm.surname || !$scope.searchForm.postcode) {
         toastr.error('Please enter username and password', 'Validation Error');
       } else {
-        var surname = _.capitalize($scope.searchForm.surname);
-        electorService.search(surname, $scope.searchForm.postcode)
+        electorService.search($scope.searchForm.surname, $scope.searchForm.postcode)
           .success(handleSuccess)
           .error(handleError);
       }
