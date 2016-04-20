@@ -1,6 +1,6 @@
 angular
   .module('canvass')
-  .controller('gotvController', function ($scope, wardService, electorService, $window) {
+  .controller('gotvController', function ($scope, wardService, $filter, geoService, electorService, $window, toastr, $uibModal) {
 
     $scope.numStreetsSelected = 0;
     $scope.validationErrors = [];
@@ -64,13 +64,6 @@ angular
     $scope.intentionSlider = defaultSliderOptions();
     $scope.likelihoodSlider = defaultSliderOptions();
 
-    $scope.onSearch = function () {
-      wardService.findStreetsByWard($scope.ward.code)
-        .success(function (streets) {
-          $scope.streets = streets;
-        });
-    };
-
     $scope.onSelectConstituency = function () {
       resetErrors();
       $scope.streets = [];
@@ -126,7 +119,7 @@ angular
       var selected = _.filter($scope.streets, function (s) {
         return s.selected;
       });
-      doPrint($scope.ward.code, selected);
+      doPrint($scope.ward.code, selected, false);
     };
 
     $scope.onPrintAll = function () {
@@ -151,7 +144,6 @@ angular
             saveAs(file, $scope.ward.code + '.pdf');
           })
           .error(function(error) {
-            console.log(error);
             $scope.errorLoadingData = error.message;
           });
       }
@@ -177,6 +169,67 @@ angular
         }
       });
       return flags;
+    }
+
+    $scope.onShowPopupMap = function (street) {
+      var streetLabel = $filter('streetSingleLineFilter')(street);
+      geoService.reverseLookupAddresses(extractStreetInfoForGeocoding([street]))
+        .success(function (response) {
+          if (!_.isEmpty(response) && !_.isEmpty(response[0].results)) {
+            var geom = response[0].results[0].geometry;
+            var map = {
+              center: {
+                latitude: geom.location.lat,
+                longitude: geom.location.lng
+              },
+              options: {
+                fullscreenControl: true,
+                fullscreenControlOptions: {
+                  position: google.maps.ControlPosition.RIGHT_TOP
+                },
+                rotateControl: true,
+                scaleControl: true
+              },
+              zoom: 17,
+              street: streetLabel,
+              markers: [{
+                id: 1,
+                latitude: geom.location.lat,
+                longitude: geom.location.lng,
+                show: true,
+                title: streetLabel
+              }]
+            };
+
+            $uibModal.open({
+              animation: true,
+              templateUrl: 'mapModal.html',
+              controller: 'mapModalInstanceCtrl',
+              resolve: {
+                mapData: function () {
+                  return map;
+                }
+              }
+            });
+          } else {
+            toastr.error('Sorry we were unable to geocode that street based on the address', 'No coordinates for address');
+          }
+        });
+    };
+
+    function extractStreetInfoForGeocoding(streets) {
+      function extractPostcode(postcode) {
+        if (!_.isEmpty(postcode.length)) {
+          return _.head(postcode);
+        } else {
+          return "";
+        }
+      }
+
+      return _.map(streets, function (street) {
+        var postcode = extractPostcode(street.postcode);
+        return [street.mainStreet, postcode, street.postTown, " UK"].join(" ");
+      });
     }
 
     function resetErrors() {

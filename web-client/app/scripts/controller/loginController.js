@@ -23,7 +23,7 @@ angular
       authService.logout();
     };
 
-    $scope.onCloseEgg = function() {
+    $scope.onCloseEgg = function () {
       $('#egg').hide();
     };
 

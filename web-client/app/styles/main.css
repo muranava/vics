@@ -8,6 +8,10 @@ body, html { height: 100%; margin: 0;}
   font-size: 12pt;
 }
 
+.text-white {
+  color: white !important;
+}
+
 .gui-controls > li > a {
   font-size: 10pt;
 }
@@ -232,7 +236,9 @@ div.game-center {
 .form-control-line::after {
   background-color: #D92C27 !important;
 }
-
+#backstretch {
+  height: 100% !important;
+}
 rzslider .rz-ticks .rz-tick.rz-selected {
   background: #D92C27 !important;
 }
@@ -273,3 +279,11 @@ div.worldmap.box {
 .angular-google-map-container {
   height: 600px;
 }
+.app-wrapper {
+  height: 100% !important;
+  width: 100% !important;
+}
+#content {
+  height: 100% !important;
+}
+

@@ -4,8 +4,6 @@
 angular
   .module('canvass')
   .controller('parentController', function ($location, $scope, authService, $rootScope) {
-    $rootScope.dropdownOpen = false;
-
     function resetMenu() {
       // Added to enforce menus are removed on logout
       if (!$scope.$$phase) {
@@ -21,17 +19,17 @@ angular
           $location.path('/login');
           _.defer(function () {
             resetMenu();
+            $rootScope.currentUser = null;
           });
         });
-      $rootScope.currentUser = null;
     };
 
     // set the margins depending on the page type
     var fullPageRoutes = ['/login', '/resetpassword', '/newpassword'];
-    $scope.$on('$routeChangeStart', function() {
+    $scope.$on('$routeChangeStart', function () {
       var currentRoute = $location.path(),
         isFullPage = false;
-      _.forEach(fullPageRoutes, function(fullPageRoute) {
+      _.forEach(fullPageRoutes, function (fullPageRoute) {
         if (_.startsWith(currentRoute, fullPageRoute)) {
           isFullPage = true;
         }
@@ -44,5 +42,4 @@ angular
       }
       resetMenu();
     });
-
   });
