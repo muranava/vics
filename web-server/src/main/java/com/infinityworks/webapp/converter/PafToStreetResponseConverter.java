@@ -1,6 +1,7 @@
 package com.infinityworks.webapp.converter;
 
 import com.infinityworks.webapp.clients.paf.dto.PafStreetResponse;
+import com.infinityworks.webapp.rest.dto.ImmutableStreet;
 import com.infinityworks.webapp.rest.dto.Street;
 import org.springframework.stereotype.Component;
 
@@ -10,14 +11,16 @@ import java.util.function.Function;
 public class PafToStreetResponseConverter implements Function<PafStreetResponse, Street> {
     @Override
     public Street apply(PafStreetResponse pafStreet) {
-        return new Street(
-                pafStreet.mainStreet(),
-                pafStreet.postTown(),
-                pafStreet.dependentStreet(),
-                pafStreet.dependentLocality(),
-                pafStreet.voters(),
-                pafStreet.canvassed(),
-                pafStreet.postcode(),
-                pafStreet.priority());
+        return ImmutableStreet
+                .builder()
+                .withMainStreet(pafStreet.mainStreet())
+                .withPostTown(pafStreet.postTown())
+                .withDependentStreet(pafStreet.dependentStreet())
+                .withDependentLocality(pafStreet.dependentLocality())
+                .withNumVoters(pafStreet.voters())
+                .withNumCanvassed(pafStreet.canvassed())
+                .withPostcode(pafStreet.postcode())
+                .withPriority(pafStreet.priority())
+                .build();
     }
 }

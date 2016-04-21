@@ -23,12 +23,12 @@ public class PafToStreetResponseConverterTest {
                 .build()
         );
 
-        assertThat(streetResponse.getMainStreet(), is("mainStreet"));
-        assertThat(streetResponse.getDependentStreet(), is("dependentStreet"));
-        assertThat(streetResponse.getDependentLocality(), is("dependentLocality"));
-        assertThat(streetResponse.getNumCanvassed(), is(10));
-        assertThat(streetResponse.getNumVoters(), is(20));
-        assertThat(streetResponse.getPostTown(), is("postTown"));
-        assertThat(streetResponse.getPriority(), is(2));
+        assertThat(streetResponse.mainStreet(), is("mainStreet"));
+        assertThat(streetResponse.dependentStreet(), is("dependentStreet"));
+        assertThat(streetResponse.dependentLocality(), is("dependentLocality"));
+        assertThat(streetResponse.numCanvassed(), is(10));
+        assertThat(streetResponse.numVoters(), is(20));
+        assertThat(streetResponse.postTown(), is("postTown"));
+        assertThat(streetResponse.priority(), is(2));
     }
 }

@@ -3,6 +3,7 @@ package com.infinityworks.webapp.testsupport;
 import com.infinityworks.webapp.clients.paf.dto.*;
 import com.infinityworks.webapp.domain.PasswordResetToken;
 import com.infinityworks.webapp.domain.User;
+import com.infinityworks.webapp.rest.dto.ImmutableStreet;
 
 import java.time.LocalDateTime;
 
@@ -50,6 +51,18 @@ public class Fixtures {
                 .withHasPV(true)
                 .withInaccessible(false)
                 .withLift(false);
+    }
+
+    public static ImmutableStreet.Builder street() {
+        return ImmutableStreet.builder()
+                .withNumCanvassed(10)
+                .withNumVoters(245)
+                .withDependentLocality("dependentLocality")
+                .withDependentStreet("dependentStreet")
+                .withMainStreet("mainStreet")
+                .withPostcode("postCode")
+                .withPostTown("postTown")
+                .withPriority(0);
     }
 
     public static ImmutableIssues.Builder issuesWithDefaults() {
