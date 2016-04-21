@@ -70,6 +70,8 @@ public class VoterService {
     /**
      * Generates a PDF with the electorsByStreet grouped by the given streets.
      *
+     * TODO also needs to support GOTV filter parameters
+     *
      * @param tableBuilder constructs the table
      * @param request      the streets and filter criteria to search electorsByStreet for
      * @param wardCode     the ward code associated with the streets

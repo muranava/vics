@@ -1,6 +1,5 @@
 package com.infinityworks.webapp.testsupport.builder.downstream;
 
-
 import com.infinityworks.webapp.rest.dto.Flags;
 
 public class FlagsBuilder {
@@ -13,6 +12,7 @@ public class FlagsBuilder {
     private Boolean needsLift;
     private Boolean notCanvassedYet;
     private Boolean poster;
+    private Boolean telephone;
 
     public static FlagsBuilder flags() {
         return new FlagsBuilder().withDefaults();
@@ -67,7 +67,13 @@ public class FlagsBuilder {
         return this;
     }
 
+
+    public FlagsBuilder withTelephone(Boolean telephone) {
+        this.telephone = telephone;
+        return this;
+    }
+
     public Flags build() {
-        return new Flags(intentionFrom, intentionTo, likelihoodFrom, likelihoodTo, hasPV, wantsPv, needsLift, notCanvassedYet, poster);
+        return new Flags(intentionFrom, intentionTo, likelihoodFrom, likelihoodTo, hasPV, wantsPv, needsLift, notCanvassedYet, poster, telephone);
     }
 }

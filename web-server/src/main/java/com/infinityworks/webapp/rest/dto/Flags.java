@@ -3,6 +3,7 @@ package com.infinityworks.webapp.rest.dto;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.google.common.base.MoreObjects;
 
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
@@ -30,6 +31,7 @@ public class Flags {
     private final Boolean needsLift;
     private final Boolean notCanvassedYet;
     private final Boolean poster;
+    private final Boolean telephone;
 
     @JsonCreator
     public Flags(@JsonProperty("intentionFrom") Integer intentionFrom,
@@ -40,7 +42,8 @@ public class Flags {
                  @JsonProperty("wantsPV") Boolean wantsPv,
                  @JsonProperty("lift") Boolean needsLift,
                  @JsonProperty("canvassed") Boolean notCanvassedYet,
-                 @JsonProperty("poster") Boolean poster) {
+                 @JsonProperty("poster") Boolean poster,
+                 @JsonProperty("telephone") Boolean telephone) {
         this.intentionFrom = intentionFrom;
         this.intentionTo = intentionTo;
         this.likelihoodFrom = likelihoodFrom;
@@ -50,6 +53,7 @@ public class Flags {
         this.needsLift = needsLift;
         this.notCanvassedYet = notCanvassedYet;
         this.poster = poster;
+        this.telephone = telephone;
     }
 
     public Integer getIntentionFrom() {
@@ -86,5 +90,25 @@ public class Flags {
 
     public Boolean getPoster() {
         return poster;
+    }
+
+    public Boolean getTelephone() {
+        return telephone;
+    }
+
+    @Override
+    public String toString() {
+        return MoreObjects.toStringHelper(this)
+                .add("intentionFrom", intentionFrom)
+                .add("intentionTo", intentionTo)
+                .add("likelihoodFrom", likelihoodFrom)
+                .add("likelihoodTo", likelihoodTo)
+                .add("hasPV", hasPV)
+                .add("wantsPv", wantsPv)
+                .add("needsLift", needsLift)
+                .add("notCanvassedYet", notCanvassedYet)
+                .add("poster", poster)
+                .add("telephone", telephone)
+                .toString();
     }
 }

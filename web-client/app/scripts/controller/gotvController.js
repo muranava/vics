@@ -22,7 +22,8 @@ angular
       createRadioItem('hasPV'),
       createRadioItem('lift'),
       createRadioItem('poster'),
-      createRadioItem('canvassed')
+      createRadioItem('canvassed'),
+      createRadioItem('telephone')
     ];
 
     function validateFlagsRadios() {
@@ -63,6 +64,7 @@ angular
 
     $scope.intentionSlider = defaultSliderOptions();
     $scope.likelihoodSlider = defaultSliderOptions();
+    $scope.likelihoodSlider.minValue = 2;
 
     $scope.onSelectConstituency = function () {
       resetErrors();

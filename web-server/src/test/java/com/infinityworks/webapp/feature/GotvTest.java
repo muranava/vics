@@ -10,6 +10,8 @@ import com.infinityworks.webapp.service.GotvService;
 import com.infinityworks.webapp.service.SessionService;
 import org.junit.Before;
 import org.junit.Test;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.context.jdbc.SqlGroup;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
@@ -38,6 +40,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 })
 public class GotvTest extends WebApplicationTest {
     private SessionService sessionService;
+    private Logger log = LoggerFactory.getLogger(GotvTest.class);
 
     @Before
     public void setup() {
@@ -79,12 +82,14 @@ public class GotvTest extends WebApplicationTest {
                 .withFlags(flags)
                 .build();
 
+        String content = objectMapper.writeValueAsString(request);
+        log.info("Gotv canvass card request: {}", content);
+
         mockMvc.perform(post("/gotv/ward/E05001221/street/pdf")
                 .accept("application/pdf")
                 .contentType(APPLICATION_JSON)
-                .content(objectMapper.writeValueAsString(request)))
+                .content(content))
                 .andDo(print())
                 .andExpect(status().isBadRequest());
     }
-
 }
