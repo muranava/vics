@@ -1,58 +1,54 @@
-<section style="padding-top: 200px">
+<section>
+  <div class="section-header">
+    <ol class="breadcrumb">
+      <li class="active">Login</li>
+    </ol>
+  </div>
   <div class="section-body contain-lg">
     <div class="row">
-
       <div class="col-sm-6">
-        <div class="card">
-          <div class="card-head">
-            <header><strong>VICS</strong> Login</header>
+        <br/>
+        <br/><br/>
+        <form class="form" accept-charset="utf-8" ng-submit="login()">
+          <div class="form-group">
+            <input type="text" class="form-control" id="username" name="username" ng-model="credentials.username"
+                   required>
+            <label for="username">Username</label>
           </div>
-          <div class="card-body">
-            <form class="form" accept-charset="utf-8" ng-submit="login()">
-              <div class="form-group">
-                <input type="text" class="form-control login-input" id="username" name="username" ng-model="credentials.username"
-                       required>
-                <label for="username">Username</label>
-              </div>
-              <div class="form-group">
-                <input type="password" class="form-control login-input" id="password" name="password"
-                       ng-model="credentials.password">
-                <label for="password">Password</label>
-                <p class="help-block"><a href="#/resetpassword">Forgotten?</a>
-                </p>
-              </div>
-              <div class="alert alert-callout alert-danger" role="alert" ng-show="badCredentials">
-                <strong>Invalid Credentials</strong>
-                <p>Please retry or contact <a ng-href="mailto:{{supportEmail}}?Subject=Forgot%20Password"
-                                              target="_blank">{{supportEmail}}</a>
-                  to renew your password</p>
-              </div>
-              <div class="alert alert-callout alert-danger" role="alert" ng-show="networkError">
-                <strong>Network Error!</strong> Cannot connect to server
-              </div>
-              <br/>
-              <div class="row">
-                <div class="col-xs-6 text-left">
-                </div>
-                <div class="col-xs-6 text-right">
-                  <button class="btn btn-danger btn-sm" type="submit">Login</button>
-                </div>
-              </div>
-            </form>
+          <div class="form-group">
+            <input type="password" class="form-control" id="password" name="password" ng-model="credentials.password">
+            <label for="password">Password</label>
+            <p class="help-block"><a ng-href="#/resetpassword">Forgotten?</a>
+            </p>
           </div>
-        </div>
-      </div>
-
+          <div class="alert alert-callout alert-danger" role="alert" ng-show="badCredentials">
+            <strong>Invalid Credentials</strong>
+            <p>Please retry or contact <a ng-href="mailto:{{supportEmail}}?Subject=Forgot%20Password" target="_blank">{{supportEmail}}</a>
+              to renew your password</p>
+          </div>
+          <div class="alert alert-callout alert-danger" role="alert" ng-show="networkError">
+            <strong>Network Error!</strong> Cannot connect to server
+          </div>
+          <br/>
+          <div class="row">
+            <div class="col-xs-6 text-left">
+            </div><!--end .col -->
+            <div class="col-xs-6 text-right">
+              <button class="btn btn-danger btn-sm" type="submit">Login</button>
+            </div><!--end .col -->
+          </div><!--end .row -->
+        </form>
+      </div><!--end .col -->
       <div class="col-sm-5 col-sm-offset-1 text-center">
         <br><br>
-        <h3 class="text-white">
+        <h3 class="text-light">
           No account yet?
         </h3>
         <a class="btn btn-block btn-danger btn-sm" ng-href="mailto:{{supportEmail}}?Subject=Request%20Access"
            target="_blank">Request access</a>
-      </div>
-    </div>
-  </div>
+      </div><!--end .col -->
+    </div><!--end .row -->
+  </div><!--end .card-body -->
 </section>
 
 <div id="egg" class="egg" style="display:none; text-align: center">

@@ -74,7 +74,7 @@
       <ul class="header-nav header-nav-options">
         <li class="header-nav-brand">
           <div class="brand-holder">
-            <a href="#/dashboard">
+            <a href="#/">
               <span class="text-lg text-bold text-primary"><img src="images/logo.png" alt=""></span>
               <span class="logo-text">VICS</span>
             </a>
@@ -116,14 +116,8 @@
   </div>
 </header>
 
+<div id="base">
 
-<div class="loginWrapper" ng-if="!currentUser && !showPasswordReset" ng-controller="loginController">
-  <div class="loginWrapper" backstretch backstretch-images="images" backstretch-duration="10000">
-    <div class="loginCard" ng-include="'views/login.html'"></div>
-  </div>
-</div>
-
-<div id="base" ng-if="currentUser || showPasswordReset">
   <div id="content">
     <div ng-view autoscroll="true"></div>
   </div>
@@ -204,6 +198,7 @@
 <script type="text/javascript" src="xlibs/html5shiv.js"></script>
 <![endif]-->
 
+
 <!-- build:js(.) scripts/vendor.js -->
 <!-- bower:js -->
 <script src="bower_components/jquery/dist/jquery.js"></script>
@@ -227,7 +222,6 @@
 <script src="bower_components/angular-toastr/dist/angular-toastr.tpls.js"></script>
 <script src="bower_components/angular-simple-logger/dist/angular-simple-logger.js"></script>
 <script src="bower_components/angular-google-maps/dist/angular-google-maps.js"></script>
-<script src="bower_components/ng-backstretch/dist/ng-backstretch.min.js"></script>
 <!-- endbower -->
 <!-- endbuild -->
 

@@ -22,8 +22,7 @@ angular
     'rzModule',
     'ngCsvImport',
     'toastr',
-    'uiGmapgoogle-maps',
-    'ng-backstretch'
+    'uiGmapgoogle-maps'
   ])
   .constant('config', {
     apiUrl: 'http://localhost:18080/api/canvass',
@@ -68,7 +67,7 @@ angular
           $rootScope.currentUser = null;
           deferred.reject();
           if ($location.path() === '/dashboard') {
-            $location.path('/');
+            $location.path('/login');
           } else {
             $location.path('/dashboard');
           }
@@ -166,9 +165,6 @@ angular
           auth: userAuth
         }
       })
-      .when('/', {
-        template: ''
-      })
       .otherwise({
         redirectTo: '/dashboard'
       });
@@ -180,7 +176,7 @@ angular
       function error(response) {
         var status = response.status;
         if (status === 401 || status === 403) {
-          return $location.path('/');
+          return $location.path('/login');
         } else {
           return $q.reject(response);
         }

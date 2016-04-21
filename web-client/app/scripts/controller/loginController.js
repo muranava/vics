@@ -1,15 +1,7 @@
 angular
   .module('canvass')
-  .controller('loginController', function ($scope, $http, $location, authService, $window, $animate) {
-    $animate.enabled(false);
-    $scope.images = [
-      "https://d3n8a8pro7vhmx.cloudfront.net/voteleave/pages/2187/attachments/original/1457722450/splash-1.jpg",
-      "https://d3n8a8pro7vhmx.cloudfront.net/voteleave/pages/2187/attachments/original/1457722446/splash-2.jpg",
-      "https://d3n8a8pro7vhmx.cloudfront.net/voteleave/pages/2187/attachments/original/1457722443/splash-3.jpg",
-      "https://d3n8a8pro7vhmx.cloudfront.net/voteleave/pages/2187/attachments/original/1457722430/splash-5.jpg",
-      "https://d3n8a8pro7vhmx.cloudfront.net/voteleave/pages/2187/attachments/original/1457722423/splash-6.jpg",
-      "https://d3n8a8pro7vhmx.cloudfront.net/voteleave/pages/2187/attachments/original/1457661894/o11o.jpg"
-    ];
+  .controller('loginController', function ($scope, $http, $location, authService, $window) {
+
     $scope.failedLogin = false;
     $scope.credentials = {};
 
