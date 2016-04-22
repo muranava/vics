@@ -33,7 +33,6 @@ angular
     statsService.allStats()
       .success(function (response) {
         $scope.stats = response;
-        console.log( mapWeeklyCanvassStatsToCalendar($scope.stats.recordContactByDate));
         $scope.data = [{
             key: "Total Canvassed",
             values: mapWeeklyCanvassStatsToCalendar($scope.stats.recordContactByDate)
@@ -169,7 +168,6 @@ angular
         tooltip: {
           contentGenerator: function (e) {
             var series = e.series[0];
-            console.log(e);
             if (series.value === null) {
               return;
             }
