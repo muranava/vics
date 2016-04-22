@@ -127,8 +127,8 @@ public class WardsTest extends WebApplicationTest {
                 .accept(MediaType.APPLICATION_JSON))
                 .andDo(print())
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$[0].name", is("Larkswood")))
-                .andExpect(jsonPath("$[1].name", is("Westwood")));
+                .andExpect(jsonPath("$[0].name", is("Joydens Wood")))
+                .andExpect(jsonPath("$[1].name", is("Larkswood")));
     }
 
     @Test

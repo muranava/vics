@@ -61,11 +61,10 @@ angular
 
         wardService.findStreetsByWard($scope.wardSearchModel.code)
           .success(function (streets) {
-            var streetsTx = removeStreetsWithoutVoters(streets);
-            if (streetsTx && streetsTx.stats) {
-              $scope.wardVotersCanvassed = streetsTx.stats.canvassed;
-              $scope.wardTotalVoters = streetsTx.stats.voters;
-              $scope.streets = _.orderBy(streetsTx.streets, 'priority', 'desc');
+            if (streets && streets.stats) {
+              $scope.wardVotersCanvassed = streets.stats.canvassed;
+              $scope.wardTotalVoters = streets.stats.voters;
+              $scope.streets = _.orderBy(streets.streets, 'priority', 'desc');
               scrollToPrintSection();
             }
           })
@@ -73,15 +72,6 @@ angular
             toastr.error('Failed to load streets for ward', 'Error');
           });
       };
-
-      function removeStreetsWithoutVoters(streetsResponse) {
-        return {
-          stats: streetsResponse.stats,
-          streets: _.filter(streetsResponse.streets, function (street) {
-            return street.numVoters !== 0;
-          })
-        };
-      }
 
       function scrollToPrintSection() {
         _.defer(function () {

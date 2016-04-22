@@ -1,6 +1,7 @@
 package com.infinityworks.webapp.clients.paf.dto;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import org.immutables.value.Value;
@@ -20,7 +21,7 @@ public interface Issues {
         return false;
     }
     @Value.Default
-    default Boolean border() {
+    default @JsonProperty("borders") Boolean border() {
         return false;
     }
 }

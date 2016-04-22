@@ -36,5 +36,21 @@ angular
       });
     };
 
+    api.canvassedByWeekAndWard = function(code) {
+      return $http({
+        method: 'GET',
+        url: apiUrl + '/stats/ward/' + code + '/weekly',
+        withCredentials: true
+      });
+    };
+
+    api.canvassedByWeekAndConstituency = function(code) {
+      return $http({
+        method: 'GET',
+        url: apiUrl + '/stats/constituency/' + code + '/weekly',
+        withCredentials: true
+      });
+    };
+
     return api;
   });

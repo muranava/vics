@@ -6,14 +6,16 @@ import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import org.immutables.value.Value;
 
-import javax.annotation.Nullable;
-
 @Value.Immutable
 @JsonIgnoreProperties(ignoreUnknown = true)
 @Value.Style(init = "with*")
 @JsonDeserialize(as = ImmutableInfo.class)
 @JsonSerialize(as = ImmutableInfo.class)
 public interface Info {
-    @Nullable @JsonProperty("phone") String telephone();
-    @Nullable @JsonProperty("email") String email();
+    @Value.Default @JsonProperty("phone") default String telephone() {
+        return "";
+    }
+    @Value.Default @JsonProperty("email") default String email() {
+        return "";
+    }
 }

@@ -4,6 +4,7 @@ import com.infinityworks.webapp.service.StatsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
@@ -11,7 +12,6 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/stats")
 public class StatsController {
-
     private final StatsService statsService;
 
     @Autowired
@@ -35,6 +35,18 @@ public class StatsController {
     @RequestMapping(value = "/topwards", method = RequestMethod.GET)
     public ResponseEntity<?> mostCanavassedWards() {
         return ResponseEntity.ok(statsService.mostCanvassedWards());
+    }
+
+    @PreAuthorize("isAuthenticated()")
+    @RequestMapping(value = "/ward/{wardCode}/weekly", method = RequestMethod.GET)
+    public ResponseEntity<?> recordContactByDateAndWard(@PathVariable("wardCode") String wardCode) {
+        return ResponseEntity.ok(statsService.countRecordContactsByDateAndWard(wardCode));
+    }
+
+    @PreAuthorize("isAuthenticated()")
+    @RequestMapping(value = "/constituency/{constituencyCode}/weekly", method = RequestMethod.GET)
+    public ResponseEntity<?> recordContactByDateAndConstituency(@PathVariable("constituencyCode") String constituencyCode) {
+        return ResponseEntity.ok(statsService.countRecordContactsByDateAndConstituency(constituencyCode));
     }
 
     @PreAuthorize("isAuthenticated()")

@@ -38,7 +38,7 @@ canvass:
   cors:
     hosts: "*"
     methods:  "POST, GET, PUT, OPTIONS, DELETE"
-  pafApiBaseUrl: https://134.213.133.29/v1/
+  pafApiBaseUrl: https://api.voteleave.uk/v1/
   pafApiToken: 90f88caae35a5b863ae2450b55688a559b52a343
   pafApiTimeout: 60000
   addressLookupBaseUrl: https://maps.googleapis.com/maps/api/

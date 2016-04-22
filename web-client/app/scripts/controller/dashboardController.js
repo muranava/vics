@@ -1,13 +1,16 @@
 angular
   .module('canvass')
-  .controller('dashboardController', function ($interval, $scope, statsService, toastr, geoService, calendar) {
+  .controller('dashboardController', function ($interval, $scope, statsService, toastr, geoService, calendar, $uibModal, wardService, constituencyService) {
     var referendumDate = new Date(2016, 5, 23, 22, 0),
       secondsInDay = 86400,
-      secondsInHour = 3600;
+      secondsInHour = 3600,
+      searchLimit = 15;
 
     $scope.currentTab = 'activists';
     $scope.constituencyName = '';
     $scope.wardName = '';
+    $scope.showCanvassedGraph = false;
+    $scope.graphLabel = "All";
 
     $scope.map = {
       center: {
@@ -34,9 +37,9 @@ angular
       .success(function (response) {
         $scope.stats = response;
         $scope.data = [{
-            key: "Total Canvassed",
-            values: mapWeeklyCanvassStatsToCalendar($scope.stats.recordContactByDate)
-          }];
+          key: "Total Canvassed",
+          values: mapWeeklyCanvassStatsToCalendar($scope.stats.recordContactByDate)
+        }];
       });
 
     $scope.changeLeaderboardTab = function (tabName) {
@@ -107,6 +110,61 @@ angular
       }
     }
 
+    $scope.onWardInputKeypress = function () {
+      wardService.search($scope.wardSearchModel, searchLimit)
+        .success(function (response) {
+          $scope.wards = response;
+        });
+    };
+
+    $scope.onSetWard = function () {
+      if ($scope.wardSearchModel && $scope.wardSearchModel.id) {
+        statsService.canvassedByWeekAndConstituency($scope.wardSearchModel.code)
+          .success(function (response) {
+            $scope.onShowWeeklyStatsConfig();
+            var data = [{
+              key: "Total Canvassed",
+              values: mapWeeklyCanvassStatsToCalendar(response)
+            }];
+            _.defer(function () {
+              $scope.api.updateWithData(data);
+            });
+            $scope.graphLabel = $scope.wardSearchModel.name;
+            $scope.wardSearchModel = null;
+          });
+      } else {
+        $scope.invalidWard = true;
+      }
+    };
+
+    $scope.onSetConstituency = function () {
+      if ($scope.constituencySearchModel && $scope.constituencySearchModel.id) {
+        statsService.canvassedByWeekAndConstituency($scope.constituencySearchModel.code)
+          .success(function (response) {
+            $scope.onShowWeeklyStatsConfig();
+            var data = [{
+              key: "Total Canvassed",
+              values: mapWeeklyCanvassStatsToCalendar(response)
+            }];
+            _.defer(function () {
+              $scope.api.updateWithData(data);
+            });
+            $scope.graphLabel = $scope.constituencySearchModel.name;
+            $scope.constituencySearchModel = null;
+          });
+      } else {
+        $scope.invalidConstituency = true;
+      }
+    };
+
+    $scope.onConstituencyInputKeypress = function () {
+      $scope.invalidConstituency = false;
+      constituencyService.search($scope.constituencySearchModel, searchLimit)
+        .success(function (response) {
+          $scope.constituencies = response;
+        });
+    };
+
     function updateCountdown() {
       // get total seconds between the times
       var delta = Math.abs(referendumDate - new Date()) / 1000;
@@ -133,7 +191,7 @@ angular
     getCurrentLocation();
 
     function mapWeeklyCanvassStatsToCalendar(canvassedByWeek) {
-      var stats = _.map(canvassedByWeek, function(e) {
+      var stats = _.map(canvassedByWeek, function (e) {
         return {
           count: _.parseInt(e[0]),
           week: _.parseInt(e[1])
@@ -141,7 +199,7 @@ angular
       });
 
       return calendar.campaignWeeks().map(function (calendarWeek) {
-        var currWeek = _.find(stats, function(stat) {
+        var currWeek = _.find(stats, function (stat) {
           return stat.week === calendarWeek.week;
         });
         return {
@@ -151,6 +209,10 @@ angular
         };
       });
     }
+
+    $scope.onShowWeeklyStatsConfig = function () {
+      $scope.showCanvassedGraph = !$scope.showCanvassedGraph;
+    };
 
     $scope.options = {
       chart: {
@@ -198,7 +260,6 @@ angular
                 "</tbody>" +
                 "</table>";
             }
-
           }
         },
         useInteractiveGuideline: true,

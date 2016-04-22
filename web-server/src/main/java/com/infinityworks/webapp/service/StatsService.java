@@ -66,6 +66,14 @@ public class StatsService {
         return repository.countRecordContactsByDate();
     }
 
+    public List<Object[]> countRecordContactsByDateAndConstituency(String constituencyCode) {
+        return repository.countRecordContactsByDateAndConstituency(constituencyCode);
+    }
+
+    public List<Object[]> countRecordContactsByDateAndWard(String wardCode) {
+        return repository.countRecordContactsByDateAndWard(wardCode);
+    }
+
     /**
      * TODO combine into a single query
      */

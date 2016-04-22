@@ -42,11 +42,10 @@
               </div>
             </div>
 
-          </div><!--end .card-body -->
-
-        </div><!--end .card -->
-      </div><!--end .col -->
-    </div><!--end .row -->
+          </div>
+        </div>
+      </div>
+    </div>
 
     <!-- Days -->
     <div class="row hidden-xs">
@@ -244,11 +243,76 @@
       <div class="col-md-6 col-sm-12">
         <div class="card">
           <div class="card-head">
-            <header>Weekly Canvassing Totals</header>
+            <header>Weekly Totals (<span ng-if="currentUser.role === 'ADMIN'">{{graphLabel}})</span></header>
+            <div class="tools" ng-if="currentUser.role === 'ADMIN'">
+              <div class="btn-group">
+                <a ng-show="showCanvassedGraph" ng-click="onShowWeeklyStatsConfig()" class="btn btn-icon-toggle btn-refresh"><i class="md md-undo"></i></a>
+                <a ng-show="!showCanvassedGraph" ng-click="onShowWeeklyStatsConfig()" class="btn btn-icon-toggle btn-refresh"><i class="fa fa-gear"></i></a>
+              </div>
+            </div>
           </div>
-          <div class="card-body text-center">
-            <nvd3 options="options" data="data"></nvd3>
+
+          <!-- graph -->
+          <div class="card-body text-center" ng-show="!showCanvassedGraph">
+            <nvd3 options="options" data="data" api="api"></nvd3>
           </div>
+
+          <!-- config -->
+          <div class="card-body text-center" ng-show="showCanvassedGraph">
+            <form class="form" ng-submit="onSetWard()">
+              <div class="form-group">
+                <div class="input-group">
+                  <div class="input-group-btn">
+                    <button class="btn btn-success btn-sm" type="submit">
+                      GO
+                    </button>
+                  </div>
+                  <div class="input-group-content">
+
+                    <input type="text"
+                           ng-change="onWardInputKeypress()"
+                           ng-readonly="readOnlyConstituency"
+                           placeholder="Type a ward name"
+                           id="wardInputID"
+                           ng-model="wardSearchModel"
+                           typeahead="w as w.name + ' (' + w.code + ') in ' + w.constituency.name for w in wards | filter:$viewValue | limitTo:50"
+                           typeahead-on-select="onSelectConstituency()"
+                           typeahead-loading="true"
+                           class="form-control">
+                  </div>
+                </div>
+
+              </div>
+            </form>
+
+            <br>
+
+            <form class="form" ng-submit="onSetConstituency()">
+              <div class="form-group">
+                <div class="input-group">
+                  <div class="input-group-btn">
+                    <button class="btn btn-success btn-sm" type="submit">
+                      GO
+                    </button>
+                  </div>
+                  <div class="input-group-content">
+                    <input type="text"
+                           ng-change="onConstituencyInputKeypress()"
+                           ng-readonly="readOnlyConstituency"
+                           id="constituencyInputID"
+                           placeholder="Type a constituency name"
+                           ng-model="constituencySearchModel"
+                           typeahead="c as c.name + ' (' + c.code + ')' for c in constituencies | filter:$viewValue | limitTo:8"
+                           typeahead-on-select="onSelectConstituency()"
+                           typeahead-loading="true"
+                           class="form-control" id="pw1">
+                  </div>
+                </div>
+              </div>
+            </form>
+
+          </div>
+
         </div>
       </div>
     </div>

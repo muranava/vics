@@ -7,6 +7,8 @@ import org.springframework.stereotype.Component;
 
 import java.util.function.BiFunction;
 
+import static java.util.Optional.ofNullable;
+
 @Component
 public class RecordContactToPafConverter implements BiFunction<User, RecordContactRequest, com.infinityworks.webapp.clients.paf.dto.RecordContactRequest> {
     private static final String CONTACT_TYPE = "canvass";
@@ -34,8 +36,8 @@ public class RecordContactToPafConverter implements BiFunction<User, RecordConta
                 .build();
 
         Info info = ImmutableInfo.builder()
-                .withTelephone(contactRequest.getTelephone())
-                .withEmail(contactRequest.getEmail())
+                .withTelephone(ofNullable(contactRequest.getTelephone()).orElse(""))
+                .withEmail(ofNullable(contactRequest.getEmail()).orElse(""))
                 .build();
 
         return ImmutableRecordContactRequest.builder()

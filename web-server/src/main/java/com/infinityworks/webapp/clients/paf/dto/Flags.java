@@ -33,7 +33,7 @@ public interface Flags {
         return false;
     }
     @Value.Default
-    default Boolean poster() {
+    default @JsonProperty("wants_poster") Boolean poster() {
         return false;
     }
 }
