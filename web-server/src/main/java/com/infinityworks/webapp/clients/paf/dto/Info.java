@@ -14,6 +14,6 @@ import javax.annotation.Nullable;
 @JsonDeserialize(as = ImmutableInfo.class)
 @JsonSerialize(as = ImmutableInfo.class)
 public interface Info {
-    @Nullable @JsonProperty("telephone") String telephone();
+    @Nullable @JsonProperty("phone") String telephone();
     @Nullable @JsonProperty("email") String email();
 }

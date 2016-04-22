@@ -10,9 +10,7 @@ import java.math.BigInteger;
 import java.util.List;
 
 import static org.hamcrest.CoreMatchers.is;
-import static org.hamcrest.Matchers.equalTo;
-import static org.hamcrest.Matchers.hasSize;
-import static org.hamcrest.Matchers.lessThanOrEqualTo;
+import static org.hamcrest.Matchers.*;
 import static org.junit.Assert.assertThat;
 
 @SqlGroup({
@@ -27,7 +25,7 @@ import static org.junit.Assert.assertThat;
 })
 public class StatsRepositoryTest extends RepositoryTest {
 
-    @Autowired private StatsRepository repository;
+    @Autowired private StatsRepository statsRepository;
     @Autowired private StatsJdbcRepository jdbcRepository;
     @Autowired private RecordContactLogRepository contactLogRepository;
     @Autowired private UserRepository userRepository;
@@ -36,12 +34,12 @@ public class StatsRepositoryTest extends RepositoryTest {
     @Test
     public void returnsTheTopCanvassers() throws Exception {
         int limit = 5;
-        List<Object[]> logsByUser = repository.countRecordContactByUser(limit);
+        List<Object[]> logsByUser = statsRepository.countRecordContactByUser(limit);
 
         assertThat(logsByUser, hasSize(lessThanOrEqualTo(limit)));
         assertThat(logsByUser.get(0)[1], is("Dion"));
         assertThat(logsByUser.get(0)[2], is("Dublin"));
-        assertThat(logsByUser.get(0)[3], is(BigInteger.valueOf(6)));
+        assertThat(logsByUser.get(0)[3], is(BigInteger.valueOf(5)));
 
         assertThat(logsByUser.get(1)[3], is(BigInteger.valueOf(2)));
         assertThat(logsByUser.get(2)[3], is(BigInteger.valueOf(1)));
@@ -52,27 +50,27 @@ public class StatsRepositoryTest extends RepositoryTest {
     @Test
     public void returnsTheTopConstituencies() throws Exception {
         int limit = 5;
-        List<Object[]> logsByUser = repository.countMostRecordContactByConstituency(limit);
+        List<Object[]> logsByUser = statsRepository.countMostRecordContactByConstituency(limit);
 
         assertThat(logsByUser, hasSize(lessThanOrEqualTo(limit)));
         assertThat(logsByUser.get(0)[0], is("Coventry South"));
-        assertThat(logsByUser.get(0)[1], is(BigInteger.valueOf(10)));
+        assertThat(logsByUser.get(0)[1], is(BigInteger.valueOf(6)));
 
         assertThat(logsByUser.get(1)[0], is("Richmond Park"));
-        assertThat(logsByUser.get(1)[1], is(BigInteger.valueOf(2)));
+        assertThat(logsByUser.get(1)[1], is(BigInteger.valueOf(1)));
     }
 
     @Test
     public void returnsTheTopWards() throws Exception {
         int limit = 5;
-        List<Object[]> logsByUser = repository.countMostRecordContactByWard(limit);
+        List<Object[]> logsByUser = statsRepository.countMostRecordContactByWard(limit);
 
         assertThat(logsByUser, hasSize(lessThanOrEqualTo(limit)));
         assertThat(logsByUser.get(0)[0], is("Wainbody"));
-        assertThat(logsByUser.get(0)[1], is(BigInteger.valueOf(9)));
+        assertThat(logsByUser.get(0)[1], is(BigInteger.valueOf(5)));
 
         assertThat(logsByUser.get(1)[0], is("Canbury"));
-        assertThat(logsByUser.get(1)[1], is(BigInteger.valueOf(2)));
+        assertThat(logsByUser.get(1)[1], is(BigInteger.valueOf(1)));
 
         assertThat(logsByUser.get(2)[0], is("Binley and Willenhall"));
         assertThat(logsByUser.get(2)[1], is(BigInteger.valueOf(1)));
@@ -80,7 +78,6 @@ public class StatsRepositoryTest extends RepositoryTest {
 
     @Test
     public void returnsTheCanvassedContactsOverThePast7Days() throws Exception {
-
         RecordContactLog log1 = new RecordContactLog(userRepository.findAll().get(0), wardRepository.findAll().get(0), "E00900001-ADD-123-0");
         RecordContactLog log2 = new RecordContactLog(userRepository.findAll().get(1), wardRepository.findAll().get(0), "E00900001-BUU-321-0");
 
@@ -90,5 +87,38 @@ public class StatsRepositoryTest extends RepositoryTest {
         int count = jdbcRepository.countCanvassedPastDays(7);
 
         assertThat(count, equalTo(2));
+    }
+
+    @Test
+    public void recordsTheTotalCanvassedByWeekAndWard() throws Exception {
+        String wainbodyCode = "E05001231"; // 10
+        String canburyCode = "E05000403"; // 2
+        String binleyCode = "E05001219"; // 1
+
+        List<Object[]> countWainbody = statsRepository.countRecordContactsByDateAndWard(wainbodyCode);
+        int wainbodyCount = countWainbody.stream().mapToInt(a -> Integer.parseInt(a[0].toString())).sum();
+        assertThat(wainbodyCount, is(10));
+
+        List<Object[]> countCanbury = statsRepository.countRecordContactsByDateAndWard(canburyCode);
+        int countsCanbury = countCanbury.stream().mapToInt(a -> Integer.parseInt(a[0].toString())).sum();
+        assertThat(countsCanbury, is(2));
+
+        List<Object[]> counts = statsRepository.countRecordContactsByDateAndWard(binleyCode);
+        int count = counts.stream().mapToInt(a -> Integer.parseInt(a[0].toString())).sum();
+        assertThat(count, is(1));
+    }
+
+    @Test
+    public void recordsTheTotalCanvassedByWeekAndConstituency() throws Exception {
+        String richmondCode = "E14000896";
+        String coventryCode = "E14000651";
+
+        List<Object[]> countRichmond = statsRepository.countRecordContactsByDateAndConstituency(richmondCode);
+        int richmondCount = countRichmond.stream().mapToInt(a -> Integer.parseInt(a[0].toString())).sum();
+        assertThat(richmondCount, is(2));
+
+        List<Object[]> countCov = statsRepository.countRecordContactsByDateAndConstituency(coventryCode);
+        int countsCov = countCov.stream().mapToInt(a -> Integer.parseInt(a[0].toString())).sum();
+        assertThat(countsCov, is(11));
     }
 }

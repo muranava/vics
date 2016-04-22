@@ -97,13 +97,23 @@ angular
     };
 
     $scope.onSelectWard = function (directiveModel) {
+      function removeStreetsWithoutVoters(streetsResponse) {
+        return {
+          stats: streetsResponse.stats,
+          streets: _.filter(streetsResponse.streets, function (street) {
+            return street.numVoters !== 0;
+          })
+        };
+      }
+
       $scope.ward = directiveModel.ward;
       $scope.constituency = directiveModel.constituency;
       $scope.numStreetsSelected = 0;
 
       wardService.findStreetsByWard($scope.ward.code)
         .success(function (streets) {
-          $scope.streets = _.orderBy(streets.streets, 'priority', 'desc');
+          var streetsTx = removeStreetsWithoutVoters(streets);
+          $scope.streets = _.orderBy(streetsTx.streets, 'priority', 'desc');
           scrollToPrintSection();
         });
     };

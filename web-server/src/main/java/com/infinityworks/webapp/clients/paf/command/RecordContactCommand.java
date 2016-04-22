@@ -7,13 +7,18 @@ import com.infinityworks.webapp.clients.paf.dto.RecordContactRequest;
 import com.infinityworks.webapp.clients.paf.dto.RecordContactResponse;
 import com.netflix.hystrix.HystrixCommand;
 import com.netflix.hystrix.HystrixCommandGroupKey;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import retrofit2.Call;
+
+import static com.infinityworks.webapp.config.Config.objectWriter;
 
 public class RecordContactCommand extends HystrixCommand<Try<RecordContactResponse>> {
     private final String ern;
     private final RecordContactRequest recordContactRequest;
     private final PafClient pafClient;
     private final PafRequestExecutor requestExecutor;
+    private static final Logger log = LoggerFactory.getLogger(RecordContactCommand.class);
 
     public RecordContactCommand(String ern,
                                 RecordContactRequest recordContactRequest,
@@ -29,6 +34,8 @@ public class RecordContactCommand extends HystrixCommand<Try<RecordContactRespon
 
     @Override
     protected Try<RecordContactResponse> run() throws Exception {
+        log.info("Recording contact ern={} body={}", ern, objectWriter.writeValueAsString(recordContactRequest));
+
         Call<RecordContactResponse> call = pafClient.recordContact(ern, recordContactRequest);
         return requestExecutor.execute(call);
     }

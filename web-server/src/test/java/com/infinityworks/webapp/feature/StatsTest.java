@@ -57,7 +57,7 @@ public class StatsTest extends WebApplicationTest {
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$[0].key", is("Dion Dublin")))
-                .andExpect(jsonPath("$[0].count", is(6)))
+                .andExpect(jsonPath("$[0].count", is(5)))
                 .andExpect(jsonPath("$[1].key", is("Ava McCall")))
                 .andExpect(jsonPath("$[1].count", is(2)))
                 .andExpect(jsonPath("$[2].key", is("Samir Ginola")))
@@ -78,9 +78,9 @@ public class StatsTest extends WebApplicationTest {
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$[0].key", is("Wainbody")))
-                .andExpect(jsonPath("$[0].count", is(9)))
+                .andExpect(jsonPath("$[0].count", is(5)))
                 .andExpect(jsonPath("$[1].key", is("Canbury")))
-                .andExpect(jsonPath("$[1].count", is(2)))
+                .andExpect(jsonPath("$[1].count", is(1)))
                 .andExpect(jsonPath("$[2].key", is("Binley and Willenhall")))
                 .andExpect(jsonPath("$[2].count", is(1)));
     }
@@ -95,8 +95,8 @@ public class StatsTest extends WebApplicationTest {
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$[0].key", is("Coventry South")))
-                .andExpect(jsonPath("$[0].count", is(10)))
+                .andExpect(jsonPath("$[0].count", is(6)))
                 .andExpect(jsonPath("$[1].key", is("Richmond Park")))
-                .andExpect(jsonPath("$[1].count", is(2)));
+                .andExpect(jsonPath("$[1].count", is(1)));
     }
 }

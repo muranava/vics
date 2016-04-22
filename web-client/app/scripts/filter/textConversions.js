@@ -44,6 +44,9 @@ angular
   })
   .filter('streetSingleLineFilter', function () {
     function toTitleCase(str) {
+      if (!str) {
+        return '';
+      }
       return str.replace(/\w\S*/g, function (txt) {
         return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();
       });
@@ -53,7 +56,7 @@ angular
       if (_.isEmpty(address)) {
         return '';
       }
-      var parts = [address.mainStreet, address.dependentStreet, address.dependentLocality, toTitleCase(address.postTown.toLowerCase())];
+      var parts = [address.mainStreet, address.dependentStreet, address.dependentLocality, toTitleCase(address.postTown)];
       return _
         .chain(parts)
         .filter(function (part) {

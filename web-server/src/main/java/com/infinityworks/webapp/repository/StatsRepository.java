@@ -44,9 +44,28 @@ public interface StatsRepository extends JpaRepository<User, UUID> {
     List<Object[]> countMostRecordContactByWard(@Param("limit") int limit);
 
     @Query(nativeQuery = true, value =
-    "SELECT CAST(added AS DATE), count(*) " +
-            "FROM record_contact_log " +
-            "WHERE added >= '2010-04-01' AND added < '2016-07-01' " +
-            "GROUP BY CAST(added AS DATE) order by added")
+            "SELECT COUNT(*), CAST(EXTRACT(YEAR FROM added) AS text) || CAST(EXTRACT(WEEK FROM added) AS text) AS regweek " +
+                    "FROM record_contact_log WHERE operation = 'CREATE' " +
+                    "GROUP BY regweek " +
+                    "ORDER BY regweek ASC")
     List<Object[]> countRecordContactsByDate();
+
+    @Query(nativeQuery = true, value =
+            "SELECT COUNT(*), CAST(EXTRACT(YEAR FROM added) AS text) || CAST(EXTRACT(WEEK FROM added) AS text) AS regweek " +
+                    "FROM record_contact_log r " +
+                    "JOIN wards w on w.id = r.wards_id " +
+                    "JOIN constituencies c on c.id = w.constituency_id " +
+                    "WHERE operation = 'CREATE' AND c.code = :constituencyCode " +
+                    "GROUP BY regweek " +
+                    "ORDER BY regweek ASC")
+    List<Object[]> countRecordContactsByDateAndConstituency(@Param("constituencyCode") String constituencyCode);
+
+    @Query(nativeQuery = true, value =
+            "SELECT COUNT(*), CAST(EXTRACT(YEAR FROM added) AS text) || CAST(EXTRACT(WEEK FROM added) AS text) AS regweek " +
+                    "FROM record_contact_log r " +
+                    "JOIN wards w on w.id = r.wards_id " +
+                    "WHERE operation = 'CREATE' AND w.code = :wardCode " +
+                    "GROUP BY regweek " +
+                    "ORDER BY regweek ASC")
+    List<Object[]> countRecordContactsByDateAndWard(@Param("wardCode") String wardCode);
 }

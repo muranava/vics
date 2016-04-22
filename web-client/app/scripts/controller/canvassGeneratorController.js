@@ -3,7 +3,8 @@
  */
 angular
   .module('canvass')
-  .controller('canvassGeneratorController', function ($window, geoService, $scope, $timeout, $uibModal, wardService, constituencyService, electorService, $filter, toastr, util) {
+  .controller('canvassGeneratorController', function ($window, geoService, $scope, $timeout, $uibModal, wardService,
+                                                      constituencyService, electorService, $filter, toastr, util) {
 
       var streetsContainerPos = null;
       $scope.wards = [];
@@ -60,19 +61,27 @@ angular
 
         wardService.findStreetsByWard($scope.wardSearchModel.code)
           .success(function (streets) {
-            if (streets && streets.stats) {
-              $scope.wardVotersCanvassed = streets.stats.canvassed;
-              $scope.wardTotalVoters = streets.stats.voters;
-              $scope.streets = _.orderBy(streets.streets, 'priority', 'desc');
-
+            var streetsTx = removeStreetsWithoutVoters(streets);
+            if (streetsTx && streetsTx.stats) {
+              $scope.wardVotersCanvassed = streetsTx.stats.canvassed;
+              $scope.wardTotalVoters = streetsTx.stats.voters;
+              $scope.streets = _.orderBy(streetsTx.streets, 'priority', 'desc');
               scrollToPrintSection();
             }
-
           })
           .error(function () {
             toastr.error('Failed to load streets for ward', 'Error');
           });
       };
+
+      function removeStreetsWithoutVoters(streetsResponse) {
+        return {
+          stats: streetsResponse.stats,
+          streets: _.filter(streetsResponse.streets, function (street) {
+            return street.numVoters !== 0;
+          })
+        };
+      }
 
       function scrollToPrintSection() {
         _.defer(function () {
@@ -239,7 +248,7 @@ angular
 
       function showSelectedStreetsOnMap(streets) {
         function extractStreet(addressParts) {
-          return _.find(addressParts, function(part) {
+          return _.find(addressParts, function (part) {
             return part.types[0] === "route";
           });
         }
@@ -247,10 +256,11 @@ angular
         var i = 0;
         var markers = _.map(streets, function (street) {
           if (!_.isEmpty(street.results)) {
-            var firstStreet = street.results[0];
+            var firstStreet = street.results[0],
+              streetName = extractStreet(firstStreet.address_components);
             return {
               id: i++,
-              title: extractStreet(firstStreet.address_components).long_name,
+              title: !_.isUndefined(streetName) ? streetName.long_name : '',
               longitude: firstStreet.geometry.location.lng,
               latitude: firstStreet.geometry.location.lat,
               show: true

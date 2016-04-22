@@ -22,7 +22,8 @@ angular
     'rzModule',
     'ngCsvImport',
     'toastr',
-    'uiGmapgoogle-maps'
+    'uiGmapgoogle-maps',
+    'nvd3'
   ])
   .constant('config', {
     apiUrl: 'http://localhost:18080/api/canvass',

@@ -11,13 +11,26 @@ import com.infinityworks.webapp.rest.dto.RecordContactRequest
 import com.infinityworks.webapp.service.{RecordContactService, _}
 import org.junit.{Before, Test}
 import org.mockito.Mockito._
+import org.slf4j.LoggerFactory
+import org.springframework.test.context.jdbc.{Sql, SqlGroup}
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers._
 import org.springframework.test.web.servlet.setup.MockMvcBuilders
 
+@SqlGroup(Array(
+  new Sql(executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD,
+    scripts = Array(
+      "classpath:drop-create.sql",
+      "classpath:constituencies.sql",
+      "classpath:wards.sql",
+      "classpath:users.sql",
+      "classpath:password-reset-token.sql"
+    ))
+))
 class VoterFeatureTest extends ApplicationTest {
   var session: SessionApi = _
   var sessionService: SessionService = _
   var http: MockHttp = _
+  val log = LoggerFactory.getLogger(classOf[VoterFeatureTest])
 
   @Before
   def setup() = {
@@ -58,8 +71,10 @@ class VoterFeatureTest extends ApplicationTest {
     val body = new RecordContactRequest(3, 3, false, false, false, false, false, false, false, false, false, "", "")
     pafStub.willCreateANewContactRecord(ern)
 
-    (http POST (s"/elector/$ern/contact", JsonUtil.stringify(body))).andExpect(
-      status().isOk
-    )
+    val content: String = JsonUtil.stringify(body)
+    log.info(content)
+
+    (http POST (s"/elector/$ern/contact", content))
+      .andExpect(status().isOk)
   }
 }

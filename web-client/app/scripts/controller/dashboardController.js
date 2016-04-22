@@ -1,6 +1,6 @@
 angular
   .module('canvass')
-  .controller('dashboardController', function ($interval, $scope, statsService, toastr, geoService) {
+  .controller('dashboardController', function ($interval, $scope, statsService, toastr, geoService, calendar) {
     var referendumDate = new Date(2016, 5, 23, 22, 0),
       secondsInDay = 86400,
       secondsInHour = 3600;
@@ -33,6 +33,11 @@ angular
     statsService.allStats()
       .success(function (response) {
         $scope.stats = response;
+        console.log( mapWeeklyCanvassStatsToCalendar($scope.stats.recordContactByDate));
+        $scope.data = [{
+            key: "Total Canvassed",
+            values: mapWeeklyCanvassStatsToCalendar($scope.stats.recordContactByDate)
+          }];
       });
 
     $scope.changeLeaderboardTab = function (tabName) {
@@ -128,21 +133,86 @@ angular
 
     getCurrentLocation();
 
-    $scope.canvassedGraph = [
-      ["2016-04-01", 3],
-      ["2016-04-02", 145],
-      ["2016-04-03", 33],
-      ["2016-04-07", 4],
-      ["2016-04-08", 30],
-      ["2016-04-09", 41],
-      ["2016-04-10", 41],
-      ["2016-04-11", 37],
-      ["2016-04-13", 6],
-      ["2016-04-14", 5],
-      ["2016-04-15", 79],
-      ["2016-04-16", 144],
-      ["2016-04-17", 223],
-      ["2016-04-20", 1]
-    ];
-    
+    function mapWeeklyCanvassStatsToCalendar(canvassedByWeek) {
+      var stats = _.map(canvassedByWeek, function(e) {
+        return {
+          count: _.parseInt(e[0]),
+          week: _.parseInt(e[1])
+        };
+      });
+
+      return calendar.campaignWeeks().map(function (calendarWeek) {
+        var currWeek = _.find(stats, function(stat) {
+          return stat.week === calendarWeek.week;
+        });
+        return {
+          week: ('' + calendarWeek.week).substring(4),
+          start: calendarWeek.start,
+          count: _.isUndefined(currWeek) ? 0 : currWeek.count
+        };
+      });
+    }
+
+    $scope.options = {
+      chart: {
+        type: 'discreteBarChart',
+        height: 250,
+        "color": [
+          "#C5443B"
+        ],
+        x: function (d) {
+          return d.week;
+        },
+        y: function (d) {
+          return d.count;
+        },
+        tooltip: {
+          contentGenerator: function (e) {
+            var series = e.series[0];
+            console.log(e);
+            if (series.value === null) {
+              return;
+            }
+
+            if (e.series) {
+              var rows =
+                "<tr>" +
+                "<td class='key'>" + 'Start: ' + "</td>" +
+                "<td class='x-value'>" + e.data.start + "</td>" +
+                "</tr>" +
+                "<tr>" +
+                "<td class='key'>" + 'Total Canvassed: ' + "</td>" +
+                "<td class='x-value'><strong>" + series.value + "</strong></td>" +
+                "</tr>";
+
+              var header =
+                "<thead>" +
+                "<tr>" +
+                "<td class='legend-color-guide'><div style='background-color: " + series.color + ";'></div></td>" +
+                "<td class='key'>Week&nbsp;<strong>" + e.data.week + "</strong></td>" +
+                "</tr>" +
+                "</thead>";
+
+              return "<table>" +
+                header +
+                "<tbody>" +
+                rows +
+                "</tbody>" +
+                "</table>";
+            }
+
+          }
+        },
+        useInteractiveGuideline: true,
+        showValues: false,
+        xAxis: {
+          axisLabel: 'Week'
+        },
+        yAxis: {
+          axisLabel: 'Canvassed',
+          axisLabelDistance: -10,
+          tickFormat: _.identity
+        }
+      }
+    };
   });

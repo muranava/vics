@@ -238,17 +238,16 @@
         <stat-card count="{{stats.totalContacts}}" label="Total Canvassed"></stat-card>
       </div>
       <div class="col-md-3 col-sm-6">
-        <stat-card count="{{stats.canvassedThisWeek}}" label="Canvassed This Week"></stat-card>
+        <stat-card count="{{stats.canvassedThisWeek}}" label="Past 7 days"></stat-card>
       </div>
 
       <div class="col-md-6 col-sm-12">
-        <div class="card text-white" style="display: none;">
-          <div class="card-head style-gray">
-            <header>Canvassed Over Time</header>
+        <div class="card">
+          <div class="card-head">
+            <header>Weekly Canvassing Totals</header>
           </div>
-          <div class="card-body  text-center style-gray">
-
-
+          <div class="card-body text-center">
+            <nvd3 options="options" data="data"></nvd3>
           </div>
         </div>
       </div>
