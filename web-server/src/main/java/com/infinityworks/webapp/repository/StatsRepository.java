@@ -15,6 +15,7 @@ public interface StatsRepository extends JpaRepository<User, UUID> {
             "SELECT u.username,u.first_name,u.last_name,COUNT(DISTINCT(l.ern)) as counts " +
                     "FROM record_contact_log l " +
                     "JOIN users u ON u.id = l.users_id " +
+                    "WHERE operation = 'CREATE' " +
                     "GROUP BY u.id " +
                     "ORDER BY counts DESC " +
                     "LIMIT :limit"
@@ -26,6 +27,7 @@ public interface StatsRepository extends JpaRepository<User, UUID> {
                     "FROM record_contact_log l " +
                     "JOIN wards w ON w.id = l.wards_id " +
                     "JOIN constituencies c ON c.id = w.constituency_id " +
+                    "WHERE operation = 'CREATE' " +
                     "GROUP BY c.id " +
                     "ORDER BY counts DESC " +
                     "LIMIT :limit"
@@ -37,6 +39,7 @@ public interface StatsRepository extends JpaRepository<User, UUID> {
                     "FROM record_contact_log l " +
                     "JOIN wards w ON w.id = l.wards_id " +
                     "JOIN constituencies c ON c.id = w.constituency_id " +
+                    "WHERE operation = 'CREATE' " +
                     "GROUP BY w.id " +
                     "ORDER BY counts DESC " +
                     "LIMIT :limit"

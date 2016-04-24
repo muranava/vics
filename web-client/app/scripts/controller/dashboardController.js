@@ -119,7 +119,7 @@ angular
 
     $scope.onSetWard = function () {
       if ($scope.wardSearchModel && $scope.wardSearchModel.id) {
-        statsService.canvassedByWeekAndConstituency($scope.wardSearchModel.code)
+        statsService.canvassedByWeekAndWard($scope.wardSearchModel.code)
           .success(function (response) {
             $scope.onShowWeeklyStatsConfig();
             var data = [{

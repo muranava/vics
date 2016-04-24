@@ -9,7 +9,7 @@ public class StatsJdbcRepository {
     private final JdbcTemplate jdbcTemplate;
 
     private static final String COUNT_CANVASSED_PAST_N_DAYS_SQL =
-            "select count(*) from record_contact_log where added > current_date - interval '%s days'";
+            "select count(*) from record_contact_log where operation = 'CREATE' AND added > current_date - interval '%s days'";
 
     @Autowired
     public StatsJdbcRepository(JdbcTemplate jdbcTemplate) {
