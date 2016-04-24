@@ -19,7 +19,9 @@ import static org.junit.Assert.assertThat;
                         "classpath:sql/drop-create.sql",
                         "classpath:sql/constituencies.sql",
                         "classpath:sql/wards.sql",
-                        "classpath:sql/users.sql"})
+                        "classpath:sql/users.sql",
+                        "classpath:sql/record-contact-logs.sql"
+                })
 })
 public class ConstituencyRepositoryTest extends RepositoryTest {
 

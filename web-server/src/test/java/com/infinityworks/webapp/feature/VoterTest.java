@@ -47,7 +47,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
                         "classpath:sql/constituencies.sql",
                         "classpath:sql/wards.sql",
                         "classpath:sql/users.sql",
-                        "classpath:sql/record-contact-logs.sql"})
+                        "classpath:sql/record-contact-logs.sql"
+                })
 })
 public class VoterTest extends WebApplicationTest {
     private SessionService sessionService;
