@@ -15,10 +15,10 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders
 @SqlGroup(Array(
   new Sql(executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD,
     scripts = Array(
-      "classpath:drop-create.sql",
-      "classpath:constituencies.sql",
-      "classpath:wards.sql",
-      "classpath:users.sql"))
+      "classpath:sql/drop-create.sql",
+      "classpath:sql/constituencies.sql",
+      "classpath:sql/wards.sql",
+      "classpath:sql/users.sql"))
 ))
 class PasswordResetTest extends ApplicationTest {
   var session: SessionApi = _

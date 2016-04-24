@@ -1,12 +1,13 @@
 package com.infinityworks.tools.dataprep.csv;
 
+import com.google.common.io.Resources;
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVRecord;
-import org.springframework.core.io.ClassPathResource;
 
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.Reader;
+import java.net.URL;
 import java.util.List;
 import java.util.function.Function;
 
@@ -21,8 +22,8 @@ public class CsvParser {
     }
 
     public <T> List<T> parseContent(Function<CSVRecord, T> rowInterpreter) throws IOException {
-        ClassPathResource is = new ClassPathResource(filePath);
-        Reader in = new InputStreamReader(is.getInputStream());
+        URL resource = Resources.getResource(filePath);
+        Reader in = new InputStreamReader(resource.openStream());
         Iterable<CSVRecord> records = CSVFormat.DEFAULT.parse(in);
 
         return stream(records.spliterator(), false)

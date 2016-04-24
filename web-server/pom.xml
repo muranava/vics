@@ -247,6 +247,12 @@
                                     </fileset>
                                     <flattenmapper/>
                                 </copy>
+                                <copy todir="${project.basedir}/../dist">
+                                    <fileset dir="${project.basedir}/">
+                                        <include name="src/test/resources/sql/drop-create.sql"/>
+                                    </fileset>
+                                    <flattenmapper/>
+                                </copy>
                             </tasks>
                         </configuration>
                         <goals>

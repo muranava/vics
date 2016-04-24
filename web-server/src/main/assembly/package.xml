@@ -21,14 +21,5 @@
             </includes>
             <outputDirectory>.</outputDirectory>
         </fileSet>
-        <fileSet>
-            <directory>.</directory>
-            <includes>
-                <include>target.properties</include>
-                <include>appspec.yml</include>
-                <include>web-server-0.0.1.conf</include>
-            </includes>
-            <outputDirectory>.</outputDirectory>
-        </fileSet>
     </fileSets>
 </assembly>

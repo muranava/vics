@@ -1,11 +1,10 @@
 package com.infinityworks.tools.dataprep;
 
 import com.google.common.base.Objects;
-import com.infinityworks.webapp.domain.BaseEntity;
 
 import java.util.UUID;
 
-public class Constituency extends BaseEntity {
+public class Constituency {
     private UUID id;
     private String code;
     private String name;
@@ -16,7 +15,6 @@ public class Constituency extends BaseEntity {
         this.name = name;
     }
 
-    @Override
     public UUID getId() {
         return id;
     }

@@ -16,11 +16,11 @@ import static org.junit.Assert.assertThat;
 @SqlGroup({
         @Sql(executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD,
                 scripts = {
-                        "classpath:drop-create.sql",
-                        "classpath:constituencies.sql",
-                        "classpath:wards.sql",
-                        "classpath:users.sql",
-                        "classpath:record-contact-logs.sql"
+                        "classpath:sql/drop-create.sql",
+                        "classpath:sql/constituencies.sql",
+                        "classpath:sql/wards.sql",
+                        "classpath:sql/users.sql",
+                        "classpath:sql/record-contact-logs.sql"
                 })
 })
 public class StatsRepositoryTest extends RepositoryTest {
