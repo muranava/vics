@@ -21,5 +21,12 @@
             </includes>
             <outputDirectory>.</outputDirectory>
         </fileSet>
+        <fileSet>
+            <directory>.</directory>
+            <includes>
+                <include>appspec.yml</include>
+            </includes>
+            <outputDirectory>.</outputDirectory>
+        </fileSet>
     </fileSets>
 </assembly>
