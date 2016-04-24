@@ -41,8 +41,8 @@ CREATE TABLE privileges
 
 CREATE TABLE users_privileges
 (
-  users_id      UUID REFERENCES users (id)      NOT NULL,
-  privileges_id UUID REFERENCES privileges (id) NOT NULL,
+  users_id      UUID REFERENCES users (id) ON DELETE CASCADE NOT NULL,
+  privileges_id UUID REFERENCES privileges (id)              NOT NULL,
   PRIMARY KEY (users_id, privileges_id)
 );
 
@@ -60,16 +60,16 @@ CREATE TABLE users_constituencies (
 
 CREATE TABLE record_contact_log (
   id        UUID PRIMARY KEY,
-  users_id  UUID REFERENCES users (id)                   NOT NULL,
-  wards_id  UUID REFERENCES wards (id)                   NOT NULL,
-  ern       TEXT                                         NOT NULL,
-  added     TIMESTAMP WITHOUT TIME ZONE                  NOT NULL,
-  operation TEXT CHECK (operation IN ('UNDO', 'CREATE')) NOT NULL DEFAULT 'CREATE'
+  users_id  UUID REFERENCES users (id) ON DELETE CASCADE                 NOT NULL,
+  wards_id  UUID REFERENCES wards (id)                                   NOT NULL,
+  ern       TEXT                                                         NOT NULL,
+  added     TIMESTAMP WITHOUT TIME ZONE                                  NOT NULL,
+  operation TEXT CHECK (operation IN ('UNDO', 'CREATE'))                 NOT NULL DEFAULT 'CREATE'
 );
 
 CREATE TABLE password_reset_tokens (
   id       UUID PRIMARY KEY,
-  users_id UUID REFERENCES users (id)                   NOT NULL,
-  token    TEXT                                         NOT NULL,
-  expires  TIMESTAMP WITHOUT TIME ZONE                  NOT NULL
+  users_id UUID REFERENCES users (id) ON DELETE CASCADE              NOT NULL,
+  token    TEXT                                                      NOT NULL,
+  expires  TIMESTAMP WITHOUT TIME ZONE                               NOT NULL
 );

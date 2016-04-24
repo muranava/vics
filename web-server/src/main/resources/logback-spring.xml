@@ -3,8 +3,6 @@
     <include resource="org/springframework/boot/logging/logback/base.xml"/>
     <jmxConfigurator/>
 
-    <property resource="application.properties"/>
-
     <appender name="stash" class="net.logstash.logback.appender.LogstashTcpSocketAppender">
         <remoteHost>localhost</remoteHost>
         <port>4560</port>
