@@ -60,7 +60,7 @@ CREATE TABLE users_constituencies (
 
 CREATE TABLE record_contact_log (
   id        UUID PRIMARY KEY,
-  users_id  UUID REFERENCES users (id) ON DELETE CASCADE                 NOT NULL,
+  users_id  UUID REFERENCES users (id) ON DELETE SET NULL,
   wards_id  UUID REFERENCES wards (id)                                   NOT NULL,
   ern       TEXT                                                         NOT NULL,
   added     TIMESTAMP WITHOUT TIME ZONE                                  NOT NULL,
