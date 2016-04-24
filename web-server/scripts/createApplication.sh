@@ -25,7 +25,7 @@ elif [ "$DEPLOYMENT_GROUP_NAME" == "Development" ]
 then
     cp -f /tmp/development.properties /var/tmp/application.properties
 else
-    error_exit "Could not determine environment!  Aborting."
+    error_exit "Could not determine environment!  Aborting. DEPLOYMENT_GROUP_NAME=$DEPLOYMENT_GROUP_NAME"
 fi
 
 ln -fs /var/tmp/vics.jar /etc/init.d/vics
