@@ -141,7 +141,7 @@ class WardsFeatureTest extends ApplicationTest {
 
     (http GET "/ward")
       .andExpect(status.isOk,
-        jsonPath("$.wards", hasSize(6)),
+        jsonPath("$.wards", hasSize(7)),
         jsonPath("$.wards[0].code", is("E05001219")),
         jsonPath("$.wards[0].name", is("Binley and Willenhall")),
         jsonPath("$.wards[0].constituency.name", is("Coventry South")))
