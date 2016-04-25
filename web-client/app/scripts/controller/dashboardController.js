@@ -11,7 +11,7 @@ angular
     $scope.wardName = '';
     $scope.showCanvassedGraph = false;
     $scope.showPledgesPieChart = false;
-    $scope.graphLabel = "All";
+    $scope.graphLabel = "";
 
     $scope.map = {
       center: {
@@ -45,6 +45,17 @@ angular
 
     $scope.changeLeaderboardTab = function (tabName) {
       $scope.currentTab = tabName;
+    };
+
+    $scope.removeCanvassChartByWeekFilter = function() {
+      statsService.allStats()
+        .success(function (response) {
+          $scope.data = [{
+            key: "Total Canvassed",
+            values: mapWeeklyCanvassStatsToCalendar(response.recordContactByDate)
+          }];
+          $scope.graphLabel = "";
+        });
     };
 
     $scope.findWard = function (postCode, suppressError) {
