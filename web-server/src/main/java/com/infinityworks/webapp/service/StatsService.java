@@ -1,7 +1,15 @@
 package com.infinityworks.webapp.service;
 
+import com.infinityworks.common.lang.Try;
+import com.infinityworks.webapp.clients.paf.command.ConstituencyStatsCommand;
+import com.infinityworks.webapp.clients.paf.command.ConstituencyStatsCommandFactory;
+import com.infinityworks.webapp.clients.paf.command.WardStatsCommand;
+import com.infinityworks.webapp.clients.paf.command.WardStatsCommandFactory;
+import com.infinityworks.webapp.clients.paf.dto.ConstituencyStats;
+import com.infinityworks.webapp.clients.paf.dto.WardStats;
 import com.infinityworks.webapp.converter.MostCanvassedQueryConverter;
 import com.infinityworks.webapp.converter.TopCanvasserQueryConverter;
+import com.infinityworks.webapp.domain.User;
 import com.infinityworks.webapp.repository.RecordContactLogRepository;
 import com.infinityworks.webapp.repository.StatsJdbcRepository;
 import com.infinityworks.webapp.repository.StatsRepository;
@@ -23,18 +31,30 @@ public class StatsService {
     private final StatsJdbcRepository statsJdbcRepository;
     private final TopCanvasserQueryConverter topCanvasserQueryConverter;
     private final MostCanvassedQueryConverter mostCanvassedQueryConverter;
+    private final WardStatsCommandFactory wardStatsCommandFactory;
+    private final ConstituencyStatsCommandFactory constituencyStatsCommandFactory;
     private static final int LIMIT = 6;
+    private final WardService wardService;
+    private final ConstituencyService constituencyService;
 
     @Autowired
     public StatsService(StatsRepository repository,
-                        RecordContactLogRepository recordContactLogRepository, StatsJdbcRepository statsJdbcRepository,
+                        RecordContactLogRepository recordContactLogRepository,
+                        StatsJdbcRepository statsJdbcRepository,
                         TopCanvasserQueryConverter topCanvasserQueryConverter,
-                        MostCanvassedQueryConverter mostCanvassedQueryConverter) {
+                        MostCanvassedQueryConverter mostCanvassedQueryConverter,
+                        WardStatsCommandFactory wardStatsCommandFactory,
+                        ConstituencyStatsCommandFactory constituencyStatsCommandFactory,
+                        WardService wardService, ConstituencyService constituencyService) {
         this.repository = repository;
         this.recordContactLogRepository = recordContactLogRepository;
         this.statsJdbcRepository = statsJdbcRepository;
         this.topCanvasserQueryConverter = topCanvasserQueryConverter;
         this.mostCanvassedQueryConverter = mostCanvassedQueryConverter;
+        this.wardStatsCommandFactory = wardStatsCommandFactory;
+        this.constituencyStatsCommandFactory = constituencyStatsCommandFactory;
+        this.wardService = wardService;
+        this.constituencyService = constituencyService;
     }
 
     public List<StatsResponse> topCanvassers() {
@@ -72,6 +92,22 @@ public class StatsService {
 
     public List<Object[]> countRecordContactsByDateAndWard(String wardCode) {
         return repository.countRecordContactsByDateAndWard(wardCode);
+    }
+
+    public Try<WardStats> wardStats(User user, String wardCode) {
+        return wardService.getByCode(wardCode, user)
+                .flatMap(ward -> {
+                    WardStatsCommand wardStatsCommand = wardStatsCommandFactory.create(ward.getCode());
+                    return wardStatsCommand.execute();
+                });
+    }
+
+    public Try<ConstituencyStats> constituencyStats(User user, String constituencyCode) {
+        return constituencyService.getByCodeRestrictedByAssociation(constituencyCode, user)
+                .flatMap(constituency -> {
+                    ConstituencyStatsCommand constituencyStatsCommand = constituencyStatsCommandFactory.create(constituency.getCode());
+                    return constituencyStatsCommand.execute();
+                });
     }
 
     /**

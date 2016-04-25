@@ -75,4 +75,14 @@ public class PafClientConfig {
     public DeleteContactCommandFactory deleteContactCommandFactory(PafClient pafClient, PafRequestExecutor requestExecutor, AppProperties appProperties) {
         return new DeleteContactCommandFactory(pafClient, appProperties.getPafApiTimeout(), requestExecutor);
     }
+
+    @Bean
+    public WardStatsCommandFactory wardStatsCommandFactory(PafClient pafClient, PafRequestExecutor requestExecutor, AppProperties appProperties) {
+        return new WardStatsCommandFactory(pafClient, appProperties.getPafApiTimeout(), requestExecutor);
+    }
+
+    @Bean
+    public ConstituencyStatsCommandFactory constituencyStatsCommandFactory(PafClient pafClient, PafRequestExecutor requestExecutor, AppProperties appProperties) {
+        return new ConstituencyStatsCommandFactory(pafClient, appProperties.getPafApiTimeout(), requestExecutor);
+    }
 }

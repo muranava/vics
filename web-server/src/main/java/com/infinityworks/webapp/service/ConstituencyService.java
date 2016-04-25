@@ -66,6 +66,17 @@ public class ConstituencyService {
         return Try.success(constituencies);
     }
 
+    public Try<Constituency> getByCodeRestrictedByAssociation(String code, User user) {
+        return getByCode(code)
+                .flatMap(constituency -> {
+                    if (user.hasConstituencyPermission(constituency)) {
+                        return Try.success(constituency);
+                    } else {
+                        return Try.failure(new NotAuthorizedFailure("Not Authorized"));
+                    }
+                });
+    }
+
     public Try<Constituency> getByCode(String code) {
         Optional<Constituency> constituency = constituencyRepository.findOneByCode(code);
         if (constituency.isPresent()) {

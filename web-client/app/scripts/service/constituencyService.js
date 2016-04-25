@@ -31,6 +31,14 @@ angular
       });
     };
 
+    api.searchRestricted = function(name) {
+      return $http({
+        method: 'GET',
+        url: apiUrl + '/constituency/search/restricted?q=' + name,
+        withCredentials: true
+      });
+    };
+
     api.associateToUser = function(constituencyID, userID) {
       return $http({
         method: 'POST',

@@ -1,10 +1,10 @@
+
 angular
   .module('canvass')
   .controller('dashboardController', function ($interval, $scope, statsService, toastr, geoService, calendar, $uibModal, wardService, constituencyService) {
     var referendumDate = new Date(2016, 5, 23, 22, 0),
       secondsInDay = 86400,
-      secondsInHour = 3600,
-      searchLimit = 15;
+      secondsInHour = 3600;
 
     $scope.currentTab = 'activists';
     $scope.constituencyName = '';
@@ -12,6 +12,13 @@ angular
     $scope.showCanvassedGraph = false;
     $scope.showPledgesPieChart = false;
     $scope.graphLabel = "";
+    $scope.statsTable = {
+      voters: 0,
+      voted_pledges: 0,
+      voted: 0,
+      canvassed: 0,
+      pledged: 0
+    };
 
     $scope.map = {
       center: {
@@ -48,6 +55,15 @@ angular
     };
 
     $scope.removeCanvassChartByWeekFilter = function() {
+      // TODO rebuild overall stats when API is defined
+      $scope.statsTable = {
+        voters: 0,
+        voted_pledges: 0,
+        voted: 0,
+        canvassed: 0,
+        pledged: 0
+      };
+
       statsService.allStats()
         .success(function (response) {
           $scope.data = [{
@@ -123,14 +139,30 @@ angular
     }
 
     $scope.onWardInputKeypress = function () {
-      wardService.search($scope.wardSearchModel, searchLimit)
-        .success(function (response) {
+      wardService.searchRestricted($scope.wardSearchModel)
+        .success(function(response) {
           $scope.wards = response;
         });
     };
 
     $scope.onSetWard = function () {
       if ($scope.wardSearchModel && $scope.wardSearchModel.id) {
+
+        statsService.wardStats($scope.wardSearchModel.code)
+          .success(function(response) {
+            $scope.statsTable = response;
+            $scope.pieData = [
+              {
+                key: "Voted Pledged",
+                y: $scope.pieData.voted_pledged
+              },
+              {
+                key: "Total Pledged",
+                y: $scope.pieData.pledged
+              }
+            ];
+          });
+
         statsService.canvassedByWeekAndWard($scope.wardSearchModel.code)
           .success(function (response) {
             $scope.onShowWeeklyStatsConfig();
@@ -151,6 +183,22 @@ angular
 
     $scope.onSetConstituency = function () {
       if ($scope.constituencySearchModel && $scope.constituencySearchModel.id) {
+
+        statsService.constituencyStats($scope.constituencySearchModel.code)
+          .success(function(response) {
+            $scope.statsTable = response;
+            $scope.pieData = [
+              {
+                key: "Voted Pledged",
+                y: $scope.pieData.voted_pledged
+              },
+              {
+                key: "Total Pledged",
+                y: $scope.pieData.pledged
+              }
+            ];
+          });
+
         statsService.canvassedByWeekAndConstituency($scope.constituencySearchModel.code)
           .success(function (response) {
             $scope.onShowWeeklyStatsConfig();
@@ -171,7 +219,7 @@ angular
 
     $scope.onConstituencyInputKeypress = function () {
       $scope.invalidConstituency = false;
-      constituencyService.search($scope.constituencySearchModel, searchLimit)
+      constituencyService.searchRestricted($scope.constituencySearchModel)
         .success(function (response) {
           $scope.constituencies = response;
         });
@@ -235,7 +283,7 @@ angular
         type: 'pieChart',
         color: [
           "#C5443B",
-          "#ff9798"
+          "#e5e6e6"
         ],
         height: 250,
         x: function (d) {
@@ -244,10 +292,9 @@ angular
         y: function (d) {
           return d.y;
         },
-        showLabels: true,
+        showLabels: false,
         duration: 500,
         labelThreshold: 0.01,
-        labelSunbeamLayout: true,
         legend: {
           margin: {
             top: 5,
@@ -261,12 +308,12 @@ angular
 
     $scope.pieData = [
       {
-        key: "Voted",
-        y: 5
+        key: "Voted Pledged",
+        y: 5125
       },
       {
-        key: "Not Voted",
-        y: 2
+        key: "Total Pledged",
+        y: 15161
       }
     ];
 

@@ -71,4 +71,10 @@ public interface PafClient {
      */
     @POST("voter/{ern}/voted")
     Call<RecordVotedResponse> recordVote(@Path("ern") String ern);
+
+    @GET("wards/{wardCode}")
+    Call<WardStats> wardStats(@Path("wardCode") String wardCode);
+
+    @GET("constituency/{constituencyCode}")
+    Call<ConstituencyStats> constituencyStats(@Path("constituencyCode") String constituencyCode);
 }

@@ -1,6 +1,7 @@
 package com.infinityworks.webapp.feature;
 
 import com.infinityworks.common.lang.Try;
+import com.infinityworks.webapp.error.RestErrorHandler;
 import com.infinityworks.webapp.rest.StatsController;
 import com.infinityworks.webapp.service.SessionService;
 import com.infinityworks.webapp.service.StatsService;
@@ -39,7 +40,7 @@ public class StatsTest extends WebApplicationTest {
     public void setup() {
         sessionService = mock(SessionService.class);
         StatsService statsService = getBean(StatsService.class);
-        StatsController ctrl = new StatsController(statsService);
+        StatsController ctrl = new StatsController(statsService, sessionService, new RestErrorHandler());
 
         mockMvc = MockMvcBuilders
                 .standaloneSetup(ctrl)
@@ -98,5 +99,39 @@ public class StatsTest extends WebApplicationTest {
                 .andExpect(jsonPath("$[0].count", is(6)))
                 .andExpect(jsonPath("$[1].key", is("Richmond Park")))
                 .andExpect(jsonPath("$[1].count", is(1)));
+    }
+
+    @Test
+    public void returnsWardsStats() throws Exception {
+        pafApiStub.willReturnWardStats("E05001220");
+        when(sessionService.extractUserFromPrincipal(any(Principal.class)))
+                .thenReturn(Try.success(covs()));
+
+        mockMvc.perform(get("/stats/ward/E05001220")
+                .accept(MediaType.APPLICATION_JSON))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.voters", is(8034)))
+                .andExpect(jsonPath("$.canvassed", is(415)))
+                .andExpect(jsonPath("$.pledged", is(211)))
+                .andExpect(jsonPath("$.voted", is(31)))
+                .andExpect(jsonPath("$.voted_pledges", is(12)));
+    }
+
+    @Test
+    public void returnsConstituenciesStats() throws Exception {
+        pafApiStub.willReturnConstituencyStats("E14000651");
+        when(sessionService.extractUserFromPrincipal(any(Principal.class)))
+                .thenReturn(Try.success(covs()));
+
+        mockMvc.perform(get("/stats/constituency/E14000651")
+                .accept(MediaType.APPLICATION_JSON))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.voters", is(41294)))
+                .andExpect(jsonPath("$.canvassed", is(4159)))
+                .andExpect(jsonPath("$.pledged", is(1223)))
+                .andExpect(jsonPath("$.voted", is(301)))
+                .andExpect(jsonPath("$.voted_pledges", is(128)));
     }
 }

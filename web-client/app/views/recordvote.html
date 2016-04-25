@@ -70,7 +70,10 @@
                   </div>
 
                   <div class="input-group-btn">
-                    <button type="submit" class="btn btn-danger btn-sm" tabindex="-1">VOTED</button>
+                    <button type="submit" class="btn btn-success btn-sm" tabindex="-1">VOTED</button>
+                  </div>
+                  <div class="input-group-btn">
+                    <button type="submit" class="btn btn-danger btn-sm" tabindex="-1">WON'T VOTE</button>
                   </div>
                 </div>
                 <br>
@@ -95,6 +98,7 @@
                 <th>Elector ID</th>
                 <th>Reason</th>
                 <th>Result</th>
+                <th></th>
               </tr>
               </thead>
               <tbody>
@@ -105,6 +109,9 @@
                 <td ng-show="log.result === 1">SUCCESS</td>
                 <td ng-show="log.result === 0">FAILED</td>
                 <td ng-show="log.result === -1">-</td>
+                <td ng-show="log.result === -1">
+                  <button ng-if="log.ern !== '-'" type="submit" class="btn btn-danger btn-sm" tabindex="-1">UNDO</button>
+                </td>
               </tr>
               </tbody>
             </table>

@@ -176,4 +176,26 @@ public class PafServerStub {
                         .withStatus(200)
                         .withBody(jsonData)));
     }
+
+    public void willReturnWardStats(String wardCode) throws IOException {
+        String jsonData = Resources.toString(getResource("json/paf-ward-stats.json"), UTF_8);
+
+        String url = "/v1/wards/" + wardCode;
+        wireMock.register(get(urlPathMatching(url))
+                .willReturn(aResponse()
+                        .withHeader(CONTENT_TYPE, "application/json")
+                        .withStatus(200)
+                        .withBody(jsonData)));
+    }
+
+    public void willReturnConstituencyStats(String constituencyCode) throws IOException {
+        String jsonData = Resources.toString(getResource("json/paf-constituency-stats.json"), UTF_8);
+
+        String url = "/v1/constituency/" + constituencyCode;
+        wireMock.register(get(urlPathMatching(url))
+                .willReturn(aResponse()
+                        .withHeader(CONTENT_TYPE, "application/json")
+                        .withStatus(200)
+                        .withBody(jsonData)));
+    }
 }

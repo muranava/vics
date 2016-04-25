@@ -233,38 +233,63 @@
     </div>
 
     <div class="row">
-      <div class="col-md-3 col-sm-6">
-        <stat-card count="{{stats.totalContacts}}" label="Total Canvassed"></stat-card>
-      </div>
-      <div class="col-md-3 col-sm-6">
-        <stat-card count="{{stats.canvassedThisWeek}}" label="Past 7 days"></stat-card>
-      </div>
-      <div class="col-md-3 col-sm-6">
-        <stat-card count="-" label="Total Pledged"></stat-card>
-      </div>
-      <div class="col-md-3 col-sm-6">
-        <stat-card count="-" label="Pledges Voted"></stat-card>
-      </div>
-    </div>
 
-    <div class="row">
-
-      <div class="col-md-8 col-sm-12">
+      <div class="col-sm-12">
         <div class="card">
           <div class="card-head">
-            <header>Weekly Totals &nbsp;&nbsp;<span class="badge" ng-if="currentUser.role === 'ADMIN' && graphLabel !== ''">{{graphLabel}}</span></header>
+            <header>Canvassing Stats &nbsp;&nbsp;
+              <span class="badge" ng-if="graphLabel !== ''">{{graphLabel}}</span>
+              <span class="badge" ng-if="graphLabel === ''">Overall</span>
+            </header>
             <div class="tools" ng-if="currentUser.role === 'ADMIN'">
               <div class="btn-group">
-                <a ng-show="showCanvassedGraph" ng-click="onShowWeeklyStatsConfig()" class="btn btn-icon-toggle btn-refresh"><i class="md md-undo"></i></a>
-                <a ng-show="!showCanvassedGraph && graphLabel !== ''" ng-click="removeCanvassChartByWeekFilter()" class="btn btn-icon-toggle btn-refresh"><i class="md md-highlight-remove"></i></a>
-                <a ng-show="!showCanvassedGraph" ng-click="onShowWeeklyStatsConfig()" class="btn btn-icon-toggle btn-refresh"><i class="fa fa-gear"></i></a>
+                <a ng-show="showCanvassedGraph" ng-click="onShowWeeklyStatsConfig()"
+                   class="btn btn-icon-toggle btn-refresh"><i class="md md-undo"></i></a>
+                <a ng-show="!showCanvassedGraph && graphLabel !== ''" ng-click="removeCanvassChartByWeekFilter()"
+                   class="btn btn-icon-toggle btn-refresh"><i class="md md-highlight-remove"></i></a>
+                <a ng-show="!showCanvassedGraph" ng-click="onShowWeeklyStatsConfig()"
+                   class="btn btn-icon-toggle btn-refresh"><i class="fa fa-gear"></i></a>
               </div>
             </div>
           </div>
 
           <!-- graph -->
           <div class="card-body text-center" ng-show="!showCanvassedGraph">
-            <nvd3 options="options" data="data" api="api"></nvd3>
+            <div class="row">
+              <div class="col-md-6">
+                <nvd3 options="options" data="data" api="api"></nvd3>
+              </div>
+              <div class="col-md-3">
+                <table class="table table-striped no-margin">
+                  <tbody>
+                  <tr>
+                    <td>Voters</td>
+                    <td><strong>{{statsTable.voters | number}}</strong></td>
+                  </tr>
+                  <tr>
+                    <td>Canvassed</td>
+                    <td><strong>{{statsTable.canvassed | number}}</strong></td>
+                  </tr>
+                  <tr>
+                    <td>Voted</td>
+                    <td><strong>{{statsTable.voted | number}}</strong></td>
+                  </tr>
+                  <tr>
+                    <td>Voted Pledges</td>
+                    <td><strong>{{statsTable.voted_pledges | number}}</strong></td>
+                  </tr>
+                  <tr>
+                    <td>Pledged</td>
+                    <td><strong>{{statsTable.pledged | number}}</strong></td>
+                  </tr>
+                  </tbody>
+                </table>
+              </div>
+              <div class="col-md-3">
+                <nvd3 ng-if="statsTable.pledged > 0" options="pieOptions" data="pieData"></nvd3>
+                <div ng-if="statsTable.pledged === 0"><h4>No Pledges</h4></div>
+              </div>
+            </div>
           </div>
 
           <!-- config -->
@@ -320,84 +345,17 @@
                 </div>
               </div>
             </form>
-
           </div>
-
         </div>
       </div>
+    </div>
 
-      <div class="col-md-4 col-sm-12">
-        <div class="card">
-          <div class="card-head">
-            <header>Pledges</span></header>
-            <div class="tools" ng-if="currentUser.role === 'ADMIN'">
-              <div class="btn-group">
-                <a ng-show="showPledgesPieChart" ng-click="onShowPledgesPieChart()" class="btn btn-icon-toggle btn-refresh"><i class="md md-undo"></i></a>
-                <a ng-show="!showPledgesPieChart" ng-click="onShowPledgesPieChart()" class="btn btn-icon-toggle btn-refresh"><i class="fa fa-gear"></i></a>
-              </div>
-            </div>
-          </div>
-
-          <!-- config -->
-          <div class="card-body text-center">
-            <div ng-show="!showPledgesPieChart">
-              <nvd3 options="pieOptions" data="pieData"></nvd3>
-            </div>
-            <div ng-show="showPledgesPieChart">
-              <form class="form" ng-submit="onSetWard()">
-                <div class="form-group">
-                  <div class="input-group">
-                    <div class="input-group-btn">
-                      <button class="btn btn-success btn-sm" type="submit">
-                        GO
-                      </button>
-                    </div>
-                    <div class="input-group-content">
-
-                      <input type="text"
-                             ng-change="onWardInputKeypress()"
-                             ng-readonly="readOnlyConstituency"
-                             placeholder="Type a ward name"
-                             id="pledgesWardInputID"
-                             ng-model="wardSearchModel"
-                             typeahead="w as w.name + ' (' + w.code + ') in ' + w.constituency.name for w in wards | filter:$viewValue | limitTo:50"
-                             typeahead-on-select="onSelectConstituency()"
-                             typeahead-loading="true"
-                             class="form-control">
-                    </div>
-                  </div>
-                </div>
-              </form>
-
-              <br>
-
-              <form class="form" ng-submit="onSetConstituency()">
-                <div class="form-group">
-                  <div class="input-group">
-                    <div class="input-group-btn">
-                      <button class="btn btn-success btn-sm" type="submit">
-                        GO
-                      </button>
-                    </div>
-                    <div class="input-group-content">
-                      <input type="text"
-                             ng-change="onConstituencyInputKeypress()"
-                             ng-readonly="readOnlyConstituency"
-                             id="pledgesConstInputID"
-                             placeholder="Type a constituency name"
-                             ng-model="constituencySearchModel"
-                             typeahead="c as c.name + ' (' + c.code + ')' for c in constituencies | filter:$viewValue | limitTo:8"
-                             typeahead-on-select="onSelectConstituency()"
-                             typeahead-loading="true"
-                             class="form-control" id="pledgeConst">
-                    </div>
-                  </div>
-                </div>
-              </form>
-            </div>
-          </div>
-
-        </div>
+    <div class="row">
+      <div class="col-sm-6">
+        <stat-card count="{{stats.totalContacts}}" label="Total Canvassed"></stat-card>
+      </div>
+      <div class="col-sm-6">
+        <stat-card count="{{stats.canvassedThisWeek}}" label="Past 7 days"></stat-card>
       </div>
     </div>
   </div>

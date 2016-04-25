@@ -78,15 +78,10 @@ angular
       });
     };
 
-    api.searchRestricted = function(name, limit) {
-      var paramsEncoded = $.param({
-        limit: limit,
-        name: name
-      });
-
+    api.searchRestricted = function(name) {
       return $http({
         method: 'GET',
-        url: apiUrl + '/ward/search/restricted?' + paramsEncoded,
+        url: apiUrl + '/ward/search/restricted?q=' + name,
         withCredentials: true
       });
     };

@@ -52,5 +52,21 @@ angular
       });
     };
 
+    api.wardStats = function(wardCode) {
+      return $http({
+        method: 'GET',
+        url: apiUrl + '/stats/ward/' + wardCode,
+        withCredentials: true
+      });
+    };
+
+    api.constituencyStats = function(constituencyCode) {
+      return $http({
+        method: 'GET',
+        url: apiUrl + '/stats/constituency/' + constituencyCode,
+        withCredentials: true
+      });
+    };
+
     return api;
   });
