@@ -21,7 +21,7 @@ then
 elif [ "$DEPLOYMENT_GROUP_NAME" == "Staging" ]
 then
     cp -f /tmp/staging.properties /var/tmp/application.properties
-elif [ "$DEPLOYMENT_GROUP_NAME" == "Development" ]
+elif [ "$DEPLOYMENT_GROUP_NAME" == "DevWebAppDeploymentGroup" ]
 then
     cp -f /tmp/development.properties /var/tmp/application.properties
 else
