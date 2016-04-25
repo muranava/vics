@@ -10,6 +10,7 @@ angular
     $scope.constituencyName = '';
     $scope.wardName = '';
     $scope.showCanvassedGraph = false;
+    $scope.showPledgesPieChart = false;
     $scope.graphLabel = "All";
 
     $scope.map = {
@@ -214,11 +215,55 @@ angular
       $scope.showCanvassedGraph = !$scope.showCanvassedGraph;
     };
 
+    $scope.onShowPledgesPieChart = function () {
+      $scope.showPledgesPieChart = !$scope.showPledgesPieChart;
+    };
+
+    $scope.pieOptions = {
+      chart: {
+        type: 'pieChart',
+        color: [
+          "#C5443B",
+          "#ff9798"
+        ],
+        height: 250,
+        x: function (d) {
+          return d.key;
+        },
+        y: function (d) {
+          return d.y;
+        },
+        showLabels: true,
+        duration: 500,
+        labelThreshold: 0.01,
+        labelSunbeamLayout: true,
+        legend: {
+          margin: {
+            top: 5,
+            right: 35,
+            bottom: 5,
+            left: 0
+          }
+        }
+      }
+    };
+
+    $scope.pieData = [
+      {
+        key: "Voted",
+        y: 5
+      },
+      {
+        key: "Not Voted",
+        y: 2
+      }
+    ];
+
     $scope.options = {
       chart: {
         type: 'discreteBarChart',
         height: 250,
-        "color": [
+        color: [
           "#C5443B"
         ],
         x: function (d) {

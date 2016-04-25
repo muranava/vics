@@ -8,11 +8,13 @@ import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.context.jdbc.SqlGroup;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.UUID;
 
 import static com.infinityworks.webapp.testsupport.builder.WardBuilder.ward;
 import static org.hamcrest.Matchers.*;
 import static org.junit.Assert.assertThat;
+import static org.junit.Assert.assertTrue;
 
 @SqlGroup({
         @Sql(executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD,
@@ -69,5 +71,11 @@ public class WardRepositoryTest extends RepositoryTest {
                 .build();
 
         assertThat(wards, hasItem(earlsdon));
+    }
+
+    @Test
+    public void searchUserRestrictedWardsByWardNameIn() throws Exception {
+        List<Ward> wards = wardRepository.findByNameRestrictedByUserAssociations("63f93970-d065-4fbb-8b9c-941e27ea53dc", "le".toUpperCase());
+        assertTrue(wards.stream().anyMatch(c -> Objects.equals(c.getName(), "Cheylesmore")));
     }
 }

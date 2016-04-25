@@ -5,6 +5,7 @@ import com.infinityworks.webapp.domain.Ward;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -26,4 +27,16 @@ public interface WardRepository extends JpaRepository<Ward, UUID> {
     List<Ward> findByConstituencyAndNameLike(Constituency constituency, String wardName);
 
     List<Ward> findByNameIgnoreCaseContainingOrderByNameAsc(String name, Pageable pageable);
+
+    @Query(nativeQuery = true, value =
+            "SELECT * FROM (SELECT w.* from users_constituencies uc " +
+                    "JOIN constituencies c ON c.id = uc.constituencies_id " +
+                    "JOIN wards w ON w.constituency_id = c.id " +
+                    "WHERE CAST(uc.users_id AS text) = :userId " +
+                    "UNION ALL " +
+                    "SELECT w2.* from users_wards uw " +
+                    "JOIN wards w2 ON w2.id = uw.wards_id " +
+                    "WHERE CAST(uw.users_id AS text) = :userId) AS t " +
+                    "WHERE UPPER(t.name) LIKE %:searchTerm%")
+    List<Ward> findByNameRestrictedByUserAssociations(@Param("userId") String userId, @Param("searchTerm") String searchTerm);
 }

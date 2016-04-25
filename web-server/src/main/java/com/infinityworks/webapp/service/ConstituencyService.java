@@ -52,6 +52,11 @@ public class ConstituencyService {
         return new UserRestrictedConstituencies(wardConstituencies);
     }
 
+
+    public List<Constituency> searchUserRestrictedConstituencies(User user, String searchTerm) {
+        return constituencyRepository.findByNameRestrictedByUserAssociations(user.getId().toString(), searchTerm.toUpperCase());
+    }
+
     public Try<List<Constituency>> constituenciesByName(User permissible, String name, int limit) {
         if (!permissible.isAdmin()) {
             log.error("Non admin attempted to find all constituencies by name. user={}", permissible);

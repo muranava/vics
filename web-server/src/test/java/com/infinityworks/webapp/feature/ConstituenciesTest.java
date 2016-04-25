@@ -24,6 +24,7 @@ import java.util.UUID;
 import static com.infinityworks.webapp.common.JsonUtil.stringify;
 import static java.util.Collections.emptyList;
 import static java.util.Collections.singletonList;
+import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.core.Is.is;
 import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.mock;
@@ -146,5 +147,52 @@ public class ConstituenciesTest extends WebApplicationTest {
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.constituencies", is(emptyList())));
+    }
+
+    @Test
+    public void searchesUserRestrictedConstituenciesByName() throws Exception {
+        User covs = covs();
+        String endpoint = "/constituency/search/restricted?q=Cov";
+
+        when(sessionService.extractUserFromPrincipal(any(Principal.class)))
+                .thenReturn(Try.success(covs));
+
+        mockMvc.perform(get(endpoint)
+                .accept(MediaType.APPLICATION_JSON))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$[0].name", is("Coventry South")))
+                .andExpect(jsonPath("$", hasSize(1)));
+    }
+
+    @Test
+    public void searchesUserRestrictedConstituenciesByNameIgnoresCase() throws Exception {
+        User covs = covs();
+        String endpoint = "/constituency/search/restricted?q=cov";
+
+        when(sessionService.extractUserFromPrincipal(any(Principal.class)))
+                .thenReturn(Try.success(covs));
+
+        mockMvc.perform(get(endpoint)
+                .accept(MediaType.APPLICATION_JSON))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$[0].name", is("Coventry South")))
+                .andExpect(jsonPath("$", hasSize(1)));
+    }
+
+    @Test
+    public void searchesUserRestrictedConstituenciesByNameReturnsEmptyListIfNotFound() throws Exception {
+        User covs = covs();
+        String endpoint = "/constituency/search/restricted?q=Covsdfsdf";
+
+        when(sessionService.extractUserFromPrincipal(any(Principal.class)))
+                .thenReturn(Try.success(covs));
+
+        mockMvc.perform(get(endpoint)
+                .accept(MediaType.APPLICATION_JSON))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$", hasSize(0)));
     }
 }

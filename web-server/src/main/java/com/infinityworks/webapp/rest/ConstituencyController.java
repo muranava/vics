@@ -86,4 +86,12 @@ public class ConstituencyController {
                 .flatMap(user -> constituencyAssociationService.removeUserAssociation(user, constituencyID, userID))
                 .fold(errorHandler::mapToResponseEntity, ResponseEntity::ok);
     }
+
+    @PreAuthorize("isAuthenticated()")
+    @RequestMapping(method = GET, value = "/search/restricted")
+    public ResponseEntity<?> searchUserRestrictedConstituencies(@RequestParam("q") String searchTerm, Principal principal) {
+        return sessionService.extractUserFromPrincipal(principal)
+                .map(user -> constituencyService.searchUserRestrictedConstituencies(user, searchTerm))
+                .fold(errorHandler::mapToResponseEntity, ResponseEntity::ok);
+    }
 }

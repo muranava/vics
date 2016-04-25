@@ -8,10 +8,12 @@ import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.context.jdbc.SqlGroup;
 
 import java.util.List;
+import java.util.Objects;
 
 import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.assertThat;
+import static org.junit.Assert.assertTrue;
 
 @SqlGroup({
         @Sql(executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD,
@@ -36,5 +38,11 @@ public class ConstituencyRepositoryTest extends RepositoryTest {
         assertThat(constituencies, hasSize(size));
         assertThat(constituencies.get(0).getName(), is("Coventry North East"));
         assertThat(constituencies.get(1).getName(), is("Coventry North West"));
+    }
+
+    @Test
+    public void searchByConstituencyNameIn() throws Exception {
+        List<Constituency> constituencies = constituencyRepository.findByNameRestrictedByUserAssociations("63f93970-d065-4fbb-8b9c-941e27ea53dc", "Cov".toUpperCase());
+        assertTrue(constituencies.stream().anyMatch(c -> Objects.equals(c.getCode(), "E14000651")));
     }
 }

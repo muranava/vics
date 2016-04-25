@@ -25,6 +25,7 @@ import java.util.UUID;
 import static com.infinityworks.webapp.common.JsonUtil.objectMapper;
 import static java.util.Collections.singletonList;
 import static org.hamcrest.CoreMatchers.not;
+import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
@@ -78,7 +79,7 @@ public class WardsTest extends WebApplicationTest {
         MvcResult result = response.andExpect(status().isOk()).andReturn();
         UserRestrictedWards wards = objectMapper.readValue(result.getResponse().getContentAsString(), UserRestrictedWards.class);
 
-        assertThat(wards.getWards().size(), is(6));
+        assertThat(wards.getWards().size(), is(7));
     }
 
     @Test
@@ -233,5 +234,38 @@ public class WardsTest extends WebApplicationTest {
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("hasAssociation", is(true)));
+    }
+
+    @Test
+    public void searchesUserRestrictedWardsByNameForAssociatedConstituencyCase() throws Exception {
+        User covs = covs();
+        String endpoint = "/ward/search/restricted?q=le";
+
+        when(sessionService.extractUserFromPrincipal(any(Principal.class)))
+                .thenReturn(Try.success(covs));
+
+        mockMvc.perform(get(endpoint)
+                .accept(MediaType.APPLICATION_JSON))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$[0].name", is("Binley and Willenhall")))
+                .andExpect(jsonPath("$[1].name", is("Cheylesmore")))
+                .andExpect(jsonPath("$", hasSize(2)));
+    }
+
+    @Test
+    public void searchesUserRestrictedWardsByNameForAssociatedWardCase() throws Exception {
+        User covs = covs();
+        String endpoint = "/ward/search/restricted?q=ching";
+
+        when(sessionService.extractUserFromPrincipal(any(Principal.class)))
+                .thenReturn(Try.success(covs));
+
+        mockMvc.perform(get(endpoint)
+                .accept(MediaType.APPLICATION_JSON))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$[0].name", is("Chingford Green")))
+                .andExpect(jsonPath("$", hasSize(1)));
     }
 }

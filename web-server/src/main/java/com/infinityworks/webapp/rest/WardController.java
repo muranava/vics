@@ -126,4 +126,12 @@ public class WardController {
                 .flatMap(user -> wardAssociationService.removeUserAssociation(user, wardID, userID))
                 .fold(errorHandler::mapToResponseEntity, ResponseEntity::ok);
     }
+
+    @PreAuthorize("isAuthenticated()")
+    @RequestMapping(method = GET, value = "/search/restricted")
+    public ResponseEntity<?> searchUserRestrictedConstituencies(@RequestParam("q") String searchTerm, Principal principal) {
+        return sessionService.extractUserFromPrincipal(principal)
+                .map(user -> wardService.searchUserRestrictedConstituencies(user, searchTerm))
+                .fold(errorHandler::mapToResponseEntity, ResponseEntity::ok);
+    }
 }

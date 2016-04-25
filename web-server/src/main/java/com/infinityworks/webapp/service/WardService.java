@@ -45,6 +45,10 @@ public class WardService {
         this.wardAssociationService = wardAssociationService;
     }
 
+    public List<Ward> searchUserRestrictedConstituencies(User user, String searchTerm) {
+        return wardRepository.findByNameRestrictedByUserAssociations(user.getId().toString(), searchTerm.toUpperCase());
+    }
+
     public Try<Ward> getByCode(String wardCode, User user) {
         Optional<Ward> byWard = wardRepository.findByCode(wardCode);
         if (!byWard.isPresent()) {
