@@ -170,7 +170,7 @@ angular
         redirectTo: '/dashboard'
       });
 
-    var interceptor = ['$rootScope', '$q', '$location', function (scope, $q, $location) {
+    var interceptor = ['$rootScope', '$q', '$location', function ($rootScope, $q, $location) {
       function success(response) {
         return response;
       }

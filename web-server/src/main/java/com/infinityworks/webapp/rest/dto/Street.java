@@ -20,4 +20,6 @@ public interface Street {
     @JsonProperty("numCanvassed") Integer numCanvassed();
     @JsonProperty("postcode") Object postcode();
     @JsonProperty("priority") Integer priority();
+    @JsonProperty("pledged") Integer pledged();
+    @JsonProperty("votedPledges") Integer votedPledges();
 }

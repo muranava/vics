@@ -62,6 +62,8 @@ public class Fixtures {
                 .withMainStreet("mainStreet")
                 .withPostcode("postCode")
                 .withPostTown("postTown")
+                .withVotedPledges(3)
+                .withPledged(4)
                 .withPriority(0);
     }
 

@@ -4,7 +4,22 @@ angular
   .controller('dashboardController', function ($interval, $scope, statsService, toastr, geoService, calendar, $uibModal, wardService, constituencyService) {
     var referendumDate = new Date(2016, 5, 23, 22, 0),
       secondsInDay = 86400,
-      secondsInHour = 3600;
+      secondsInHour = 3600,
+      typeaheadSwitchDelayMillis = 300;
+
+    $scope.onWardInputKeypress = _.debounce(function() {
+      wardService.searchRestricted($scope.wardSearchModel)
+        .success(function(response) {
+          $scope.wards = response;
+        });
+    }, typeaheadSwitchDelayMillis);
+
+    $scope.onConstituencyInputKeypress = _.debounce(function() {
+      constituencyService.searchRestricted($scope.constituencySearchModel)
+        .success(function (response) {
+          $scope.constituencies = response;
+        });
+    }, typeaheadSwitchDelayMillis);
 
     $scope.currentTab = 'activists';
     $scope.constituencyName = '';
@@ -138,13 +153,6 @@ angular
       }
     }
 
-    $scope.onWardInputKeypress = function () {
-      wardService.searchRestricted($scope.wardSearchModel)
-        .success(function(response) {
-          $scope.wards = response;
-        });
-    };
-
     $scope.onSetWard = function () {
       if ($scope.wardSearchModel && $scope.wardSearchModel.id) {
 
@@ -215,14 +223,6 @@ angular
       } else {
         $scope.invalidConstituency = true;
       }
-    };
-
-    $scope.onConstituencyInputKeypress = function () {
-      $scope.invalidConstituency = false;
-      constituencyService.searchRestricted($scope.constituencySearchModel)
-        .success(function (response) {
-          $scope.constituencies = response;
-        });
     };
 
     function updateCountdown() {

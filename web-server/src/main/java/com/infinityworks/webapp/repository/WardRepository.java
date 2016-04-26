@@ -37,6 +37,6 @@ public interface WardRepository extends JpaRepository<Ward, UUID> {
                     "SELECT w2.* from users_wards uw " +
                     "JOIN wards w2 ON w2.id = uw.wards_id " +
                     "WHERE CAST(uw.users_id AS text) = :userId) AS t " +
-                    "WHERE UPPER(t.name) LIKE %:searchTerm%")
+                    "WHERE UPPER(t.name) LIKE %:searchTerm% ORDER BY name")
     List<Ward> findByNameRestrictedByUserAssociations(@Param("userId") String userId, @Param("searchTerm") String searchTerm);
 }

@@ -114,6 +114,7 @@ angular
         .success(function (streets) {
           var streetsTx = removeStreetsWithoutVoters(streets);
           $scope.streets = _.orderBy(streetsTx.streets, 'priority', 'desc');
+          $scope.streetStats = streets.stats;
           scrollToPrintSection();
         });
     };
@@ -183,11 +184,11 @@ angular
       return flags;
     }
 
-    $scope.getRatioCanvassed = function (numCanvassed, numVoters) {
-      if (numCanvassed === 0 && numVoters === 0) {
+    $scope.getRatioPledged = function (numVoted, numPledged) {
+      if (numVoted === 0 && numPledged === 0) {
         return 100;
       }
-      return Math.round(numCanvassed / numVoters * 100);
+      return Math.round(numVoted / numPledged * 100);
     };
 
     $scope.onShowPopupMap = function (street) {

@@ -75,8 +75,8 @@ public class AddressServiceTest {
                 ImmutableStreetsByWardResponse.builder()
                         .withStats(
                                 ImmutableStats.builder()
-                                        .withVoters("10")
-                                        .withCanvassed("5")
+                                        .withVoters(10)
+                                        .withCanvassed(5)
                                         .build())
                         .withStreets(
                                 asList(street()
@@ -88,6 +88,8 @@ public class AddressServiceTest {
                                         .withPostTown("Coventry")
                                         .withPostcode("CV2 4DK")
                                         .withPriority(2)
+                                        .withVotedPledges(3)
+                                        .withPledged(4)
                                         .build(),
                                        street()
                                         .withNumVoters(10)
@@ -101,8 +103,8 @@ public class AddressServiceTest {
         StreetsByWardResponse streetsByWardResponse = streetsByWardCode.get();
 
         Stats stats = streetsByWardResponse.stats();
-        assertThat(stats.canvassed(), is("5"));
-        assertThat(stats.voters(), is("10"));
+        assertThat(stats.canvassed(), is(5));
+        assertThat(stats.voters(), is(10));
 
         Street street = streetsByWardResponse.streets().get(0);
         assertThat(street.priority(), is(2));

@@ -25,8 +25,13 @@ public interface PafStreetResponse {
     @JsonProperty("postcode") @Value.Default default List<String> postcode() {
         return emptyList();
     }
-    @JsonProperty("priority") @Value.Default
-    default int priority() {
+    @JsonProperty("priority") @Value.Default default int priority() {
+        return 0;
+    }
+    @JsonProperty("voted_pledges") @Value.Default default int votedPledges() {
+        return 0;
+    }
+    @JsonProperty("pledged") @Value.Default default int pledged() {
         return 0;
     }
 }

@@ -21,6 +21,8 @@ public class PafToStreetResponseConverter implements Function<PafStreetResponse,
                 .withNumCanvassed(pafStreet.canvassed())
                 .withPostcode(pafStreet.postcode())
                 .withPriority(pafStreet.priority())
+                .withPledged(pafStreet.pledged())
+                .withVotedPledges(pafStreet.votedPledges())
                 .build();
     }
 }
