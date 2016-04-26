@@ -15,10 +15,10 @@ mkdir -p /var/tmp
 cp -f /tmp/web-server-0.0.1.jar /var/tmp/vics.jar
 cp -f /tmp/scripts/web-server-0.0.1.conf /var/tmp/vics.conf
 
-if [ "$DEPLOYMENT_GROUP_NAME" == "Production" ]
+if [ "$DEPLOYMENT_GROUP_NAME" == "ProductionWebApp" ]
 then
     cp -f /tmp/scripts/production.properties /var/tmp/application.properties
-elif [ "$DEPLOYMENT_GROUP_NAME" == "Staging" ]
+elif [ "$DEPLOYMENT_GROUP_NAME" == "StagingWebApp" ]
 then
     cp -f /tmp/scripts/staging.properties /var/tmp/application.properties
 elif [ "$DEPLOYMENT_GROUP_NAME" == "DevWebAppDeploymentGroup" ]
