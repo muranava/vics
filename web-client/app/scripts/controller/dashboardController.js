@@ -27,13 +27,24 @@ angular
     $scope.showCanvassedGraph = false;
     $scope.showPledgesPieChart = false;
     $scope.graphLabel = "";
+
     $scope.statsTable = {
-      voters: 0,
+      voters: 3525775,
       voted_pledges: 0,
       voted: 0,
-      canvassed: 0,
-      pledged: 0
+      canvassed: 1251,
+      pledged: 1243
     };
+    $scope.pieData = [
+      {
+        key: "Voted Pledged",
+        y: $scope.statsTable.voted_pledges
+      },
+      {
+        key: "Total Pledged",
+        y: $scope.statsTable.pledged
+      }
+    ];
 
     $scope.map = {
       center: {
@@ -144,7 +155,6 @@ angular
                   if (result) {
                     $scope.findWard(result.postcode, true);
                   }
-
                 });
             }
           },
@@ -305,17 +315,6 @@ angular
         }
       }
     };
-
-    $scope.pieData = [
-      {
-        key: "Voted Pledged",
-        y: 5125
-      },
-      {
-        key: "Total Pledged",
-        y: 15161
-      }
-    ];
 
     $scope.options = {
       chart: {
