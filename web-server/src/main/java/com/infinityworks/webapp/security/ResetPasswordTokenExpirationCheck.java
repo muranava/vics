@@ -9,7 +9,7 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
 @Component
-@ConditionalOnProperty("enableScheduling")
+@ConditionalOnProperty("canvass.enableScheduling")
 public class ResetPasswordTokenExpirationCheck {
     private final Logger log = LoggerFactory.getLogger(ResetPasswordTokenExpirationCheck.class);
     private final RemoveExpiredPasswordResetTokensService tokenRemovalService;
