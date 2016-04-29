@@ -15,6 +15,7 @@ public class AppProperties {
     private String passwordResetEndpoint;
     private int passwordResetExpirationMins;
     private String supportEmail;
+    private String newAccountEmailSubject;
 
     public int getPasswordResetExpirationMins() {
         return passwordResetExpirationMins;
@@ -86,5 +87,13 @@ public class AppProperties {
 
     public void setSupportEmail(String supportEmail) {
         this.supportEmail = supportEmail;
+    }
+
+    public String getNewAccountEmailSubject() {
+        return newAccountEmailSubject;
+    }
+
+    public void setNewAccountEmailSubject(String newAccountEmailSubject) {
+        this.newAccountEmailSubject = newAccountEmailSubject;
     }
 }

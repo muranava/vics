@@ -3,7 +3,6 @@ package com.infinityworks.webapp.clients.paf.command;
 import com.infinityworks.webapp.clients.paf.PafClient;
 import com.infinityworks.webapp.clients.paf.PafRequestExecutor;
 import com.infinityworks.webapp.clients.paf.dto.PafStreetRequest;
-import com.infinityworks.webapp.clients.paf.dto.PafStreetResponse;
 
 import java.util.List;
 

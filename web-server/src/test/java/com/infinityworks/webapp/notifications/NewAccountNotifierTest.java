@@ -28,6 +28,7 @@ public class NewAccountNotifierTest {
         emailClient = mock(EmailClient.class);
         appProperties = new AppProperties();
         appProperties.setSupportEmail("vics@asd");
+        appProperties.setNewAccountEmailSubject("subject");
         underTest = new NewAccountNotifier(emailClient, new TemplateRenderer(), appProperties);
     }
 
@@ -47,6 +48,6 @@ public class NewAccountNotifierTest {
         assertThat(emailMessage.to(), is("username@me.com"));
         assertThat(emailMessage.name(), is("firstName lastName"));
         assertThat(emailMessage.from(), is(appProperties.getSupportEmail()));
-        assertThat(emailMessage.subject(), containsString("VICS"));
+        assertThat(emailMessage.subject(), containsString("subject"));
     }
 }

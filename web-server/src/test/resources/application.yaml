@@ -31,6 +31,7 @@ canvass:
   passwordResetEndpoint: http://localhost:9000/#/resetpassword
   passwordResetExpirationMins: 120
   passwordTokenExpiryDeletedUpdateInterval: 10
+  newAccountEmailSubject: "Welcome to you new Vote Leave canvassing account"
 
 logging:
   level:

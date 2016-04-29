@@ -44,6 +44,7 @@ angular
       {route: '/associations', role: 'ADMIN'},
       {route: '/users', role: 'ADMIN'},
       {route: '/csvupload', role: 'ADMIN'},
+      {route: '/map', role: 'ADMIN'},
       {route: '/stats', role: 'ADMIN'}
     ];
 
@@ -109,6 +110,12 @@ angular
       .when('/newpassword', {
         templateUrl: 'views/newpassword.html',
         controller: 'newPasswordController'
+      })
+      .when('/map', {
+        templateUrl: 'views/map.html',
+        resolve: {
+          auth: userAuth
+        }
       })
       .when('/users', {
         templateUrl: 'views/users.html',

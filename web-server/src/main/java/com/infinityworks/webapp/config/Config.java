@@ -6,6 +6,8 @@ import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.datatype.guava.GuavaModule;
 import com.fasterxml.jackson.datatype.jdk8.Jdk8Module;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+import com.google.common.base.Charsets;
+import com.google.common.collect.ImmutableMap;
 import com.google.common.io.Resources;
 import com.infinityworks.webapp.clients.paf.PafRequestExecutor;
 import com.infinityworks.webapp.common.RequestValidator;
@@ -26,6 +28,7 @@ import org.springframework.scheduling.annotation.EnableAsync;
 
 import javax.validation.Validation;
 import javax.validation.ValidatorFactory;
+import java.io.IOException;
 import java.net.URL;
 import java.util.HashSet;
 import java.util.Set;
@@ -44,6 +47,15 @@ public class Config {
                 .configure(SerializationFeature.FAIL_ON_EMPTY_BEANS, false)
                 .configure(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, false);
         objectWriter = objectMapper.writer();
+    }
+
+    @Bean
+    public Maps ukMapTopoJson() throws IOException {
+        return new Maps(ImmutableMap.of("gb", load("json/wpc.json")));
+    }
+
+    private String load(String fileName) throws IOException {
+        return Resources.toString(Resources.getResource(fileName), Charsets.UTF_8);
     }
 
     @Bean

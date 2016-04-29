@@ -279,3 +279,21 @@ div.worldmap.box {
 .angular-google-map-container {
   height: 550px;
 }
+
+/* map style */
+.area{
+  fill: #C0C0C0;
+  stroke: none;
+}
+
+.boundary {
+  fill: none;
+  stroke: #777;
+}
+
+.selected {
+  fill: #fff;
+  stroke: #777;
+  stroke-dasharray: 2,2;
+  stroke-linejoin: round;
+}

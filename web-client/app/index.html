@@ -33,6 +33,7 @@
 
   <script src='//maps.googleapis.com/maps/api/js'></script>
 
+
   <!--Start of Zopim Live Chat Script-->
   <script type="text/javascript">
     window.$zopim || (function (d, s) {
@@ -177,10 +178,10 @@
             <span class="title">Profile</span>
           </a>
         </li>
-        <li ng-show="currentUser.authorities[0].authority === 'ADMIN'" style="display: none;">
-          <a href="#/stats">
-            <div class="gui-icon"><i class="md md-insert-chart"></i></div>
-            <span class="title">Stats</span>
+        <li ng-show="currentUser.authorities[0].authority === 'ADMIN'">
+          <a href="#/map">
+            <div class="gui-icon"><i class="md md-map"></i></div>
+            <span class="title">Map</span>
           </a>
         </li>
       </ul>
@@ -198,7 +199,6 @@
 <!--[if lt IE 9]>
 <script type="text/javascript" src="xlibs/html5shiv.js"></script>
 <![endif]-->
-
 
 <!-- build:js(.) scripts/vendor.js -->
 <!-- bower:js -->
@@ -226,6 +226,7 @@
 <script src="bower_components/d3/d3.js"></script>
 <script src="bower_components/nvd3/build/nv.d3.js"></script>
 <script src="bower_components/angular-nvd3/dist/angular-nvd3.js"></script>
+<script src="bower_components/topojson/topojson.js"></script>
 <!-- endbower -->
 <!-- endbuild -->
 
@@ -252,6 +253,7 @@
 <script src="scripts/controller/gotvController.js"></script>
 <script src="scripts/controller/csvUploadController.js"></script>
 <script src="scripts/directive/statCard.js"></script>
+<script src="scripts/directive/ukConstituencyMap.js"></script>
 <script src="scripts/directive/uppercased.js"></script>
 <script src="scripts/directive/wardSearch.js"></script>
 <script src="scripts/directive/voterSearch.js"></script>

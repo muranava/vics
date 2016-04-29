@@ -27,11 +27,13 @@ public class NewAccountNotifier {
     private static final Logger log = LoggerFactory.getLogger(NewAccountNotifier.class);
     private String messageTemplate;
     private final String supportEmail;
+    private final String newAccountEmailSubject;
 
     @Autowired
     public NewAccountNotifier(EmailClient emailClient, TemplateRenderer templateRenderer, AppProperties appProperties) {
         this.emailClient = emailClient;
         this.templateRenderer = templateRenderer;
+        this.newAccountEmailSubject = appProperties.getNewAccountEmailSubject();
         this.supportEmail = appProperties.getSupportEmail();
 
         URL url = Resources.getResource(NOTIFICATION_TEMPLATE_LOCATION);
@@ -50,7 +52,7 @@ public class NewAccountNotifier {
                     .withName(user.getFirstName() + " " + user.getLastName())
                     .withTo(user.getUsername())
                     .withBody(emailContent)
-                    .withSubject("Welcome to you new VICS account")
+                    .withSubject(newAccountEmailSubject)
                     .withFrom(supportEmail)
                     .build();
 

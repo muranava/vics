@@ -23,13 +23,13 @@ public interface StatsRepository extends JpaRepository<User, UUID> {
     List<Object[]> countRecordContactByUser(@Param("limit") int limit);
 
     @Query(nativeQuery = true, value =
-            "SELECT c.name,COUNT(DISTINCT(l.ern)) as counts " +
+            "SELECT c.name,COUNT(DISTINCT(l.ern)) as total,c.code " +
                     "FROM record_contact_log l " +
                     "JOIN wards w ON w.id = l.wards_id " +
                     "JOIN constituencies c ON c.id = w.constituency_id " +
                     "WHERE operation = 'CREATE' " +
                     "GROUP BY c.id " +
-                    "ORDER BY counts DESC " +
+                    "ORDER BY total DESC " +
                     "LIMIT :limit"
     )
     List<Object[]> countMostRecordContactByConstituency(@Param("limit") int limit);

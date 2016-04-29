@@ -26,5 +26,16 @@ angular
       });
     };
 
+    api.constituencyStatsTopoJsonMap = function(region) {
+      return $http({
+        method: 'GET',
+        params: {
+          region: region
+        },
+        url: apiUrl + '/geo/constituency',
+        withCredentials: true
+      });
+    };
+
     return api;
   });

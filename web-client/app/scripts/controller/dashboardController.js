@@ -4,22 +4,21 @@ angular
   .controller('dashboardController', function ($interval, $scope, statsService, toastr, geoService, calendar, $uibModal, wardService, constituencyService) {
     var referendumDate = new Date(2016, 5, 23, 22, 0),
       secondsInDay = 86400,
-      secondsInHour = 3600,
-      typeaheadSwitchDelayMillis = 300;
+      secondsInHour = 3600;
 
-    $scope.onWardInputKeypress = _.debounce(function() {
+    $scope.onWardInputKeypress = function() {
       wardService.searchRestricted($scope.wardSearchModel)
-        .success(function(response) {
+        .success(function (response) {
           $scope.wards = response;
         });
-    }, typeaheadSwitchDelayMillis);
+    };
 
-    $scope.onConstituencyInputKeypress = _.debounce(function() {
+    $scope.onConstituencyInputKeypress = function() {
       constituencyService.searchRestricted($scope.constituencySearchModel)
         .success(function (response) {
           $scope.constituencies = response;
         });
-    }, typeaheadSwitchDelayMillis);
+    };
 
     $scope.currentTab = 'activists';
     $scope.constituencyName = '';
@@ -29,7 +28,7 @@ angular
     $scope.graphLabel = "";
 
     $scope.statsTable = {
-      voters: 3525775,
+      voters: 37525775,
       voted_pledges: 0,
       voted: 0,
       canvassed: 1251,
@@ -37,7 +36,7 @@ angular
     };
     $scope.pieData = [
       {
-        key: "Voted Pledged",
+        key: "Voted Pledges",
         y: $scope.statsTable.voted_pledges
       },
       {
