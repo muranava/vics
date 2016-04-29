@@ -12,7 +12,11 @@ angular
           .success(function (response) {
             var map = new google.maps.Map(document.getElementById('map'), {
               zoom: 7,
-              fullscreenControl: true,
+              zoomControl: true,
+              mapTypeControl: false,
+              zoomControlOptions: {
+                position: google.maps.ControlPosition.RIGHT_TOP
+              },
               center: {lat: 52.5, lng: -2.0} // 54.5, -2.7
             });
 
