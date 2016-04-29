@@ -91,7 +91,7 @@
             <phase>prepare-package</phase>
             <configuration>
               <tasks>
-                <replace token="http://localhost:18080/api/canvass" value="https://WebApp-1101661235.eu-west-1.elb.amazonaws.com:18080/api/canvass" dir="${project.basedir}/../dist/client/scripts">
+                <replace token="http://localhost:18080/api/canvass" value="CANVASS_API_ELB_ENDPOINT" dir="${project.basedir}/../dist/client/scripts">
                   <include name="scripts.*.js"/>
                 </replace>
               </tasks>

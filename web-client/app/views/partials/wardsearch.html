@@ -17,7 +17,8 @@
                typeahead="c as c.name for c in constituencies | filter:$viewValue | limitTo:10"
                typeahead-on-select="onSelectConstituencyInternal()"
                typeahead-loading="true"
-               class="form-control">
+               class="form-control"
+               autocomplete="off">
       </div>
     </div>
   </div>
@@ -49,7 +50,8 @@
                  placeholder="Type a ward name"
                  typeahead="w as w.name for w in wards | filter:$viewValue | limitTo:8"
                  typeahead-on-select="onSelectWardInternal()"
-                 class="form-control">
+                 class="form-control"
+                 autocomplete="off">
         </div>
       </form>
     </div>
