@@ -4,10 +4,12 @@ import com.infinityworks.webapp.service.RemoveExpiredPasswordResetTokensService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
 @Component
+@ConditionalOnProperty("enableScheduling")
 public class ResetPasswordTokenExpirationCheck {
     private final Logger log = LoggerFactory.getLogger(ResetPasswordTokenExpirationCheck.class);
     private final RemoveExpiredPasswordResetTokensService tokenRemovalService;

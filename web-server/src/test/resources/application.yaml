@@ -32,6 +32,7 @@ canvass:
   passwordResetExpirationMins: 120
   passwordTokenExpiryDeletedUpdateInterval: 10
   newAccountEmailSubject: "Welcome to you new Vote Leave canvassing account"
+  enableScheduling: false
 
 logging:
   level:
