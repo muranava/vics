@@ -14,10 +14,11 @@ angular
               zoom: 7,
               zoomControl: true,
               mapTypeControl: false,
+              streetViewControl: false,
               zoomControlOptions: {
                 position: google.maps.ControlPosition.RIGHT_TOP
               },
-              center: {lat: 52.5, lng: -2.0} // 54.5, -2.7
+              center: {lat: 52.5, lng: -2.0}
             });
 
             function styleMap() {

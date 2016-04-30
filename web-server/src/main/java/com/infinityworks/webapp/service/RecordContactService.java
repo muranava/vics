@@ -87,7 +87,7 @@ public class RecordContactService {
                         return recordContactCommand.execute();
                     }).map(deleteResponse -> {
 
-                        log.info("User={} deleted recorded contact for ern={}", ern);
+                        log.info("User={} deleted recorded contact for ern={}", user, ern);
                         recordContactLogService.deleteRecordContactAsync(localId);
                         return deleteResponse;
                     });
