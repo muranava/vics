@@ -17,6 +17,9 @@ angular
 
     function initForm() {
       var prevWard = $scope.inputRecordModel && $scope.inputRecordModel.ward;
+      $scope.ignored = {
+        moved: false
+      };
       $scope.inputRecordModel = {
         ern: {
           pollingDistrict: '',
@@ -38,6 +41,8 @@ angular
         telephone: null,
         email: null
       };
+
+      $scope.moved = false;
 
       if (prevWard) {
         $scope.inputRecordModel.ward = prevWard;
@@ -162,12 +167,11 @@ angular
 
     function resetForm() {
       var prefix = $scope.inputRecordModel.ern.pollingDistrict,
-        suffix = $scope.inputRecordModel.ern.suffix,
-        electorID = $scope.inputRecordModel.ern.number;
+        suffix = $scope.inputRecordModel.ern.suffix;
       initForm();
       $scope.inputRecordModel.ern.pollingDistrict = prefix;
       $scope.inputRecordModel.ern.suffix = suffix;
-      $scope.inputRecordModel.ern.number = electorID;
+      $scope.inputRecordModel.ern.number = '';
     }
 
     function constructErnFromParts(model, wardCode) {

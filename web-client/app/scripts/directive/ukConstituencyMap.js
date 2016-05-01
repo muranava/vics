@@ -15,6 +15,7 @@ angular
               zoomControl: true,
               mapTypeControl: false,
               streetViewControl: false,
+              fullscreenControl: true,
               zoomControlOptions: {
                 position: google.maps.ControlPosition.RIGHT_TOP
               },
@@ -35,7 +36,10 @@ angular
 
             styleMap();
             map.data.addGeoJson(response);
-            map.controls[google.maps.ControlPosition.RIGHT_TOP].push(document.getElementById('legend'));
+            var legend = document.getElementById('legend');
+            console.log(legend);
+            legend.index = 1;
+            map.controls[google.maps.ControlPosition.RIGHT_TOP].push(legend);
 
             map.data.setStyle(function(feature) {
               return {

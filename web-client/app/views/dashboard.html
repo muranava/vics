@@ -231,7 +231,7 @@
       </div>
     </div>
 
-    <div class="row" ng-show="currentUser.role === 'ADMIN'">
+    <div class="row">
 
       <div class="col-sm-12">
         <div class="card">
@@ -242,7 +242,6 @@
             </header>
             <div class="tools">
               <div class="btn-group">
-                <a class="btn btn-icon-toggle btn-refresh"><i class="gold-trophy fa fa-shield"></i></a>
                 <a ng-show="showCanvassedGraph" ng-click="onShowWeeklyStatsConfig()"
                    class="btn btn-icon-toggle btn-refresh"><i class="md md-undo"></i></a>
                 <a ng-show="!showCanvassedGraph && graphLabel !== ''" ng-click="removeCanvassChartByWeekFilter()"
