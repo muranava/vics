@@ -14,6 +14,13 @@ public interface UserRepository extends JpaRepository<User, UUID> {
     Optional<User> findOneByUsername(String username);
 
     @Query(nativeQuery = true,
-           value = "SELECT username, first_name, last_name, write_access, role, cast(id as text) FROM users ORDER BY username")
+           value = "SELECT username, first_name, last_name, write_access, role, cast(id as text), coalesce(C.counts, 0) FROM users uu " +
+                   "LEFT JOIN (SELECT u.id uid,COUNT(DISTINCT(l.ern)) AS counts " +
+                   "           FROM record_contact_log l " +
+                   "           JOIN users u ON u.id = l.users_id " +
+                   "           WHERE operation = 'CREATE' " +
+                   "           GROUP BY u.id " +
+                   "           ORDER BY counts DESC) AS C ON C.uid = uu.id " +
+                   "ORDER BY username")
     List<Object[]> allUserSummaries();
 }

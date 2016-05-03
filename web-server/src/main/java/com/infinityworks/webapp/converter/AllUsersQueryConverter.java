@@ -5,7 +5,7 @@ import com.infinityworks.webapp.rest.dto.ImmutableUserSummary;
 import com.infinityworks.webapp.rest.dto.UserSummary;
 import org.springframework.stereotype.Component;
 
-import java.util.UUID;
+import java.math.BigInteger;
 import java.util.function.Function;
 
 @Component
@@ -19,6 +19,7 @@ public class AllUsersQueryConverter implements Function<Object[], UserSummary>{
                 .withWriteAccess((Boolean) row[3])
                 .withRole(Role.valueOf((String)(row[4])))
                 .withId((String)row[5])
+                .withCanvassed((BigInteger) row[6])
                 .build();
     }
 }

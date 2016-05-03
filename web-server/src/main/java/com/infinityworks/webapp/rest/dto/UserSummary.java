@@ -5,6 +5,8 @@ import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.infinityworks.webapp.domain.Role;
 import org.immutables.value.Value;
 
+import java.math.BigInteger;
+
 @Value.Immutable
 @JsonIgnoreProperties(ignoreUnknown = true)
 @Value.Style(init = "with*")
@@ -16,4 +18,7 @@ public interface UserSummary {
     String lastName();
     Role role();
     boolean writeAccess();
+    @Value.Default default BigInteger canvassed() {
+        return BigInteger.ZERO;
+    }
 }

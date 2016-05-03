@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.context.jdbc.SqlGroup;
 
+import java.math.BigInteger;
 import java.util.List;
 import java.util.Set;
 
@@ -65,6 +66,7 @@ public class UserRepositoryTest extends RepositoryTest {
                 .withRole(Role.USER)
                 .withWriteAccess(true)
                 .withId("196af608-6d7a-4981-a6a0-ed8999b3b89c")
+                .withCanvassed(BigInteger.valueOf(5))
                 .build()));
     }
 }
