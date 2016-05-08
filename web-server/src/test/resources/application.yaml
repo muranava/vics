@@ -24,7 +24,7 @@ canvass:
     methods:  "POST, GET, PUT, OPTIONS, DELETE"
   pafApiBaseUrl: http://localhost:9002/v1/
   pafApiToken: token
-  pafApiTimeout: 60000
+  pafApiTimeout: 30000
   addressLookupBaseUrl: https://maps.googleapis.com/maps/api/
   addressLookupToken: AIzaSyBdXzJ-korOOBRX8qZPRpxgo_yNvfpBXnU
   sendGridKey: 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

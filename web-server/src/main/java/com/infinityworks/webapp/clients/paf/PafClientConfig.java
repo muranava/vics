@@ -10,6 +10,8 @@ import org.springframework.context.annotation.Configuration;
 import retrofit2.Retrofit;
 import retrofit2.converter.jackson.JacksonConverterFactory;
 
+import java.util.concurrent.TimeUnit;
+
 @Configuration
 public class PafClientConfig {
 
@@ -20,14 +22,17 @@ public class PafClientConfig {
 
     @Bean
     public OkHttpClient okHttpClient(AppProperties appProperties) {
-        return new OkHttpClient.Builder().addInterceptor(chain -> {
-            Request request = chain.request()
-                    .newBuilder()
-                    .addHeader("X-Authorization", appProperties.getPafApiToken())
-                    .build();
-            return chain.proceed(request);
-        })
+        return new OkHttpClient.Builder()
                 .hostnameVerifier((s, sslSession) -> true)
+                .readTimeout(appProperties.getPafApiTimeout(), TimeUnit.SECONDS)
+                .writeTimeout(appProperties.getPafApiTimeout(), TimeUnit.SECONDS)
+                .addInterceptor(chain -> {
+                    Request request = chain.request()
+                            .newBuilder()
+                            .addHeader("X-Authorization", appProperties.getPafApiToken())
+                            .build();
+                    return chain.proceed(request);
+                })
                 .build();
     }
 
