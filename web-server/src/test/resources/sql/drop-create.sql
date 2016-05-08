@@ -7,12 +7,20 @@ DROP TABLE IF EXISTS users_wards;
 DROP TABLE IF EXISTS users;
 DROP TABLE IF EXISTS wards;
 DROP TABLE IF EXISTS constituencies;
+DROP TABLE IF EXISTS regions;
 
-CREATE TABLE constituencies
-(
+CREATE TABLE regions (
   id   UUID PRIMARY KEY,
   name TEXT NOT NULL UNIQUE,
   code TEXT NOT NULL UNIQUE
+);
+
+CREATE TABLE constituencies
+(
+  id         UUID PRIMARY KEY,
+  name       TEXT NOT NULL UNIQUE,
+  code       TEXT NOT NULL UNIQUE,
+  regions_id UUID REFERENCES regions (id)
 );
 
 CREATE TABLE wards (

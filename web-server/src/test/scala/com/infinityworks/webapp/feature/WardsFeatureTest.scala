@@ -20,9 +20,12 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders
   new Sql(executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD,
     scripts = Array(
       "classpath:sql/drop-create.sql",
+      "classpath:sql/regions.sql",
       "classpath:sql/constituencies.sql",
       "classpath:sql/wards.sql",
-      "classpath:sql/users.sql"))
+      "classpath:sql/users.sql",
+      "classpath:sql/password-reset-token.sql"
+    ))
 ))
 class WardsFeatureTest extends ApplicationTest {
   var session: SessionApi = _

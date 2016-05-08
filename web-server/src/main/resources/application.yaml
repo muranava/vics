@@ -48,7 +48,7 @@ canvass:
   passwordResetExpirationMins: 120
   passwordTokenExpiryDeletedUpdateInterval: 10
   supportEmail: vicssupport@voteleave.uk
-  newAccountEmailSubject: "Welcome to you new Vote Leave canvassing account"
+  newAccountEmailSubject: "IMPORTANT - Welcome to you new Vote Leave canvassing account"
   enableScheduling: true
 
 logging.level.: INFO

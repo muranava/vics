@@ -1,6 +1,6 @@
 angular
   .module('canvass')
-  .controller('gotvController', function ($scope, wardService, $filter, geoService, electorService, $window, toastr, $uibModal) {
+  .controller('gotvController', function ($scope, wardService, $filter, geoService, electorService, gotvService, $window, toastr, $uibModal) {
 
     $scope.numStreetsSelected = 0;
     $scope.validationErrors = [];
@@ -151,7 +151,7 @@ angular
       $scope.validationErrors = validateFlagsRadios();
       if (_.isEmpty($scope.validationErrors)) {
         var data = buildRequest(streets);
-        electorService.retrievePdfOfElectorsByStreets(wardCode, data, isLabels)
+        gotvService.retrievePdfOfElectorsByStreets(wardCode, data, isLabels)
           .success(function (response) {
             var file = new Blob([response], {type: 'application/pdf'});
             saveAs(file, $scope.ward.code + '.pdf');

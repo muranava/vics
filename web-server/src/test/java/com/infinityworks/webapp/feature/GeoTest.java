@@ -13,18 +13,21 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 import java.security.Principal;
 
+import static org.hamcrest.CoreMatchers.hasItem;
 import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @SqlGroup({
         @Sql(executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD,
                 scripts = {
                         "classpath:sql/drop-create.sql",
+                        "classpath:sql/regions.sql",
                         "classpath:sql/constituencies.sql",
                         "classpath:sql/wards.sql",
                         "classpath:sql/users.sql",
@@ -53,6 +56,8 @@ public class GeoTest extends WebApplicationTest {
         mockMvc.perform(get("/geo/constituency?region=gb")
                 .accept(APPLICATION_JSON))
                 .andDo(print())
-                .andExpect(status().isOk());
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$..features[0].properties.PCON13NM", hasItem("Aldershot")))
+                .andExpect(jsonPath("$..features[0].properties.count", hasItem(0)));
     }
 }
