@@ -3,9 +3,10 @@ package com.infinityworks.webapp.pdf;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.google.common.base.Joiner;
 import org.immutables.value.Value;
 
-import java.util.StringJoiner;
+import static com.infinityworks.common.lang.StringExtras.isNullOrEmpty;
 
 @Value.Immutable
 @JsonIgnoreProperties(ignoreUnknown = true)
@@ -14,18 +15,22 @@ import java.util.StringJoiner;
 @JsonSerialize(as = ImmutableAddressLabel.class)
 public interface AddressLabel {
     String name();
+
     String addressLine1();
+
     String addressLine2();
+
     String postTown();
+
     String postCode();
 
     default String printFormat() {
-        return new StringJoiner(", ")
-                .add(name())
-                .add(addressLine1())
-                .add(addressLine2())
-                .add(postTown())
-                .add(postCode())
-                .toString();
+        return Joiner.on("\n")
+                .skipNulls()
+                .join(name(),
+                        addressLine1(),
+                        isNullOrEmpty(addressLine2()) ? null : addressLine2(),
+                        postTown(),
+                        postCode());
     }
 }

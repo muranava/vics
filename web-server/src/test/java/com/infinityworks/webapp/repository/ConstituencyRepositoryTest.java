@@ -19,6 +19,7 @@ import static org.junit.Assert.assertTrue;
         @Sql(executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD,
                 scripts = {
                         "classpath:sql/drop-create.sql",
+                        "classpath:sql/regions.sql",
                         "classpath:sql/constituencies.sql",
                         "classpath:sql/wards.sql",
                         "classpath:sql/users.sql",

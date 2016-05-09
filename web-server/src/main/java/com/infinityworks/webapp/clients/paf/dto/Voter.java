@@ -14,10 +14,18 @@ import javax.annotation.Nullable;
 @JsonDeserialize(as = ImmutableVoter.class)
 @JsonSerialize(as = ImmutableVoter.class)
 public interface Voter {
-    @Nullable @JsonProperty("prefix") String pollingDistrict();
-    @Nullable @JsonProperty("number") String electorNumber();
-    @Nullable @JsonProperty("suffix") String electorSuffix();
-    @Nullable @JsonProperty("full_name") String fullName();
+    @Value.Default @JsonProperty("prefix") default String pollingDistrict() {
+        return "";
+    }
+    @Value.Default @JsonProperty("number") default String electorNumber() {
+        return "";
+    }
+    @Value.Default @JsonProperty("suffix") default String electorSuffix() {
+        return "";
+    }
+    @Value.Default @JsonProperty("full_name") default String fullName() {
+        return "";
+    }
     @Nullable @JsonProperty("voting") Voting voting();
     @Nullable @JsonProperty("flags") Flags flags();
     @Nullable @JsonProperty("issues") Issues issues();

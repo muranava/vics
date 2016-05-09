@@ -33,7 +33,6 @@ public class VoterController {
     private final TableBuilder tableBuilder;
     private final DocumentBuilder documentBuilder;
     private final VoterService voterService;
-    private final LabelService labelService;
     private final RequestValidator requestValidator;
     private final RecordVotedService recordVotedService;
     private final RecordContactService contactService;
@@ -44,7 +43,6 @@ public class VoterController {
     public VoterController(@Qualifier("canvass") TableBuilder tableBuilder,
                            @Qualifier("canvass") DocumentBuilder documentBuilder,
                            VoterService voterService,
-                           LabelService labelService,
                            RequestValidator requestValidator,
                            RecordVotedService recordVotedService,
                            RecordContactService contactService,
@@ -53,7 +51,6 @@ public class VoterController {
         this.tableBuilder = tableBuilder;
         this.documentBuilder = documentBuilder;
         this.voterService = voterService;
-        this.labelService = labelService;
         this.requestValidator = requestValidator;
         this.recordVotedService = recordVotedService;
         this.contactService = contactService;
@@ -102,18 +99,6 @@ public class VoterController {
         return sessionService.extractUserFromPrincipal(principal)
                 .flatMap(user -> recordVotedService.recordVote(user, ern))
                 .fold(errorHandler::mapToResponseEntity, ResponseEntity::ok);
-    }
-
-    @PreAuthorize("isAuthenticated()")
-    @RequestMapping(value = "/ward/{wardCode}/street/labels", method = POST)
-    public ResponseEntity<?> getLabelsPdfOfElectorsByTownStreet(
-            @RequestBody @Valid ElectorsByStreetsRequest electorsByStreetsRequest,
-            @PathVariable("wardCode") String wardCode,
-            Principal principal) throws DocumentException {
-        return requestValidator.validate(electorsByStreetsRequest)
-                .flatMap(streets -> sessionService.extractUserFromPrincipal(principal))
-                .flatMap(user -> labelService.generateLabelsPdf(electorsByStreetsRequest, wardCode, user))
-                .fold(errorHandler::mapToResponseEntity, this::handlePdfResponse);
     }
 
     @PreAuthorize("isAuthenticated()")

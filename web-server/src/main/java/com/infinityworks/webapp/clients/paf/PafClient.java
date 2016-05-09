@@ -32,6 +32,7 @@ public interface PafClient {
     Call<PropertyResponse> votersByStreets(@Path("wardCode") String wardCode,
                                            @Body List<PafStreetRequest> streets);
 
+    // FIXME change voter to voters when new API version pushed
     /**
      * Searches a voter by attributes
      *
@@ -63,18 +64,13 @@ public interface PafClient {
     Call<DeleteContactResponse> deleteContact(@Path("ern") String ern,
                                               @Path("contactId") UUID contactId);
 
-    /**
-     * Records that a voter has voted
-     *
-     * @param ern the voter ID
-     * @return ??? TODO
-     */
     @POST("voter/{ern}/voted")
     Call<RecordVotedResponse> recordVote(@Path("ern") String ern);
 
     @GET("wards/{wardCode}")
     Call<WardStats> wardStats(@Path("wardCode") String wardCode);
 
+    // FIXME change constituency to constituencies when new API version pushed
     @GET("constituency/{constituencyCode}")
     Call<ConstituencyStats> constituencyStats(@Path("constituencyCode") String constituencyCode);
 }

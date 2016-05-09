@@ -5,7 +5,6 @@ import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import org.immutables.value.Value;
 
-import javax.annotation.Nullable;
 import java.util.List;
 
 import static java.util.Collections.emptyList;
@@ -16,11 +15,11 @@ import static java.util.Collections.emptyList;
 @JsonDeserialize(as = ImmutableProperty.class)
 @JsonSerialize(as = ImmutableProperty.class)
 public interface Property {
-    @Nullable @JsonProperty("roll_street") String street();
-    @Nullable @JsonProperty("roll_house") String house();
-    @Nullable @JsonProperty("post_town") String postTown();
-    @Nullable @JsonProperty("postcode") String postCode();
-    @Value.Default default List<Voter> voters() {
+     @Value.Default default @JsonProperty("roll_street") String street() {return "";}
+     @Value.Default default @JsonProperty("roll_house") String house() {return "";}
+     @Value.Default default @JsonProperty("post_town") String postTown() {return "";}
+     @Value.Default default @JsonProperty("postcode") String postCode() {return "";}
+     @Value.Default default List<Voter> voters() {
         return emptyList();
     }
 }

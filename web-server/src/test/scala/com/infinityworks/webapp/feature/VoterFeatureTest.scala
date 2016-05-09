@@ -42,10 +42,9 @@ class VoterFeatureTest extends ApplicationTest {
     val requestValidator: RequestValidator = getBean(classOf[RequestValidator])
     val recordVotedService: RecordVotedService = getBean(classOf[RecordVotedService])
     val contactService: RecordContactService = getBean(classOf[RecordContactService])
-    val labelService: LabelService = getBean(classOf[LabelService])
     val tableBuilder: TableBuilder = new TableBuilder(new CanvassTableConfig)
     val documentBuilder: DocumentBuilder = new DocumentBuilder(mock(classOf[LogoRenderer]), new CanvassTableConfig)
-    val voterController: VoterController = new VoterController(tableBuilder, documentBuilder, voterService, labelService, requestValidator, recordVotedService, contactService, sessionService, new RestErrorHandler)
+    val voterController: VoterController = new VoterController(tableBuilder, documentBuilder, voterService, requestValidator, recordVotedService, contactService, sessionService, new RestErrorHandler)
 
     mockMvc = MockMvcBuilders.standaloneSetup(voterController).build
     http = new MockHttp(mockMvc)

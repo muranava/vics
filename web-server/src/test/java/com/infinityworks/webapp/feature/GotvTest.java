@@ -7,6 +7,7 @@ import com.infinityworks.webapp.error.RestErrorHandler;
 import com.infinityworks.webapp.rest.GotvController;
 import com.infinityworks.webapp.rest.dto.ElectorsByStreetsRequest;
 import com.infinityworks.webapp.service.GotvService;
+import com.infinityworks.webapp.service.LabelService;
 import com.infinityworks.webapp.service.SessionService;
 import org.junit.Before;
 import org.junit.Test;
@@ -47,8 +48,10 @@ public class GotvTest extends WebApplicationTest {
     @Before
     public void setup() {
         sessionService = mock(SessionService.class);
+        LabelService labelService= getBean(LabelService.class);
+        RestErrorHandler errorHandler = new RestErrorHandler();
         GotvController wardController = new GotvController(getBean(RequestValidator.class), sessionService,
-                getBean(GotvService.class), getBean(RestErrorHandler.class));
+                getBean(GotvService.class), getBean(RestErrorHandler.class), labelService, errorHandler);
 
         mockMvc = MockMvcBuilders
                 .standaloneSetup(wardController)

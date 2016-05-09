@@ -11,12 +11,13 @@ import java.util.List;
 
 @Component
 public class AveryLabelGenerator implements AddressLabelGenerator {
+    private static final AveryLabelSpec labelSpec = AverySpecs.a4();
 
     @Override
     public Try<ByteArrayOutputStream> generateAddressLabels(List<AddressLabel> addressLabels) {
         AveryLabelCreator labelGenerator;
         try {
-             labelGenerator = new AveryLabelCreator();
+             labelGenerator = new AveryLabelCreator(labelSpec);
         } catch (FileNotFoundException | DocumentException e) {
             return Try.failure(new PdfGeneratorFailure("Failed to create PDF", e));
         }
