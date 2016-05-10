@@ -173,6 +173,13 @@ angular
           auth: userAuth
         }
       })
+      .when('/admin', {
+        templateUrl: 'views/admin-dashboard.html',
+        controller: 'adminDashboardController',
+        resolve: {
+          auth: userAuth
+        }
+      })
       .otherwise({
         redirectTo: '/dashboard'
       });

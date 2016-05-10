@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-ELB_DEV="https://WebApp-1101661235.eu-west-1.elb.amazonaws.com:18080/api/canvass"
+ELB_DEV="https://WebApp-57219498.eu-west-1.elb.amazonaws.com:18080/api/canvass"
 ELB_STAGING="https://WebApp-2103587711.eu-west-1.elb.amazonaws.com:18080/api/canvass"
 ELB_PROD="https://WebApp-684058901.eu-west-1.elb.amazonaws.com:18080/api/canvass"
 

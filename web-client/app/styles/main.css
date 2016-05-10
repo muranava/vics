@@ -297,3 +297,10 @@ div.worldmap.box {
   stroke-dasharray: 2,2;
   stroke-linejoin: round;
 }
+
+.link-card:hover {
+  cursor: pointer;
+  background-color: #D92C27 !important;
+  border-color: #D92C27 !important;
+  text-decoration: none !important;
+}

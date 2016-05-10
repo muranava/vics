@@ -70,17 +70,28 @@ angular
 
           });
 
+        /**
+         * Scales based on http://colorbrewer2.org/
+         */
         function mapCountToFillColour(count) {
           if (count === 0) {
-            return '#FFFFFF';
-          } else if (count > 0 && count < 100) {
-            return '#FBDCDA';
-          } else if (count > 100 && count < 250) {
-            return '#F5A9A3';
-          } else if (count > 250 && count < 500) {
-            return '#EF756C';
+            return '#ffffff';
+          } else if (count > 0 && count <= 50) {
+            return '#fee5d9';
+          } else if (count > 50 && count <= 100) {
+            return '#fcbba1';
+          } else if (count > 100 && count <= 250) {
+            return '#fc9272';
+          } else if (count > 250 && count <= 500) {
+            return '#fb6a4a';
+          } else if (count > 500 && count <= 750) {
+            return '#ef3b2c';
+          } else if (count > 750 && count <= 1000) {
+            return '#cb181d';
+          } else if (count > 1000) {
+            return '#99000d';
           } else {
-            return '#E94135';
+            return '#ffffff'
           }
         }
       }
