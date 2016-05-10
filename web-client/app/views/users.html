@@ -217,6 +217,7 @@
                     <th>First Name</th>
                     <th class="stats-cell hidden-xs">Role</th>
                     <th class="stats-cell hidden-xs"># Canvassed</th>
+                    <th class="stats-cell hidden-xs">Last Login</th>
                     <th class="stats-cell hidden-xs">Write Access</th>
                     <th class="stats-cell">Actions</th>
                   </tr>
@@ -236,8 +237,11 @@
                          uib-tooltip="Admin user"></i>
                       <i ng-if="user.role === 'USER'" class="fa icon-med fa-user" uib-tooltip="Basic User"></i>
                     </td>
-                    <td class="stats-cell">
+                    <td class="stats-cell hidden-xs">
                       {{user.canvassed}}
+                    </td>
+                    <td class="stats-cell hidden-xs">
+                      {{user.lastLogin | date:'short'}}
                     </td>
                     <td class="stats-cell hidden-xs">
                       <i ng-if="user.writeAccess" class="fa fa-check icon-med text-success"></i>

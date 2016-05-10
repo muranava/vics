@@ -81,11 +81,9 @@ angular
       if (!$scope.validationErrors.length) {
         userService
           .create(user)
-          .success(function () {
-            loadUsers();
-            toastr.success('Created user ' + user.username, 'Success');
-            $scope.editMode = false;
-            $scope.createUserMode = false;
+          .success(function (newUser) {
+            toastr.success('Created user ' + newUser.username, 'Success');
+            $location.path('/associations/' + newUser.id);
           })
           .error(function (err) {
             if (err && _.includes(err.message, 'exists')) {

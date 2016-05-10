@@ -3,6 +3,7 @@ package com.infinityworks.webapp.converter;
 import com.infinityworks.webapp.clients.paf.dto.ImmutableProperty;
 import com.infinityworks.webapp.clients.paf.dto.ImmutablePropertyResponse;
 import com.infinityworks.webapp.clients.paf.dto.ImmutableVoter;
+import com.infinityworks.webapp.clients.paf.dto.PropertyResponse;
 import com.infinityworks.webapp.pdf.AddressLabel;
 import com.infinityworks.webapp.pdf.ImmutableAddressLabel;
 import org.junit.Test;
@@ -21,7 +22,7 @@ public class VoterAddressConverterTest {
 
     @Test
     public void convertsThePropertiesIntoAddressLabels() throws Exception {
-        ImmutablePropertyResponse propertyResponse = propertyResponse();
+        PropertyResponse propertyResponse = propertyResponse();
 
         List<AddressLabel> addressLabels = underTest.apply(propertyResponse);
 
@@ -29,38 +30,38 @@ public class VoterAddressConverterTest {
 
         assertThat(addressLabels, hasItem(ImmutableAddressLabel.builder()
                 .withName("Den Finchley")
-                .withAddressLine1("Grange Farmhouse Brandon Lane")
-                .withAddressLine2("")
+                .withAddressLine1("Grange Farmhouse")
+                .withAddressLine2("Brandon Lane")
                 .withPostTown("Coventry")
                 .withPostCode("CV3 3GU")
                 .build()));
 
         assertThat(addressLabels, hasItem(ImmutableAddressLabel.builder()
                 .withName("Jan Finchley")
-                .withAddressLine1("Grange Farmhouse Brandon Lane")
-                .withAddressLine2("")
+                .withAddressLine1("Grange Farmhouse")
+                .withAddressLine2("Brandon Lane")
                 .withPostTown("Coventry")
                 .withPostCode("CV3 3GU")
                 .build()));
 
         assertThat(addressLabels, hasItem(ImmutableAddressLabel.builder()
                 .withName("Alessandro Grasso")
-                .withAddressLine1("Grange Bungalow Brandon Lane")
-                .withAddressLine2("")
+                .withAddressLine1("Grange Bungalow")
+                .withAddressLine2("Brandon Lane")
                 .withPostTown("Coventry")
                 .withPostCode("CV3 3GU")
                 .build()));
 
         assertThat(addressLabels, hasItem(ImmutableAddressLabel.builder()
                 .withName("Jeniffer Grasso")
-                .withAddressLine1("Grange Bungalow Brandon Lane")
-                .withAddressLine2("")
+                .withAddressLine1("Grange Bungalow")
+                .withAddressLine2("Brandon Lane")
                 .withPostTown("Coventry")
                 .withPostCode("CV3 3GU")
                 .build()));
     }
 
-    private ImmutablePropertyResponse propertyResponse() {
+    private PropertyResponse propertyResponse() {
         return ImmutablePropertyResponse.builder()
                 .withResponse(singletonList(asList(
                         ImmutableProperty.builder()

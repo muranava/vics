@@ -38,7 +38,9 @@ CREATE TABLE users
   first_name    TEXT,
   last_name     TEXT,
   write_access  BOOL NOT NULL DEFAULT FALSE,
-  role          TEXT NOT NULL
+  role          TEXT NOT NULL,
+  last_login    TIMESTAMP WITHOUT TIME ZONE,
+  created       TIMESTAMP WITHOUT TIME ZONE
 );
 
 CREATE TABLE privileges

@@ -7,6 +7,7 @@ import com.infinityworks.common.lang.Try;
 import com.infinityworks.webapp.error.NotAuthorizedFailure;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.Set;
 
@@ -49,6 +50,12 @@ public class User extends BaseEntity {
     @Column(name = "role", nullable = false)
     @Enumerated(EnumType.STRING)
     private Role role;
+
+    @Convert(converter = PersistentLocalDateTime.class)
+    private LocalDateTime lastLogin;
+
+    @Convert(converter = PersistentLocalDateTime.class)
+    private LocalDateTime created;
 
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
@@ -159,6 +166,22 @@ public class User extends BaseEntity {
 
     public void setLastName(String lastName) {
         this.lastName = lastName;
+    }
+
+    public LocalDateTime getLastLogin() {
+        return lastLogin;
+    }
+
+    public void setLastLogin(LocalDateTime lastLogin) {
+        this.lastLogin = lastLogin;
+    }
+
+    public LocalDateTime getCreated() {
+        return created;
+    }
+
+    public void setCreated(LocalDateTime created) {
+        this.created = created;
     }
 
     /**

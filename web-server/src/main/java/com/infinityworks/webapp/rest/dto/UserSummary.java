@@ -5,7 +5,9 @@ import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.infinityworks.webapp.domain.Role;
 import org.immutables.value.Value;
 
+import javax.annotation.Nullable;
 import java.math.BigInteger;
+import java.time.LocalDateTime;
 
 @Value.Immutable
 @JsonIgnoreProperties(ignoreUnknown = true)
@@ -21,4 +23,6 @@ public interface UserSummary {
     @Value.Default default BigInteger canvassed() {
         return BigInteger.ZERO;
     }
+    @Nullable LocalDateTime lastLogin();
+    @Nullable LocalDateTime created();
 }

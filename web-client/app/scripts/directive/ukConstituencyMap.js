@@ -70,7 +70,6 @@ angular
 
           });
 
-
         function mapCountToFillColour(count) {
           if (count === 0) {
             return '#FFFFFF';

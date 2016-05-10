@@ -23,6 +23,7 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.UUID;
 
+import static java.time.LocalDateTime.now;
 import static java.util.stream.Collectors.toList;
 
 @Service
@@ -146,6 +147,7 @@ public class UserService {
         newUser.setFirstName(request.getFirstName());
         newUser.setLastName(request.getLastName());
         newUser.setWriteAccess(request.getWriteAccess());
+        newUser.setCreated(now());
         User savedUser = userRepository.save(newUser);
 
         log.info("User={} created new user={}", user, newUser);

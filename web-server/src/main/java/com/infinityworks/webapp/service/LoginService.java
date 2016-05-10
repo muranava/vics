@@ -1,6 +1,7 @@
 package com.infinityworks.webapp.service;
 
 import com.infinityworks.common.lang.Try;
+import com.infinityworks.webapp.repository.UserRepository;
 import com.infinityworks.webapp.rest.dto.AuthenticationToken;
 import com.infinityworks.webapp.rest.dto.Credentials;
 import org.slf4j.Logger;
@@ -18,6 +19,7 @@ import org.springframework.stereotype.Service;
 import javax.servlet.http.HttpSession;
 import java.util.List;
 
+import static java.time.LocalDateTime.now;
 import static java.util.stream.Collectors.toList;
 
 /**
@@ -29,11 +31,15 @@ public class LoginService {
 
     private final AuthenticationManager authenticationManager;
     private final UserDetailsService userDetailsService;
+    private final UserRepository userRepository;
 
     @Autowired
-    public LoginService(AuthenticationManager authenticationManager, UserDetailsService userDetailsService) {
+    public LoginService(AuthenticationManager authenticationManager,
+                        UserDetailsService userDetailsService,
+                        UserRepository userRepository) {
         this.authenticationManager = authenticationManager;
         this.userDetailsService = userDetailsService;
+        this.userRepository = userRepository;
     }
 
     /**
@@ -47,6 +53,9 @@ public class LoginService {
 
         String result = authenticationResult.isSuccess() ? "Success" : "Failed";
         log.info("Login attempt username={} {}", credentials.getUsername(), result);
+        if (authenticationResult.isSuccess()) {
+            auditLogin(credentials.getUsername());
+        }
 
         return authenticationResult;
     }
@@ -71,5 +80,14 @@ public class LoginService {
         return details.getAuthorities().stream()
                 .map(Object::toString)
                 .collect(toList());
+    }
+
+    private void auditLogin(String username) {
+        userRepository
+                .findOneByUsername(username)
+                .ifPresent(user -> {
+                    user.setLastLogin(now());
+                    userRepository.save(user);
+                });
     }
 }
