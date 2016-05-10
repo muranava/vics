@@ -91,7 +91,7 @@ angular
           } else if (count > 1000) {
             return '#99000d';
           } else {
-            return '#ffffff'
+            return '#ffffff';
           }
         }
       }
