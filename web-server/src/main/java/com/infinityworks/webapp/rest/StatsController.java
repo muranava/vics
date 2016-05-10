@@ -64,6 +64,14 @@ public class StatsController {
     }
 
     @PreAuthorize("isAuthenticated()")
+    @RequestMapping(value = "/users", method = RequestMethod.GET)
+    public ResponseEntity<?> countUsersByRegion(Principal principal) {
+        return sessionService.extractUserFromPrincipal(principal)
+                .flatMap(statsService::countUsersByRegion)
+                .fold(restErrorHandler::mapToResponseEntity, ResponseEntity::ok);
+    }
+
+    @PreAuthorize("isAuthenticated()")
     @RequestMapping(method = RequestMethod.GET, value = "/ward/{wardCode}")
     public ResponseEntity<?> wardStatsFromPaf(@PathVariable("wardCode") String wardCode, Principal principal) {
         return sessionService.extractUserFromPrincipal(principal)

@@ -10,12 +10,15 @@ import com.infinityworks.webapp.clients.paf.dto.WardStats;
 import com.infinityworks.webapp.converter.MostCanvassedQueryConverter;
 import com.infinityworks.webapp.converter.TopCanvasserQueryConverter;
 import com.infinityworks.webapp.domain.User;
+import com.infinityworks.webapp.error.NotAuthorizedFailure;
 import com.infinityworks.webapp.repository.RecordContactLogRepository;
 import com.infinityworks.webapp.repository.StatsJdbcRepository;
 import com.infinityworks.webapp.repository.StatsRepository;
 import com.infinityworks.webapp.rest.dto.AllStatsResponse;
 import com.infinityworks.webapp.rest.dto.ImmutableAllStatsResponse;
 import com.infinityworks.webapp.rest.dto.StatsResponse;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -25,6 +28,8 @@ import static java.util.stream.Collectors.toList;
 
 @Service
 public class StatsService {
+
+    private static final Logger log = LoggerFactory.getLogger(StatsService.class);
 
     private final StatsRepository repository;
     private final RecordContactLogRepository recordContactLogRepository;
@@ -92,6 +97,15 @@ public class StatsService {
 
     public List<Object[]> countRecordContactsByDateAndWard(String wardCode) {
         return repository.countRecordContactsByDateAndWard(wardCode);
+    }
+
+    public Try<List<Object[]>> countUsersByRegion(User user) {
+        if (!user.isAdmin()) {
+            log.warn("Non admin tried to retrieve all users. User={}", user);
+            return Try.failure(new NotAuthorizedFailure("Forbidden"));
+        } else {
+            return Try.success(repository.countUsersByRegion());
+        }
     }
 
     public Try<WardStats> wardStats(User user, String wardCode) {

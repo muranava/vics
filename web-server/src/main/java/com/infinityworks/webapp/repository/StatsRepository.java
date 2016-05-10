@@ -12,6 +12,25 @@ import java.util.UUID;
 @Repository
 public interface StatsRepository extends JpaRepository<User, UUID> {
     @Query(nativeQuery = true, value =
+            "SELECT name, COUNT(*) FROM regions r " +
+                    "  JOIN (SELECT DISTINCT u.id, regions_id " +
+                    "        FROM users_constituencies uc " +
+                    "          JOIN users u ON u.id = uc.users_id " +
+                    "          JOIN constituencies c ON c.id = uc.constituencies_id " +
+                    "          JOIN regions r ON c.regions_id = r.id " +
+                    "        UNION " +
+                    "        SELECT DISTINCT u.id, regions_id " +
+                    "        FROM users_wards uw " +
+                    "          JOIN users u ON u.id = uw.users_id " +
+                    "          JOIN wards w ON w.id = uw.wards_id " +
+                    "          JOIN constituencies c ON c.id = w.constituency_id " +
+                    "          JOIN regions r ON r.id = c.regions_id) " +
+                    "    AS users_by_region ON r.id = users_by_region.regions_id " +
+                    "GROUP BY name " +
+                    "ORDER BY name ASC")
+    List<Object[]> countUsersByRegion();
+
+    @Query(nativeQuery = true, value =
             "SELECT u.username,u.first_name,u.last_name,COUNT(DISTINCT(l.ern)) as counts " +
                     "FROM record_contact_log l " +
                     "JOIN users u ON u.id = l.users_id " +

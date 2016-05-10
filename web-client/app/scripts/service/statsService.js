@@ -28,6 +28,14 @@ angular
       });
     };
 
+    api.userCounts = function () {
+      return $http({
+        method: 'GET',
+        url: apiUrl + '/stats/users',
+        withCredentials: true
+      });
+    };
+
     api.topConstituencies = function () {
       return $http({
         method: 'GET',

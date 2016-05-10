@@ -1,6 +1,9 @@
-
 angular
   .module('canvass')
-  .controller('statsController', function () {
+  .controller('statsController', function ($scope, statsService) {
 
+    statsService.userCounts()
+      .success(function (stats) {
+        $scope.usersByRegionStats = stats;
+      });
   });

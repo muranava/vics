@@ -4,19 +4,34 @@
       <div class="col-lg-12">
         <h2 class="text-primary">Stats</h2>
       </div>
-      <div class="col-lg-8">
-        <article class="lead">
-          <p>
-            Top canvassers
-          </p>
-        </article>
-      </div>
     </div>
+    <br>
+
     <div class="row">
 
-
+      <div class="col-md-6">
+        <div class="card">
+          <div class="card-head">
+            <header>Users By Region</header>
+          </div>
+          <div class="card-body">
+            <table class="table table-condensed no-margin">
+              <thead>
+              <tr>
+                <th>Region</th>
+                <th># Users</th>
+              </tr>
+              </thead>
+              <tbody>
+              <tr ng-repeat="stat in usersByRegionStats">
+                <td>{{stat[0]}}</td>
+                <td>{{stat[1]}}</td>
+              </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
     </div>
-
-
   </div>
 </section>
