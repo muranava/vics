@@ -75,6 +75,14 @@ public class WardController {
     }
 
     @PreAuthorize("isAuthenticated()")
+    @RequestMapping(value = "/restricted", method = GET)
+    public ResponseEntity<?> restrictedWards(int limit, Principal principal) {
+        return sessionService.extractUserFromPrincipal(principal)
+                .map(user -> wardService.getVisibleWardsByUser(user, limit))
+                .fold(errorHandler::mapToResponseEntity, ResponseEntity::ok);
+    }
+
+    @PreAuthorize("isAuthenticated()")
     @RequestMapping(method = GET, value = "/{wardCode}/street")
     public ResponseEntity<?> streetsByWard(Principal principal,
                                            @PathVariable("wardCode") String wardCode) {

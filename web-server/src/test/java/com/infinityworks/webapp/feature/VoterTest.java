@@ -15,6 +15,8 @@ import com.infinityworks.webapp.service.*;
 import com.infinityworks.webapp.testsupport.builder.downstream.RecordVoteBuilder;
 import org.junit.Before;
 import org.junit.Test;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.context.jdbc.SqlGroup;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
@@ -52,6 +54,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
                 })
 })
 public class VoterTest extends WebApplicationTest {
+    private static final Logger log = LoggerFactory.getLogger(VoterTest.class);
     private SessionService sessionService;
 
     @Before
@@ -140,6 +143,7 @@ public class VoterTest extends WebApplicationTest {
                 .withSuccess(true)
                 .build();
         String requestBody = objectMapper.writeValueAsString(request);
+        log.info("Request: " + requestBody);
 
         mockMvc.perform(post("/elector/voted")
                 .content(requestBody)

@@ -196,4 +196,34 @@ public class ConstituenciesTest extends WebApplicationTest {
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$", hasSize(0)));
     }
+
+    @Test
+    public void returnsTheUserRestrictedConstituencies() throws Exception {
+        User covs = covs();
+        String endpoint = "/constituency/restricted?limit=1";
+
+        when(sessionService.extractUserFromPrincipal(any(Principal.class)))
+                .thenReturn(Try.success(covs));
+
+        mockMvc.perform(get(endpoint)
+                .accept(MediaType.APPLICATION_JSON))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.constituencies", hasSize(1)));
+    }
+
+    @Test
+    public void returnsEmptyListIfLimitIsZeroWhenRequestingRestrictedConstituencies() throws Exception {
+        User covs = covs();
+        String endpoint = "/constituency/restricted?limit=0";
+
+        when(sessionService.extractUserFromPrincipal(any(Principal.class)))
+                .thenReturn(Try.success(covs));
+
+        mockMvc.perform(get(endpoint)
+                .accept(MediaType.APPLICATION_JSON))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.constituencies", hasSize(0)));
+    }
 }

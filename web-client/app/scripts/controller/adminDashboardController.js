@@ -1,5 +1,5 @@
 angular
   .module('canvass')
-  .controller('adminDashboardController', function (statsService) {
-    
+  .controller('adminDashboardController', function () {
+
   });

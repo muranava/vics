@@ -68,5 +68,13 @@ angular
       });
     };
 
+    api.firstUserConstituency = function() {
+      return $http({
+        method: 'GET',
+        url: apiUrl + '/constituency/restricted?limit=1',
+        withCredentials: true
+      });
+    };
+
     return api;
   });

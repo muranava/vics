@@ -38,20 +38,30 @@ public class ConstituencyService {
      * Gets the constituencies a user can access. This is the sum of the constituencies from
      * associated wards and directly associated wards
      *
-     * @param permissible the user to get constituencies
+     * @param user the user to get constituencies
      * @return the constituencies visible to a user (however the user may not have access to all wards
      * in the constituencies)
      */
-    public UserRestrictedConstituencies getVisibleConstituenciesByUserWithWardContext(User permissible) {
-        Set<Constituency> wardConstituencies = permissible.getWards()
+    public UserRestrictedConstituencies getVisibleConstituenciesByUserWithWardContext(User user) {
+        Set<Constituency> wardConstituencies = user.getWards()
                 .stream()
                 .map(Ward::getConstituency)
                 .collect(toSet());
 
-        wardConstituencies.addAll(permissible.getConstituencies());
+        wardConstituencies.addAll(user.getConstituencies());
         return new UserRestrictedConstituencies(wardConstituencies);
     }
 
+    /**
+     * Gets the constituencies a user can access.
+     *
+     * @param user the user to get constituencies
+     * @return the constituencies visible to a user
+     */
+    public UserRestrictedConstituencies getVisibleConstituenciesByUser(User user, int limit) {
+        Set<Constituency> constituencies = constituencyRepository.findByUser(user.getId().toString(), limit);
+        return new UserRestrictedConstituencies(constituencies);
+    }
 
     public List<Constituency> searchUserRestrictedConstituencies(User user, String searchTerm) {
         return constituencyRepository.findByNameRestrictedByUserAssociations(user.getId().toString(), searchTerm.toUpperCase());

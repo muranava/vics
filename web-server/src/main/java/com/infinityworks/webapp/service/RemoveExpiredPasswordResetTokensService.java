@@ -16,7 +16,6 @@ public class RemoveExpiredPasswordResetTokensService {
         this.tokenRepository = tokenRepository;
     }
 
-
     @Transactional
     public Long removeExpiredTokens() {
         return tokenRepository.deleteByExpiresLessThan(LocalDateTime.now());

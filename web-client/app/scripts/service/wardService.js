@@ -106,6 +106,14 @@ angular
       });
     };
 
+    api.firstUserWard = function() {
+      return $http({
+        method: 'GET',
+        url: apiUrl + '/ward/restricted?limit=1',
+        withCredentials: true
+      });
+    };
+
     api.removeUserAssociation = function(wardID, userID) {
       return $http({
         method: 'DELETE',

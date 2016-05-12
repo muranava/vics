@@ -28,6 +28,10 @@ public interface WardRepository extends JpaRepository<Ward, UUID> {
 
     List<Ward> findByNameIgnoreCaseContainingOrderByNameAsc(String name, Pageable pageable);
 
+    @Query(nativeQuery = true, value = "SELECT w.* FROM users_wards uw JOIN wards w ON w.id = uw.wards_id " +
+            "JOIN users u ON u.id = uw.users_id WHERE CAST(u.id AS text) = :userId LIMIT :limit")
+    Set<Ward> findByUser(@Param("userId") String userId, @Param("limit") int limit);
+
     @Query(nativeQuery = true, value =
             "SELECT DISTINCT(t.*) FROM (SELECT w.* from users_constituencies uc " +
                     "JOIN constituencies c ON c.id = uc.constituencies_id " +

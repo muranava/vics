@@ -231,7 +231,7 @@
       </div>
     </div>
 
-    <div class="row" ng-="">
+    <div class="row" ng-show="!hideCharts">
       <div class="col-sm-12">
         <div class="card">
           <div class="card-head">
@@ -241,18 +241,16 @@
             </header>
             <div class="tools">
               <div class="btn-group">
-                <a ng-show="showCanvassedGraph" ng-click="onShowWeeklyStatsConfig()"
-                   class="btn btn-icon-toggle btn-refresh"><i class="md md-undo"></i></a>
-                <a ng-show="!showCanvassedGraph && graphLabel !== ''" ng-click="removeCanvassChartByWeekFilter()"
-                   class="btn btn-icon-toggle btn-refresh"><i class="md md-highlight-remove"></i></a>
                 <a ng-show="!showCanvassedGraph" ng-click="onShowWeeklyStatsConfig()"
+                   class="btn btn-icon-toggle btn-refresh"><i class="md md-undo"></i></a>
+                <a ng-show="showCanvassedGraph" ng-click="onShowWeeklyStatsConfig()"
                    class="btn btn-icon-toggle btn-refresh"><i class="fa fa-gear"></i></a>
               </div>
             </div>
           </div>
 
           <!-- graph -->
-          <div class="card-body text-center" ng-show="!showCanvassedGraph">
+          <div class="card-body text-center" ng-show="showCanvassedGraph">
             <div class="row">
               <div class="col-md-6">
                 <nvd3 options="options" data="data" api="api"></nvd3>
@@ -291,7 +289,7 @@
           </div>
 
           <!-- config -->
-          <div class="card-body text-center" ng-show="showCanvassedGraph">
+          <div class="card-body text-center" ng-show="!showCanvassedGraph">
             <form class="form" ng-submit="onSetWard()">
               <div class="form-group">
                 <div class="input-group">
@@ -344,7 +342,7 @@
             </form>
           </div>
         </div>
-        <em class="text-caption">Includes data collected outside of VICS and values may differ from Leaderboards</em>
+        <em class="text-caption">Bar graph represents voters contacted and values may differ from voters canvassed</em>
       </div>
     </div>
 

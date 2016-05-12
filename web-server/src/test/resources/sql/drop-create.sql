@@ -11,8 +11,7 @@ DROP TABLE IF EXISTS regions;
 
 CREATE TABLE regions (
   id   UUID PRIMARY KEY,
-  name TEXT NOT NULL UNIQUE,
-  code TEXT NOT NULL UNIQUE
+  name TEXT NOT NULL UNIQUE
 );
 
 CREATE TABLE constituencies

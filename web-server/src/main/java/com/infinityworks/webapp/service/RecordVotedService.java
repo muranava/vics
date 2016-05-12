@@ -39,7 +39,7 @@ public class RecordVotedService {
     public Try<RecordVoteRequest> recordVote(User user, RecordVoteRequest recordVote) {
         return user
                 .ensureWriteAccess()
-                .flatMap(u -> wardService.getByCode(recordVote.getWardCode(), user)
+                .flatMap(resolvedUser -> wardService.getByCode(recordVote.getWardCode(), user)
                 .flatMap(ward -> ernFormatEnricher.apply(ward.getCode(), recordVote.getErn()))
                 .flatMap(ern -> recordVoteCommandFactory.create(ern).execute())
                 .map(success -> {

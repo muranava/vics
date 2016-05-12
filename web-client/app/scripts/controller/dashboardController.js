@@ -5,6 +5,8 @@ angular
     var referendumDate = new Date(2016, 5, 23, 22, 0),
       secondsInDay = 86400,
       secondsInHour = 3600;
+    $scope.showCanvassedGraph = true;
+    $scope.hideCharts = true;
 
     $scope.onWardInputKeypress = function() {
       wardService.searchRestricted($scope.wardSearchModel)
@@ -23,27 +25,8 @@ angular
     $scope.currentTab = 'activists';
     $scope.constituencyName = '';
     $scope.wardName = '';
-    $scope.showCanvassedGraph = false;
     $scope.showPledgesPieChart = false;
     $scope.graphLabel = "";
-
-    $scope.statsTable = {
-      voters: 37525775,
-      voted_pledges: 0,
-      voted: 0,
-      canvassed: 1251,
-      pledged: 1243
-    };
-    $scope.pieData = [
-      {
-        key: "Voted Pledges",
-        y: $scope.statsTable.voted_pledges
-      },
-      {
-        key: "Total Pledged",
-        y: $scope.statsTable.pledged
-      }
-    ];
 
     $scope.map = {
       center: {
@@ -69,34 +52,28 @@ angular
     statsService.allStats()
       .success(function (response) {
         $scope.stats = response;
-        $scope.data = [{
-          key: "Total Canvassed",
-          values: mapWeeklyCanvassStatsToCalendar($scope.stats.recordContactByDate)
-        }];
+      });
+
+    constituencyService.firstUserConstituency()
+      .success(function(response) {
+        if (!_.isEmpty(response.constituencies)) {
+          $scope.constituencySearchModel = response.constituencies[0];
+          $scope.onSetConstituency();
+          $scope.hideCharts = false;
+        } else {
+          wardService.firstUserWard()
+            .success(function(response) {
+              if (!_.isEmpty(response.wards)) {
+                $scope.wardSearchModel = response.wards[0];
+                $scope.onSetWard();
+                $scope.hideCharts = false;
+              }
+            });
+        }
       });
 
     $scope.changeLeaderboardTab = function (tabName) {
       $scope.currentTab = tabName;
-    };
-
-    $scope.removeCanvassChartByWeekFilter = function() {
-      // TODO rebuild overall stats when API is defined
-      $scope.statsTable = {
-        voters: 0,
-        voted_pledges: 0,
-        voted: 0,
-        canvassed: 0,
-        pledged: 0
-      };
-
-      statsService.allStats()
-        .success(function (response) {
-          $scope.data = [{
-            key: "Total Canvassed",
-            values: mapWeeklyCanvassStatsToCalendar(response.recordContactByDate)
-          }];
-          $scope.graphLabel = "";
-        });
     };
 
     $scope.findWard = function (postCode, suppressError) {
@@ -171,18 +148,18 @@ angular
             $scope.pieData = [
               {
                 key: "Voted Pledged",
-                y: $scope.pieData.voted_pledged
+                y: response.voted_pledges
               },
               {
                 key: "Total Pledged",
-                y: $scope.pieData.pledged
+                y: response.pledged
               }
             ];
           });
 
         statsService.canvassedByWeekAndWard($scope.wardSearchModel.code)
           .success(function (response) {
-            $scope.onShowWeeklyStatsConfig();
+            $scope.showCanvassedGraph = true;
             var data = [{
               key: "Total Canvassed",
               values: mapWeeklyCanvassStatsToCalendar(response)
@@ -207,18 +184,18 @@ angular
             $scope.pieData = [
               {
                 key: "Voted Pledged",
-                y: $scope.pieData.voted_pledged
+                y: response.voted_pledges
               },
               {
                 key: "Total Pledged",
-                y: $scope.pieData.pledged
+                y: response.pledged
               }
             ];
           });
 
         statsService.canvassedByWeekAndConstituency($scope.constituencySearchModel.code)
           .success(function (response) {
-            $scope.onShowWeeklyStatsConfig();
+            $scope.showCanvassedGraph = true;
             var data = [{
               key: "Total Canvassed",
               values: mapWeeklyCanvassStatsToCalendar(response)
@@ -342,7 +319,7 @@ angular
                 "<td class='x-value'>" + e.data.start + "</td>" +
                 "</tr>" +
                 "<tr>" +
-                "<td class='key'>" + 'Total Canvassed: ' + "</td>" +
+                "<td class='key'>" + 'Voter Contacts: ' + "</td>" +
                 "<td class='x-value'><strong>" + series.value + "</strong></td>" +
                 "</tr>";
 
@@ -369,7 +346,7 @@ angular
           axisLabel: 'Week'
         },
         yAxis: {
-          axisLabel: 'Canvassed',
+          axisLabel: 'Voter Contacts',
           axisLabelDistance: -10,
           tickFormat: _.identity
         }

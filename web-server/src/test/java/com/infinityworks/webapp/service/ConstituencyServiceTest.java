@@ -27,13 +27,12 @@ public class ConstituencyServiceTest {
     @Before
     public void setUp() throws Exception {
         constituencyRepository = mock(ConstituencyRepository.class);
-        UserRepository userRepository = mock(UserRepository.class);
+        mock(UserRepository.class);
         underTest = new ConstituencyService(constituencyRepository);
     }
 
     @Test
     public void returnsTheRestrictedConstituenciesForUser() throws Exception {
-
         Constituency rugby = constituency().withName("Rugby").build();
         Constituency covSouth = constituency().withName("Coventry South").build();
         Ward henley = ward().withWardName("Henley").withConstituency(covSouth).build();

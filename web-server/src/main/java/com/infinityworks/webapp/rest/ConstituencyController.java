@@ -44,6 +44,14 @@ public class ConstituencyController {
     }
 
     @PreAuthorize("isAuthenticated()")
+    @RequestMapping(value = "/restricted", method = GET)
+    public ResponseEntity<?> restrictedConstituencies(int limit, Principal principal) {
+        return sessionService.extractUserFromPrincipal(principal)
+                .map(user -> constituencyService.getVisibleConstituenciesByUser(user, limit))
+                .fold(errorHandler::mapToResponseEntity, ResponseEntity::ok);
+    }
+
+    @PreAuthorize("isAuthenticated()")
     @RequestMapping(method = GET, value = "/search", produces = "application/json")
     public ResponseEntity<?> constituencySearch(
             Principal principal,

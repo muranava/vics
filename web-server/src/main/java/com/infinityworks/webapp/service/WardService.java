@@ -85,7 +85,7 @@ public class WardService {
                     List<Ward> collect = wards.stream()
                             .filter(ward -> Objects.equals(ward.getConstituency(), constituency))
                             .collect(toList());
-                    UserRestrictedWards userRestrictedWards = new UserRestrictedWards(collect);
+                    UserRestrictedWards userRestrictedWards = new UserRestrictedWards(new HashSet<>(collect));
                     return Try.success(userRestrictedWards);
                 }).orElseGet(() -> {
                     log.debug("Could not find constituency={} for user={}", constituencyID, user);
@@ -98,7 +98,7 @@ public class WardService {
 
         Set<Ward> wards = wardRepository.findByConstituencyInOrderByName(user.getConstituencies());
         wards.addAll(user.getWards());
-        return new UserRestrictedWards(new ArrayList<>(wards));
+        return new UserRestrictedWards(wards);
     }
 
     public List<WardSummary> getSummaryByUser(User user) {
@@ -107,6 +107,11 @@ public class WardService {
         Set<Ward> wards = wardRepository.findByConstituencyInOrderByName(user.getConstituencies());
         wards.addAll(user.getWards());
         return wards.stream().map(wardSummaryConverter).collect(toList());
+    }
+
+    public UserRestrictedWards getVisibleWardsByUser(User user, int limit) {
+        Set<Ward> wards = wardRepository.findByUser(user.getId().toString(), limit);
+        return new UserRestrictedWards(wards);
     }
 
     public Try<List<Ward>> getAllByName(User user, String name, int limit) {
