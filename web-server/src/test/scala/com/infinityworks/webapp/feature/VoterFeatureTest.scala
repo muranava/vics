@@ -52,19 +52,6 @@ class VoterFeatureTest extends ApplicationTest {
   }
 
   @Test
-  def deletesAContact(): Unit = {
-    session withUser BasicUser
-    val ern = "E05001219-AC-104-0"
-    val contactId = "de9e5dc5-ca90-44a0-a4c0-d5796288244c"
-    val localId = "de9e5dc5-ca90-44a0-a4c0-d5796288244c"
-    pafStub.willDeleteAContactRecordFor(ern, contactId)
-
-    (http DELETE s"/elector/$ern/contact/$contactId/localId/$localId").andExpect(
-      status().isOk
-    )
-  }
-
-  @Test
   def recordsAContact(): Unit = {
     session withUser BasicUser
     val ern = "E05001221-PD-123-4"
