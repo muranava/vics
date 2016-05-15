@@ -29,6 +29,5 @@ public interface Voter {
     @Nullable @JsonProperty("voting") Voting voting();
     @Nullable @JsonProperty("flags") Flags flags();
     @Nullable @JsonProperty("issues") Issues issues();
-    @Nullable @JsonProperty("volunteer") Volunteer volunteer();
     @Nullable @JsonProperty("info") Info info();
 }

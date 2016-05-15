@@ -97,17 +97,6 @@
                 </div>
               </div>
 
-              <div class="card-actionbar">
-                <div class="card-actionbar-row">
-                  <button type="submit" class="btn btn-sm btn-danger pull-right">SUBMIT</button>
-                </div>
-                <br><br>
-              </div>
-
-              <hr>
-              <h4>Info</h4>
-              <br>
-
               <!-- Likelihood to vote -->
               <div class="form-group">
                 <label class="control-label" style="padding-bottom: 10px">Voting Likelihood</label>
@@ -145,30 +134,6 @@
                 </div>
               </div>
 
-              <!-- Key issues checkboxes -->
-              <div class="form-group">
-                <label class="control-label">Key Issues</label><br>
-                <div class="checkbox checkbox-styled checkbox-focus-visible">
-                  <label>
-                    <input id="costCheckbox1" ng-click="setCheckboxFocus()" type="checkbox"
-                           ng-model="inputRecordModel.cost" value="">
-                    <span>Cost</span>
-                  </label>
-                </div>
-                <div class="checkbox checkbox-styled checkbox-focus-visible">
-                  <label>
-                    <input type="checkbox" ng-model="inputRecordModel.sovereignty" value="">
-                    <span>Control</span>
-                  </label>
-                </div>
-                <div class="checkbox checkbox-styled checkbox-focus-visible">
-                  <label>
-                    <input class="checkbox-focus" type="checkbox" ng-model="inputRecordModel.border" value="">
-                    <span>Border</span>
-                  </label>
-                </div>
-              </div>
-
               <!-- Intention to vote -->
               <div class="form-group">
                 <label class="control-label">Voting Intention</label>
@@ -203,6 +168,36 @@
                       <input type="radio" ng-model="inputRecordModel.intention" name="likelihoodOpt" value="5"><span>5</span>
                     </label>
                   </div>
+                </div>
+              </div>
+
+              <div class="card-actionbar">
+                <div class="card-actionbar-row">
+                  <button type="submit" class="btn btn-sm btn-danger pull-right">SUBMIT</button>
+                </div>
+              </div>
+
+              <!-- Key issues checkboxes -->
+              <div class="form-group">
+                <label class="control-label">Key Issues</label><br>
+                <div class="checkbox checkbox-styled checkbox-focus-visible">
+                  <label>
+                    <input id="costCheckbox1" ng-click="setCheckboxFocus()" type="checkbox"
+                           ng-model="inputRecordModel.cost" value="">
+                    <span>Cost</span>
+                  </label>
+                </div>
+                <div class="checkbox checkbox-styled checkbox-focus-visible">
+                  <label>
+                    <input type="checkbox" ng-model="inputRecordModel.sovereignty" value="">
+                    <span>Control</span>
+                  </label>
+                </div>
+                <div class="checkbox checkbox-styled checkbox-focus-visible">
+                  <label>
+                    <input class="checkbox-focus" type="checkbox" ng-model="inputRecordModel.border" value="">
+                    <span>Border</span>
+                  </label>
                 </div>
               </div>
 
@@ -288,9 +283,9 @@
               </div>
               <br><br>
             </div>
-          </div><!--end .card -->
+          </div>
         </form>
-      </div><!--end .col -->
+      </div>
 
       <div class="col-md-6">
         <div class="row">

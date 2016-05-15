@@ -132,7 +132,7 @@ angular
 
       function extractStreetInfoForGeocoding(streets) {
         function extractPostcode(postcode) {
-          if (!_.isEmpty(postcode.length)) {
+          if (!_.isEmpty(postcode)) {
             return _.head(postcode);
           } else {
             return "";

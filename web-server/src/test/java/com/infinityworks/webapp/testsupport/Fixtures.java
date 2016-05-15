@@ -1,6 +1,9 @@
 package com.infinityworks.webapp.testsupport;
 
-import com.infinityworks.webapp.clients.paf.dto.*;
+import com.infinityworks.webapp.clients.paf.dto.ImmutableFlags;
+import com.infinityworks.webapp.clients.paf.dto.ImmutableIssues;
+import com.infinityworks.webapp.clients.paf.dto.ImmutableVoter;
+import com.infinityworks.webapp.clients.paf.dto.ImmutableVoting;
 import com.infinityworks.webapp.domain.PasswordResetToken;
 import com.infinityworks.webapp.domain.User;
 import com.infinityworks.webapp.rest.dto.ImmutableStreet;
@@ -29,7 +32,6 @@ public class Fixtures {
                 .withFullName("Smith, Donald")
                 .withVoting(votingWithDefaults().build())
                 .withFlags(flagsWithDefaults().build())
-                .withVolunteer(volunteerWithDefaults().build())
                 .withIssues(issuesWithDefaults().build());
     }
 
@@ -37,11 +39,6 @@ public class Fixtures {
         return ImmutableVoting.builder()
                 .withIntention(3)
                 .withLikelihood(4);
-    }
-
-    public static ImmutableVolunteer.Builder volunteerWithDefaults() {
-        return ImmutableVolunteer.builder()
-                .withPoster(false);
     }
 
     public static ImmutableFlags.Builder flagsWithDefaults() {

@@ -15,4 +15,5 @@ import javax.annotation.Nullable;
 public interface Voting {
     @Nullable Integer intention();
     @Nullable Integer likelihood();
+//    @Nullable @JsonProperty("has_voted") Boolean hasVoted();
 }

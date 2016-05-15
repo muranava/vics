@@ -21,7 +21,6 @@ public class PropertyToRowsConverter implements BiFunction<String, Property, Lis
         return property.voters().stream()
                 .map(voter -> {
                     Issues issues = voter.issues();
-                    Volunteer volunteer = voter.volunteer();
                     Voting voting = voter.voting();
                     Flags flags = voter.flags();
                     Info info = voter.info();
@@ -47,10 +46,6 @@ public class PropertyToRowsConverter implements BiFunction<String, Property, Lis
                                 .withNeedsLift(createCheckBox(flags.lift()))
                                 .withInaccessible(createCheckBox(flags.inaccessible()))
                                 .withDeceased(createCheckBox(flags.deceased()));
-                    }
-
-                    if (volunteer != null) {
-                        row.withPoster(createCheckBox(volunteer.poster()));
                     }
 
                     if (info != null) {
