@@ -9,12 +9,12 @@ import org.immutables.value.Value;
 @Value.Immutable
 @JsonIgnoreProperties(ignoreUnknown = true)
 @Value.Style(init = "with*")
-@JsonDeserialize(as = ImmutableWardStats.class)
-@JsonSerialize(as = ImmutableWardStats.class)
-public interface WardStats {
-    @JsonProperty("voters") int voters();
-    @JsonProperty("canvassed") int canvassed();
-    @JsonProperty("pledged") int pledged();
-    @JsonProperty("voted") StatsVoted voted();
-    @JsonProperty("intention") StatsIntention intention();
+@JsonDeserialize(as = ImmutableStatsIntention.class)
+@JsonSerialize(as = ImmutableStatsIntention.class)
+public interface StatsIntention {
+    @JsonProperty("1") int remain();
+    @JsonProperty("2") int probablyRemain();
+    @JsonProperty("3") int undecided();
+    @JsonProperty("4") int probablyLeave();
+    @JsonProperty("5") int leave();
 }

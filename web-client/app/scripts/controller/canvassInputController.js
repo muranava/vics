@@ -7,7 +7,7 @@ angular
     var logSize = 5;
 
     $scope.issues = [''];
-    $scope.searchResults = [];
+    $scope.searchResults = null;
     $scope.logs = RingBuffer.newInstance(logSize);
 
     $scope.searchForm = {
@@ -71,13 +71,13 @@ angular
       }
 
       function handleError() {
-        $scope.searchFailed = true;
+        $scope.searchResults = [];
       }
 
       if (!$scope.searchForm.surname || !$scope.searchForm.postcode) {
         toastr.error('Please enter username and password', 'Validation Error');
       } else {
-        electorService.search($scope.searchForm.surname, $scope.searchForm.postcode)
+        electorService.search($scope.searchForm.surname, $scope.searchForm.postcode, $scope.inputRecordModel.ward.code)
           .success(handleSuccess)
           .error(handleError);
       }

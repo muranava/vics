@@ -63,8 +63,9 @@ public class VoterController {
     public ResponseEntity<?> searchByAttributes(
             @RequestParam(name = "surname") String surname,
             @RequestParam(name = "postcode") String postcode,
+            @RequestParam(name = "wardCode") String wardCode,
             Principal principal) {
-        SearchElectors searchRequest = new SearchElectors(surname, postcode.toUpperCase());
+        SearchElectors searchRequest = new SearchElectors(surname, postcode.toUpperCase(), wardCode);
         return requestValidator.validate(searchRequest)
                 .flatMap(request -> sessionService.extractUserFromPrincipal(principal))
                 .flatMap(user -> voterService.search(user, searchRequest))

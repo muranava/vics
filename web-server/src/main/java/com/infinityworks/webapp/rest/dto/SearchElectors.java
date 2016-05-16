@@ -10,10 +10,12 @@ import java.util.Map;
 public class SearchElectors {
     private final String surname;
     private final String postcode;
+    private final String wardCode;
 
-    public SearchElectors(String surname, String postcode) {
+    public SearchElectors(String surname, String postcode, String wardCode) {
         this.surname =  surname;
         this.postcode = postcode;
+        this.wardCode = wardCode;
     }
 
     public String getSurname() {
@@ -24,6 +26,10 @@ public class SearchElectors {
         return postcode;
     }
 
+    public String getWardCode() {
+        return wardCode;
+    }
+
     /**
      * Converts to upstream request format
      */
@@ -31,6 +37,7 @@ public class SearchElectors {
         return ImmutableMap.<String, String>builder()
                 .put("postcode", postcode)
                 .put("surname", surname)
+                .put("ward", wardCode)
                 .build();
     }
 
@@ -39,6 +46,7 @@ public class SearchElectors {
         return MoreObjects.toStringHelper(this)
                 .add("surname", surname)
                 .add("postcode", postcode)
+                .add("wardCode", wardCode)
                 .toString();
     }
 }

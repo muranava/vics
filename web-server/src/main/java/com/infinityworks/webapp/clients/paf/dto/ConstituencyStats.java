@@ -12,9 +12,9 @@ import org.immutables.value.Value;
 @JsonDeserialize(as = ImmutableConstituencyStats.class)
 @JsonSerialize(as = ImmutableConstituencyStats.class)
 public interface ConstituencyStats {
-    @Value.Default default @JsonProperty("voters") int voters() {return 0;}
-    @Value.Default default @JsonProperty("canvassed") int canvassed() {return 0;}
-    @Value.Default default @JsonProperty("voted") int voted() {return 0;}
-    @Value.Default default @JsonProperty("pledged") int pledged() {return 0;}
-    @Value.Default default @JsonProperty("voted_pledges") int votedPledges() {return 0;}
+    @JsonProperty("voters") int voters();
+    @JsonProperty("canvassed") int canvassed();
+    @JsonProperty("pledged") int pledged();
+    @JsonProperty("voted") StatsVoted voted();
+    @JsonProperty("intention") StatsIntention intention();
 }

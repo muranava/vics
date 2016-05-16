@@ -14,18 +14,9 @@ import javax.annotation.Nullable;
 @JsonDeserialize(as = ImmutableVoterAddress.class)
 @JsonSerialize(as = ImmutableVoterAddress.class)
 public interface VoterAddress {
-    @Nullable @JsonProperty("sub_building_name") String subBuildingName();
-    @Nullable @JsonProperty("building_name") String buildingName();
-    @Nullable @JsonProperty("building_number") String buildingNumber();
-    @Nullable @JsonProperty("dependent_street") String dependentStreet();
-    @Nullable @JsonProperty("main_street") String mainStreet();
-    @Nullable @JsonProperty("dependent_locality") String dependentLocality();
+    @Nullable Integer udprn();
+    @Nullable @JsonProperty("line_1") String addressLine1();
+    @Nullable @JsonProperty("line_2") String addressLine2();
     @Nullable @JsonProperty("post_town") String postTown();
-    @Nullable @JsonProperty("postcode") String postcode();
-    @Nullable @JsonProperty("latitude_etrs89") Double latitude();
-    @Nullable @JsonProperty("longitude_etrs89") Double longitude();
-    @Nullable @JsonProperty("parliamentary_constituency_code") String constituencyCode();
-    @Nullable @JsonProperty("parliamentary_constituency_name") String constituencyName();
-    @Nullable @JsonProperty("electoral_ward_code") String wardCode();
-    @Nullable @JsonProperty("electoral_ward_name") String wardName();
+    @Nullable String postcode();
 }

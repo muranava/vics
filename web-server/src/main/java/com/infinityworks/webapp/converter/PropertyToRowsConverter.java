@@ -43,6 +43,7 @@ public class PropertyToRowsConverter implements BiFunction<String, Property, Lis
                     if (flags != null) {
                         row.withHasPV(createCheckBox(flags.hasPV()))
                                 .withWantsPV(createCheckBox(flags.wantsPV()))
+                                .withPoster(createCheckBox(flags.poster()))
                                 .withNeedsLift(createCheckBox(flags.lift()))
                                 .withInaccessible(createCheckBox(flags.inaccessible()))
                                 .withDeceased(createCheckBox(flags.deceased()));

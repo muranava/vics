@@ -4,11 +4,12 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-import org.immutables.value.Value;
+import org.immutables.value.Value.Immutable;
+import org.immutables.value.Value.Style;
 
-@Value.Immutable
+@Immutable
 @JsonIgnoreProperties(ignoreUnknown = true)
-@Value.Style(init = "with*")
+@Style(init = "with*")
 @JsonDeserialize(as = ImmutableVoterSummary.class)
 @JsonSerialize(as = ImmutableVoterSummary.class)
 public interface VoterSummary {

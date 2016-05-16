@@ -15,7 +15,7 @@ public class JsonUtil {
         try {
             return objectMapper.writeValueAsString(o);
         } catch (JsonProcessingException e) {
-            throw new IllegalStateException("Failed to serialize object");
+            throw new IllegalStateException("Failed to serialize object", e);
         }
     }
 }

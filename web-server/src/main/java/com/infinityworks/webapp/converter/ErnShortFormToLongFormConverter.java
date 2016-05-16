@@ -12,7 +12,7 @@ import java.util.function.BiFunction;
  * Ern short form: {polling district}-{elector number}-{elector suffix}
  * Ern long form: {ward code}-{polling district}-{elector number}-{elector suffix}
  * <p>
- * The short form is provided by volunteers and the long form
+ * The short form is provided by volunteers and the long form is managed internally
  */
 @Component
 public class ErnShortFormToLongFormConverter implements BiFunction<String, String, Try<String>> {

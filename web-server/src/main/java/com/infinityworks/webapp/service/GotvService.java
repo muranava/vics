@@ -30,6 +30,6 @@ public class GotvService {
     public Try<ByteArrayOutputStream> generateElectorsByStreet(String wardCode,
                                                                User user,
                                                                ElectorsByStreetsRequest request) {
-        return voterService.getPdfOfElectorsByStreet(tableBuilder, documentBuilder, request, wardCode, user);
+        return voterService.getPdfOfFilteredElectorsByStreet(tableBuilder, documentBuilder, request, wardCode, user);
     }
 }

@@ -37,10 +37,10 @@ public class StatsRepositoryTest extends RepositoryTest {
         List<Object[]> counts = statsRepository.countUsersByRegion();
 
         assertThat(counts.get(0)[0], is("London"));
-        assertThat(counts.get(0)[1], is(equalTo(BigInteger.valueOf(2))));
+        assertThat(counts.get(0)[1], is(equalTo(BigInteger.valueOf(1))));
 
         assertThat(counts.get(1)[0], is("West Midlands"));
-        assertThat(counts.get(1)[1], is(equalTo(BigInteger.valueOf(3))));
+        assertThat(counts.get(1)[1], is(equalTo(BigInteger.valueOf(2))));
     }
 
     @Test

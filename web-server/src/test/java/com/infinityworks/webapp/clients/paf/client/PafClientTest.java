@@ -26,17 +26,11 @@ public class PafClientTest {
                 Resources.getResource("json/paf-search-voter.json"), SearchVoterResponse[].class);
 
         SearchVoterResponse first = response[0];
-        assertThat(first.surname(), is("Fletcher"));
-        assertThat(first.firstName(), is("Paul H R"));
-        assertThat(first.fullName(), is("Fletcher, Paul H R"));
-        assertThat(first.ern(), is("E05000403-T-1340-0"));
-        assertThat(first.address().latitude(), is(51.4139089232));
-        assertThat(first.address().longitude(), is(-0.3036031300));
-        assertThat(first.address().subBuildingName(), is("Flat 31"));
-        assertThat(first.address().buildingName(), is("Bramber House"));
-        assertThat(first.address().dependentStreet(), is("Royal Quarter"));
-        assertThat(first.address().mainStreet(), is("Seven Kings Way"));
-        assertThat(first.address().postTown(), is("KINGSTON UPON THAMES"));
-        assertThat(first.address().postcode(), is("KT2 5BU"));
+        assertThat(first.surname(), is("McCall"));
+        assertThat(first.firstName(), is("John B"));
+        assertThat(first.fullName(), is("McCall, John B"));
+        assertThat(first.ern(), is("E050097474-LFF-305-0"));
+        assertThat(first.address().postTown(), is("Coventry"));
+        assertThat(first.address().postcode(), is("CV4 6PL"));
     }
 }

@@ -1,7 +1,6 @@
 package com.infinityworks.webapp.clients.paf.dto;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import org.immutables.value.Value;
@@ -9,8 +8,9 @@ import org.immutables.value.Value;
 @Value.Immutable
 @JsonIgnoreProperties(ignoreUnknown = true)
 @Value.Style(init = "with*")
-@JsonDeserialize(as = ImmutableRecordVotedResponse.class)
-@JsonSerialize(as = ImmutableRecordVotedResponse.class)
-public interface RecordVotedResponse {
-    @JsonProperty("success") Boolean success();
+@JsonDeserialize(as = ImmutableStatsVoted.class)
+@JsonSerialize(as = ImmutableStatsVoted.class)
+public interface StatsVoted {
+    int total();
+    int pledged();
 }

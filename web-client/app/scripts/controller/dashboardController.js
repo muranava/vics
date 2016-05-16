@@ -52,6 +52,7 @@ angular
     statsService.allStats()
       .success(function (response) {
         $scope.stats = response;
+        $(".nano").nanoScroller();
       });
 
     constituencyService.firstUserConstituency()

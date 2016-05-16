@@ -23,11 +23,14 @@ public class FlagsKeyRenderer implements Function<Flags, String> {
         if (flags.getNeedsLift() != null) {
             sb.append("[Needs Lift: ").append(flags.getNeedsLift()).append("]\n");
         }
-        if (flags.getNotCanvassedYet() != null) {
-            sb.append("[Canvassed: ").append(flags.getNotCanvassedYet()).append("]\n");
+        if (flags.getInaccessible() != null) {
+            sb.append("[Inaccessible: ").append(flags.getInaccessible()).append("]\n");
         }
         if (flags.getPoster() != null) {
             sb.append("[Poster: ").append(flags.getPoster()).append("] ");
+        }
+        if (flags.getTelephone() != null) {
+            sb.append("[Phone: ").append(flags.getTelephone()).append("] ");
         }
         if (flags.getLikelihoodFrom() != null) {
             sb.append(String.format("[Likelihood: %s]\n", rangeValue(flags.getLikelihoodFrom(), flags.getLikelihoodTo())));

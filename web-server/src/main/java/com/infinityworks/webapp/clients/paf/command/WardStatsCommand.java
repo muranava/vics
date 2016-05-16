@@ -1,6 +1,5 @@
 package com.infinityworks.webapp.clients.paf.command;
 
-
 import com.infinityworks.common.lang.Try;
 import com.infinityworks.webapp.clients.paf.PafClient;
 import com.infinityworks.webapp.clients.paf.PafRequestExecutor;
@@ -18,7 +17,7 @@ public class WardStatsCommand extends HystrixCommand<Try<WardStats>> {
                             PafClient pafClient,
                             int timeout,
                             PafRequestExecutor responseHandler) {
-        super(HystrixCommandGroupKey.Factory.asKey("GetVoters"), timeout);
+        super(HystrixCommandGroupKey.Factory.asKey("WardStats"), timeout);
         this.wardCode = wardCode;
         this.pafClient = pafClient;
         this.responseHandler = responseHandler;

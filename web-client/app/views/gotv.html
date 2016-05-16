@@ -267,11 +267,10 @@
                   </div>
                 </div>
 
-
-                <!-- Canvassed filter -->
+                <!-- Phone filter -->
                 <div class="row">
                   <div class="form-group">
-                    <label class="col-sm-3 control-label">Telephone</label>
+                    <label class="col-sm-3 control-label">Phone</label>
                     <div class="col-sm-3">
                       <switch id="telephoneSwitch" name="telephoneSwitch" ng-model="radios[5].enabled"
                               class="red"></switch>
@@ -286,6 +285,29 @@
                         <input ng-click="radios[5].handler(false)" ame="telephoneRadioValue" id="telephoneNo"
                                type="radio"
                                ng-model="telephoneRadioValue" ng-value="false"><span>No</span>
+                      </label>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- inaccessible filter -->
+                <div class="row">
+                  <div class="form-group">
+                    <label class="col-sm-3 control-label">Inaccessible</label>
+                    <div class="col-sm-3">
+                      <switch id="inaccessibleSwitch" name="inaccessibleSwitch" ng-model="radios[6].enabled"
+                              class="red"></switch>
+                    </div>
+                    <div class="col-sm-6" ng-show="radios[6].enabled">
+                      <label for="inaccessibleYes" class="radio-inline radio-styled">
+                        <input ng-click="radios[6].handler(true)" name="inaccessibleRadioValue" id="inaccessibleYes"
+                               type="radio"
+                               ng-model="inaccessibleRadioValue" value="true"><span>Yes</span>
+                      </label>
+                      <label for="inaccessibleNo" class="radio-inline radio-styled">
+                        <input ng-click="radios[6].handler(false)" ame="inaccessibleRadioValue" id="inaccessibleNo"
+                               type="radio"
+                               ng-model="inaccessibleRadioValue" ng-value="false"><span>No</span>
                       </label>
                     </div>
                   </div>

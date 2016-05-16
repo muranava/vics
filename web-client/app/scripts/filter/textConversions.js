@@ -26,7 +26,7 @@ angular
   .filter('voterAddressFormat', function() {
     return function(voter) {
       var address = voter.address;
-      var parts = [address.sub_building_name, address.building_name, address.dependent_street, address.main_street, _.capitalize(address.post_town)];
+      var parts = [address.line_1, address.line_2, _.capitalize(address.post_town)];
       var presentParts =_.filter(parts, function(part) {
         return !_.isEmpty(part);
       });

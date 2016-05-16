@@ -67,13 +67,13 @@ public class GotvController {
 
     @PreAuthorize("isAuthenticated()")
     @RequestMapping(value = "/ward/{wardCode}/street/labels", method = POST)
-    public ResponseEntity<?> getLabelsPdfOfElectorsByTownStreet(
+    public ResponseEntity<?> getPostalVotersAddressLabelsPdf(
             @RequestBody @Valid ElectorsByStreetsRequest electorsByStreetsRequest,
             @PathVariable("wardCode") String wardCode,
             Principal principal) throws DocumentException {
         return requestValidator.validate(electorsByStreetsRequest)
                 .flatMap(streets -> sessionService.extractUserFromPrincipal(principal))
-                .flatMap(user -> labelService.generateLabelsPdf(electorsByStreetsRequest, wardCode, user))
+                .flatMap(user -> labelService.generateAddressLabelsForPostalVoters(electorsByStreetsRequest, wardCode, user))
                 .fold(errorHandler::mapToResponseEntity, this::handlePdfResponse);
     }
 

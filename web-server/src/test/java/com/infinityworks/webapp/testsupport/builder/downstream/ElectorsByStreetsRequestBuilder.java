@@ -6,6 +6,7 @@ import com.infinityworks.webapp.rest.dto.StreetRequest;
 
 import java.util.List;
 
+import static com.infinityworks.webapp.testsupport.builder.downstream.FlagsBuilder.flags;
 import static com.infinityworks.webapp.testsupport.builder.downstream.StreetBuilder.street;
 import static java.util.Arrays.asList;
 
@@ -19,6 +20,12 @@ public class ElectorsByStreetsRequestBuilder {
                 street().withMainStreet("Amber Road").build(),
                 street().withMainStreet("Sunny Boulevard").build()
         ));
+        withFlags(flags()
+                .withLikelihoodFrom(2)
+                .withLikelihoodTo(5)
+                .withIntentionFrom(2)
+                .withIntentionTo(4)
+                .build());
         return this;
     }
 

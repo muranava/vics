@@ -70,6 +70,5 @@ public class Fixtures {
                 .withCost(false)
                 .withBorder(false);
     }
-
 }
 

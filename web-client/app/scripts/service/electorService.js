@@ -36,13 +36,14 @@ angular
       });
     };
 
-    api.search = function (surname, postcode) {
+    api.search = function (surname, postcode, wardCode) {
       return $http({
         url: apiUrl + '/elector',
         method: 'GET',
         params: {
           surname: surname,
-          postcode: postcode
+          postcode: postcode,
+          wardCode: wardCode
         },
         withCredentials: true
       });

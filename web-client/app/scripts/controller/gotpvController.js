@@ -1,6 +1,6 @@
 angular
   .module('canvass')
-  .controller('gotvController', function ($scope, wardService, $filter, geoService, electorService, gotvService, $window, toastr, $uibModal) {
+  .controller('gotpvController', function ($scope, wardService, $filter, geoService, electorService, gotvService, $window, toastr, $uibModal) {
 
     $scope.numStreetsSelected = 0;
     $scope.validationErrors = [];
@@ -23,8 +23,7 @@ angular
       createRadioItem('lift'),
       createRadioItem('poster'),
       createRadioItem('canvassed'),
-      createRadioItem('telephone'),
-      createRadioItem('inaccessible')
+      createRadioItem('telephone')
     ];
 
     function validateFlagsRadios() {
@@ -128,19 +127,6 @@ angular
       }
     };
 
-    $scope.onPrintSelected = function () {
-      $scope.errorLoadingData = null;
-      var selected = _.filter($scope.streets, function (s) {
-        return s.selected;
-      });
-      doPrint($scope.ward.code, selected, false);
-    };
-
-    $scope.onPrintAll = function () {
-      $scope.errorLoadingData = null;
-      doPrint($scope.ward.code, $scope.streets, false);
-    };
-
     $scope.onPrintLabels = function() {
       var selected = _.filter($scope.streets, function (s) {
         return s.selected;
@@ -148,10 +134,40 @@ angular
       doPrint($scope.ward.code, selected, true);
     };
 
+    $scope.onClearSelections = function () {
+      _.each($scope.streets, function (street) {
+        street.selected = false;
+      });
+      $scope.updateSelectedStreets();
+    };
+
+    $scope.updateSelectedStreets = function () {
+      if ($scope.streets && $scope.streets.length) {
+        $scope.numStreetsSelected = _.size(_.filter($scope.streets, function (s) {
+          return s.selected;
+        }));
+      } else {
+        $scope.numStreetsSelected = 0;
+      }
+    };
+
+    $scope.onSelectAll = function () {
+      _.each($scope.streets, function (street) {
+        street.selected = true;
+      });
+      $scope.updateSelectedStreets();
+    };
+
+    $scope.onSelectPriority = function () {
+      _.each($scope.streets, function (street) {
+        street.selected = street.priority === 3;
+      });
+      $scope.updateSelectedStreets();
+    };
+
     function doPrint(wardCode, streets, isLabels) {
       if (_.isEmpty(streets)) {
-        toastr.warning('Please select some streets and search again.', 'No streets selected');
-        return;
+        toastr.warning('Please select the streets you wish to generate labels for', 'No streets selected');
       }
 
       $scope.validationErrors = validateFlagsRadios();
@@ -164,9 +180,9 @@ angular
           })
           .error(function(error) {
             if (error && error.status === 404) {
-              toastr.info('We did not find any voters matching the search criteria.', 'No voters found');
+              toastr.info('We did not find any postal voters at the selected streets', 'No postal voters');
             } else {
-              toastr.error('Failed to request voters.', 'Error');
+              toastr.error('Failed to retrieve data from server', 'Error loading data');
             }
           });
       }

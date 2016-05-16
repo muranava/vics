@@ -1,11 +1,11 @@
 package com.infinityworks.webapp.feature;
 
 import com.infinityworks.common.lang.Try;
-import com.infinityworks.webapp.rest.dto.Flags;
 import com.infinityworks.webapp.common.RequestValidator;
 import com.infinityworks.webapp.error.RestErrorHandler;
 import com.infinityworks.webapp.rest.GotvController;
 import com.infinityworks.webapp.rest.dto.ElectorsByStreetsRequest;
+import com.infinityworks.webapp.rest.dto.Flags;
 import com.infinityworks.webapp.service.GotvService;
 import com.infinityworks.webapp.service.LabelService;
 import com.infinityworks.webapp.service.SessionService;
@@ -19,15 +19,16 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 import java.security.Principal;
 
-import static com.infinityworks.webapp.testsupport.builder.downstream.FlagsBuilder.flags;
 import static com.infinityworks.webapp.common.JsonUtil.objectMapper;
 import static com.infinityworks.webapp.testsupport.builder.downstream.ElectorsByStreetsRequestBuilder.electorsByStreets;
+import static com.infinityworks.webapp.testsupport.builder.downstream.FlagsBuilder.flags;
 import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.header;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @SqlGroup({
@@ -64,7 +65,7 @@ public class GotvTest extends WebApplicationTest {
         when(sessionService.extractUserFromPrincipal(any(Principal.class)))
                 .thenReturn(Try.success(admin()));
 
-        Flags flags = flags().withIntentionFrom(0).withIntentionTo(3).build();
+        Flags flags = flags().withIntentionFrom(1).withIntentionTo(6).build();
         ElectorsByStreetsRequest request = electorsByStreets()
                 .withFlags(flags)
                 .build();
@@ -96,5 +97,43 @@ public class GotvTest extends WebApplicationTest {
                 .content(content))
                 .andDo(print())
                 .andExpect(status().isBadRequest());
+    }
+
+    @Test
+    public void returnsTheFilteredVoters() throws Exception {
+        when(sessionService.extractUserFromPrincipal(any(Principal.class)))
+                .thenReturn(Try.success(admin()));
+
+        pafApiStub.willReturnVotersByStreets();
+        ElectorsByStreetsRequest request = electorsByStreets().build();
+
+        String content = objectMapper.writeValueAsString(request);
+        log.info("Gotv canvass card request: {}", content);
+
+        mockMvc.perform(post("/gotv/ward/E05001221/street/pdf")
+                .accept("application/pdf")
+                .contentType(APPLICATION_JSON)
+                .content(content))
+                .andExpect(status().isOk())
+                .andExpect(header().string("Content-Type", "application/pdf"));
+    }
+
+    @Test
+    public void returnsNotFoundIfNoPostalVotersOnStreets() throws Exception {
+        when(sessionService.extractUserFromPrincipal(any(Principal.class)))
+                .thenReturn(Try.success(admin()));
+
+        pafApiStub.willReturnPropertiesWithoutVoters();
+        ElectorsByStreetsRequest request = electorsByStreets().withFlags(null).build();
+
+        String content = objectMapper.writeValueAsString(request);
+        log.info("Gotpv postal voter card request: {}", content);
+
+        mockMvc.perform(post("/ward/E05001221/street/labels")
+                .accept("application/pdf")
+                .contentType(APPLICATION_JSON)
+                .content(content))
+                .andDo(print())
+                .andExpect(status().isNotFound());
     }
 }

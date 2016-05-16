@@ -10,28 +10,29 @@ import javax.validation.constraints.Min;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class Flags {
-    @Min(1)
+    @Min(0)
     @Max(5)
     private final Integer intentionFrom;
 
-    @Min(1)
+    @Min(0)
     @Max(5)
     private final Integer intentionTo;
 
-    @Min(1)
+    @Min(0)
     @Max(5)
     private final Integer likelihoodFrom;
 
-    @Min(1)
+    @Min(0)
     @Max(5)
     private final Integer likelihoodTo;
 
     private final Boolean hasPV;
     private final Boolean wantsPv;
     private final Boolean needsLift;
-    private final Boolean notCanvassedYet;
+    private final Boolean inaccessible;
     private final Boolean poster;
     private final Boolean telephone;
+    private final Boolean email;
 
     @JsonCreator
     public Flags(@JsonProperty("intentionFrom") Integer intentionFrom,
@@ -41,8 +42,9 @@ public class Flags {
                  @JsonProperty("hasPV") Boolean hasPV,
                  @JsonProperty("wantsPV") Boolean wantsPv,
                  @JsonProperty("lift") Boolean needsLift,
-                 @JsonProperty("canvassed") Boolean notCanvassedYet,
+                 @JsonProperty("inaccessible") Boolean inaccessible,
                  @JsonProperty("poster") Boolean poster,
+                 @JsonProperty("email") Boolean email,
                  @JsonProperty("telephone") Boolean telephone) {
         this.intentionFrom = intentionFrom;
         this.intentionTo = intentionTo;
@@ -51,8 +53,9 @@ public class Flags {
         this.hasPV = hasPV;
         this.wantsPv = wantsPv;
         this.needsLift = needsLift;
-        this.notCanvassedYet = notCanvassedYet;
+        this.inaccessible = inaccessible;
         this.poster = poster;
+        this.email = email;
         this.telephone = telephone;
     }
 
@@ -84,8 +87,8 @@ public class Flags {
         return needsLift;
     }
 
-    public Boolean getNotCanvassedYet() {
-        return notCanvassedYet;
+    public Boolean getInaccessible() {
+        return inaccessible;
     }
 
     public Boolean getPoster() {
@@ -94,6 +97,10 @@ public class Flags {
 
     public Boolean getTelephone() {
         return telephone;
+    }
+
+    public Boolean getEmail() {
+        return email;
     }
 
     @Override
@@ -106,9 +113,10 @@ public class Flags {
                 .add("hasPV", hasPV)
                 .add("wantsPv", wantsPv)
                 .add("needsLift", needsLift)
-                .add("notCanvassedYet", notCanvassedYet)
+                .add("inaccessible", inaccessible)
                 .add("poster", poster)
                 .add("telephone", telephone)
+                .add("email", email)
                 .toString();
     }
 }

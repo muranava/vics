@@ -32,14 +32,24 @@ public interface PafClient {
     Call<PropertyResponse> votersByStreets(@Path("wardCode") String wardCode,
                                            @Body List<PafStreetRequest> streets);
 
-    // FIXME change voter to voters when new API version pushed
+    /**
+     * Gets the voters grouped by the given streets
+     *
+     * @param wardCode the code of the electoral ward to restrict the search by
+     * @param streets  the streets to get the voters from
+     * @return a collection of voters grouped by street
+     */
+    @POST("wards/{wardCode}/streets")
+    Call<PropertyResponse> filteredVotersByStreets(@Path("wardCode") String wardCode,
+                                                   @Body GotvVoterRequest streets);
+
     /**
      * Searches a voter by attributes
      *
      * @param parameters voter attributes to search
      * @return the voters matching the criteria
      */
-    @GET("voter/search")
+    @GET("voters/search")
     Call<List<SearchVoterResponse>> voterSearch(@QueryMap Map<String, String> parameters);
 
     /**
@@ -49,28 +59,28 @@ public interface PafClient {
      * @param contactRequest the information recorded about the voter
      * @return the contact data
      */
-    @POST("voter/{ern}/contact")
+    @POST("voters/{ern}/contact")
     Call<RecordContactResponse> recordContact(@Path("ern") String ern,
                                               @Body RecordContactRequest contactRequest);
 
     /**
      * Deletes an existing contact record
      *
-     * @param ern            the voter ID
-     * @param contactId      the contact record to delete
+     * @param ern       the voter ID
+     * @param contactId the contact record to delete
      * @return no content
      */
-    @DELETE("voter/{ern}/contact/{contactId}")
+    @DELETE("voters/{ern}/contact/{contactId}")
     Call<DeleteContactResponse> deleteContact(@Path("ern") String ern,
                                               @Path("contactId") UUID contactId);
 
-    @POST("voter/{ern}/voted")
+    @POST("voters/{ern}/voted")
     Call<RecordVotedResponse> recordVote(@Path("ern") String ern);
 
     @GET("wards/{wardCode}")
     Call<WardStats> wardStats(@Path("wardCode") String wardCode);
 
     // FIXME change constituency to constituencies when new API version pushed
-    @GET("constituency/{constituencyCode}")
+    @GET("constituencies/{constituencyCode}")
     Call<ConstituencyStats> constituencyStats(@Path("constituencyCode") String constituencyCode);
 }

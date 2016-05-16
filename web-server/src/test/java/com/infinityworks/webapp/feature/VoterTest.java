@@ -113,11 +113,12 @@ public class VoterTest extends WebApplicationTest {
     public void returnsTheElectorsWhenSearchingByAttributes() throws Exception {
         when(sessionService.extractUserFromPrincipal(any(Principal.class)))
                 .thenReturn(Try.success(earlsdon()));
-        pafApiStub.willSearchVoters("KT25BU", "McCall");
+        pafApiStub.willSearchVoters("CV46PL", "McCall", "E05001221");
 
         MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
         params.add("surname", "McCall");
-        params.add("postcode", "KT25BU");
+        params.add("postcode", "CV46PL");
+        params.add("wardCode", "E05001221");
         UriComponents uriComponents = UriComponentsBuilder.fromPath("/elector")
                 .queryParams(params)
                 .build();
@@ -127,7 +128,15 @@ public class VoterTest extends WebApplicationTest {
         mockMvc.perform(get(url)
                 .accept(APPLICATION_JSON))
                 .andDo(print())
-                .andExpect(status().isOk()); // TODO implement assertions when API defined
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$[0].full_name", is("McCall, John B")))
+                .andExpect(jsonPath("$[0].first_name", is("John B")))
+                .andExpect(jsonPath("$[0].surname", is("McCall")))
+                .andExpect(jsonPath("$[0].ern", is("E050097474-LFF-305-0")))
+                .andExpect(jsonPath("$[0].address.postcode", is("CV4 6PL")))
+                .andExpect(jsonPath("$[0].address.line_1", is("Grange Farm House")))
+                .andExpect(jsonPath("$[0].address.line_2", is("Crompton Lane")))
+                .andExpect(jsonPath("$[0].address.post_town", is("Coventry")));
     }
 
     @Test

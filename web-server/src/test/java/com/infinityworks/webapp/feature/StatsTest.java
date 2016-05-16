@@ -115,8 +115,8 @@ public class StatsTest extends WebApplicationTest {
                 .andExpect(jsonPath("$.voters", is(8034)))
                 .andExpect(jsonPath("$.canvassed", is(415)))
                 .andExpect(jsonPath("$.pledged", is(211)))
-                .andExpect(jsonPath("$.voted", is(31)))
-                .andExpect(jsonPath("$.voted_pledges", is(12)));
+                .andExpect(jsonPath("$.voted.total", is(31)))
+                .andExpect(jsonPath("$.voted.pledged", is(12)));
     }
 
     @Test
@@ -132,7 +132,7 @@ public class StatsTest extends WebApplicationTest {
                 .andExpect(jsonPath("$.voters", is(41294)))
                 .andExpect(jsonPath("$.canvassed", is(4159)))
                 .andExpect(jsonPath("$.pledged", is(1223)))
-                .andExpect(jsonPath("$.voted", is(301)))
-                .andExpect(jsonPath("$.voted_pledges", is(128)));
+                .andExpect(jsonPath("$.voted.total", is(301)))
+                .andExpect(jsonPath("$.voted.pledged", is(128)));
     }
 }

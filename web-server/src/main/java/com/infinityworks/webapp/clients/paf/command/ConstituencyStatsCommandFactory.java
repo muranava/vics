@@ -14,7 +14,7 @@ public class ConstituencyStatsCommandFactory {
         this.responseHandler = responseHandler;
     }
 
-    public ConstituencyStatsCommand create(String wardCode) {
-        return new ConstituencyStatsCommand(wardCode, pafClient, timeoutMsecs, responseHandler);
+    public ConstituencyStatsCommand create(String constituencyCode) {
+        return new ConstituencyStatsCommand(constituencyCode, pafClient, timeoutMsecs, responseHandler);
     }
 }

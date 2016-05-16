@@ -53,86 +53,86 @@ public class PafServerStub {
 
     public void willReturnStreetsByWard(String wardCode) throws IOException {
         String file = requireNonNull(files.get(wardCode), "No json file for ward=" + wardCode);
-        String jsonData = Resources.toString(getResource(file), UTF_8);
+        String jsonResponse = Resources.toString(getResource(file), UTF_8);
 
         String urlPath = String.format("/v1/wards/%s/streets", wardCode);
         wireMock.register(get(urlPathMatching(urlPath))
                 .willReturn(aResponse()
                         .withStatus(200)
                         .withHeader(CONTENT_TYPE, "application/json")
-                        .withBody(jsonData)));
+                        .withBody(jsonResponse)));
     }
 
     /**
      * Returns the same streets no matter what ward you request
      */
     public void willReturnStreets() throws IOException {
-        String jsonData = Resources.toString(getResource("json/paf-streets-earlsdon.json"), UTF_8);
+        String jsonResponse = Resources.toString(getResource("json/paf-streets-earlsdon.json"), UTF_8);
 
         String urlPath = "/v1/wards/.*/streets";
         wireMock.register(get(urlPathMatching(urlPath))
                 .willReturn(aResponse()
                         .withStatus(200)
                         .withHeader(CONTENT_TYPE, "application/json")
-                        .withBody(jsonData)));
+                        .withBody(jsonResponse)));
     }
 
     public void willDeleteAContactRecordFor(String ern, String contactId) throws IOException {
-        String jsonData = Resources.toString(getResource("json/paf-delete-contact-success.json"), UTF_8);
+        String jsonResponse = Resources.toString(getResource("json/paf-delete-contact-success.json"), UTF_8);
 
-        String urlPath = "/v1/voter/" + ern + "/contact/" + contactId;
+        String urlPath = "/v1/voters/" + ern + "/contact/" + contactId;
         wireMock.register(delete(urlPathMatching(urlPath))
                 .willReturn(aResponse()
                         .withStatus(200)
                         .withHeader(CONTENT_TYPE, "application/json")
-                        .withBody(jsonData)));
+                        .withBody(jsonResponse)));
     }
 
     /**
      * Returns the same voters no matter what streets you post
      */
     public void willReturnVotersByStreets() throws IOException {
-        String jsonData = Resources.toString(getResource("json/paf-voters-leeds.json"), UTF_8);
+        String jsonResponse = Resources.toString(getResource("json/paf-voters-leeds.json"), UTF_8);
 
         String urlPath = "/v1/wards/.*/streets";
         wireMock.register(post(urlPathMatching(urlPath))
                 .willReturn(aResponse()
                         .withStatus(200)
                         .withHeader(CONTENT_TYPE, "application/json")
-                        .withBody(jsonData)));
+                        .withBody(jsonResponse)));
     }
 
     /**
      * Returns the same voters no matter what streets you post
      */
     public void willReturnPropertiesWithoutVoters() throws IOException {
-        String jsonData = Resources.toString(getResource("json/paf-properties-no-voters.json"), UTF_8);
+        String jsonResponse = Resources.toString(getResource("json/paf-properties-no-voters.json"), UTF_8);
 
         String urlPath = "/v1/wards/.*/streets";
         wireMock.register(post(urlPathMatching(urlPath))
                 .willReturn(aResponse()
                         .withStatus(200)
                         .withHeader(CONTENT_TYPE, "application/json")
-                        .withBody(jsonData)));
+                        .withBody(jsonResponse)));
     }
 
     public void willReturnVotersByWardByTownAndByStreet(String wardCode, String town) throws IOException {
         String file = requireNonNull(files.get(String.format("%s,%s", wardCode, town)), "No json file for town=" + town);
-        String jsonData = Resources.toString(getResource(file), UTF_8);
+        String jsonResponse = Resources.toString(getResource(file), UTF_8);
 
         String urlPath = String.format("/v1/wards/%s/streets", wardCode);
         wireMock.register(post(urlPathMatching(urlPath))
                 .willReturn(aResponse()
                         .withStatus(200)
                         .withHeader(CONTENT_TYPE, "application/json")
-                        .withBody(jsonData)));
+                        .withBody(jsonResponse)));
     }
 
     public void willRecordVoterVoted(String ern) throws IOException {
         String file = requireNonNull(files.get("voted," + ern), "No json file for voted request ern=" + ern);
         String jsonData = Resources.toString(getResource(file), UTF_8);
 
-        String urlPath = "/v1/voter/" + ern + "/voted";
+        String urlPath = "/v1/voters/" + ern + "/voted";
         wireMock.register(post(urlPathMatching(urlPath))
                 .willReturn(aResponse()
                         .withStatus(200)
@@ -141,57 +141,58 @@ public class PafServerStub {
 
     public void willRecordVoterVoted() throws IOException {
         String file = requireNonNull(files.get("voted,E05001221-ADD-1313-1"), "No json file");
-        String jsonData = Resources.toString(getResource(file), UTF_8);
+        String jsonResponse = Resources.toString(getResource(file), UTF_8);
 
-        String urlPath = "/v1/voter/.*/voted";
+        String urlPath = "/v1/voters/.*/voted";
         wireMock.register(post(urlPathMatching(urlPath))
                 .willReturn(aResponse()
                         .withStatus(200)
-                        .withBody(jsonData)));
+                        .withBody(jsonResponse)));
     }
 
     public void willCreateANewContactRecord(String ern) throws IOException {
         String fileName = String.format("postContact,%s", ern);
         String file = requireNonNull(files.get(fileName),
                 String.format("No json file for POST contact request ern=%s", ern));
-        String stubResponse = Resources.toString(getResource(file), UTF_8);
+        String jsonResponse = Resources.toString(getResource(file), UTF_8);
 
-        String urlPath = String.format("/v1/voter/%s", ern);
+        String urlPath = String.format("/v1/voters/%s", ern);
         wireMock.register(post(urlPathMatching(urlPath))
                 .willReturn(aResponse()
-                        .withBody(stubResponse)
+                        .withBody(jsonResponse)
                         .withStatus(200)
                         .withHeader(CONTENT_TYPE, "application/json")));
     }
 
-    public void willSearchVoters(String postCode, String lastName) throws IOException {
-        String jsonData = Resources.toString(getResource("json/paf-search-voter.json"), UTF_8);
+    public void willSearchVoters(String postCode, String lastName, String wardCode) throws IOException {
+        String jsonResponse = Resources.toString(getResource("json/paf-search-voter.json"), UTF_8);
 
-        String url = "/v1/voter/search";
+        String url = "/v1/voters/search";
         wireMock.register(get(urlPathMatching(url))
                 .withQueryParam("postcode", equalTo(postCode))
                 .withQueryParam("surname", equalTo(lastName))
+                .withQueryParam("ward", equalTo(wardCode))
                 .willReturn(aResponse()
                         .withHeader(CONTENT_TYPE, "application/json")
                         .withStatus(200)
-                        .withBody(jsonData)));
+                        .withBody(jsonResponse)));
     }
 
     public void willReturnWardStats(String wardCode) throws IOException {
-        String jsonData = Resources.toString(getResource("json/paf-ward-stats.json"), UTF_8);
+        String jsonResponse = Resources.toString(getResource("json/paf-ward-stats.json"), UTF_8);
 
         String url = "/v1/wards/" + wardCode;
         wireMock.register(get(urlPathMatching(url))
                 .willReturn(aResponse()
                         .withHeader(CONTENT_TYPE, "application/json")
                         .withStatus(200)
-                        .withBody(jsonData)));
+                        .withBody(jsonResponse)));
     }
 
     public void willReturnConstituencyStats(String constituencyCode) throws IOException {
         String jsonData = Resources.toString(getResource("json/paf-constituency-stats.json"), UTF_8);
 
-        String url = "/v1/constituency/" + constituencyCode;
+        String url = "/v1/constituencies/" + constituencyCode;
         wireMock.register(get(urlPathMatching(url))
                 .willReturn(aResponse()
                         .withHeader(CONTENT_TYPE, "application/json")

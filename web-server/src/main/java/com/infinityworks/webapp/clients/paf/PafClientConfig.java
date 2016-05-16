@@ -90,4 +90,9 @@ public class PafClientConfig {
     public ConstituencyStatsCommandFactory constituencyStatsCommandFactory(PafClient pafClient, PafRequestExecutor requestExecutor, AppProperties appProperties) {
         return new ConstituencyStatsCommandFactory(pafClient, appProperties.getPafApiTimeout(), requestExecutor);
     }
+
+    @Bean
+    public GetFilteredVotersCommandFactory getFilteredVotersCommandFactory(PafClient pafClient, PafRequestExecutor requestExecutor, AppProperties appProperties) {
+        return new GetFilteredVotersCommandFactory(pafClient, appProperties.getPafApiTimeout(), requestExecutor);
+    }
 }
