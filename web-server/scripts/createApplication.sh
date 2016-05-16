@@ -17,13 +17,13 @@ cp -f /tmp/scripts/web-server-0.0.1.conf /var/tmp/vics.conf
 
 if [ "$DEPLOYMENT_GROUP_NAME" == "ProductionWebApp" ]
 then
-    aws s3 cp s3://993854-config-production/vics/production.properties /var/tmp/application.properties
+    sudo aws s3 cp s3://993854-config-production/vics/production.properties /var/tmp/application.properties
 elif [ "$DEPLOYMENT_GROUP_NAME" == "StagingWebApp" ]
 then
-    aws s3 cp s3://993854-config-staging/vics/staging.properties /var/tmp/application.properties
+    sudo aws s3 cp s3://993854-config-staging/vics/staging.properties /var/tmp/application.properties
 elif [ "$DEPLOYMENT_GROUP_NAME" == "DevWebAppDeploymentGroup" ]
 then
-    aws s3 cp s3://993854-config/vics/development.properties /var/tmp/application.properties
+    sudo aws s3 cp s3://993854-config/vics/development.properties /var/tmp/application.properties
 else
     error_exit "Could not determine environment!  Aborting. DEPLOYMENT_GROUP_NAME=$DEPLOYMENT_GROUP_NAME"
 fi
