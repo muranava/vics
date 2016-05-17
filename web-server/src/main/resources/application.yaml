@@ -6,6 +6,8 @@
 server:
   context-path: /api/canvass
   port: 18080
+  session:
+    timeout: 240
   compression:
     enabled: true
     mime-types: application/pdf
@@ -48,7 +50,7 @@ canvass:
   passwordResetExpirationMins: 120
   passwordTokenExpiryDeletedUpdateInterval: 10
   supportEmail: vicssupport@voteleave.uk
-  newAccountEmailSubject: "IMPORTANT - Welcome to you new Vote Leave canvassing account"
+  newAccountEmailSubject: "IMPORTANT - Welcome to your new Vote Leave canvassing account"
   enableScheduling: true
 
 logging.level.: INFO
