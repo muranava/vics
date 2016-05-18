@@ -170,7 +170,6 @@
                         </th>
                         <th>Street</th>
                         <th class="stats-cell">Priority</th>
-                        <th class="hidden-xs stats-cell">Total Voters</th>
                         <th class="stats-cell">Tools
                         </th>
                       </tr>
@@ -201,11 +200,6 @@
                             <i class="md md-star icon-med gold-trophy"></i><i
                             class="md md-star icon-med gold-trophy"></i><i class="md md-star icon-med gold-trophy"></i>
                           </span>
-                        </td>
-                        <td class="hidden-xs stats-cell">
-                          <span class="text-default text-xl"><span class="text-light" uib-tooltip="Total canvassed">{{street.numCanvassed}}</span> /
-                            <span uib-tooltip="Total voters">{{street.numVoters}}</span>
-                            <span class="text-default-light text-light">({{getRatioPledged(street.numCanvassed, street.numVoters)}}%)</span></span>
                         </td>
                         <td class="text-center">
                           <button ng-click="onShowPopupMap(street)" type="button" class="btn btn-icon-toggle"><i
