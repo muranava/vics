@@ -90,9 +90,11 @@ public class AddressServiceTest {
                                         .withPriority(2)
                                         .withVotedPledges(3)
                                         .withPledged(4)
+                                        .withNumPostalVoters(23)
                                         .build(),
                                        street()
                                         .withNumVoters(10)
+                                        .withNumPostalVoters(31)
                                         .build())
                         )
                         .build()));

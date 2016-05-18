@@ -23,6 +23,7 @@ public class PafToStreetResponseConverter implements Function<PafStreetResponse,
                 .withPriority(pafStreet.priority())
                 .withPledged(pafStreet.pledged())
                 .withVotedPledges(pafStreet.votedPledges())
+                .withNumPostalVoters(pafStreet.postalVoters())
                 .build();
     }
 }

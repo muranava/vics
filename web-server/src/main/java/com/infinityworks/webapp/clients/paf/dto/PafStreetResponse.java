@@ -22,6 +22,9 @@ public interface PafStreetResponse {
     @JsonProperty("dependent_locality") String dependentLocality();
     @JsonProperty("canvassed") Integer canvassed();
     @JsonProperty("voters") Integer voters();
+    @JsonProperty("postal") @Value.Default default int postalVoters() {
+        return 0;
+    }
     @JsonProperty("postcode") @Value.Default default List<String> postcode() {
         return emptyList();
     }

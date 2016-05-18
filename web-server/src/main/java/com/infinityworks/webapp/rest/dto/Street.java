@@ -22,4 +22,5 @@ public interface Street {
     @JsonProperty("priority") Integer priority();
     @JsonProperty("pledged") Integer pledged();
     @JsonProperty("votedPledges") Integer votedPledges();
+    @JsonProperty("numPostalVoters") Integer numPostalVoters();
 }
