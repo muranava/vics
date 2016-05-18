@@ -42,7 +42,7 @@ canvass:
     methods:  "POST, GET, PUT, OPTIONS, DELETE"
   pafApiBaseUrl: https://PAF-1553489728.eu-west-1.elb.amazonaws.com/v1/
   pafApiToken: 90f88caae35a5b863ae2450b55688a559b52a343
-  pafApiTimeout: 30000
+  pafApiTimeout: 60000
   addressLookupBaseUrl: https://maps.googleapis.com/maps/api/
   addressLookupToken: AIzaSyBdXzJ-korOOBRX8qZPRpxgo_yNvfpBXnU
   sendGridKey: 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
