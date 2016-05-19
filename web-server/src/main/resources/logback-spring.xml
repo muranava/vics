@@ -4,7 +4,7 @@
     <jmxConfigurator/>
 
     <appender name="stash" class="net.logstash.logback.appender.LogstashTcpSocketAppender">
-        <remoteHost>52.18.128.205</remoteHost>
+        <remoteHost>172.17.7.76</remoteHost>
         <port>4560</port>
 
         <encoder class="net.logstash.logback.encoder.LogstashEncoder">
