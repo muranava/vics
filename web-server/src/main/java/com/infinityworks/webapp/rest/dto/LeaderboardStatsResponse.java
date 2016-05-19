@@ -9,12 +9,11 @@ import java.util.List;
 @Value.Immutable
 @JsonIgnoreProperties(ignoreUnknown = true)
 @Value.Style(init = "with*")
-@JsonSerialize(as = ImmutableAllStatsResponse.class)
-public interface AllStatsResponse {
+@JsonSerialize(as = ImmutableLeaderboardStatsResponse.class)
+public interface LeaderboardStatsResponse {
     List<StatsResponse> topCanvassers();
+
     List<StatsResponse> topWards();
+
     List<StatsResponse> topConstituencies();
-    List<Object[]> recordContactByDate();
-    long totalContacts();
-    long canvassedThisWeek();
 }

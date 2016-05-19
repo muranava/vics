@@ -73,13 +73,6 @@ public interface StatsRepository extends JpaRepository<User, UUID> {
 
     @Query(nativeQuery = true, value =
             "SELECT COUNT(*), CAST(EXTRACT(YEAR FROM added) AS text) || CAST(EXTRACT(WEEK FROM added) AS text) AS regweek " +
-                    "FROM record_contact_log WHERE operation = 'CREATE' " +
-                    "GROUP BY regweek " +
-                    "ORDER BY regweek ASC")
-    List<Object[]> countRecordContactsByDate();
-
-    @Query(nativeQuery = true, value =
-            "SELECT COUNT(*), CAST(EXTRACT(YEAR FROM added) AS text) || CAST(EXTRACT(WEEK FROM added) AS text) AS regweek " +
                     "FROM record_contact_log r " +
                     "JOIN wards w on w.id = r.wards_id " +
                     "JOIN constituencies c on c.id = w.constituency_id " +

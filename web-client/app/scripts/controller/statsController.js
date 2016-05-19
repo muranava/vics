@@ -7,8 +7,8 @@ angular
         $scope.usersByRegionStats = stats;
       });
 
-    statsService.allStats()
+    statsService.adminStats()
       .success(function(stats) {
-        $scope.stats = stats;
+        $scope.adminStats = stats;
       });
   });

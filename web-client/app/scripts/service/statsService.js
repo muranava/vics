@@ -68,6 +68,14 @@ angular
       });
     };
 
+    api.adminStats = function() {
+      return $http({
+        method: 'GET',
+        url: apiUrl + '/stats/admin',
+        withCredentials: true
+      });
+    };
+
     api.constituencyStats = function(constituencyCode) {
       return $http({
         method: 'GET',

@@ -1,5 +1,6 @@
 package com.infinityworks.webapp.service;
 
+import com.google.common.collect.Maps;
 import com.infinityworks.common.lang.Try;
 import com.infinityworks.webapp.clients.paf.command.ConstituencyStatsCommand;
 import com.infinityworks.webapp.clients.paf.command.ConstituencyStatsCommandFactory;
@@ -14,8 +15,9 @@ import com.infinityworks.webapp.error.NotAuthorizedFailure;
 import com.infinityworks.webapp.repository.RecordContactLogRepository;
 import com.infinityworks.webapp.repository.StatsJdbcRepository;
 import com.infinityworks.webapp.repository.StatsRepository;
-import com.infinityworks.webapp.rest.dto.AllStatsResponse;
-import com.infinityworks.webapp.rest.dto.ImmutableAllStatsResponse;
+import com.infinityworks.webapp.repository.UserRepository;
+import com.infinityworks.webapp.rest.dto.ImmutableLeaderboardStatsResponse;
+import com.infinityworks.webapp.rest.dto.LeaderboardStatsResponse;
 import com.infinityworks.webapp.rest.dto.StatsResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -23,6 +25,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Map;
 
 import static java.util.stream.Collectors.toList;
 
@@ -41,6 +44,7 @@ public class StatsService {
     private static final int LIMIT = 6;
     private final WardService wardService;
     private final ConstituencyService constituencyService;
+    private final UserRepository userRepository;
 
     @Autowired
     public StatsService(StatsRepository repository,
@@ -50,7 +54,8 @@ public class StatsService {
                         MostCanvassedQueryConverter mostCanvassedQueryConverter,
                         WardStatsCommandFactory wardStatsCommandFactory,
                         ConstituencyStatsCommandFactory constituencyStatsCommandFactory,
-                        WardService wardService, ConstituencyService constituencyService) {
+                        WardService wardService, ConstituencyService constituencyService,
+                        UserRepository userRepository) {
         this.repository = repository;
         this.recordContactLogRepository = recordContactLogRepository;
         this.statsJdbcRepository = statsJdbcRepository;
@@ -60,6 +65,7 @@ public class StatsService {
         this.constituencyStatsCommandFactory = constituencyStatsCommandFactory;
         this.wardService = wardService;
         this.constituencyService = constituencyService;
+        this.userRepository = userRepository;
     }
 
     public List<StatsResponse> topCanvassers() {
@@ -85,10 +91,6 @@ public class StatsService {
 
     public int canvassedPastNDays(int days) {
         return statsJdbcRepository.countCanvassedPastDays(days);
-    }
-
-    public List<Object[]> recordContactByDate() {
-        return repository.countRecordContactsByDate();
     }
 
     public List<Object[]> countRecordContactsByDateAndConstituency(String constituencyCode) {
@@ -124,17 +126,23 @@ public class StatsService {
                 });
     }
 
-    /**
-     * TODO combine into a single query
-     */
-    public AllStatsResponse allStats() {
-        return ImmutableAllStatsResponse.builder()
-                .withCanvassedThisWeek(canvassedPastNDays(LIMIT))
+    public Try<Map<String, Integer>> adminCounts(User user) {
+        if (!user.isAdmin()) {
+            return Try.failure(new NotAuthorizedFailure("Not authorized"));
+        } else {
+            Map<String, Integer> counts = Maps.newHashMap();
+            counts.put("canvassedThisWeek", canvassedPastNDays(LIMIT));
+            counts.put("totalCanvassed", (int) recordContactLogRepository.count());
+            counts.put("users", (int) userRepository.count());
+            return Try.success(counts);
+        }
+    }
+
+    public LeaderboardStatsResponse leaderboardStats() {
+        return ImmutableLeaderboardStatsResponse.builder()
                 .withTopWards(mostCanvassedWards())
                 .withTopConstituencies(mostCanvassedConstituencies())
                 .withTopCanvassers(topCanvassers())
-                .withTotalContacts(recordContactLogRepository.count())
-                .withRecordContactByDate(recordContactByDate())
                 .build();
     }
 }

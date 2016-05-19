@@ -36,10 +36,17 @@
         <div class="row">
           <div>
             <div class="col-sm-6">
-              <stat-card count="{{stats.totalContacts}}" label="Total Canvassed"></stat-card>
+              <stat-card count="{{adminStats.totalCanvassed}}" label="Total Canvassed"></stat-card>
             </div>
             <div class="col-sm-6">
-              <stat-card count="{{stats.canvassedThisWeek}}" label="Past 7 days"></stat-card>
+              <stat-card count="{{adminStats.canvassedThisWeek}}" label="Past 7 days"></stat-card>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div>
+            <div class="col-sm-6">
+              <stat-card count="{{adminStats.users}}" label="Users"></stat-card>
             </div>
           </div>
         </div>
