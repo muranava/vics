@@ -6,4 +6,9 @@ angular
       .success(function (stats) {
         $scope.usersByRegionStats = stats;
       });
+
+    statsService.allStats()
+      .success(function(stats) {
+        $scope.stats = stats;
+      });
   });
