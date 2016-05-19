@@ -16,7 +16,7 @@ angular
       if (_.isEmpty(user)) {
         return '';
       }
-      if (_.some(user.authorities, {authority: 'ADMIN'})) {
+      if (user.role === 'ADMIN') {
         return 'Administrator';
       } else {
         return '';

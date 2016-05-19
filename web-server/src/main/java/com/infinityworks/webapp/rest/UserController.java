@@ -6,10 +6,7 @@ import com.infinityworks.webapp.domain.CurrentUser;
 import com.infinityworks.webapp.domain.Role;
 import com.infinityworks.webapp.domain.User;
 import com.infinityworks.webapp.error.RestErrorHandler;
-import com.infinityworks.webapp.rest.dto.CreateUserRequest;
-import com.infinityworks.webapp.rest.dto.GeneratePasswordFromTokenRequest;
-import com.infinityworks.webapp.rest.dto.PasswordResetRequest;
-import com.infinityworks.webapp.rest.dto.UpdateUserRequest;
+import com.infinityworks.webapp.rest.dto.*;
 import com.infinityworks.webapp.security.SecurityUtils;
 import com.infinityworks.webapp.service.LoginService;
 import com.infinityworks.webapp.service.RequestPasswordResetService;
@@ -147,7 +144,7 @@ public class UserController {
             Object principal = ((UsernamePasswordAuthenticationToken) userPrincipal).getPrincipal();
             CurrentUser user = (CurrentUser) principal;
             if (Role.hasPermission(user.getRole(), r)) {
-                return Try.success(user);
+                return Try.success(ImmutableCurrentUser.builder().withRole(user.getRole()).withUsername(user.getUsername()).build());
             } else {
                 return Try.failure(new AccessDeniedException("Forbidden"));
             }
