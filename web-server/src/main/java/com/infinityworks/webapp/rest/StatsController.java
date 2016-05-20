@@ -59,7 +59,7 @@ public class StatsController {
 
     @PreAuthorize("isAuthenticated()")
     @RequestMapping(method = RequestMethod.GET)
-    public ResponseEntity<?> allStats() {
+    public ResponseEntity<?> leaderboardStats() {
         return ResponseEntity.ok(statsService.leaderboardStats());
     }
 

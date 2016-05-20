@@ -3,7 +3,7 @@
 VERSION=48
 ELB_DEV="https://WebApp-57219498.eu-west-1.elb.amazonaws.com:18080/api/canvass"
 ELB_STAGING="https://WebApp-2103587711.eu-west-1.elb.amazonaws.com:18080/api/canvass"
-ELB_PROD="https://WebApp-731548696.eu-west-1.elb.amazonaws.com:18080/api/canvass"
+ELB_PROD="https://vicsapi.voteleave.uk:18080/api/canvass"
 
 rm -rf ../dist/client-dev-*
 rm -rf ../dist/client-staging-*
