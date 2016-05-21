@@ -122,8 +122,8 @@
             </ul>
           </div><!--end .card-head -->
           <div class="card-body tab-content height-9">
-            <div ng-if="currentTab === 'activists'" id="first4">
-              <p>
+            <div class="full-height" ng-if="currentTab === 'activists'" id="first4">
+              <img ng-show="!stats.topCanvassers" class="leaderboard-loader" src="images/spin.gif">
               <ul class="list divider-full-bleed">
                 <li ng-repeat="c in stats.topCanvassers" class="tile">
                   <a class="tile-content ink-reaction">
@@ -140,10 +140,8 @@
                   </a>
                 </li>
               </ul>
-              </p>
             </div>
             <div ng-if="currentTab === 'wards'" id="second4">
-              <p>
               <ul class="list divider-full-bleed">
                 <li ng-repeat="w in stats.topWards" class="tile">
                   <a class="tile-content ink-reaction">
@@ -160,10 +158,8 @@
                   </a>
                 </li>
               </ul>
-              </p>
             </div>
             <div ng-if="currentTab === 'constituencies'" id="third4">
-              <p>
               <ul class="list divider-full-bleed">
                 <li ng-repeat="c in stats.topConstituencies" class="tile">
                   <a class="tile-content ink-reaction">
@@ -180,7 +176,6 @@
                   </a>
                 </li>
               </ul>
-              </p>
             </div>
           </div><!--end .card-body -->
         </div><!--end .card -->
@@ -301,7 +296,6 @@
                   <div class="input-group-content">
                     <input type="text"
                            ng-change="onWardInputKeypress()"
-                           ng-readonly="readOnlyConstituency"
                            placeholder="Type a ward name"
                            id="wardInputID"
                            ng-model="wardSearchModel"
@@ -327,7 +321,6 @@
                   <div class="input-group-content">
                     <input type="text"
                            ng-change="onConstituencyInputKeypress()"
-                           ng-readonly="readOnlyConstituency"
                            id="constituencyInputID"
                            placeholder="Type a constituency name"
                            ng-model="constituencySearchModel"

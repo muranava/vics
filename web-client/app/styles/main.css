@@ -304,3 +304,10 @@ div.worldmap.box {
   border-color: #D92C27 !important;
   text-decoration: none !important;
 }
+
+.leaderboard-loader {
+  position: absolute;
+  top: 30%;
+  left: 40%;
+  width: 20% !important;
+}

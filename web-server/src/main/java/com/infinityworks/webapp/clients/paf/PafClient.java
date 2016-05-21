@@ -80,7 +80,6 @@ public interface PafClient {
     @GET("wards/{wardCode}")
     Call<WardStats> wardStats(@Path("wardCode") String wardCode);
 
-    // FIXME change constituency to constituencies when new API version pushed
     @GET("constituencies/{constituencyCode}")
     Call<ConstituencyStats> constituencyStats(@Path("constituencyCode") String constituencyCode);
 }
