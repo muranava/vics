@@ -10,6 +10,7 @@ import com.infinityworks.webapp.rest.dto.*;
 import com.infinityworks.webapp.security.PasswordResetTokenGenerator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Objects;
 import java.util.Optional;
@@ -47,6 +48,7 @@ public class RequestPasswordResetService {
         this.passwordResetService = passwordResetService;
     }
 
+    @Transactional
     public Try<RequestPasswordResetResponse> requestPasswordReset(PasswordResetRequest request) {
         return userService
                 .getByUsername(request.username())
@@ -70,6 +72,7 @@ public class RequestPasswordResetService {
         return savedToken.getToken();
     }
 
+    @Transactional
     public Try<GeneratePasswordResetResponse> generatePasswordFromToken(GeneratePasswordFromTokenRequest request) {
         return userService
                 .getByUsername(request.username())

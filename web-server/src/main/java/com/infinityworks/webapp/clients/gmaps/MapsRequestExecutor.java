@@ -3,9 +3,11 @@ package com.infinityworks.webapp.clients.gmaps;
 import com.infinityworks.common.lang.Try;
 import com.infinityworks.webapp.error.MapsApiFailure;
 import com.infinityworks.webapp.error.MapsApiNotFoundFailure;
+import org.springframework.stereotype.Component;
 import retrofit2.Call;
 import retrofit2.Response;
 
+@Component
 public class MapsRequestExecutor {
     private static final String FORMAT = "Error calling Maps API %s. Response contained status code=%d, status text=%s";
     private static final String FORMAT_EXC = "IO Exception calling Maps API %s";

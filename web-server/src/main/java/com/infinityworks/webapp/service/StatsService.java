@@ -2,10 +2,8 @@ package com.infinityworks.webapp.service;
 
 import com.google.common.collect.Maps;
 import com.infinityworks.common.lang.Try;
-import com.infinityworks.webapp.clients.paf.command.ConstituencyStatsCommand;
-import com.infinityworks.webapp.clients.paf.command.ConstituencyStatsCommandFactory;
-import com.infinityworks.webapp.clients.paf.command.WardStatsCommand;
-import com.infinityworks.webapp.clients.paf.command.WardStatsCommandFactory;
+import com.infinityworks.webapp.clients.paf.PafClient;
+import com.infinityworks.webapp.clients.paf.PafRequestExecutor;
 import com.infinityworks.webapp.clients.paf.dto.ConstituencyStats;
 import com.infinityworks.webapp.clients.paf.dto.WardStats;
 import com.infinityworks.webapp.converter.MostCanvassedQueryConverter;
@@ -23,6 +21,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import retrofit2.Call;
 
 import java.util.List;
 import java.util.Map;
@@ -39,8 +39,8 @@ public class StatsService {
     private final StatsJdbcRepository statsJdbcRepository;
     private final TopCanvasserQueryConverter topCanvasserQueryConverter;
     private final MostCanvassedQueryConverter mostCanvassedQueryConverter;
-    private final WardStatsCommandFactory wardStatsCommandFactory;
-    private final ConstituencyStatsCommandFactory constituencyStatsCommandFactory;
+    private final PafRequestExecutor pafRequestExecutor;
+    private final PafClient pafClient;
     private static final int LIMIT = 6;
     private final WardService wardService;
     private final ConstituencyService constituencyService;
@@ -52,8 +52,7 @@ public class StatsService {
                         StatsJdbcRepository statsJdbcRepository,
                         TopCanvasserQueryConverter topCanvasserQueryConverter,
                         MostCanvassedQueryConverter mostCanvassedQueryConverter,
-                        WardStatsCommandFactory wardStatsCommandFactory,
-                        ConstituencyStatsCommandFactory constituencyStatsCommandFactory,
+                        PafRequestExecutor pafRequestExecutor, PafClient pafClient,
                         WardService wardService, ConstituencyService constituencyService,
                         UserRepository userRepository) {
         this.repository = repository;
@@ -61,13 +60,14 @@ public class StatsService {
         this.statsJdbcRepository = statsJdbcRepository;
         this.topCanvasserQueryConverter = topCanvasserQueryConverter;
         this.mostCanvassedQueryConverter = mostCanvassedQueryConverter;
-        this.wardStatsCommandFactory = wardStatsCommandFactory;
-        this.constituencyStatsCommandFactory = constituencyStatsCommandFactory;
+        this.pafRequestExecutor = pafRequestExecutor;
+        this.pafClient = pafClient;
         this.wardService = wardService;
         this.constituencyService = constituencyService;
         this.userRepository = userRepository;
     }
 
+    @Transactional(readOnly = true)
     public List<StatsResponse> topCanvassers() {
         return repository.countRecordContactByUser(LIMIT)
                 .stream()
@@ -75,6 +75,7 @@ public class StatsService {
                 .collect(toList());
     }
 
+    @Transactional(readOnly = true)
     public List<StatsResponse> mostCanvassedWards() {
         return repository.countMostRecordContactByWard(LIMIT)
                 .stream()
@@ -82,6 +83,7 @@ public class StatsService {
                 .collect(toList());
     }
 
+    @Transactional(readOnly = true)
     public List<StatsResponse> mostCanvassedConstituencies() {
         return repository.countMostRecordContactByConstituency(LIMIT)
                 .stream()
@@ -89,6 +91,7 @@ public class StatsService {
                 .collect(toList());
     }
 
+    @Transactional(readOnly = true)
     public int canvassedPastNDays(int days) {
         return statsJdbcRepository.countCanvassedPastDays(days);
     }
@@ -97,10 +100,12 @@ public class StatsService {
         return repository.countRecordContactsByDateAndConstituency(constituencyCode);
     }
 
+    @Transactional(readOnly = true)
     public List<Object[]> countRecordContactsByDateAndWard(String wardCode) {
         return repository.countRecordContactsByDateAndWard(wardCode);
     }
 
+    @Transactional(readOnly = true)
     public Try<List<Object[]>> countUsersByRegion(User user) {
         if (!user.isAdmin()) {
             log.warn("Non admin tried to retrieve all users. User={}", user);
@@ -113,19 +118,21 @@ public class StatsService {
     public Try<WardStats> wardStats(User user, String wardCode) {
         return wardService.getByCode(wardCode, user)
                 .flatMap(ward -> {
-                    WardStatsCommand wardStatsCommand = wardStatsCommandFactory.create(ward.getCode());
-                    return wardStatsCommand.execute();
+                    Call<WardStats> response = pafClient.wardStats(wardCode);
+                    return pafRequestExecutor.execute(response);
                 });
     }
 
+    @Transactional(readOnly = true)
     public Try<ConstituencyStats> constituencyStats(User user, String constituencyCode) {
         return constituencyService.getByCodeRestrictedByAssociation(constituencyCode, user)
                 .flatMap(constituency -> {
-                    ConstituencyStatsCommand constituencyStatsCommand = constituencyStatsCommandFactory.create(constituency.getCode());
-                    return constituencyStatsCommand.execute();
+                    Call<ConstituencyStats> call = pafClient.constituencyStats(constituencyCode);
+                    return pafRequestExecutor.execute(call);
                 });
     }
 
+    @Transactional(readOnly = true)
     public Try<Map<String, Integer>> adminCounts(User user) {
         if (!user.isAdmin()) {
             return Try.failure(new NotAuthorizedFailure("Not authorized"));

@@ -13,6 +13,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
@@ -58,15 +59,18 @@ public class ConstituencyService {
      * @param user the user to get constituencies
      * @return the constituencies visible to a user
      */
+    @Transactional(readOnly = true)
     public UserRestrictedConstituencies getVisibleConstituenciesByUser(User user, int limit) {
         Set<Constituency> constituencies = constituencyRepository.findByUser(user.getId().toString(), limit);
         return new UserRestrictedConstituencies(constituencies);
     }
 
+    @Transactional(readOnly = true)
     public List<Constituency> searchUserRestrictedConstituencies(User user, String searchTerm) {
         return constituencyRepository.findByNameRestrictedByUserAssociations(user.getId().toString(), searchTerm.toUpperCase());
     }
 
+    @Transactional(readOnly = true)
     public Try<List<Constituency>> constituenciesByName(User permissible, String name, int limit) {
         if (!permissible.isAdmin()) {
             log.error("Non admin attempted to find all constituencies by name. user={}", permissible);
@@ -87,6 +91,7 @@ public class ConstituencyService {
                 });
     }
 
+    @Transactional(readOnly = true)
     public Try<Constituency> getByCode(String code) {
         Optional<Constituency> constituency = constituencyRepository.findOneByCode(code);
         if (constituency.isPresent()) {

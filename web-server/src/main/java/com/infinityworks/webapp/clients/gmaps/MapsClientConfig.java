@@ -1,7 +1,6 @@
 package com.infinityworks.webapp.clients.gmaps;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.infinityworks.webapp.clients.gmaps.command.AddressLookupCommandFactory;
 import com.infinityworks.webapp.config.AppProperties;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
@@ -26,10 +25,5 @@ public class MapsClientConfig {
                 .build();
 
         return retrofit.create(MapsClient.class);
-    }
-
-    @Bean
-    public AddressLookupCommandFactory addressLookupCommandFactory(MapsClient mapsClient, AppProperties appProperties) {
-        return new AddressLookupCommandFactory(mapsClient, appProperties.getPafApiTimeout(), appProperties.getAddressLookupToken(), new MapsRequestExecutor());
     }
 }

@@ -2,7 +2,8 @@ package com.infinityworks.webapp.service;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.infinityworks.common.lang.Try;
-import com.infinityworks.webapp.clients.paf.command.*;
+import com.infinityworks.webapp.clients.paf.PafClient;
+import com.infinityworks.webapp.clients.paf.PafRequestExecutor;
 import com.infinityworks.webapp.clients.paf.converter.PafStreetRequestConverter;
 import com.infinityworks.webapp.clients.paf.dto.*;
 import com.infinityworks.webapp.converter.GetFilteredVotersRequestBuilder;
@@ -19,6 +20,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import retrofit2.Call;
 
 import java.io.ByteArrayOutputStream;
 import java.util.List;
@@ -36,25 +38,21 @@ public class VoterService {
 
     private final WardService wardService;
     private final PDFTableGenerator pdfTableGenerator;
-    private final GetVotersCommandFactory getVotersCommandFactory;
-    private final GetFilteredVotersCommandFactory getFilteredVotersCommandFactory;
-    private final SearchVotersCommandFactory searchVotersCommandFactory;
+    private final PafClient pafClient;
+    private final PafRequestExecutor pafRequestExecutor;
     private final PafStreetRequestConverter streetToPafConverter;
     private final GetFilteredVotersRequestBuilder gotvRequestBuilder;
 
     @Autowired
     public VoterService(WardService wardService,
                         PDFTableGenerator pdfTableGenerator,
-                        GetVotersCommandFactory getVotersCommandFactory,
-                        GetFilteredVotersCommandFactory getFilteredVotersCommandFactory,
-                        SearchVotersCommandFactory searchVotersCommandFactory,
+                        PafClient pafClient, PafRequestExecutor pafRequestExecutor,
                         PafStreetRequestConverter streetToPafConverter,
                         GetFilteredVotersRequestBuilder gotvRequestBuilder) {
         this.wardService = wardService;
         this.pdfTableGenerator = pdfTableGenerator;
-        this.getVotersCommandFactory = getVotersCommandFactory;
-        this.getFilteredVotersCommandFactory = getFilteredVotersCommandFactory;
-        this.searchVotersCommandFactory = searchVotersCommandFactory;
+        this.pafClient = pafClient;
+        this.pafRequestExecutor = pafRequestExecutor;
         this.streetToPafConverter = streetToPafConverter;
         this.gotvRequestBuilder = gotvRequestBuilder;
     }
@@ -69,8 +67,8 @@ public class VoterService {
     public Try<List<SearchVoterResponse>> search(User user, SearchElectors searchElectors) {
         log.info("Search voters user={} criteria={}", user, searchElectors);
 
-        SearchVotersCommand searchVotersCommand = searchVotersCommandFactory.create(searchElectors.getParameters());
-        return  searchVotersCommand.execute();
+        Call<List<SearchVoterResponse>> voterResponseCall = pafClient.voterSearch(searchElectors.getParameters());
+        return pafRequestExecutor.execute(voterResponseCall);
     }
 
     /**
@@ -105,8 +103,9 @@ public class VoterService {
                 .stream()
                 .map(streetToPafConverter)
                 .collect(toList());
-        GetVotersCommand getVotersCommand = getVotersCommandFactory.create(pafStreets, ward.getCode());
-        return getVotersCommand.execute();
+
+        Call<PropertyResponse> response = pafClient.votersByStreets(ward.getCode(), pafStreets);
+        return pafRequestExecutor.execute(response);
     }
 
     public Try<ByteArrayOutputStream> getPdfOfFilteredElectorsByStreet(TableBuilder tableBuilder,
@@ -128,8 +127,8 @@ public class VoterService {
         log.debug("User={} Requested PDF of filtered voters for ward={} numStreets={} for GOTV. filter={}",
                 user, ward.getCode(), request.getStreets().size(), serializeRequest(voterRequest));
 
-        GetFilteredVotersCommand getVotersCommand = getFilteredVotersCommandFactory.create(voterRequest, ward.getCode());
-        return getVotersCommand.execute();
+        Call<PropertyResponse> response = pafClient.filteredVotersByStreets(ward.getCode(), voterRequest);
+        return pafRequestExecutor.execute(response);
     }
 
     private String serializeRequest(GotvVoterRequest request) {

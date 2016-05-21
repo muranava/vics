@@ -23,6 +23,7 @@ public class NewAccountNotifier {
 
     private final EmailClient emailClient;
     private final TemplateRenderer templateRenderer;
+    private static final String EMAIL_CATEGORY = "vics new account";
     private static final String NOTIFICATION_TEMPLATE_LOCATION = "template/new-account.html";
     private static final Logger log = LoggerFactory.getLogger(NewAccountNotifier.class);
     private String messageTemplate;
@@ -54,6 +55,7 @@ public class NewAccountNotifier {
                     .withBody(emailContent)
                     .withSubject(newAccountEmailSubject)
                     .withFrom(supportEmail)
+                    .withCategory(EMAIL_CATEGORY)
                     .build();
 
             emailClient

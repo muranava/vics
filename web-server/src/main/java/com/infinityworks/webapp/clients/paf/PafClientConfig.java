@@ -1,7 +1,6 @@
 package com.infinityworks.webapp.clients.paf;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.infinityworks.webapp.clients.paf.command.*;
 import com.infinityworks.webapp.config.AppProperties;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
@@ -37,62 +36,11 @@ public class PafClientConfig {
     }
 
     @Bean
-    public PafRequestExecutor requestExecutor() {
-        return new PafRequestExecutor();
-    }
-
-    @Bean
     public Retrofit retrofit(OkHttpClient client, ObjectMapper objectMapper, AppProperties appProperties) {
         return new Retrofit.Builder()
                 .addConverterFactory(JacksonConverterFactory.create(objectMapper))
                 .baseUrl(appProperties.getPafApiBaseUrl())
                 .client(client)
                 .build();
-    }
-
-    // TODO provide better abstraction for these factories
-    @Bean
-    public GetVotersCommandFactory getVotersCommandFactory(PafClient pafClient, PafRequestExecutor requestExecutor, AppProperties appProperties) {
-        return new GetVotersCommandFactory(pafClient, appProperties.getPafApiTimeout(), requestExecutor);
-    }
-
-    @Bean
-    public RecordVoteCommandFactory recordVoteCommandFactory(PafClient pafClient, PafRequestExecutor requestExecutor, AppProperties appProperties) {
-        return new RecordVoteCommandFactory(pafClient, appProperties.getPafApiTimeout(), requestExecutor);
-    }
-
-    @Bean
-    public RecordContactCommandFactory recordContactCommandFactory(PafClient pafClient, PafRequestExecutor requestExecutor, AppProperties appProperties) {
-        return new RecordContactCommandFactory(pafClient, appProperties.getPafApiTimeout(), requestExecutor);
-    }
-
-    @Bean
-    public GetStreetsCommandFactory getStreetsCommandFactory(PafClient pafClient, PafRequestExecutor requestExecutor, AppProperties appProperties) {
-        return new GetStreetsCommandFactory(pafClient, appProperties.getPafApiTimeout(), requestExecutor);
-    }
-
-    @Bean
-    public SearchVotersCommandFactory searchVotersCommandFactory(PafClient pafClient, PafRequestExecutor requestExecutor, AppProperties appProperties) {
-        return new SearchVotersCommandFactory(pafClient, appProperties.getPafApiTimeout(), requestExecutor);
-    }
-
-    @Bean
-    public DeleteContactCommandFactory deleteContactCommandFactory(PafClient pafClient, PafRequestExecutor requestExecutor, AppProperties appProperties) {
-        return new DeleteContactCommandFactory(pafClient, appProperties.getPafApiTimeout(), requestExecutor);
-    }
-
-    @Bean
-    public WardStatsCommandFactory wardStatsCommandFactory(PafClient pafClient, PafRequestExecutor requestExecutor, AppProperties appProperties) {
-        return new WardStatsCommandFactory(pafClient, appProperties.getPafApiTimeout(), requestExecutor);
-    }
-
-    @Bean
-    public ConstituencyStatsCommandFactory constituencyStatsCommandFactory(PafClient pafClient, PafRequestExecutor requestExecutor, AppProperties appProperties) {
-        return new ConstituencyStatsCommandFactory(pafClient, appProperties.getPafApiTimeout(), requestExecutor);
-    }
-
-    @Bean
-    public GetFilteredVotersCommandFactory getFilteredVotersCommandFactory(PafClient pafClient, PafRequestExecutor requestExecutor, AppProperties appProperties) {
-        return new GetFilteredVotersCommandFactory(pafClient, appProperties.getPafApiTimeout(), requestExecutor);
     }
 }

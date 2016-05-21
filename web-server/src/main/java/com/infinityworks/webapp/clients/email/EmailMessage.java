@@ -12,4 +12,5 @@ public interface EmailMessage {
     String from();
     String subject();
     String body();
+    String category();
 }

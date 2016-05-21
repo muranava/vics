@@ -9,7 +9,6 @@ import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.google.common.base.Charsets;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.io.Resources;
-import com.infinityworks.webapp.clients.paf.PafRequestExecutor;
 import com.infinityworks.webapp.common.RequestValidator;
 import com.infinityworks.webapp.converter.PropertyToRowsConverter;
 import com.infinityworks.webapp.error.RestErrorHandler;
@@ -120,11 +119,5 @@ public class Config {
     @Bean
     public PropertyToRowsConverter propertyToRowConverter() {
         return new PropertyToRowsConverter();
-    }
-
-    @Bean
-    public PafRequestExecutor commandExecutor() {
-        return new PafRequestExecutor() {
-        };
     }
 }

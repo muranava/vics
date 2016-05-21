@@ -3,7 +3,6 @@ package com.infinityworks.webapp.service;
 import com.infinityworks.common.lang.Try;
 import com.infinityworks.webapp.clients.paf.PafClient;
 import com.infinityworks.webapp.clients.paf.PafRequestExecutor;
-import com.infinityworks.webapp.clients.paf.command.RecordVoteCommandFactory;
 import com.infinityworks.webapp.clients.paf.dto.ImmutableRecordVotedResponse;
 import com.infinityworks.webapp.clients.paf.dto.RecordVotedResponse;
 import com.infinityworks.webapp.converter.ErnShortFormToLongFormConverter;
@@ -38,7 +37,7 @@ public class RecordVotedServiceTest {
     public void setUp() throws Exception {
         pafClient = mock(PafClient.class);
         wardService = mock(WardService.class);
-        underTest = new RecordVotedService(wardService, ernFormatEnricher, new RecordVoteCommandFactory(pafClient, 30000, new PafRequestExecutor(){}));
+        underTest = new RecordVotedService(wardService, ernFormatEnricher, pafClient, new PafRequestExecutor());
     }
 
     @Test

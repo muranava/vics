@@ -15,6 +15,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.*;
 
@@ -45,10 +46,12 @@ public class WardService {
         this.wardAssociationService = wardAssociationService;
     }
 
+    @Transactional(readOnly = true)
     public List<Ward> searchUserRestrictedConstituencies(User user, String searchTerm) {
         return wardRepository.findByNameRestrictedByUserAssociations(user.getId().toString(), searchTerm.toUpperCase());
     }
 
+    @Transactional(readOnly = true)
     public Try<Ward> getByCode(String wardCode, User user) {
         Optional<Ward> byWard = wardRepository.findByCode(wardCode);
         if (!byWard.isPresent()) {
@@ -76,6 +79,7 @@ public class WardService {
      * @param user           the current user
      * @return unique wards available to the user filtered by the given constituency
      */
+    @Transactional(readOnly = true)
     public Try<UserRestrictedWards> findByConstituency(UUID constituencyID, User user) {
         log.debug("Finding accessible wards for constituency={} user={}", constituencyID, user);
 
@@ -93,6 +97,7 @@ public class WardService {
                 });
     }
 
+    @Transactional(readOnly = true)
     public UserRestrictedWards getByUser(User user) {
         log.debug("Getting wards by user={}", user);
 
@@ -101,6 +106,7 @@ public class WardService {
         return new UserRestrictedWards(wards);
     }
 
+    @Transactional(readOnly = true)
     public List<WardSummary> getSummaryByUser(User user) {
         log.debug("Getting wards summary by user={}", user);
 
@@ -109,11 +115,13 @@ public class WardService {
         return wards.stream().map(wardSummaryConverter).collect(toList());
     }
 
+    @Transactional(readOnly = true)
     public UserRestrictedWards getVisibleWardsByUser(User user, int limit) {
         Set<Ward> wards = wardRepository.findByUser(user.getId().toString(), limit);
         return new UserRestrictedWards(wards);
     }
 
+    @Transactional(readOnly = true)
     public Try<List<Ward>> getAllByName(User user, String name, int limit) {
         if (user.isAdmin()) {
             List<Ward> wards = wardRepository.findByNameIgnoreCaseContainingOrderByNameAsc(name, new PageRequest(0, limit));

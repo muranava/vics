@@ -26,11 +26,6 @@ spring:
     username: postgres
     password: postgres
     driver: org.postgresql.Driver
-    pool-name: HikariPool
-    min-idle: 3
-    pool-prepared-statements: true
-    max-open-prepared-statements: 250
-    maximumPoolSize: 10
   jpa:
     hibernate:
       ddl-auto: validate
@@ -40,12 +35,12 @@ canvass:
   cors:
     hosts: "*"
     methods:  "POST, GET, PUT, OPTIONS, DELETE"
-  pafApiBaseUrl: https://PAF-1553489728.eu-west-1.elb.amazonaws.com/v1/
+  pafApiBaseUrl: http://localhost:9002/v1/
   pafApiToken: 90f88caae35a5b863ae2450b55688a559b52a343
   pafApiTimeout: 60000
   addressLookupBaseUrl: https://maps.googleapis.com/maps/api/
   addressLookupToken: AIzaSyBdXzJ-korOOBRX8qZPRpxgo_yNvfpBXnU
-  sendGridKey: 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
+  sendGridKey: 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
   passwordResetEndpoint: http://localhost:9000/#/newpassword
   passwordResetExpirationMins: 120
   passwordTokenExpiryDeletedUpdateInterval: 10

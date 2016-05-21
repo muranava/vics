@@ -15,6 +15,7 @@ public class PasswordResetNotifier {
 
     private final EmailClient emailClient;
     private final String resetPasswordPageUrl;
+    private static final String EMAIL_CATEGORY = "vics password reset";
     private static final String MESSAGE_TEMPLATE =
             "You requested a password reset, please visit %s and enter your email and the following password reset token: <br><br>%s<br><br>" +
                     "Note: this token will expire within 2 hours of issue.";
@@ -32,6 +33,7 @@ public class PasswordResetNotifier {
                 .withBody(String.format(MESSAGE_TEMPLATE, resetPasswordPageUrl, token))
                 .withSubject("Vics account password reset notification")
                 .withFrom("vicssupport@voteleave.uk")
+                .withCategory(EMAIL_CATEGORY)
                 .build();
         return emailClient.sendEmail(message);
     }

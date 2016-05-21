@@ -3,8 +3,6 @@ package com.infinityworks.webapp.service;
 import com.infinityworks.common.lang.Try;
 import com.infinityworks.webapp.clients.paf.PafClient;
 import com.infinityworks.webapp.clients.paf.PafRequestExecutor;
-import com.infinityworks.webapp.clients.paf.command.DeleteContactCommandFactory;
-import com.infinityworks.webapp.clients.paf.command.RecordContactCommandFactory;
 import com.infinityworks.webapp.clients.paf.converter.RecordContactToPafConverter;
 import com.infinityworks.webapp.clients.paf.dto.ImmutableRecordContactResponse;
 import com.infinityworks.webapp.clients.paf.dto.RecordContactResponse;
@@ -48,7 +46,7 @@ public class ContactServiceTest {
     public void recordsContact() throws Exception {
         PafRequestExecutor requestExecutor = new PafRequestExecutor() {};
         RecordContactLogService logService = mock(RecordContactLogService.class);
-        underTest = new RecordContactService(wardService, recordContactToPafConverter, new RecordContactCommandFactory(pafClient, 3000, requestExecutor), new DeleteContactCommandFactory(pafClient, 1000, requestExecutor), logService);
+        underTest = new RecordContactService(wardService, recordContactToPafConverter, requestExecutor, pafClient, logService);
 
         Ward earlsdon = ward().withWardCode("E05001221").build();
         RecordContactRequest request = recordContactRequest().build();
@@ -70,7 +68,7 @@ public class ContactServiceTest {
     public void recordsContactFailsIfUserDoesNotHaveWriteAccess() throws Exception {
         PafRequestExecutor requestExecutor = new PafRequestExecutor() {};
         RecordContactLogService logService = mock(RecordContactLogService.class);
-        underTest = new RecordContactService(wardService, recordContactToPafConverter, new RecordContactCommandFactory(pafClient, 3000, requestExecutor), new DeleteContactCommandFactory(pafClient, 1000, requestExecutor), logService);
+        underTest = new RecordContactService(wardService, recordContactToPafConverter, requestExecutor, pafClient, logService);
 
         Ward earlsdon = ward().withWardCode("E05001221").build();
         RecordContactRequest request = recordContactRequest().build();
@@ -89,7 +87,7 @@ public class ContactServiceTest {
     public void failsToRecordContactIfUserDoesNotHaveWardPermission() throws Exception {
         PafRequestExecutor requestExecutor = new PafRequestExecutor() {};
         RecordContactLogService logService = mock(RecordContactLogService.class);
-        underTest = new RecordContactService(wardService, recordContactToPafConverter, new RecordContactCommandFactory(pafClient, 3000, requestExecutor), new DeleteContactCommandFactory(pafClient, 1000, requestExecutor), logService);
+        underTest = new RecordContactService(wardService, recordContactToPafConverter, requestExecutor, pafClient, logService);
 
         RecordContactRequest request = recordContactRequest().build();
         User user = user()

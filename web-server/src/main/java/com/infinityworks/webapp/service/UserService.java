@@ -42,6 +42,7 @@ public class UserService {
         this.newAccountNotifier = newAccountNotifier;
     }
 
+    @Transactional(readOnly = true)
     public Try<User> getByUsername(String email) {
         Optional<User> user = userRepository.findOneByUsername(email);
         if (user.isPresent()) {
@@ -51,6 +52,7 @@ public class UserService {
         }
     }
 
+    @Transactional(readOnly = true)
     public Try<Collection<UserSummary>> getAll(User user) {
         if (!user.isAdmin()) {
             log.warn("Non admin tried to retrieve all users. User={}", user);
@@ -62,6 +64,7 @@ public class UserService {
                 .collect(toList()));
     }
 
+    @Transactional(readOnly = true)
     public Try<User> getByID(User user, UUID id) {
         if (!user.isAdmin()) {
             log.warn("Non admin tried to retrieve user. User={}, userToFind={}", user, id);

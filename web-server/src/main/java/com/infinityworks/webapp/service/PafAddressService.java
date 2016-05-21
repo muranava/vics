@@ -1,14 +1,16 @@
 package com.infinityworks.webapp.service;
 
 import com.infinityworks.common.lang.Try;
-import com.infinityworks.webapp.clients.paf.command.GetStreetsCommand;
-import com.infinityworks.webapp.clients.paf.command.GetStreetsCommandFactory;
+import com.infinityworks.webapp.clients.paf.PafClient;
+import com.infinityworks.webapp.clients.paf.PafRequestExecutor;
+import com.infinityworks.webapp.clients.paf.dto.StreetsResponse;
 import com.infinityworks.webapp.converter.PafToStreetResponseConverter;
 import com.infinityworks.webapp.rest.dto.ImmutableStreetsByWardResponse;
 import com.infinityworks.webapp.rest.dto.Street;
 import com.infinityworks.webapp.rest.dto.StreetsByWardResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import retrofit2.Call;
 
 import java.util.List;
 
@@ -16,18 +18,22 @@ import static java.util.stream.Collectors.toList;
 
 @Service
 public class PafAddressService {
-    private final GetStreetsCommandFactory getStreetsCommandFactory;
+    private final PafClient pafClient;
     private final PafToStreetResponseConverter pafToStreetConverter;
+    private final PafRequestExecutor responseHandler;
 
     @Autowired
-    public PafAddressService(GetStreetsCommandFactory getStreetsCommandFactory, PafToStreetResponseConverter pafToStreetConverter) {
-        this.getStreetsCommandFactory = getStreetsCommandFactory;
+    public PafAddressService(PafClient pafClient,
+                             PafToStreetResponseConverter pafToStreetConverter,
+                             PafRequestExecutor responseHandler) {
+        this.pafClient = pafClient;
         this.pafToStreetConverter = pafToStreetConverter;
+        this.responseHandler = responseHandler;
     }
 
     public Try<StreetsByWardResponse> getStreetsByWard(String wardCode) {
-        GetStreetsCommand getStreetsCommand = getStreetsCommandFactory.create(wardCode);
-        return getStreetsCommand.execute().map(str -> {
+        Call<StreetsResponse> call = pafClient.streetsByWardCode(wardCode);
+        return responseHandler.execute(call).map(str -> {
             List<Street> streets = str.response()
                     .stream()
                     .map(pafToStreetConverter)

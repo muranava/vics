@@ -4,11 +4,13 @@ import com.infinityworks.common.lang.Try;
 import com.infinityworks.webapp.common.LambdaLogger;
 import com.infinityworks.webapp.error.PafApiFailure;
 import com.infinityworks.webapp.error.PafApiNotFoundFailure;
+import org.springframework.stereotype.Component;
 import retrofit2.Call;
 import retrofit2.Response;
 
 import java.util.UUID;
 
+@Component
 public class PafRequestExecutor {
     private static final LambdaLogger log = LambdaLogger.getLogger(PafRequestExecutor.class);
     private static final String FORMAT = "Error calling PAF API %s. Response contained status code=%d, status text=%s";

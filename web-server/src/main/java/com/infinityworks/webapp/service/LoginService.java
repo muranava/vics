@@ -15,6 +15,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.web.context.HttpSessionSecurityContextRepository;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.servlet.http.HttpSession;
 import java.util.List;
@@ -47,6 +48,7 @@ public class LoginService {
      *
      * @return the authentication token that will be returned to the client
      */
+    @Transactional
     public Try<AuthenticationToken> login(Credentials credentials, HttpSession session) {
         UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(credentials.getUsername(), credentials.getPassword());
         Try<AuthenticationToken> authenticationResult = authenticateCredentials(session, token, credentials.getUsername());

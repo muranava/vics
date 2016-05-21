@@ -8,6 +8,7 @@ import com.infinityworks.webapp.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.security.Principal;
 
@@ -30,6 +31,7 @@ public class SessionService {
      * since the session may contain an older version of the user (as the user could have been
      * updated by an admin since their last visit, however unlikely this might be)
      */
+    @Transactional(readOnly = true)
     public Try<User> extractUserFromPrincipal(Principal principal) {
         if (principal instanceof UsernamePasswordAuthenticationToken) {
             Object sessionPrincipal = ((UsernamePasswordAuthenticationToken) principal).getPrincipal();
