@@ -8,7 +8,8 @@ angular
       return $http({
         method: 'GET',
         url: apiUrl + '/stats',
-        withCredentials: true
+        withCredentials: true,
+        cache: true
       });
     };
 
@@ -16,7 +17,8 @@ angular
       return $http({
         method: 'GET',
         url: apiUrl + '/stats/topcanvassers',
-        withCredentials: true
+        withCredentials: true,
+        cache: true
       });
     };
 
@@ -24,7 +26,8 @@ angular
       return $http({
         method: 'GET',
         url: apiUrl + '/stats/topwards',
-        withCredentials: true
+        withCredentials: true,
+        cache: true
       });
     };
 
@@ -32,7 +35,8 @@ angular
       return $http({
         method: 'GET',
         url: apiUrl + '/stats/users',
-        withCredentials: true
+        withCredentials: true,
+        cache: true
       });
     };
 
@@ -40,7 +44,8 @@ angular
       return $http({
         method: 'GET',
         url: apiUrl + '/stats/topconstituencies',
-        withCredentials: true
+        withCredentials: true,
+        cache: true
       });
     };
 
@@ -48,7 +53,8 @@ angular
       return $http({
         method: 'GET',
         url: apiUrl + '/stats/ward/' + code + '/weekly',
-        withCredentials: true
+        withCredentials: true,
+        cache: true
       });
     };
 
@@ -56,7 +62,8 @@ angular
       return $http({
         method: 'GET',
         url: apiUrl + '/stats/constituency/' + code + '/weekly',
-        withCredentials: true
+        withCredentials: true,
+        cache: true
       });
     };
 
@@ -64,7 +71,8 @@ angular
       return $http({
         method: 'GET',
         url: apiUrl + '/stats/ward/' + wardCode,
-        withCredentials: true
+        withCredentials: true,
+        cache: true
       });
     };
 
@@ -72,7 +80,8 @@ angular
       return $http({
         method: 'GET',
         url: apiUrl + '/stats/admin',
-        withCredentials: true
+        withCredentials: true,
+        cache: false
       });
     };
 
@@ -80,7 +89,8 @@ angular
       return $http({
         method: 'GET',
         url: apiUrl + '/stats/constituency/' + constituencyCode,
-        withCredentials: true
+        withCredentials: true,
+        cache: true
       });
     };
 
