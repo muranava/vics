@@ -147,12 +147,12 @@ angular
             $scope.statsTable = response;
             $scope.pieData = [
               {
-                key: "Voted Pledged",
-                y: response.voted_pledges
+                key: "Pledges Voted",
+                y: $scope.statsTable.voted.pledged
               },
               {
-                key: "Total Pledged",
-                y: response.pledged
+                key: "Pledges",
+                y: $scope.statsTable.pledged
               }
             ];
           });
@@ -181,16 +181,18 @@ angular
         statsService.constituencyStats($scope.constituencySearchModel.code)
           .success(function(response) {
             $scope.statsTable = response;
-            $scope.pieData = [
-              {
-                key: "Voted Pledged",
-                y: response.voted_pledges
-              },
-              {
-                key: "Total Pledged",
-                y: response.pledged
-              }
-            ];
+            _.defer(function () {
+              $scope.pieData = [
+                {
+                  key: "Pledges Voted",
+                  y: $scope.statsTable.voted.pledged
+                },
+                {
+                  key: "Pledges",
+                  y: $scope.statsTable.pledged
+                }
+              ];
+            });
           });
 
         statsService.canvassedByWeekAndConstituency($scope.constituencySearchModel.code)
