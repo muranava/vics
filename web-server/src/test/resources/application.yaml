@@ -1,6 +1,8 @@
 server:
   context-path: /api/canvass
   port: 8090
+  session:
+    timeout: 5000
 
 spring:
   jpa:
