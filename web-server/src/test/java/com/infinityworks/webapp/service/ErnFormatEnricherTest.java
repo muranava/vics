@@ -47,7 +47,7 @@ public class ErnFormatEnricherTest {
     @Test
     public void failsIfPollingDistrictTooLong() throws Exception {
         String wardCode = "E09000134";
-        String ernShortForm = "P2345-123-0";
+        String ernShortForm = "P2345678910-123-0";
 
         Try<String> longForm = underTest.apply(wardCode, ernShortForm);
 
@@ -67,7 +67,7 @@ public class ErnFormatEnricherTest {
     @Test
     public void failsIfElectorIDTooLong() throws Exception {
         String wardCode = "E09000134";
-        String ernShortForm = "PD-12345678-0";
+        String ernShortForm = "PD-123456789101112-0";
 
         Try<String> longForm = underTest.apply(wardCode, ernShortForm);
 
@@ -87,7 +87,7 @@ public class ErnFormatEnricherTest {
     @Test
     public void failsIfElectorSuffixTooLong() throws Exception {
         String wardCode = "E09000134";
-        String ernShortForm = "PD-1-123";
+        String ernShortForm = "PD-1-12345678";
 
         Try<String> longForm = underTest.apply(wardCode, ernShortForm);
 

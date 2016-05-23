@@ -5,7 +5,7 @@ import com.infinityworks.webapp.converter.ErnSerializer;
 
 @JsonSerialize(using = ErnSerializer.class)
 public class Ern {
-    private static final String ERN_REGEX = "^\\w{1,10}-\\w{1,8}-\\d{1,8}-\\w{1,3}$";
+    public static final String REGEX = "^\\w{1,10}-\\w{1,8}-\\d{1,8}-\\w{1,3}$";
 
     private final String wardCode;
     private final String pollingDistrict;
@@ -20,7 +20,7 @@ public class Ern {
     }
 
     public static Ern valueOf(String value) {
-        if (!value.matches(ERN_REGEX)) {
+        if (!value.matches(REGEX)) {
             throw new IllegalArgumentException("Invalid ERN format");
         } else {
             String[] parts = value.split("-");
@@ -46,5 +46,9 @@ public class Ern {
 
     public String get() {
         return getWardCode() + "-" + getPollingDistrict() + "-" + getNumber() + "-" + getSuffix();
+    }
+
+    public String shortForm() {
+        return getPollingDistrict() + "-" + getNumber() + "-" + getSuffix();
     }
 }

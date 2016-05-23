@@ -4,12 +4,14 @@ import com.infinityworks.common.lang.Try;
 import com.infinityworks.webapp.clients.paf.PafClient;
 import com.infinityworks.webapp.clients.paf.PafRequestExecutor;
 import com.infinityworks.webapp.clients.paf.dto.ImmutableRecordVotedResponse;
+import com.infinityworks.webapp.clients.paf.dto.ImmutableSuccess;
 import com.infinityworks.webapp.clients.paf.dto.RecordVotedResponse;
 import com.infinityworks.webapp.converter.ErnShortFormToLongFormConverter;
 import com.infinityworks.webapp.domain.User;
 import com.infinityworks.webapp.domain.Ward;
 import com.infinityworks.webapp.error.NotAuthorizedFailure;
 import com.infinityworks.webapp.rest.dto.RecordVoteRequest;
+import com.infinityworks.webapp.rest.dto.RecordVoteResponse;
 import com.infinityworks.webapp.testsupport.mocks.CallStub;
 import org.junit.Before;
 import org.junit.Test;
@@ -19,9 +21,8 @@ import static com.infinityworks.webapp.testsupport.builder.UserBuilder.user;
 import static com.infinityworks.webapp.testsupport.builder.WardBuilder.ward;
 import static com.infinityworks.webapp.testsupport.builder.downstream.RecordVoteBuilder.recordVote;
 import static com.infinityworks.webapp.testsupport.matcher.TryFailureMatcher.isFailure;
-import static com.infinityworks.webapp.testsupport.matcher.TrySuccessMatcher.isSuccess;
 import static org.hamcrest.CoreMatchers.instanceOf;
-import static org.hamcrest.core.IsEqual.equalTo;
+import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.mock;
@@ -45,23 +46,26 @@ public class RecordVotedServiceTest {
         User user = user().withWriteAccess(true).build();
         RecordVoteRequest recordVote = recordVote().withErn("PD-123-1").build();
         Ward ward = ward().withWardCode("E05001221").build();
-        Call<RecordVotedResponse> call = CallStub.success(ImmutableRecordVotedResponse.builder().withSuccess(true).build());
+        Call<RecordVotedResponse> call = CallStub.success(ImmutableRecordVotedResponse.builder().withSuccess(
+                ImmutableSuccess.builder().withCode("GEN-SUCCESS").withHttpCode(200).withMessage("Vote recorded").build()).build());
         given(pafClient.recordVote("E05001221-PD-123-1")).willReturn(call);
         given(wardService.getByCode(recordVote.getWardCode(), user)).willReturn(Try.success(ward));
 
-        Try<RecordVoteRequest> recordVoteResponse = underTest.recordVote(user, recordVote);
+        Try<RecordVoteResponse> recordVoteResponse = underTest.recordVote(user, recordVote);
 
-        assertThat(recordVoteResponse, isSuccess(equalTo(recordVote)));
+        assertThat(recordVoteResponse.isSuccess(), is(true));
     }
 
     @Test
     public void failsToRecordVoteIfUserDoesNotHaveWardPermission() throws Exception {
         User user = user().withWriteAccess(true).build();
         RecordVoteRequest recordVote = recordVote().build();
-        Call<RecordVotedResponse> call = CallStub.success(ImmutableRecordVotedResponse.builder().withSuccess(true).build());        given(pafClient.recordVote(recordVote.getErn())).willReturn(call);
+        Call<RecordVotedResponse> call = CallStub.success(ImmutableRecordVotedResponse.builder().withSuccess(
+                ImmutableSuccess.builder().withCode("GEN-SUCCESS").withHttpCode(200).withMessage("Vote recorded").build()).build());
+        given(pafClient.recordVote(recordVote.getErn())).willReturn(call);
         given(wardService.getByCode(recordVote.getWardCode(), user)).willReturn(Try.failure(new NotAuthorizedFailure("failure")));
 
-        Try<RecordVoteRequest> recordVoteResponse = underTest.recordVote(user, recordVote);
+        Try<RecordVoteResponse> recordVoteResponse = underTest.recordVote(user, recordVote);
 
         assertThat(recordVoteResponse, isFailure(instanceOf(NotAuthorizedFailure.class)));
     }
@@ -71,7 +75,7 @@ public class RecordVotedServiceTest {
         User user = user().withWriteAccess(false).build();
         RecordVoteRequest recordVote = recordVote().build();
 
-        Try<RecordVoteRequest> recordVoteResponse = underTest.recordVote(user, recordVote);
+        Try<RecordVoteResponse> recordVoteResponse = underTest.recordVote(user, recordVote);
 
         assertThat(recordVoteResponse, isFailure(instanceOf(NotAuthorizedFailure.class)));
     }

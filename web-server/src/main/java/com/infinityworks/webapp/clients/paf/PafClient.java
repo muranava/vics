@@ -77,6 +77,9 @@ public interface PafClient {
     @POST("voters/{ern}/voted")
     Call<RecordVotedResponse> recordVote(@Path("ern") String ern);
 
+    @DELETE("voters/{ern}/voted")
+    Call<RecordVotedResponse> undoVote(@Path("ern") String ern);
+
     @GET("wards/{wardCode}")
     Call<WardStats> wardStats(@Path("wardCode") String wardCode);
 

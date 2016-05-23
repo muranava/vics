@@ -13,5 +13,14 @@ angular
       });
     };
 
+    api.undoVote = function(model) {
+      var fullErn = model.wardCode + '-' + model.ern;
+      return $http({
+        method: 'DELETE',
+        url: apiUrl + '/elector/' + fullErn + '/voted',
+        withCredentials: true
+      });
+    };
+
     return api;
   });

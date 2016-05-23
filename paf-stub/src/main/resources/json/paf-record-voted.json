@@ -1,3 +1,7 @@
 {
-  "success": true
+  "success": {
+    "code": "GEN-SUCCESS",
+    "http_code": 200,
+    "message": "Recorded Voted"
+  }
 }

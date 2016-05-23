@@ -103,6 +103,15 @@ public class VoterController {
     }
 
     @PreAuthorize("isAuthenticated()")
+    @RequestMapping(method = DELETE, value = "/{ern:" + Ern.REGEX + "}/voted")
+    public ResponseEntity<?> undoVote(@PathVariable Ern ern,
+                                      Principal principal) {
+        return sessionService.extractUserFromPrincipal(principal)
+                .flatMap(user -> recordVotedService.undoVote(user, ern))
+                .fold(errorHandler::mapToResponseEntity, ResponseEntity::ok);
+    }
+
+    @PreAuthorize("isAuthenticated()")
     @RequestMapping(value = "/ward/{wardCode}/street/pdf", method = POST)
     public ResponseEntity<?> getPdfOfElectorsByTownStreet(
             @RequestBody @Valid ElectorsByStreetsRequest electorsByStreetsRequest,

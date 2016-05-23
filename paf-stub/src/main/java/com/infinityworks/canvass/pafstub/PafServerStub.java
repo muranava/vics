@@ -139,6 +139,17 @@ public class PafServerStub {
                         .withBody(jsonData)));
     }
 
+    public void willUndoVoterVoted(String ern) throws IOException {
+        String file = requireNonNull("json/paf-undo-voted.json");
+        String jsonData = Resources.toString(getResource(file), UTF_8);
+
+        String urlPath = "/v1/voters/" + ern + "/voted";
+        wireMock.register(delete(urlPathMatching(urlPath))
+                .willReturn(aResponse()
+                        .withStatus(200)
+                        .withBody(jsonData)));
+    }
+
     public void willRecordVoterVoted() throws IOException {
         String file = requireNonNull(files.get("voted,E05001221-ADD-1313-1"), "No json file");
         String jsonResponse = Resources.toString(getResource(file), UTF_8);

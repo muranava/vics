@@ -12,5 +12,5 @@ import org.immutables.value.Value;
 @JsonDeserialize(as = ImmutableRecordVotedResponse.class)
 @JsonSerialize(as = ImmutableRecordVotedResponse.class)
 public interface RecordVotedResponse {
-    @JsonProperty("success") Boolean success();
+    @JsonProperty("success") Success success();
 }

@@ -1,10 +1,9 @@
-
 angular
   .module('canvass')
-  .controller('recordVoteController', function (util, $timeout, $scope, RingBuffer, voteService, electorService, wardService) {
-    var logSize = 7, searchLimit = 10;
+  .controller('recordVoteController', function (util, $timeout, $scope, RingBuffer, voteService, electorService, wardService, toastr) {
+    var logSize = 7;
 
-    $scope.searchResults = [];
+    $scope.searchResults = null;
     $scope.logs = RingBuffer.newInstance(logSize);
 
     $scope.formModel = {
@@ -16,22 +15,20 @@ angular
       selectedWard: null
     };
 
-    $scope.searchModel = {
-      firstName: '',
-      lastName: '',
-      postCode: '',
-      address: ''
+    $scope.searchForm = {
+      surname: '',
+      postcode: ''
     };
 
     $scope.wards = [];
 
     wardService.findAllSummarized()
-      .success(function(response) {
+      .success(function (response) {
         $scope.wards = response;
         $scope.userHasNoAssociations = _.isEmpty($scope.wards);
         $scope.formModel.selectedWard = $scope.wards[0];
       })
-      .finally(function() {
+      .finally(function () {
         $scope.contentLoaded = true;
       });
 
@@ -44,19 +41,20 @@ angular
         $scope.formModel.ern.number + '-' +
         $scope.formModel.ern.suffix;
       if (isValidElectorID(ern) &&
-          isValidWard($scope.formModel.selectedWard)) {
+        isValidWard($scope.formModel.selectedWard)) {
 
         var elector = mapToRequest(ern);
 
         voteService.recordVote(elector)
-          .success(function () {
+          .success(function (response) {
             $scope.logs.push({
               ern: ern,
               reason: '',
+              wardCode: response.wardCode,
               result: 1
             });
           })
-          .error(function(error) {
+          .error(function (error) {
             var reason = "-";
             if (error.type === 'PafApiNotFoundFailure') {
               reason = 'Voter not found';
@@ -67,7 +65,6 @@ angular
               result: 0
             });
           });
-        $scope.formModel.ern.number = '';
         $scope.formModel.ern.suffix = 0;
 
         $('#electorNum').focus();
@@ -104,11 +101,41 @@ angular
       }
     }
 
-    $scope.onSearch = function () {
-      electorService.search($scope.searchModel, searchLimit)
-        .success(function (response) {
-          $scope.searchResults = response;
+    $scope.onUndo = function (model) {
+      voteService.undoVote({
+        wardCode: model.wardCode,
+        ern: model.ern
+      })
+        .success(function () {
+          model.reason = 'Undone';
+        })
+        .error(function () {
+          toastr.error('Failed to undo vote', 'Error');
         });
+    };
+
+    $scope.onSearchVoter = function () {
+      if (!$scope.searchForm.surname || !$scope.searchForm.postcode) {
+        toastr.error('Please enter username and password', 'Validation Error');
+      } else {
+        electorService.search($scope.searchForm.surname, $scope.searchForm.postcode, $scope.formModel.selectedWard.code)
+          .success(function (voters) {
+            $scope.searchResults = voters;
+          })
+          .error(function handleError() {
+            $scope.searchResults = [];
+          });
+      }
+    };
+
+    $scope.onSetSearchedVoter = function (voter) {
+      var ern = util.destructureErn(voter.ern);
+
+      $scope.formModel.ern = {
+        pollingDistrict: ern.pollingDistrict,
+        number: ern.number,
+        suffix: ern.suffix
+      };
     };
 
     function emptyRow() {

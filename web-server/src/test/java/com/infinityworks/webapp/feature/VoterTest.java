@@ -36,6 +36,7 @@ import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
@@ -147,9 +148,7 @@ public class VoterTest extends WebApplicationTest {
 
         RecordVoteRequest request = new RecordVoteBuilder()
                 .withWardCode("E05001221")
-                .withWardName("Earlsdon")
                 .withErn("ADD-1313-1")
-                .withSuccess(true)
                 .build();
         String requestBody = objectMapper.writeValueAsString(request);
         log.info("Request: " + requestBody);
@@ -161,8 +160,21 @@ public class VoterTest extends WebApplicationTest {
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("wardCode", is("E05001221")))
-                .andExpect(jsonPath("wardName", is("Earlsdon")))
-                .andExpect(jsonPath("ern", is("ADD-1313-1")))
-                .andExpect(jsonPath("success", is(true)));
+                .andExpect(jsonPath("ern", is("ADD-1313-1")));
+    }
+
+    @Test
+    public void undoVoted() throws Exception {
+        when(sessionService.extractUserFromPrincipal(any(Principal.class)))
+                .thenReturn(Try.success(covs()));
+        pafApiStub.willUndoVoterVoted("E05001221-ADD-1313-1");
+
+
+        mockMvc.perform(delete("/elector/E05001221-ADD-1313-1/voted")
+                .accept(APPLICATION_JSON))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("wardCode", is("E05001221")))
+                .andExpect(jsonPath("ern", is("ADD-1313-1")));
     }
 }

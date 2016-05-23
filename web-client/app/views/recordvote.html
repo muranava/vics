@@ -23,7 +23,7 @@
       </div>
     </div>
     <div class="row" ng-if="!userHasNoAssociations">
-      <div class="col-md-12 col-sm-12">
+      <div class="col-md-6 col-sm-12">
         <div class="card">
           <div class="card-head">
             <header>Enter the Elector ID</header>
@@ -51,21 +51,21 @@
 
                 <div class="input-group">
                   <div class="input-group-content ern-spacing">
-                    <input id="electorId" type="text" class="form-control" ng-model="formModel.ern.pollingDistrict">
+                    <input id="electorId" type="text" class="form-control" ng-model="formModel.ern.pollingDistrict" uppercased>
                     <label for="electorId">Polling District</label>
                   </div>
 
                   <div class="input-group-content ern-spacing">&mdash;</div>
 
                   <div class="input-group-content ern-spacing">
-                    <input id="electorNum" type="text" class="form-control" ng-model="formModel.ern.number">
+                    <input id="electorNum" type="number" class="form-control" ng-model="formModel.ern.number">
                     <label for="electorNum">Elector ID</label>
                   </div>
 
                   <div class="input-group-content ern-spacing">&mdash;</div>
 
                   <div class="input-group-content">
-                    <input id="electorSuffix" type="text" class="form-control" ng-model="formModel.ern.suffix">
+                    <input id="electorSuffix" type="text" class="form-control" ng-model="formModel.ern.suffix" uppercased>
                     <label for="electorSuffix">Elector Suffix</label>
                   </div>
 
@@ -109,8 +109,8 @@
                 <td ng-show="log.result === 1">SUCCESS</td>
                 <td ng-show="log.result === 0">FAILED</td>
                 <td ng-show="log.result === -1">-</td>
-                <td ng-show="log.result === -1">
-                  <button ng-if="log.ern !== '-'" type="submit" class="btn btn-danger btn-sm" tabindex="-1">UNDO</button>
+                <td>
+                  <button class="btn btn-sm btn-danger" ng-click="onUndo(log)" ng-show="log.reason !== 'Undone' && log.ern !== '-'">UNDO</button>
                 </td>
               </tr>
               </tbody>
@@ -119,79 +119,66 @@
           </div><!--end .card-body -->
         </div><!--end .card -->
       </div><!--end .col -->
-      <div class="col-md-6 col-sm-12" style="display: none">
+      <div class="col-md-6 col-sm-12">
         <div class="card">
           <div class="card-head card-head-xs style-primary">
-            <header>Search by Name and Address</header>
-          </div><!--end .card-head -->
+            <header>Search within {{formModel.selectedWard.name + ' in ' + formModel.selectedWard.constituencyName}}</header>
+          </div>
           <div class="card-body">
-            <form class="form" ng-submit="onSearch()">
+
+            <form class="form" ng-submit="onSearchVoter()">
               <div class="form-group">
-
-                <div class="input-group">
+                <div class="input-group col-xs-12">
                   <div class="input-group-content">
-                    <input id="fName" type="text" class="form-control" ng-model="searchModel.firstName">
-                    <label for="fName">First Name</label>
-                  </div>
-                  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                  <div class="input-group-content">
-                    <input id="lName" type="text" class="form-control" ng-model="searchModel.lastName">
-                    <label for="lName">Last Name</label>
-                  </div>
-                </div>
-                <br><br>
-                <div class="input-group">
-                  <div class="input-group-content">
-                    <input id="address" type="text" class="form-control" ng-model="searchModel.address">
-                    <label for="address">Address</label>
-                  </div>
-
-                  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                  <div class="input-group-content">
-                    <input id="pCode" type="text" class="form-control" ng-model="searchModel.postCode">
-                    <label for="pCode">Post Code</label>
-                  </div>
-                </div>
-
-                <br>
-                <div class="input-group">
-                  <div class="input-group-btn">
-                    <button type="submit" class="btn btn-danger btn-sm pull-right" tabindex="-1">Search</button>
+                    <input type="text" ng-model="searchForm.surname" class="form-control ocl" id="groupbutton10">
+                    <label for="groupbutton10">Surname</label>
                   </div>
                 </div>
               </div>
 
+              <div class="form-group">
+                <div class="input-group">
+                  <div class="input-group-content">
+                    <input type="text" ng-model="searchForm.postcode" class="form-control" id="doublegroupbutton10" uppercased>
+                    <label for="doublegroupbutton10">Postcode</label>
+                  </div>
+                  <div class="input-group-btn">
+                    <button type="submit" class="btn btn-danger btn-sm" tabindex="-1">SEARCH</button>
+                  </div>
+                </div>
+              </div>
             </form>
-            <br>
+
+            <!-- Search results empty -->
+            <div ng-show="searchResults.length === 0">
+              <span class="text-light text-danger">No results</span>
+            </div>
+
+            <!-- Search results -->
             <table class="table no-margin table-hover" ng-show="searchResults.length">
               <thead>
               <tr>
                 <th>Roll #</th>
-                <th>First Name</th>
-                <th>Last Name</th>
+                <th>Name</th>
                 <th>Address</th>
-                <th>Post Code</th>
                 <th></th>
               </tr>
               </thead>
               <tbody>
-              <tr ng-repeat="result in searchResults">
-                <td>{{result.rollNum}}</td>
-                <td>{{result.firstName}}</td>
-                <td>{{result.lastName}}</td>
-                <td>{{result.address}}</td>
-                <td>{{result.postCode}}</td>
-                <td>
-                  <button type="submit" class="btn btn-sm btn-danger" tabindex="-1" ng-click="onSearchVoted(result)">
-                    Voted
-                  </button>
-                </td>
+              <tr ng-repeat="voter in searchResults">
+                <td style="min-width: 100px">{{voter.ern | ernToShortForm}}</td>
+                <td>{{voter.full_name}}</td>
+                <td>{{voter | voterAddressFormat }}</td>
+                <td><button type="submit" class="btn btn-sm btn-danger" tabindex="-1"
+                            ng-click="onSetSearchedVoter(voter)">
+                  Set
+                </button></td>
               </tr>
               </tbody>
             </table>
 
-          </div><!--end .card-body -->
-        </div><!--end .card -->
+          </div>
+        </div>
       </div><!--end .col -->
     </div>
   </div>
