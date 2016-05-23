@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.google.common.base.Joiner;
+import com.sun.istack.internal.Nullable;
 import org.immutables.value.Value;
 
 import static com.infinityworks.common.lang.StringExtras.isNullOrEmpty;
@@ -18,7 +19,7 @@ public interface AddressLabel {
 
     String addressLine1();
 
-    String addressLine2();
+    @Nullable String addressLine2();
 
     String postTown();
 
