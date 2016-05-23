@@ -66,6 +66,8 @@ public class VoterAddressConverterTest {
                 .withResponse(singletonList(asList(
                         ImmutableProperty.builder()
                                 .withHouse("Grange Farmhouse")
+                                .withAddressLine1("Grange Farmhouse")
+                                .withAddressLine2("Brandon Lane")
                                 .withPostTown("Coventry")
                                 .withStreet("Brandon Lane")
                                 .withPostCode("CV3 3GU")
@@ -81,6 +83,8 @@ public class VoterAddressConverterTest {
                                 .build(),
                         ImmutableProperty.builder()
                                 .withHouse("Grange Bungalow")
+                                .withAddressLine1("Grange Bungalow")
+                                .withAddressLine2("Brandon Lane")
                                 .withPostTown("Coventry")
                                 .withStreet("Brandon Lane")
                                 .withPostCode("CV3 3GU")
