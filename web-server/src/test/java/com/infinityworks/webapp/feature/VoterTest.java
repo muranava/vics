@@ -169,7 +169,6 @@ public class VoterTest extends WebApplicationTest {
                 .thenReturn(Try.success(covs()));
         pafApiStub.willUndoVoterVoted("E05001221-ADD-1313-1");
 
-
         mockMvc.perform(delete("/elector/E05001221-ADD-1313-1/voted")
                 .accept(APPLICATION_JSON))
                 .andDo(print())
