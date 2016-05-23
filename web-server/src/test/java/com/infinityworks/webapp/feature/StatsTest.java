@@ -82,9 +82,7 @@ public class StatsTest extends WebApplicationTest {
                 .andExpect(jsonPath("$[0].key", is("Wainbody")))
                 .andExpect(jsonPath("$[0].count", is(5)))
                 .andExpect(jsonPath("$[1].key", is("Canbury")))
-                .andExpect(jsonPath("$[1].count", is(1)))
-                .andExpect(jsonPath("$[2].key", is("Binley and Willenhall")))
-                .andExpect(jsonPath("$[2].count", is(1)));
+                .andExpect(jsonPath("$[1].count", is(1)));
     }
 
     @Test
