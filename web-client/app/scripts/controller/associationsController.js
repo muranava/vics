@@ -1,23 +1,49 @@
 angular
   .module('canvass')
-  .controller('associationsController', function ($routeParams, $scope, $location, userService, constituencyService, wardService) {
+  .controller('associationsController', function ($routeParams, $scope, $location, userService, constituencyService, wardService, permissionService, toastr) {
     var searchLimit = 50;
-
-    if (!$routeParams.id) {
-      $location.path("/dashboard");
-    }
 
     function loadUser() {
       userService.findByID($routeParams.id)
         .success(function (response) {
-          $scope.user = response;
+          setPermissionsSwitches(response);
         })
         .error(function () {
           $location.path("/dashboard");
         });
     }
 
-    loadUser();
+    function setPermissionsSwitches(response) {
+      $scope.user = response;
+      _.each($scope.permissions, function (permission) {
+        permission.active = _.some($scope.user.permissions, ['permission', permission.permission]);
+      });
+    }
+
+    permissionService.permissions()
+      .success(function (response) {
+        $scope.permissions = response;
+        loadUser();
+      });
+
+    if (!$routeParams.id) {
+      $location.path("/dashboard");
+    }
+
+    $scope.onChangePermission = function (model) {
+      var permissionID = model.id;
+      if (model.active) {
+        permissionService.associatePermission(permissionID, $scope.user.id)
+          .error(function () {
+            toastr.error('Failed to create user privilege', 'Error');
+          });
+      } else {
+        permissionService.removePermission(permissionID, $scope.user.id)
+          .error(function () {
+            toastr.error('Failed to remove user privilege', 'Error');
+          });
+      }
+    };
 
     $scope.onConstituencyInputKeypress = function () {
       $scope.invalidConstituency = false;

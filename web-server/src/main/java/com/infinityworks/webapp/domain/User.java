@@ -140,6 +140,10 @@ public class User extends BaseEntity {
         wards.remove(ward);
     }
 
+    public void removePermission(Privilege permission) {
+        permissions.remove(permission);
+    }
+
     public void setWards(Set<Ward> wards) {
         this.wards = wards;
     }

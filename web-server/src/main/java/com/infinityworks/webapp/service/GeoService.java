@@ -4,7 +4,10 @@ import com.infinityworks.common.lang.Try;
 import com.infinityworks.webapp.clients.gmaps.MapsClient;
 import com.infinityworks.webapp.clients.gmaps.MapsRequestExecutor;
 import com.infinityworks.webapp.config.AppProperties;
+import com.infinityworks.webapp.domain.Permission;
+import com.infinityworks.webapp.domain.User;
 import com.infinityworks.webapp.error.MapsApiFailure;
+import com.infinityworks.webapp.error.NotAuthorizedFailure;
 import com.infinityworks.webapp.repository.StatsRepository;
 import com.infinityworks.webapp.rest.dto.AddressLookupRequest;
 import org.slf4j.Logger;
@@ -83,17 +86,22 @@ public class GeoService {
                 .collect(toList());
     }
 
-    public Try<byte[]> constituencyStatsMap(String regionName) {
-        Map<String, BigInteger> counts = statsRepository.countMostRecordContactByConstituency(MAX_CONSTITUENCIES)
-                .stream()
-                .collect(toMap(row -> (String) row[2],
-                        row -> (BigInteger) row[1]));
-        try {
-            return Try.success(topoJsonEnricher.addCanvassedCountsToUkMapByConstituency(regionName, counts).toByteArray());
-        } catch (IOException e) {
-            String msg = "Failed to construct topsjson map from constituencies";
-            log.error(msg, e);
-            return Try.failure(new IllegalStateException(msg));
+    public Try<byte[]> constituencyStatsMap(User user, String regionName) {
+        if (user.hasPermission(Permission.VIEW_MAPS)) {
+
+            Map<String, BigInteger> counts = statsRepository.countMostRecordContactByConstituency(MAX_CONSTITUENCIES)
+                    .stream()
+                    .collect(toMap(row -> (String) row[2],
+                            row -> (BigInteger) row[1]));
+            try {
+                return Try.success(topoJsonEnricher.addCanvassedCountsToUkMapByConstituency(regionName, counts).toByteArray());
+            } catch (IOException e) {
+                String msg = "Failed to construct topsjson map from constituencies";
+                log.error(msg, e);
+                return Try.failure(new IllegalStateException(msg));
+            }
+        } else {
+            return Try.failure(new NotAuthorizedFailure("Forbidden"));
         }
     }
 }

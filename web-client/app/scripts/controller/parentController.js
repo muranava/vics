@@ -26,6 +26,16 @@ angular
         });
     };
 
+    $scope.hasPermission = function(permission) {
+      if (!$rootScope.currentUser) {
+        return false;
+      } else {
+        return _.some($rootScope.currentUser.permissions, function(p) {
+          return p.permission === permission;
+        });
+      }
+    };
+
     // set the margins depending on the page type
     var fullPageRoutes = ['/login', '/resetpassword', '/newpassword'];
     $scope.$on('$routeChangeStart', function () {

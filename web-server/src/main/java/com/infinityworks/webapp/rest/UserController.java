@@ -2,7 +2,6 @@ package com.infinityworks.webapp.rest;
 
 import com.infinityworks.common.lang.Try;
 import com.infinityworks.webapp.common.RequestValidator;
-import com.infinityworks.webapp.domain.CurrentUser;
 import com.infinityworks.webapp.domain.Role;
 import com.infinityworks.webapp.domain.User;
 import com.infinityworks.webapp.error.RestErrorHandler;
@@ -18,7 +17,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
@@ -140,14 +138,17 @@ public class UserController {
     @PreAuthorize("isAuthenticated()")
     @RequestMapping(value = "/login/test", method = GET)
     public ResponseEntity<?> testLoggedIn(Principal userPrincipal, @RequestParam(value = "role") String role) {
-        return Role.of(role).flatMap(r -> {
-            Object principal = ((UsernamePasswordAuthenticationToken) userPrincipal).getPrincipal();
-            CurrentUser user = (CurrentUser) principal;
-            if (Role.hasPermission(user.getRole(), r)) {
-                return Try.success(ImmutableCurrentUser.builder().withRole(user.getRole()).withUsername(user.getUsername()).build());
-            } else {
-                return Try.failure(new AccessDeniedException("Forbidden"));
-            }
-        }).fold(errorHandler::mapToResponseEntity, ResponseEntity::ok);
+        return sessionService.extractUserFromPrincipal(userPrincipal)
+                .flatMap(user -> {
+                    if (Role.hasRole(user.getRole(), Role.valueOf(role))) {
+                        return Try.success(ImmutableCurrentUser.builder()
+                                .withRole(user.getRole())
+                                .withUsername(user.getUsername())
+                                .withPermissions(user.getPermissions())
+                                .build());
+                    } else {
+                        return Try.failure(new AccessDeniedException("Forbidden"));
+                    }
+                }).fold(errorHandler::mapToResponseEntity, ResponseEntity::ok);
     }
 }

@@ -37,7 +37,6 @@ angular
             styleMap();
             map.data.addGeoJson(response);
             var legend = document.getElementById('legend');
-            console.log(legend);
             legend.index = 1;
             map.controls[google.maps.ControlPosition.RIGHT_TOP].push(legend);
 

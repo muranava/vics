@@ -40,7 +40,7 @@ public class GeoTest extends WebApplicationTest {
     @Before
     public void setup() {
         sessionService = mock(SessionService.class);
-        GeoController wardController =  new GeoController(getBean(GeoService.class), getBean(RestErrorHandler.class));
+        GeoController wardController =  new GeoController(getBean(GeoService.class), getBean(RestErrorHandler.class), sessionService);
 
         mockMvc = MockMvcBuilders
                 .standaloneSetup(wardController)

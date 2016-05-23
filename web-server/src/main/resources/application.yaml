@@ -7,7 +7,7 @@ server:
   context-path: /api/canvass
   port: 18080
   session:
-    timeout: 43200 # seconds
+    timeout: 3600
   compression:
     enabled: true
     mime-types: application/pdf

@@ -158,16 +158,22 @@
             <span class="title">GOTPV</span>
           </a>
         </li>
-        <li>
-          <a href="#/recordvote">
-            <div class="gui-icon"><i class="md md-check-box"></i></div>
-            <span class="title">Record Vote</span>
-          </a>
-        </li>
+        <!--<li>-->
+          <!--<a href="#/recordvote">-->
+            <!--<div class="gui-icon"><i class="md md-check-box"></i></div>-->
+            <!--<span class="title">Record Vote</span>-->
+          <!--</a>-->
+        <!--</li>-->
         <li ng-show="currentUser.role === 'ADMIN'">
           <a href="#/admin">
             <div class="gui-icon"><i class="md md-security"></i></div>
             <span class="title">Admin</span>
+          </a>
+        </li>
+        <li ng-show="hasPermission('VIEW_MAPS')">
+          <a href="#/map">
+            <div class="gui-icon"><i class="md md-map"></i></div>
+            <span class="title">Maps</span>
           </a>
         </li>
         <li ng-show="currentUser.role === 'USER'">
@@ -185,6 +191,7 @@
       </div>
     </div>
   </div>
+
 </div>
 <!-- libs -->
 <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
@@ -261,6 +268,7 @@
 <script src="scripts/service/electorService.js"></script>
 <script src="scripts/service/userService.js"></script>
 <script src="scripts/service/authService.js"></script>
+<script src="scripts/service/permissionService.js"></script>
 <script src="scripts/service/voteService.js"></script>
 <script src="scripts/service/initPlugins.js"></script>
 <script src="scripts/filter/numericConversions.js"></script>

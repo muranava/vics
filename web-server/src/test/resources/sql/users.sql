@@ -11,12 +11,16 @@ INSERT INTO users (id, first_name, last_name, write_access, username, password_h
 
 INSERT INTO privileges (id, permission) VALUES
   ('3f89506c-fd00-4b1e-aefc-2186d075439d', 'READ_VOTER'),
-  ('5044556a-e90b-4bd3-b1e1-27f43e9a405f', 'EDIT_VOTER');
+  ('5044556a-e90b-4bd3-b1e1-27f43e9a405f', 'EDIT_VOTER'),
+  ('a54a4e73-943d-41e0-ae05-f6b507ad777e', 'VIEW_MAPS');
 
 INSERT INTO users_privileges (users_id, privileges_id) VALUES
   -- covs READ/WRITE
   ('63f93970-d065-4fbb-8b9c-941e27ea53dc', '3f89506c-fd00-4b1e-aefc-2186d075439d'),
   ('63f93970-d065-4fbb-8b9c-941e27ea53dc', '5044556a-e90b-4bd3-b1e1-27f43e9a405f'),
+
+  -- admin view maps
+  ('a54a4e73-943d-41e0-ae05-f6b507ad777e', 'a54a4e73-943d-41e0-ae05-f6b507ad777e'),
 
   -- earlsdon READ ONLY
   ('196af608-6d7a-4981-a6a0-ed8999b3b89c', '3f89506c-fd00-4b1e-aefc-2186d075439d');

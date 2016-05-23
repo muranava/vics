@@ -45,12 +45,12 @@ CREATE TABLE users
 CREATE TABLE privileges
 (
   id         UUID NOT NULL PRIMARY KEY,
-  permission TEXT CHECK (permission IN ('READ_VOTER', 'EDIT_VOTER'))
+  permission TEXT NOT NULL
 );
 
 CREATE TABLE users_privileges
 (
-  users_id      UUID REFERENCES users (id) ON DELETE CASCADE NOT NULL,
+  users_id      UUID REFERENCES users (id)                   NOT NULL,
   privileges_id UUID REFERENCES privileges (id)              NOT NULL,
   PRIMARY KEY (users_id, privileges_id)
 );
