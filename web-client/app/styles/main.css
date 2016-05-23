@@ -308,6 +308,6 @@ div.worldmap.box {
 .leaderboard-loader {
   position: absolute;
   top: 30%;
-  left: 40%;
-  width: 20% !important;
+  left: 45%;
+  width: 10% !important;
 }
