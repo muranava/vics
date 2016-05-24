@@ -51,21 +51,28 @@ public class WardService {
         return wardRepository.findByNameRestrictedByUserAssociations(user.getId().toString(), searchTerm.toUpperCase());
     }
 
+    /**
+     * Gets a ward by code. Handles the case where a ward can be associated with multiple constituencies and
+     * just returns the first
+     *
+     * @param wardCode the code of the ward to find
+     * @param user     the user to validate access against
+     * @return the ward iff the user has permission, otherwise failure
+     */
     @Transactional(readOnly = true)
     public Try<Ward> getByCode(String wardCode, User user) {
-        Optional<Ward> byWard = wardRepository.findByCode(wardCode);
-        if (!byWard.isPresent()) {
+        List<Ward> wards = wardRepository.findByCode(wardCode);
+        if (wards.isEmpty()) {
             String msg = String.format("No ward with code=%s", wardCode);
             log.debug(msg);
             return Try.failure(new NotFoundFailure(msg));
         } else {
-            Ward ward = byWard.get();
-            if (!user.hasWardPermission(ward) && !user.isAdmin()) {
+            if (wards.stream().anyMatch(user::hasWardPermission) || user.isAdmin()) {
+                return Try.success(wards.get(0));
+            } else {
                 String msg = String.format("User=%s tried to access ward=%s without permission", user, wardCode);
                 log.warn(msg);
                 return Try.failure(new NotAuthorizedFailure("Not Authorized"));
-            } else {
-                return Try.success(ward);
             }
         }
     }

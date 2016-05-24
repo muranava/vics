@@ -48,12 +48,13 @@ public class Ward extends BaseEntity {
         if (!(o instanceof Ward)) return false;
         Ward ward = (Ward) o;
         return Objects.equal(code, ward.code) &&
+               Objects.equal(constituency, ward.constituency) &&
                Objects.equal(name, ward.name);
     }
 
     @Override
     public final int hashCode() {
-        return Objects.hashCode(code, name);
+        return Objects.hashCode(code, constituency, name);
     }
 
     @Override

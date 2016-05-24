@@ -14,7 +14,10 @@ import com.infinityworks.webapp.rest.dto.UserRestrictedWards;
 import org.junit.Before;
 import org.junit.Test;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.Set;
 
 import static com.google.common.collect.Sets.newHashSet;
 import static com.infinityworks.webapp.testsupport.builder.ConstituencyBuilder.constituency;
@@ -22,9 +25,7 @@ import static com.infinityworks.webapp.testsupport.builder.UserBuilder.user;
 import static com.infinityworks.webapp.testsupport.builder.WardBuilder.ward;
 import static com.infinityworks.webapp.testsupport.matcher.TryFailureMatcher.isFailure;
 import static com.infinityworks.webapp.testsupport.matcher.TrySuccessMatcher.isSuccess;
-import static org.hamcrest.Matchers.equalTo;
-import static org.hamcrest.Matchers.instanceOf;
-import static org.hamcrest.Matchers.is;
+import static org.hamcrest.Matchers.*;
 import static org.junit.Assert.assertThat;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.mock;
@@ -49,7 +50,7 @@ public class WardServiceTest {
     public void returnsFailureIfUserDoesNotHavePermissionWhenGettingWardByCode() throws Exception {
         Ward w = ward().build();
         User user = user().withRole(Role.USER).build();
-        given(wardRepository.findByCode(w.getCode())).willReturn(Optional.of(w));
+        given(wardRepository.findByCode(w.getCode())).willReturn(Collections.singletonList(w));
 
         Try<Ward> result = underTest.getByCode(w.getCode(), user);
 
@@ -60,7 +61,7 @@ public class WardServiceTest {
     public void returnsFailureIfWardNotFoundWhenGettingWardByCode() throws Exception {
         Ward w = ward().build();
         User user = user().withRole(Role.USER).withWards(newHashSet(w)).build();
-        given(wardRepository.findByCode(w.getCode())).willReturn(Optional.empty());
+        given(wardRepository.findByCode(w.getCode())).willReturn(Collections.emptyList());
 
         Try<Ward> result = underTest.getByCode(w.getCode(), user);
 
@@ -71,7 +72,7 @@ public class WardServiceTest {
     public void returnsTheWardByCode() throws Exception {
         Ward ward = ward().build();
         User user = user().withRole(Role.USER).withWards(newHashSet(ward)).build();
-        given(wardRepository.findByCode(ward.getCode())).willReturn(Optional.of(ward));
+        given(wardRepository.findByCode(ward.getCode())).willReturn(Collections.singletonList(ward));
 
         Try<Ward> result = underTest.getByCode(ward.getCode(), user);
 
@@ -92,8 +93,8 @@ public class WardServiceTest {
         Try<UserRestrictedWards> result = underTest.findByConstituency(c.getId(), u);
 
         List<Ward> restrictedWards = new ArrayList<>(result.get().getWards());
-        assertThat(restrictedWards.get(0).getName(), is("Willenhall"));
-        assertThat(restrictedWards.get(1).getName(), is("Binley"));
+        assertThat(restrictedWards.get(1).getName(), is("Willenhall"));
+        assertThat(restrictedWards.get(0).getName(), is("Binley"));
     }
 
     @Test

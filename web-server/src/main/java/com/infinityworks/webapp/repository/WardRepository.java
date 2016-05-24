@@ -18,7 +18,7 @@ public interface WardRepository extends JpaRepository<Ward, UUID> {
 
     List<Ward> findByConstituencyOrderByNameAsc(Constituency constituency);
 
-    Optional<Ward> findByCode(String code);
+    List<Ward> findByCode(String code);
 
     Set<Ward> findByConstituencyInOrderByName(Set<Constituency> constituencies);
 
