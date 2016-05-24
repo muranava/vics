@@ -9,14 +9,13 @@ import com.infinityworks.webapp.pdf.TableBuilder;
 import com.infinityworks.webapp.pdf.renderer.LogoRenderer;
 import com.infinityworks.webapp.rest.VoterController;
 import com.infinityworks.webapp.rest.dto.ElectorsByStreetsRequest;
-import com.infinityworks.webapp.rest.dto.RecordVoteRequest;
 import com.infinityworks.webapp.rest.dto.StreetRequest;
-import com.infinityworks.webapp.service.*;
-import com.infinityworks.webapp.testsupport.builder.downstream.RecordVoteBuilder;
+import com.infinityworks.webapp.service.RecordContactService;
+import com.infinityworks.webapp.service.RecordVotedService;
+import com.infinityworks.webapp.service.SessionService;
+import com.infinityworks.webapp.service.VoterService;
 import org.junit.Before;
 import org.junit.Test;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.context.jdbc.SqlGroup;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
@@ -36,9 +35,7 @@ import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -55,7 +52,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
                 })
 })
 public class VoterTest extends WebApplicationTest {
-    private static final Logger log = LoggerFactory.getLogger(VoterTest.class);
     private SessionService sessionService;
 
     @Before
@@ -146,21 +142,12 @@ public class VoterTest extends WebApplicationTest {
                 .thenReturn(Try.success(covs()));
         pafApiStub.willRecordVoterVoted("E05001221-ADD-1313-1");
 
-        RecordVoteRequest request = new RecordVoteBuilder()
-                .withWardCode("E05001221")
-                .withErn("ADD-1313-1")
-                .build();
-        String requestBody = objectMapper.writeValueAsString(request);
-        log.info("Request: " + requestBody);
-
-        mockMvc.perform(post("/elector/voted")
-                .content(requestBody)
-                .contentType(APPLICATION_JSON)
+        mockMvc.perform(post("/elector/E05001221-ADD-1313-1/voted")
                 .accept(APPLICATION_JSON))
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("wardCode", is("E05001221")))
-                .andExpect(jsonPath("ern", is("ADD-1313-1")));
+                .andExpect(jsonPath("ern", is("E05001221-ADD-1313-1")));
     }
 
     @Test

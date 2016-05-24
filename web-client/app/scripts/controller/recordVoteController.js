@@ -81,9 +81,6 @@ angular
             reason: 'Won\'t vote',
             result: 1
           });
-        })
-        .error(function (error) {
-
         });
     };
 
