@@ -75,7 +75,7 @@ public class PrivilegeService {
                 return Try.failure(new NotFoundFailure("No user with ID: " + userID));
             }
 
-            removeFrom.removePermission(privilege);
+            removeFrom.getPermissions().remove(privilege);
             User updatedUser = userRepository.saveAndFlush(removeFrom);
 
             log.debug("Removed privilege from user privilege={}, user={}", privilege, updatedUser);
