@@ -1,23 +1,31 @@
 angular
   .module('canvass')
-  .service('voteService', function (config, $http) {
+  .service('voteService', function (config, $http, util) {
     var api = {},
       apiUrl = config.apiUrl;
 
-    api.recordVote = function (model) {
+    api.recordVote = function (wardCode, ern) {
+      var fullErn = util.ernShortToLongFormConverter(wardCode, ern);
       return $http({
         method: 'POST',
-        url: apiUrl + '/elector/voted',
-        data: model,
+        url: apiUrl + '/elector/' + fullErn + '/voted',
         withCredentials: true
       });
     };
 
-    api.undoVote = function(model) {
-      var fullErn = model.wardCode + '-' + model.ern;
+    api.undoVote = function(fullErn) {
       return $http({
         method: 'DELETE',
         url: apiUrl + '/elector/' + fullErn + '/voted',
+        withCredentials: true
+      });
+    };
+
+    api.wontVote = function(wardCode, ern) {
+      var fullErn = util.ernShortToLongFormConverter(wardCode, ern);
+      return $http({
+        method: 'POST',
+        url: apiUrl + '/elector/' + fullErn + '/wontvote',
         withCredentials: true
       });
     };

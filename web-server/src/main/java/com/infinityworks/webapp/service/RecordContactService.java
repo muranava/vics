@@ -21,8 +21,8 @@ import java.util.UUID;
 
 @Service
 public class RecordContactService {
-
     private final Logger log = LoggerFactory.getLogger(VoterService.class);
+
     private final WardService wardService;
     private final RecordContactToPafConverter recordContactToPafConverter;
     private final PafRequestExecutor pafRequestExecutor;
@@ -61,12 +61,12 @@ public class RecordContactService {
                     .getByCode(ern.getWardCode(), user)
                     .flatMap(ward -> {
                         com.infinityworks.webapp.clients.paf.dto.RecordContactRequest pafRequest = recordContactToPafConverter.apply(user, contactRequest);
-                        Call<RecordContactResponse> call = pafClient.recordContact(ern.get(), pafRequest);
+                        Call<RecordContactResponse> call = pafClient.recordContact(ern.longForm(), pafRequest);
                         return pafRequestExecutor.execute(call).map(response -> {
-                            RecordContactLog recordContactLog = new RecordContactLog(user, ward, ern.get());
+                            RecordContactLog recordContactLog = new RecordContactLog(user, ward, ern.longForm());
                             recordContactLogService.logRecordContactAsync(recordContactLog);
 
-                            log.info("User={} recorded contact for ern={}", user, ern.get());
+                            log.info("User={} recorded contact for ern={}", user, ern.longForm());
                             return new com.infinityworks.webapp.rest.dto.RecordContactResponse(recordContactLog.getId(), ern, response.id());
                         });
                     });
@@ -82,7 +82,7 @@ public class RecordContactService {
             return wardService
                     .getByCode(ern.getWardCode(), user)
                     .flatMap(ward -> {
-                        Call<DeleteContactResponse> call = pafClient.deleteContact(ern.get(), contactId);
+                        Call<DeleteContactResponse> call = pafClient.deleteContact(ern.longForm(), contactId);
                         return pafRequestExecutor.execute(call);
                     }).map(deleteResponse -> {
                         log.info("User={} deleted recorded contact for ern={}", user, ern);

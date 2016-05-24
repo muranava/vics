@@ -45,7 +45,6 @@ angular
       {route: '/associations', role: 'ADMIN'},
       {route: '/users', role: 'ADMIN'},
       {route: '/csvupload', role: 'ADMIN'},
-      {route: '/map', role: 'ADMIN'},
       {route: '/stats', role: 'ADMIN'}
     ];
 

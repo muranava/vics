@@ -72,7 +72,7 @@ angular
         method: 'GET',
         url: apiUrl + '/stats/ward/' + wardCode,
         withCredentials: true,
-        cache: true
+        cache: false
       });
     };
 
@@ -90,7 +90,7 @@ angular
         method: 'GET',
         url: apiUrl + '/stats/constituency/' + constituencyCode,
         withCredentials: true,
-        cache: true
+        cache: false
       });
     };
 

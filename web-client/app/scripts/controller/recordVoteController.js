@@ -43,14 +43,12 @@ angular
       if (isValidElectorID(ern) &&
         isValidWard($scope.formModel.selectedWard)) {
 
-        var elector = mapToRequest(ern);
-
-        voteService.recordVote(elector)
+        voteService.recordVote($scope.formModel.selectedWard.code, ern)
           .success(function (response) {
             $scope.logs.push({
-              ern: ern,
-              reason: '',
-              wardCode: response.wardCode,
+              ern: util.ernLongToShortFormConverter(response.ern),
+              fullErn: response.ern,
+              reason: 'Voted',
               result: 1
             });
           })
@@ -71,13 +69,23 @@ angular
       }
     };
 
-    function mapToRequest(ern) {
-      return {
-        ern: ern,
-        wardCode: $scope.formModel.selectedWard.code,
-        wardName: $scope.formModel.selectedWard.name
-      };
-    }
+    $scope.onWontVote = function() {
+      var ern = $scope.formModel.ern.pollingDistrict + '-' +
+        $scope.formModel.ern.number + '-' +
+        $scope.formModel.ern.suffix;
+      voteService.wontVote($scope.formModel.selectedWard.code, ern)
+        .success(function(response) {
+          console.log(response);
+          $scope.logs.push({
+            ern: util.ernLongToShortFormConverter(response),
+            reason: 'Won\'t vote',
+            result: 1
+          });
+        })
+        .error(function (error) {
+
+        });
+    };
 
     function isValidWard(ward) {
       $scope.invalidWard = false;
@@ -102,10 +110,7 @@ angular
     }
 
     $scope.onUndo = function (model) {
-      voteService.undoVote({
-        wardCode: model.wardCode,
-        ern: model.ern
-      })
+      voteService.undoVote(model.fullErn)
         .success(function () {
           model.reason = 'Undone';
         })

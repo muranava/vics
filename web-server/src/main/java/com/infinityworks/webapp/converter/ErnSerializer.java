@@ -14,6 +14,6 @@ public class ErnSerializer extends StdSerializer<Ern> {
 
     @Override
     public void serialize(Ern ern, JsonGenerator jsonGenerator, SerializerProvider serializerProvider) throws IOException {
-        jsonGenerator.writeString(ern.get());
+        jsonGenerator.writeString(ern.longForm());
     }
 }

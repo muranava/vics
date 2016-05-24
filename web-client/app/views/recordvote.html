@@ -73,7 +73,7 @@
                     <button type="submit" class="btn btn-success btn-sm" tabindex="-1">VOTED</button>
                   </div>
                   <div class="input-group-btn">
-                    <button type="submit" class="btn btn-danger btn-sm" tabindex="-1">WON'T VOTE</button>
+                    <button type="button" class="btn btn-danger btn-sm" ng-click="onWontVote()" tabindex="-1">WON'T VOTE</button>
                   </div>
                 </div>
                 <br>
@@ -110,7 +110,7 @@
                 <td ng-show="log.result === 0">FAILED</td>
                 <td ng-show="log.result === -1">-</td>
                 <td>
-                  <button class="btn btn-sm btn-danger" ng-click="onUndo(log)" ng-show="log.reason !== 'Undone' && log.ern !== '-'">UNDO</button>
+                  <button class="btn btn-sm btn-danger pull-right" ng-click="onUndo(log)" ng-show="log.reason !== 'Undone' && log.result !== 0 && log.ern !== '-'">UNDO</button>
                 </td>
               </tr>
               </tbody>

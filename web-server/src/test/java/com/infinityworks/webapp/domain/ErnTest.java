@@ -10,7 +10,7 @@ public class ErnTest {
     public void shouldExtractTheErnParts() throws Exception {
         Ern ern = Ern.valueOf("E0900123-T-123-4");
 
-        assertThat(ern.get(), is("E0900123-T-123-4"));
+        assertThat(ern.longForm(), is("E0900123-T-123-4"));
     }
 
     @Test(expected = IllegalArgumentException.class)

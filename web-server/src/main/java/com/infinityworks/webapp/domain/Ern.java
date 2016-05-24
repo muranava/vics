@@ -44,11 +44,16 @@ public class Ern {
         return suffix;
     }
 
-    public String get() {
+    public String longForm() {
         return getWardCode() + "-" + getPollingDistrict() + "-" + getNumber() + "-" + getSuffix();
     }
 
     public String shortForm() {
         return getPollingDistrict() + "-" + getNumber() + "-" + getSuffix();
+    }
+
+    @Override
+    public String toString() {
+        return longForm();
     }
 }

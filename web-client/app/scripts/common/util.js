@@ -42,6 +42,15 @@ angular
       };
     };
 
+    api.ernShortToLongFormConverter = function(wardCode, ernShortForm) {
+      return wardCode + "-" + ernShortForm;
+    };
+
+    api.ernLongToShortFormConverter = function(ernLongForm) {
+      var ern = api.destructureErn(ernLongForm);
+      return ern.pollingDistrict + "-" + ern.number + "-" + ern.suffix;
+    };
+
     api.viewportDimensions = function() {
       var w = Math.max(document.documentElement.clientWidth, window.innerWidth || 0),
         h = Math.max(document.documentElement.clientHeight, window.innerHeight || 0);

@@ -7,9 +7,11 @@ import com.infinityworks.webapp.pdf.DocumentBuilder;
 import com.infinityworks.webapp.pdf.TableBuilder;
 import com.infinityworks.webapp.rest.dto.ElectorsByStreetsRequest;
 import com.infinityworks.webapp.rest.dto.RecordContactRequest;
-import com.infinityworks.webapp.rest.dto.RecordVoteRequest;
 import com.infinityworks.webapp.rest.dto.SearchElectors;
-import com.infinityworks.webapp.service.*;
+import com.infinityworks.webapp.service.RecordContactService;
+import com.infinityworks.webapp.service.RecordVotedService;
+import com.infinityworks.webapp.service.SessionService;
+import com.infinityworks.webapp.service.VoterService;
 import com.lowagie.text.DocumentException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -94,18 +96,24 @@ public class VoterController {
     }
 
     @PreAuthorize("isAuthenticated()")
-    @RequestMapping(method = POST, value = "/voted")
-    public ResponseEntity<?> recordVote(@RequestBody @Valid RecordVoteRequest ern,
-                                        Principal principal) {
+    @RequestMapping(method = POST, value = "/{ern:" + Ern.REGEX + "}/voted")
+    public ResponseEntity<?> recordVote(@PathVariable Ern ern, Principal principal) {
         return sessionService.extractUserFromPrincipal(principal)
                 .flatMap(user -> recordVotedService.recordVote(user, ern))
                 .fold(errorHandler::mapToResponseEntity, ResponseEntity::ok);
     }
 
     @PreAuthorize("isAuthenticated()")
+    @RequestMapping(method = POST, value = "/{ern:" + Ern.REGEX + "}/wontvote")
+    public ResponseEntity<?> wontVote(@PathVariable Ern ern, Principal principal) {
+        return sessionService.extractUserFromPrincipal(principal)
+                .flatMap(user -> recordVotedService.wontVote(user, ern))
+                .fold(errorHandler::mapToResponseEntity, ResponseEntity::ok);
+    }
+
+    @PreAuthorize("isAuthenticated()")
     @RequestMapping(method = DELETE, value = "/{ern:" + Ern.REGEX + "}/voted")
-    public ResponseEntity<?> undoVote(@PathVariable Ern ern,
-                                      Principal principal) {
+    public ResponseEntity<?> undoVote(@PathVariable Ern ern, Principal principal) {
         return sessionService.extractUserFromPrincipal(principal)
                 .flatMap(user -> recordVotedService.undoVote(user, ern))
                 .fold(errorHandler::mapToResponseEntity, ResponseEntity::ok);

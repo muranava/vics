@@ -7,10 +7,10 @@ import com.infinityworks.webapp.clients.paf.dto.ImmutableRecordVotedResponse;
 import com.infinityworks.webapp.clients.paf.dto.ImmutableSuccess;
 import com.infinityworks.webapp.clients.paf.dto.RecordVotedResponse;
 import com.infinityworks.webapp.converter.ErnShortFormToLongFormConverter;
+import com.infinityworks.webapp.domain.Ern;
 import com.infinityworks.webapp.domain.User;
 import com.infinityworks.webapp.domain.Ward;
 import com.infinityworks.webapp.error.NotAuthorizedFailure;
-import com.infinityworks.webapp.rest.dto.RecordVoteRequest;
 import com.infinityworks.webapp.rest.dto.RecordVoteResponse;
 import com.infinityworks.webapp.testsupport.mocks.CallStub;
 import org.junit.Before;
@@ -19,7 +19,6 @@ import retrofit2.Call;
 
 import static com.infinityworks.webapp.testsupport.builder.UserBuilder.user;
 import static com.infinityworks.webapp.testsupport.builder.WardBuilder.ward;
-import static com.infinityworks.webapp.testsupport.builder.downstream.RecordVoteBuilder.recordVote;
 import static com.infinityworks.webapp.testsupport.matcher.TryFailureMatcher.isFailure;
 import static org.hamcrest.CoreMatchers.instanceOf;
 import static org.hamcrest.CoreMatchers.is;
@@ -38,13 +37,13 @@ public class RecordVotedServiceTest {
     public void setUp() throws Exception {
         pafClient = mock(PafClient.class);
         wardService = mock(WardService.class);
-        underTest = new RecordVotedService(wardService, ernFormatEnricher, pafClient, new PafRequestExecutor());
+        underTest = new RecordVotedService(wardService, pafClient, new PafRequestExecutor());
     }
 
     @Test
     public void recordsAVote() throws Exception {
         User user = user().withWriteAccess(true).build();
-        RecordVoteRequest recordVote = recordVote().withErn("PD-123-1").build();
+        Ern recordVote = Ern.valueOf("E05001221-PD-123-1");
         Ward ward = ward().withWardCode("E05001221").build();
         Call<RecordVotedResponse> call = CallStub.success(ImmutableRecordVotedResponse.builder().withSuccess(
                 ImmutableSuccess.builder().withCode("GEN-SUCCESS").withHttpCode(200).withMessage("Vote recorded").build()).build());
@@ -59,10 +58,10 @@ public class RecordVotedServiceTest {
     @Test
     public void failsToRecordVoteIfUserDoesNotHaveWardPermission() throws Exception {
         User user = user().withWriteAccess(true).build();
-        RecordVoteRequest recordVote = recordVote().build();
+        Ern recordVote = Ern.valueOf("E05001221-PD-123-1");
         Call<RecordVotedResponse> call = CallStub.success(ImmutableRecordVotedResponse.builder().withSuccess(
                 ImmutableSuccess.builder().withCode("GEN-SUCCESS").withHttpCode(200).withMessage("Vote recorded").build()).build());
-        given(pafClient.recordVote(recordVote.getErn())).willReturn(call);
+        given(pafClient.recordVote(recordVote.longForm())).willReturn(call);
         given(wardService.getByCode(recordVote.getWardCode(), user)).willReturn(Try.failure(new NotAuthorizedFailure("failure")));
 
         Try<RecordVoteResponse> recordVoteResponse = underTest.recordVote(user, recordVote);
@@ -73,7 +72,7 @@ public class RecordVotedServiceTest {
     @Test
     public void failsToRecordVoteIfUserDoesNotHaveWriteAccess() throws Exception {
         User user = user().withWriteAccess(false).build();
-        RecordVoteRequest recordVote = recordVote().build();
+        Ern recordVote = Ern.valueOf("E05001221-PD-123-1");
 
         Try<RecordVoteResponse> recordVoteResponse = underTest.recordVote(user, recordVote);
 
