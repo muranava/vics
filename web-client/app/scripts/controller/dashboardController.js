@@ -145,16 +145,19 @@ angular
         statsService.wardStats($scope.wardSearchModel.code)
           .success(function(response) {
             $scope.statsTable = response;
-            $scope.pieData = [
-              {
-                key: "Pledges Voted",
-                y: $scope.statsTable.voted.pledged
-              },
-              {
-                key: "Pledges",
-                y: $scope.statsTable.pledged
-              }
-            ];
+            _.defer(function() {
+              var percentVoted = _.parseInt($scope.statsTable.voted.pledged / $scope.statsTable.pledged) * 100;
+              $scope.pieData = [
+                {
+                  key: "Pledges Voted",
+                  y: percentVoted
+                },
+                {
+                  key: "Pledges Not Voted",
+                  y: 100 - percentVoted
+                }
+              ];
+            });
           });
 
         statsService.canvassedByWeekAndWard($scope.wardSearchModel.code)
