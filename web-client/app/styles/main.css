@@ -1,6 +1,9 @@
 @import url(https://fonts.googleapis.com/css?family=Roboto:400,300italic,300,700,900);
 
-body, html { height: 100%; margin: 0;}
+body, html {
+  height: 100%;
+  margin: 0;
+}
 
 .logo-text {
   margin-left: 12px;
@@ -236,16 +239,29 @@ div.game-center {
 .form-control-line::after {
   background-color: #D92C27 !important;
 }
+
 #backstretch {
   height: 100% !important;
 }
+
 rzslider .rz-ticks .rz-tick.rz-selected {
   background: #D92C27 !important;
 }
 
 .worldmap {
   border-radius: 5px;
-  width:15%;
+}
+
+.constmap {
+  border-radius: 5px;
+  width: 15%;
+  background: rgba(255, 255, 255, 0.9);
+  position: absolute;
+  top: 9em;
+  left: 2em;
+  z-index: 100;
+  padding: 1em;
+  text-align: left;
 }
 
 div.worldmap.box {
@@ -280,31 +296,38 @@ li.key {
   padding-left: 0;
   padding-right: 0;
 }
+
 .wheres-label {
   color: white !important;
 }
+
 .wheres-input {
   color: white;
 }
+
 .nav-tabs > li {
   background-color: #f9fafa;
 }
+
 .nav-tabs .active {
   background-color: white !important;
 }
+
 .dropdown-menu > .active > a {
   background-color: #D92C27 !important;
 }
+
 .fullPageMargins {
   padding-left: 10% !important;
   padding-right: 10% !important;
 }
+
 .angular-google-map-container {
   height: 550px;
 }
 
 /* map style */
-.area{
+.area {
   fill: #C0C0C0;
   stroke: none;
 }
@@ -317,7 +340,7 @@ li.key {
 .selected {
   fill: #fff;
   stroke: #777;
-  stroke-dasharray: 2,2;
+  stroke-dasharray: 2, 2;
   stroke-linejoin: round;
 }
 
