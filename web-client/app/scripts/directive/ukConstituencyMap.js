@@ -6,7 +6,7 @@ angular
       templateUrl: 'views/partials/map.html',
       link: function (scope) {
         scope.legend = {};
-        var scheme = ['#ffffff', '#fee5d9', '#fcbba1', '#fc9272', '#fb6a4a', '#ef3b2c', '#cb181d', '#99000d', '#6F000A'];
+        var scheme = ['#fee5d9', '#fcbba1', '#fc9272', '#fb6a4a', '#ef3b2c', '#cb181d', '#99000d', '#6F000A'];
 
         function createLegend() {
           var colors = d3.scale.quantize()
@@ -25,7 +25,7 @@ angular
             .text(function () {
               keyIdx += 1;
               if (keyIdx === 1) {
-                return 0;
+                return '> 0';
               } else if (keyIdx === 2) {
                 return 50;
               } else if (keyIdx === 3) {
@@ -38,8 +38,6 @@ angular
                 return 750;
               } else if (keyIdx === 7) {
                 return 1000;
-              } else if (keyIdx === 8) {
-                return 2500;
               } else {
                 return '2500+';
               }
