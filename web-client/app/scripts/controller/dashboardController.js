@@ -146,7 +146,6 @@ angular
           .success(function(response) {
             $scope.statsTable = response;
             _.defer(function() {
-              console.log($scope.statsTable);
               var percentVoted = _.parseInt($scope.statsTable.voted.pledged / $scope.statsTable.pledged * 100);
               $scope.pieData = [
                 {
@@ -185,15 +184,16 @@ angular
         statsService.constituencyStats($scope.constituencySearchModel.code)
           .success(function(response) {
             $scope.statsTable = response;
-            _.defer(function () {
+            _.defer(function() {
+              var percentVoted = _.parseInt($scope.statsTable.voted.pledged / $scope.statsTable.pledged * 100);
               $scope.pieData = [
                 {
                   key: "Pledges Voted",
-                  y: $scope.statsTable.voted.pledged
+                  y: percentVoted
                 },
                 {
-                  key: "Pledges",
-                  y: $scope.statsTable.pledged
+                  key: "Pledges Not Voted",
+                  y: 100 - percentVoted
                 }
               ];
             });
