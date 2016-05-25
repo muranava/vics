@@ -1,18 +1,4 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <configuration debug="true">
     <include resource="org/springframework/boot/logging/logback/base.xml"/>
-    <jmxConfigurator/>
-
-    <appender name="stash" class="net.logstash.logback.appender.LogstashTcpSocketAppender">
-        <remoteHost>172.17.7.76</remoteHost>
-        <port>4560</port>
-
-        <encoder class="net.logstash.logback.encoder.LogstashEncoder">
-            <customFields>{"appname":"canvass-webapp"}</customFields>
-        </encoder>
-    </appender>
-
-    <root level="INFO">
-        <appender-ref ref="stash"/>
-    </root>
 </configuration>
