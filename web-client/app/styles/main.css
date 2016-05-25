@@ -244,19 +244,42 @@ rzslider .rz-ticks .rz-tick.rz-selected {
 }
 
 .worldmap {
-  background: rgba(255, 255, 255, 0.9);
   border-radius: 5px;
+  width:15%;
 }
 
 div.worldmap.box {
+  background: rgba(255, 255, 255, 0.9);
   position: absolute;
   top: 9em;
-  right: 2em;
+  left: 2em;
   z-index: 100;
   padding: 1em;
   text-align: left;
 }
 
+div.worldmap.map-scale {
+  position: absolute;
+  top: 1em;
+  left: 2em;
+  z-index: 100;
+  padding: 1em;
+  text-align: left;
+  width: 40%;
+}
+
+#scale {
+  padding: 1.5em 0 0 1.5em;
+}
+
+li.key {
+  border-top-width: 15px;
+  border-top-style: solid;
+  font-size: .75em;
+  width: 10%;
+  padding-left: 0;
+  padding-right: 0;
+}
 .wheres-label {
   color: white !important;
 }

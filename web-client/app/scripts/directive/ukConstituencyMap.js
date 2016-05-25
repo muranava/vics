@@ -6,10 +6,51 @@ angular
       templateUrl: 'views/partials/map.html',
       link: function (scope) {
         scope.legend = {};
+        var scheme = ['#ffffff', '#fee5d9', '#fcbba1', '#fc9272', '#fb6a4a', '#ef3b2c', '#cb181d', '#99000d', '#6F000A'];
+
+        function createLegend() {
+          var colors = d3.scale.quantize()
+            .range(scheme);
+          var legend = d3.select('#scale')
+            .append('ul')
+            .attr('class', 'list-inline');
+
+          var keys = legend.selectAll('li.key')
+            .data(colors.range());
+
+          var keyIdx = 0;
+          keys.enter().append('li')
+            .attr('class', 'key')
+            .style('border-top-color', String)
+            .text(function () {
+              keyIdx += 1;
+              if (keyIdx === 1) {
+                return 0;
+              } else if (keyIdx === 2) {
+                return 50;
+              } else if (keyIdx === 3) {
+                return 100;
+              } else if (keyIdx === 4) {
+                return 250;
+              } else if (keyIdx === 5) {
+                return 500;
+              } else if (keyIdx === 6) {
+                return 750;
+              } else if (keyIdx === 7) {
+                return 1000;
+              } else if (keyIdx === 8) {
+                return 2500;
+              } else {
+                return '2500+';
+              }
+            });
+        }
 
         geoService
           .constituencyStatsTopoJsonMap('gb')
           .success(function (response) {
+            createLegend();
+
             var map = new google.maps.Map(document.getElementById('map'), {
               zoom: 7,
               zoomControl: true,
@@ -28,7 +69,7 @@ angular
                   featureType: 'all',
                   elementType: 'all',
                   stylers: [
-                    { visibility: 'off' }
+                    {visibility: 'off'}
                   ]
                 }
               ]);
@@ -40,7 +81,7 @@ angular
             legend.index = 1;
             map.controls[google.maps.ControlPosition.RIGHT_TOP].push(legend);
 
-            map.data.setStyle(function(feature) {
+            map.data.setStyle(function (feature) {
               return {
                 fillColor: mapCountToFillColour(feature.H.count),
                 strokeColor: 'gray',
@@ -49,7 +90,7 @@ angular
               };
             });
 
-            map.data.addListener('mouseover', function(event) {
+            map.data.addListener('mouseover', function (event) {
               scope.legend.constituency = event.feature.H.PCON13NM;
               scope.legend.canvassed = event.feature.H.count;
               if (!scope.$$phase) {
@@ -63,7 +104,7 @@ angular
               });
             });
 
-            map.data.addListener('mouseout', function() {
+            map.data.addListener('mouseout', function () {
               map.data.revertStyle();
             });
 
@@ -87,10 +128,10 @@ angular
             return '#ef3b2c';
           } else if (count > 750 && count <= 1000) {
             return '#cb181d';
-          } else if (count > 1000) {
+          } else if (count > 1000 && count <= 2500) {
             return '#99000d';
-          } else {
-            return '#ffffff';
+          } else if (count > 2500) {
+            return '#6F000A';
           }
         }
       }
