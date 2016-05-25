@@ -139,6 +139,14 @@ angular
       }
     }
 
+    $scope.sumIntentions = function(intentions) {
+      var sum = 0;
+      _.forOwn(intentions, function(val) {
+        sum += val;
+      });
+      return sum;
+    };
+
     $scope.onSetWard = function () {
       if ($scope.wardSearchModel && $scope.wardSearchModel.id) {
 
