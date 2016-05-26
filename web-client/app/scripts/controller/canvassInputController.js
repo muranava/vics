@@ -66,6 +66,10 @@ angular
     };
 
     $scope.onSearchVoter = function () {
+      $scope.invalidSurname = false;
+      $scope.invalidPostcode = false;
+      $scope.searchResults = null;
+
       function handleSuccess(voters) {
         $scope.searchResults = voters;
       }
@@ -74,8 +78,10 @@ angular
         $scope.searchResults = [];
       }
 
-      if (!$scope.searchForm.surname || !$scope.searchForm.postcode) {
-        toastr.error('Please enter username and password', 'Validation Error');
+      if (!$scope.searchForm.surname) {
+        $scope.invalidSurname = true;
+      } else if (!$scope.searchForm.postcode) {
+        $scope.invalidPostcode = true;
       } else {
         electorService.search($scope.searchForm.surname, $scope.searchForm.postcode, $scope.inputRecordModel.ward.code)
           .success(handleSuccess)

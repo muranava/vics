@@ -117,8 +117,14 @@ angular
     };
 
     $scope.onSearchVoter = function () {
-      if (!$scope.searchForm.surname || !$scope.searchForm.postcode) {
-        toastr.error('Please enter username and password', 'Validation Error');
+      $scope.invalidSurname = false;
+      $scope.invalidPostcode = false;
+      $scope.searchResults = null;
+
+      if (!$scope.searchForm.surname) {
+        $scope.invalidSurname = true;
+      } else if (!$scope.searchForm.postcode) {
+        $scope.invalidPostcode = true;
       } else {
         electorService.search($scope.searchForm.surname, $scope.searchForm.postcode, $scope.formModel.selectedWard.code)
           .success(function (voters) {

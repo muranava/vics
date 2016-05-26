@@ -132,6 +132,7 @@
                   <div class="input-group-content">
                     <input type="text" ng-model="searchForm.surname" class="form-control ocl" id="groupbutton10">
                     <label for="groupbutton10">Surname</label>
+                    <p ng-show="invalidSurname" class="validation-error">Please enter a surname</p>
                   </div>
                 </div>
               </div>
@@ -141,6 +142,7 @@
                   <div class="input-group-content">
                     <input type="text" ng-model="searchForm.postcode" class="form-control" id="doublegroupbutton10" uppercased>
                     <label for="doublegroupbutton10">Postcode</label>
+                    <p ng-show="invalidPostcode" class="validation-error">Please enter a postcode</p>
                   </div>
                   <div class="input-group-btn">
                     <button type="submit" class="btn btn-danger btn-sm" tabindex="-1">SEARCH</button>
