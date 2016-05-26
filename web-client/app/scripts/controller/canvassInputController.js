@@ -3,7 +3,7 @@
  */
 angular
   .module('canvass')
-  .controller('canvassInputController', function (util, $scope, electorService, RingBuffer, wardService, toastr) {
+  .controller('canvassInputController', function (util, $scope, electorService, RingBuffer, wardService) {
     var logSize = 5;
 
     $scope.issues = [''];

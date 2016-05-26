@@ -56,5 +56,12 @@ public class RestErrorHandlerTest {
         assertThat(responseEntity, hasStatusCode(equalTo(500)));
     }
 
-    static class NonExistantFailure extends Exception {}
+    @Test
+    public void mapsPafApiNotFoundFailure() throws Exception {
+        ResponseEntity<?> responseEntity = underTest.mapToResponseEntity(new PafApiNotFoundFailure("failure"));
+
+        assertThat(responseEntity, hasStatusCode(equalTo(404)));
+    }
+
+    private static class NonExistantFailure extends Exception {}
 }

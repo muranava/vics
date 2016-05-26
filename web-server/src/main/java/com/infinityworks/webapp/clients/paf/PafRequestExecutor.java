@@ -4,6 +4,8 @@ import com.infinityworks.common.lang.Try;
 import com.infinityworks.webapp.common.LambdaLogger;
 import com.infinityworks.webapp.error.PafApiFailure;
 import com.infinityworks.webapp.error.PafApiNotFoundFailure;
+import com.infinityworks.webapp.error.PafApiValidationFailure;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 import retrofit2.Call;
 import retrofit2.Response;
@@ -42,8 +44,10 @@ public class PafRequestExecutor {
 
     private <T> Try<T> handleUnsuccessful(Call<T> call, Response<T> response) {
         String msg = String.format(FORMAT, call.request().toString(), response.code(), response.message());
-        if (response.code() == 404) {
+        if (response.code() == HttpStatus.NOT_FOUND.value()) {
             return Try.failure(new PafApiNotFoundFailure(msg));
+        } else if (response.code() == HttpStatus.UNPROCESSABLE_ENTITY.value()) {
+            return Try.failure(new PafApiValidationFailure(msg));
         } else {
             PafApiFailure failure = new PafApiFailure(msg);
             return Try.failure(failure);

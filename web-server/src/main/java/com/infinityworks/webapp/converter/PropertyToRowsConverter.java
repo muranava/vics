@@ -62,8 +62,10 @@ public class PropertyToRowsConverter implements BiFunction<String, Property, Lis
     }
 
     private String normalizeScore(Integer value) {
-        if (value == null || value == 0) {
+        if (value == null) {
             return "";
+        } else if (value == 0) {
+            return "N/A";
         } else {
             return String.valueOf(value);
         }

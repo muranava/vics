@@ -75,9 +75,8 @@ angular
         $scope.formModel.ern.suffix;
       voteService.wontVote($scope.formModel.selectedWard.code, ern)
         .success(function(response) {
-          console.log(response);
           $scope.logs.push({
-            ern: util.ernLongToShortFormConverter(response),
+            ern: util.ernLongToShortFormConverter(response.ern),
             reason: 'Won\'t vote',
             result: 1
           });

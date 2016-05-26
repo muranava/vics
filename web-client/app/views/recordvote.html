@@ -110,7 +110,7 @@
                 <td ng-show="log.result === 0">FAILED</td>
                 <td ng-show="log.result === -1">-</td>
                 <td>
-                  <button class="btn btn-sm btn-danger pull-right" ng-click="onUndo(log)" ng-show="log.reason !== 'Undone' && log.result !== 0 && log.ern !== '-'">UNDO</button>
+                  <button class="btn btn-sm btn-danger pull-right" ng-click="onUndo(log)" ng-show="log.reason === 'Voted'">UNDO</button>
                 </td>
               </tr>
               </tbody>
