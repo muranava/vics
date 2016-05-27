@@ -128,59 +128,7 @@
 
                 <div class="row">
                   <div class="col-lg-12">
-                    <h4>Filter voters by intention and postal vote</h4>
-                    <br>
-                  </div>
-                </div>
-                <div class="row">
-                  <div class="form-group" style="margin-top: 25px">
-                    <label class="col-sm-3 control-label">Voting Likelihood <a class="btn btn-icon-toggle btn-refresh"
-                                                                               data-toggle="modal"
-                                                                               data-target="#lhoodModal"><i
-                      class="fa fa-question"></i></a></label>
-                    <div class="col-sm-9 form-control-no-border">
-                      <rzslider
-                        rz-slider-model="likelihoodSlider.minValue"
-                        rz-slider-high="likelihoodSlider.maxValue"
-                        rz-slider-options="likelihoodSlider.options">
-                      </rzslider>
-                    </div>
-                  </div>
-                </div>
-                <div class="row" style="margin-top: 25px">
-                  <div class="form-group">
-                    <label class="col-sm-3 control-label">Voting Intention <a class="btn btn-icon-toggle btn-refresh"
-                                                                              data-toggle="modal"
-                                                                              data-target="#simpleModal"><i
-                      class="fa fa-question"></i></a></label>
-                    <div class="col-sm-9 form-control-no-border">
-                      <rzslider rz-slider-model="intentionSlider.minValue"
-                                rz-slider-high="intentionSlider.maxValue"
-                                rz-slider-options="intentionSlider.options">
-                      </rzslider>
-                    </div>
-                  </div>
-                </div>
-
-                <br>
-
-                <!-- Wants PV filter -->
-                <div class="row">
-                  <div class="form-group">
-                    <label class="col-sm-3 control-label">Wants Postal Vote</label>
-                    <div class="col-sm-3">
-                      <switch id="wantsPVSwitch" name="wantsPVSwitch" ng-model="radios[0].enabled" class="red"></switch>
-                    </div>
-                    <div class="col-sm-6" ng-show="radios[0].enabled">
-                      <label for="wantsPVYes" class="radio-inline radio-styled">
-                        <input ng-click="radios[0].handler(true)" name="wantsPVRadioValue" id="wantsPVYes" type="radio"
-                               ng-model="wantsPVRadioValue" value="true"><span>Yes</span>
-                      </label>
-                      <label for="wantsPVNo" class="radio-inline radio-styled">
-                        <input ng-click="radios[0].handler(false)" name="wantsPVRadioValue" id="wantsPVNo" type="radio"
-                               ng-model="wantsPVRadioValue" ng-value="false"><span>No</span>
-                      </label>
-                    </div>
+                    <h4>Filter voters</h4>
                   </div>
                 </div>
 
@@ -189,17 +137,7 @@
                   <div class="form-group">
                     <label class="col-sm-3 control-label">Has Postal Vote</label>
                     <div class="col-sm-3">
-                      <switch id="hasPVSwitch" name="hasPVSwitch" ng-model="radios[1].enabled" class="red"></switch>
-                    </div>
-                    <div class="col-sm-6" ng-show="radios[1].enabled">
-                      <label for="hasPVYes" class="radio-inline radio-styled">
-                        <input ng-click="radios[1].handler(true)" name="hasPVRadioValue" id="hasPVYes" type="radio"
-                               ng-model="hasPVValue" value="true"><span>Yes</span>
-                      </label>
-                      <label for="hasPVNo" class="radio-inline radio-styled">
-                        <input ng-click="radios[1].handler(false)" name="hasPVRadioValue" id="hasPVNo" type="radio"
-                               ng-model="hasPVValue" ng-value="false"><span>No</span>
-                      </label>
+                      <switch id="hasPVSwitch" name="hasPVSwitch" ng-model="flags.hasPV" class="red"></switch>
                     </div>
                   </div>
                 </div>
@@ -209,60 +147,7 @@
                   <div class="form-group">
                     <label class="col-sm-3 control-label">Needs Lift</label>
                     <div class="col-sm-3">
-                      <switch id="liftSwitch" name="liftSwitch" ng-model="radios[2].enabled" class="red"></switch>
-                    </div>
-                    <div class="col-sm-6" ng-show="radios[2].enabled">
-                      <label for="liftYes" class="radio-inline radio-styled">
-                        <input ng-click="radios[2].handler(true)" name="liftRadioValue" id="liftYes" type="radio"
-                               ng-model="liftRadioValue" value="true"><span>Yes</span>
-                      </label>
-                      <label for="liftNo" class="radio-inline radio-styled">
-                        <input ng-click="radios[2].handler(false)" name="liftRadioValue" id="liftNo" type="radio"
-                               ng-model="liftRadioValue" ng-value="false"><span>No</span>
-                      </label>
-                    </div>
-                  </div>
-                </div>
-
-                <!-- Poster filter -->
-                <div class="row">
-                  <div class="form-group">
-                    <label class="col-sm-3 control-label">Display Poster</label>
-                    <div class="col-sm-3">
-                      <switch id="posterSwitch" name="posterSwitch" ng-model="radios[3].enabled" class="red"></switch>
-                    </div>
-                    <div class="col-sm-6" ng-show="radios[3].enabled">
-                      <label for="posterYes" class="radio-inline radio-styled">
-                        <input ng-click="radios[3].handler(true)" name="posterRadioValue" id="posterYes" type="radio"
-                               ng-model="posterRadioValue" value="true"><span>Yes</span>
-                      </label>
-                      <label for="posterNo" class="radio-inline radio-styled">
-                        <input ng-click="radios[3].handler(false)" ame="posterRadioValue" id="posterNo" type="radio"
-                               ng-model="posterRadioValue" ng-value="false"><span>No</span>
-                      </label>
-                    </div>
-                  </div>
-                </div>
-
-                <!-- Canvassed filter -->
-                <div class="row">
-                  <div class="form-group">
-                    <label class="col-sm-3 control-label">Canvassed Already</label>
-                    <div class="col-sm-3">
-                      <switch id="canvassedSwitch" name="canvassedSwitch" ng-model="radios[4].enabled"
-                              class="red"></switch>
-                    </div>
-                    <div class="col-sm-6" ng-show="radios[4].enabled">
-                      <label for="canvassedYes" class="radio-inline radio-styled">
-                        <input ng-click="radios[4].handler(true)" name="canvassedRadioValue" id="canvassedYes"
-                               type="radio"
-                               ng-model="canvassedRadioValue" value="true"><span>Yes</span>
-                      </label>
-                      <label for="canvassedNo" class="radio-inline radio-styled">
-                        <input ng-click="radios[4].handler(false)" ame="canvassedRadioValue" id="canvassedNo"
-                               type="radio"
-                               ng-model="canvassedRadioValue" ng-value="false"><span>No</span>
-                      </label>
+                      <switch id="liftSwitch" name="liftSwitch" ng-model="flags.needsLift" class="red"></switch>
                     </div>
                   </div>
                 </div>
@@ -272,48 +157,12 @@
                   <div class="form-group">
                     <label class="col-sm-3 control-label">Phone</label>
                     <div class="col-sm-3">
-                      <switch id="telephoneSwitch" name="telephoneSwitch" ng-model="radios[5].enabled"
-                              class="red"></switch>
-                    </div>
-                    <div class="col-sm-6" ng-show="radios[5].enabled">
-                      <label for="telephoneYes" class="radio-inline radio-styled">
-                        <input ng-click="radios[5].handler(true)" name="telephoneRadioValue" id="telephoneYes"
-                               type="radio"
-                               ng-model="telephoneRadioValue" value="true"><span>Yes</span>
-                      </label>
-                      <label for="telephoneNo" class="radio-inline radio-styled">
-                        <input ng-click="radios[5].handler(false)" ame="telephoneRadioValue" id="telephoneNo"
-                               type="radio"
-                               ng-model="telephoneRadioValue" ng-value="false"><span>No</span>
-                      </label>
+                      <switch id="telephoneSwitch" name="telephoneSwitch" ng-model="flags.phone" class="red"></switch>
                     </div>
                   </div>
                 </div>
 
-                <!-- inaccessible filter -->
-                <div class="row">
-                  <div class="form-group">
-                    <label class="col-sm-3 control-label">Inaccessible</label>
-                    <div class="col-sm-3">
-                      <switch id="inaccessibleSwitch" name="inaccessibleSwitch" ng-model="radios[6].enabled"
-                              class="red"></switch>
-                    </div>
-                    <div class="col-sm-6" ng-show="radios[6].enabled">
-                      <label for="inaccessibleYes" class="radio-inline radio-styled">
-                        <input ng-click="radios[6].handler(true)" name="inaccessibleRadioValue" id="inaccessibleYes"
-                               type="radio"
-                               ng-model="inaccessibleRadioValue" value="true"><span>Yes</span>
-                      </label>
-                      <label for="inaccessibleNo" class="radio-inline radio-styled">
-                        <input ng-click="radios[6].handler(false)" ame="inaccessibleRadioValue" id="inaccessibleNo"
-                               type="radio"
-                               ng-model="inaccessibleRadioValue" ng-value="false"><span>No</span>
-                      </label>
-                    </div>
-                  </div>
-                </div>
-
-                <br><br>
+                <br>
                 <div class="row">
                   <div class="col-lg-12">
                     <h4>Select individual streets or download all</h4>
@@ -323,6 +172,7 @@
                     </div>
                   </div>
                 </div>
+
 
                 <div class="alert alert-callout alert-warning" ng-if="validationErrors.length" role="alert">
                   <p ng-repeat="error in validationErrors">

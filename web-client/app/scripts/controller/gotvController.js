@@ -5,52 +5,11 @@ angular
     $scope.numStreetsSelected = 0;
     $scope.validationErrors = [];
     $scope.currentSort = "Priority DESC";
-
-    function createRadioItem(name) {
-      return {
-        name: name,
-        enabled: false,
-        value: null,
-        handler: function(value) {
-          this.value = value;
-        }
-      };
-    }
-
-    $scope.radios = [
-      createRadioItem('wantsPV'),
-      createRadioItem('hasPV'),
-      createRadioItem('lift'),
-      createRadioItem('poster'),
-      createRadioItem('canvassed'),
-      createRadioItem('telephone'),
-      createRadioItem('inaccessible')
-    ];
-
-    function validateFlagsRadios() {
-      var errors = [];
-
-      $scope.radios.map(function (radio) {
-        if (radio.enabled && radio.value === null) {
-          errors.push("Radio for " + radio.name + " is not selected");
-        }
-      });
-
-      return errors;
-    }
-
-    function defaultSliderOptions() {
-      return {
-        minValue: 3,
-        maxValue: 5,
-        options: {
-          floor: 1,
-          ceil: 5,
-          showTicks: true,
-          showTicksValues: true
-        }
-      };
-    }
+    $scope.flags = {
+      hasPV: false,
+      needsLift: false,
+      phone: false
+    };
 
     function fire() {
       $scope.showSubMenu = $window.scrollY > 100;
@@ -58,14 +17,20 @@ angular
         $scope.$apply();
       }
     }
+
     var debounce = _.debounce(fire, 1, false);
     $("#canvassinputcontent").on('mousewheel', function () {
       debounce();
     });
 
-    $scope.intentionSlider = defaultSliderOptions();
-    $scope.likelihoodSlider = defaultSliderOptions();
-    $scope.likelihoodSlider.minValue = 2;
+    $scope.intentionRange = {
+      minValue: 4,
+      maxValue: 5
+    };
+    $scope.likelihoodRange = {
+      minValue: 1,
+      maxValue: 5
+    };
 
     $scope.onSelectConstituency = function () {
       resetErrors();
@@ -74,7 +39,7 @@ angular
     };
 
     function scrollToPrintSection() {
-      _.defer(function() {
+      _.defer(function () {
         $("html, body").animate({scrollTop: $('#printCards').offset().top - 75}, 500);
       });
     }
@@ -141,7 +106,7 @@ angular
       doPrint($scope.ward.code, $scope.streets, false);
     };
 
-    $scope.onPrintLabels = function() {
+    $scope.onPrintLabels = function () {
       var selected = _.filter($scope.streets, function (s) {
         return s.selected;
       });
@@ -154,30 +119,27 @@ angular
         return;
       }
 
-      $scope.validationErrors = validateFlagsRadios();
-      if (_.isEmpty($scope.validationErrors)) {
-        var data = buildRequest(streets);
-        gotvService.retrievePdfOfElectorsByStreets(wardCode, data, isLabels)
-          .success(function (response) {
-            var file = new Blob([response], {type: 'application/pdf'});
-            saveAs(file, $scope.ward.code + '.pdf');
-          })
-          .error(function(error) {
-            if (error && error.status === 404) {
-              toastr.info('We did not find any voters matching the search criteria.', 'No voters found');
-            } else {
-              toastr.error('Failed to request voters.', 'Error');
-            }
-          });
-      }
+      var data = buildRequest(streets);
+      gotvService.retrievePdfOfElectorsByStreets(wardCode, data, isLabels)
+        .success(function (response) {
+          var file = new Blob([response], {type: 'application/pdf'});
+          saveAs(file, $scope.ward.code + '.pdf');
+        })
+        .error(function (error) {
+          if (error && error.status === 404) {
+            toastr.info('We did not find any voters matching the search criteria.', 'No voters found');
+          } else {
+            toastr.error('Failed to request voters.', 'Error');
+          }
+        });
     }
 
     function buildRequest(streets) {
       var flags = getActiveOptionalFlags();
-      flags.intentionFrom = $scope.intentionSlider.minValue;
-      flags.intentionTo = $scope.intentionSlider.maxValue;
-      flags.likelihoodFrom = $scope.likelihoodSlider.minValue;
-      flags.likelihoodTo = $scope.likelihoodSlider.maxValue;
+      flags.intentionFrom = $scope.intentionRange.minValue;
+      flags.intentionTo = $scope.intentionRange.maxValue;
+      flags.likelihoodFrom = $scope.likelihoodRange.minValue;
+      flags.likelihoodTo = $scope.likelihoodRange.maxValue;
       return {
         streets: streets,
         flags: flags
@@ -186,11 +148,15 @@ angular
 
     function getActiveOptionalFlags() {
       var flags = {};
-      $scope.radios.map(function (radio) {
-        if (radio.enabled && radio.value !== null) {
-          flags[radio.name] = radio.value;
-        }
-      });
+      if ($scope.flags.phone) {
+        flags.phone = true;
+      }
+      if ($scope.flags.hasPV) {
+        flags.hasPV = true;
+      }
+      if ($scope.flags.needsLift) {
+        flags.needsLift = true;
+      }
       return flags;
     }
 
