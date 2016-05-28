@@ -11,10 +11,11 @@ import java.util.function.Function;
 public class PafStreetRequestConverter implements Function<StreetRequest, PafStreetRequest> {
     @Override
     public PafStreetRequest apply(StreetRequest street) {
-        return ImmutablePafStreetRequest.of(
-                street.getMainStreet(),
-                street.getPostTown(),
-                street.getDependentStreet(),
-                street.getDependentLocality());
+        return ImmutablePafStreetRequest.builder()
+                .withMainStreet(street.getMainStreet())
+                .withDependentStreet(street.getDependentStreet())
+                .withDependentLocality(street.getDependentLocality())
+                .withPostTown(street.getPostTown())
+                .build();
     }
 }

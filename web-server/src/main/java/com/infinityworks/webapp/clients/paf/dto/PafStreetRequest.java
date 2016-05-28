@@ -12,8 +12,8 @@ import org.immutables.value.Value;
 @JsonDeserialize(as = ImmutablePafStreetRequest.class)
 @JsonSerialize(as = ImmutablePafStreetRequest.class)
 public interface PafStreetRequest {
-    @Value.Parameter @JsonProperty("main_street") String mainStreet();
-    @Value.Parameter @JsonProperty("post_town") String postTown();
-    @Value.Parameter @JsonProperty("dependent_street") String dependentStreet();
-    @Value.Parameter @JsonProperty("dependent_locality") String dependentLocality();
+    @JsonProperty("main_street") @Value.Default default String mainStreet() {return "";}
+    @JsonProperty("post_town") @Value.Default default String postTown() {return "";}
+    @JsonProperty("dependent_street") @Value.Default default String dependentStreet() {return "";}
+    @JsonProperty("dependent_locality") @Value.Default default String dependentLocality() {return "";}
 }

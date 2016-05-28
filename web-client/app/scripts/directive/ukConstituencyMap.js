@@ -6,7 +6,8 @@ angular
       templateUrl: 'views/partials/map.html',
       link: function (scope) {
         scope.legend = {};
-        var scheme = ['#fee5d9', '#fcbba1', '#fc9272', '#fb6a4a', '#ef3b2c', '#cb181d', '#99000d', '#6F000A'];
+        var scheme = ['#fee5d9', '#fcbba1', '#fc9272', '#fb6a4a', '#ef3b2c', '#cb181d', '#99000d', '#6F000A'],
+          turqoise = '#0aa89e';
 
         function createLegend() {
           var colors = d3.scale.quantize()
@@ -89,6 +90,8 @@ angular
             });
 
             map.data.addListener('mouseover', function (event) {
+              console.log(response);
+
               scope.legend.constituency = event.feature.H.PCON13NM;
               scope.legend.canvassed = event.feature.H.count;
               if (!scope.$$phase) {
@@ -97,7 +100,7 @@ angular
 
               map.data.revertStyle();
               map.data.overrideStyle(event.feature, {
-                fillColor: '#0aa89e',
+                fillColor: turqoise,
                 fillOpacity: 0.8
               });
             });

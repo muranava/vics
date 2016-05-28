@@ -13,20 +13,32 @@ function error_exit
 chmod +x /tmp/web-server-0.0.1.jar
 mkdir -p /var/tmp
 cp -f /tmp/web-server-0.0.1.jar /var/tmp/vics.jar
-cp -f /tmp/scripts/web-server-0.0.1.conf /var/tmp/vics.conf
 
 if [ "$DEPLOYMENT_GROUP_NAME" == "ProductionWebApp" ]
 then
     aws s3 cp s3://993854-config-production/vics/production.properties /var/tmp/application.properties
     aws s3 cp s3://993854-config-production/vics/logback.xml /var/tmp/logback.xml
+    cp -f /tmp/scripts/web-server-0.0.1.conf /var/tmp/vics.conf
 elif [ "$DEPLOYMENT_GROUP_NAME" == "StagingWebApp" ]
 then
     aws s3 cp s3://993854-config-staging/vics/staging.properties /var/tmp/application.properties
     aws s3 cp s3://993854-config-staging/vics/logback.xml /var/tmp/logback.xml
+    cp -f /tmp/scripts/web-server-0.0.1.conf /var/tmp/vics.conf
+elif [ "$DEPLOYMENT_GROUP_NAME" == "StagingWebPDF" ]
+then
+    aws s3 cp s3://993854-config-staging/vics/staging.properties /var/tmp/application.properties
+    aws s3 cp s3://993854-config-staging/vics/logback.xml /var/tmp/logback.xml
+    cp -f /tmp/scripts/web-server-pdf-0.0.1.conf /var/tmp/vics.conf
+elif [ "$DEPLOYMENT_GROUP_NAME" == "ProductionWebPDF" ]
+then
+    aws s3 cp s3://993854-config-staging/vics/staging.properties /var/tmp/application.properties
+    aws s3 cp s3://993854-config-staging/vics/logback.xml /var/tmp/logback.xml
+    cp -f /tmp/scripts/web-server-pdf-0.0.1.conf /var/tmp/vics.conf
 elif [ "$DEPLOYMENT_GROUP_NAME" == "DevWebAppDeploymentGroup" ]
 then
     aws s3 cp s3://993854-config/vics/development.properties /var/tmp/application.properties
     aws s3 cp s3://993854-config/vics/logback.xml /var/tmp/application.properties
+    cp -f /tmp/scripts/web-server-0.0.1.conf /var/tmp/vics.conf
 else
     error_exit "Could not determine environment!  Aborting. DEPLOYMENT_GROUP_NAME=$DEPLOYMENT_GROUP_NAME"
 fi
