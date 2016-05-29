@@ -1,7 +1,7 @@
 angular
   .module('canvass')
   .service('electorService', function (config, $http) {
-    var api = {}, apiUrl = config.apiUrl;
+    var api = {}, apiUrl = config.apiUrl, pdfApiUrl = config.pdfApiUrl;
 
     api.retrieveLocalElectorsByWards = function (wardCode) {
       return $http({
@@ -55,7 +55,7 @@ angular
     api.retrievePdfOfElectorsByStreets = function (wardCode, data, isLabels) {
       var urlSuffix = isLabels ? 'labels' : 'pdf';
       return $http({
-          url: apiUrl + '/elector/ward/' + wardCode + '/street/' + urlSuffix,
+          url: pdfApiUrl + '/elector/ward/' + wardCode + '/street/' + urlSuffix,
           method: 'POST',
           responseType: 'arraybuffer',
           headers: {

@@ -27,9 +27,10 @@ angular
   ])
   .constant('config', {
     apiUrl: 'http://localhost:18080/api/canvass',
+    pdfApiUrl: 'http://localhost:18080/api/canvass',
     supportEmail: 'vicssupport@voteleave.uk'
   })
-  .run(function($rootScope, config) {
+  .run(function ($rootScope, config) {
     $rootScope.supportEmail = config.supportEmail;
   })
   .config(function ($routeProvider, $httpProvider) {
@@ -57,7 +58,7 @@ angular
      */
     var userAuth = function ($q, authService, $location, $rootScope) {
       var deferred = $q.defer(),
-        route = _.find(authByRoute, function(route) {
+        route = _.find(authByRoute, function (route) {
           return _.startsWith($location.path(), route.route);
         });
 
@@ -196,6 +197,7 @@ angular
       function success(response) {
         return response;
       }
+
       function error(response) {
         var status = response.status;
         if (status === 401 || status === 403) {
@@ -204,6 +206,7 @@ angular
           return $q.reject(response);
         }
       }
+
       return function (promise) {
         return promise.then(success, error);
       };

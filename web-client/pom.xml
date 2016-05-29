@@ -91,7 +91,10 @@
             <phase>prepare-package</phase>
             <configuration>
               <tasks>
-                <replace token="http://localhost:18080/api/canvass" value="CANVASS_API_ELB_ENDPOINT" dir="${project.basedir}/../dist/client/scripts">
+                <replace token="apiUrl:&quot;http://localhost:18080/api/canvass" value="apiUrl:&quot;CANVASS_API_ELB_ENDPOINT" dir="${project.basedir}/../dist/client/scripts">
+                  <include name="scripts.*.js"/>
+                </replace>
+                <replace token="pdfApiUrl:&quot;http://localhost:18080/api/canvass" value="pdfApiUrl:&quot;CANVASS_API_PDF_ELB_ENDPOINT" dir="${project.basedir}/../dist/client/scripts">
                   <include name="scripts.*.js"/>
                 </replace>
               </tasks>

@@ -2,7 +2,7 @@
 angular
   .module('canvass')
   .service('gotvService', function(config, $http) {
-    var api = {}, apiUrl = config.apiUrl;
+    var api = {}, pdfApiUrl = config.pdfApiUrl;
 
     /**
      * Retrieves the households and electors in the given streets
@@ -10,7 +10,7 @@ angular
     api.retrievePdfOfElectorsByStreets = function (wardCode, data, isLabels) {
       var urlSuffix = isLabels ? 'labels' : 'pdf';
       return $http({
-          url: apiUrl + '/gotv/ward/' + wardCode + '/street/' + urlSuffix,
+          url: pdfApiUrl + '/gotv/ward/' + wardCode + '/street/' + urlSuffix,
           method: 'POST',
           responseType: 'arraybuffer',
           headers: {
