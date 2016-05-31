@@ -37,7 +37,7 @@ then
 elif [ "$DEPLOYMENT_GROUP_NAME" == "DevWebAppDeploymentGroup" ]
 then
     aws s3 cp s3://993854-config/vics/development.properties /var/tmp/application.properties
-    aws s3 cp s3://993854-config/vics/logback.xml /var/tmp/application.properties
+    aws s3 cp s3://993854-config/vics/logback.xml /var/tmp/logback.xml
     cp -f /tmp/scripts/web-server-0.0.1.conf /var/tmp/vics.conf
 else
     error_exit "Could not determine environment!  Aborting. DEPLOYMENT_GROUP_NAME=$DEPLOYMENT_GROUP_NAME"
