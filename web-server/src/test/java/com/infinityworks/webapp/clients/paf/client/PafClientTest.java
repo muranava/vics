@@ -1,8 +1,8 @@
 package com.infinityworks.webapp.clients.paf.client;
 
 import com.google.common.io.Resources;
-import com.infinityworks.webapp.clients.paf.dto.DeleteContactResponse;
-import com.infinityworks.webapp.clients.paf.dto.SearchVoterResponse;
+import com.infinityworks.pafclient.dto.DeleteContactResponse;
+import com.infinityworks.pafclient.dto.SearchVoterResponse;
 import org.junit.Test;
 
 import static com.infinityworks.webapp.common.JsonUtil.objectMapper;

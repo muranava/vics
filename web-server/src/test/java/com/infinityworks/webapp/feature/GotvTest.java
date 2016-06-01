@@ -10,7 +10,6 @@ import com.infinityworks.webapp.service.GotvService;
 import com.infinityworks.webapp.service.LabelService;
 import com.infinityworks.webapp.service.SessionService;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -71,7 +70,7 @@ public class GotvTest extends WebApplicationTest {
                 .withFlags(flags)
                 .build();
 
-        mockMvc.perform(post("/gotv/ward/E05001221/street/pdf")
+        mockMvc.perform(post("/gotv/ward/E05001221")
                 .accept("application/pdf")
                 .contentType(APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(request)))
@@ -92,7 +91,7 @@ public class GotvTest extends WebApplicationTest {
         String content = objectMapper.writeValueAsString(request);
         log.info("Gotv canvass card request: {}", content);
 
-        mockMvc.perform(post("/gotv/ward/E05001221/street/pdf")
+        mockMvc.perform(post("/gotv/ward/E05001221")
                 .accept("application/pdf")
                 .contentType(APPLICATION_JSON)
                 .content(content))
@@ -100,19 +99,20 @@ public class GotvTest extends WebApplicationTest {
                 .andExpect(status().isBadRequest());
     }
 
-    @Ignore
     @Test
     public void returnsTheFilteredVoters() throws Exception {
         when(sessionService.extractUserFromPrincipal(any(Principal.class)))
                 .thenReturn(Try.success(admin()));
 
         pafApiStub.willReturnVotersByStreets();
+        pdfServerStub.willReturnAGotvCanvassCard();
+
         ElectorsByStreetsRequest request = electorsByStreets().build();
 
         String content = objectMapper.writeValueAsString(request);
         log.info("Gotv canvass card request: {}", content);
 
-        mockMvc.perform(post("/gotv/ward/E05001221/street/pdf")
+        mockMvc.perform(post("/gotv/ward/E05001221")
                 .accept("application/pdf")
                 .contentType(APPLICATION_JSON)
                 .content(content))
@@ -131,7 +131,7 @@ public class GotvTest extends WebApplicationTest {
         String content = objectMapper.writeValueAsString(request);
         log.info("Gotpv postal voter card request: {}", content);
 
-        mockMvc.perform(post("/ward/E05001221/street/labels")
+        mockMvc.perform(post("/ward/E05001221/labels")
                 .accept("application/pdf")
                 .contentType(APPLICATION_JSON)
                 .content(content))

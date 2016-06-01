@@ -27,7 +27,6 @@ angular
   ])
   .constant('config', {
     apiUrl: 'http://localhost:18080/api/canvass',
-    pdfApiUrl: 'http://localhost:18080/api/canvass',
     supportEmail: 'vicssupport@voteleave.uk'
   })
   .run(function ($rootScope, config) {

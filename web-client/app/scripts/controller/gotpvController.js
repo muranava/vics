@@ -3,53 +3,7 @@ angular
   .controller('gotpvController', function ($scope, wardService, $filter, geoService, electorService, gotvService, $window, toastr, $uibModal) {
 
     $scope.numStreetsSelected = 0;
-    $scope.validationErrors = [];
     $scope.currentSort = "Priority DESC";
-
-    function createRadioItem(name) {
-      return {
-        name: name,
-        enabled: false,
-        value: null,
-        handler: function(value) {
-          this.value = value;
-        }
-      };
-    }
-
-    $scope.radios = [
-      createRadioItem('wantsPV'),
-      createRadioItem('hasPV'),
-      createRadioItem('lift'),
-      createRadioItem('poster'),
-      createRadioItem('canvassed'),
-      createRadioItem('telephone')
-    ];
-
-    function validateFlagsRadios() {
-      var errors = [];
-
-      $scope.radios.map(function (radio) {
-        if (radio.enabled && radio.value === null) {
-          errors.push("Radio for " + radio.name + " is not selected");
-        }
-      });
-
-      return errors;
-    }
-
-    function defaultSliderOptions() {
-      return {
-        minValue: 3,
-        maxValue: 5,
-        options: {
-          floor: 1,
-          ceil: 5,
-          showTicks: true,
-          showTicksValues: true
-        }
-      };
-    }
 
     function fire() {
       $scope.showSubMenu = $window.scrollY > 100;
@@ -57,14 +11,11 @@ angular
         $scope.$apply();
       }
     }
+
     var debounce = _.debounce(fire, 1, false);
     $("#canvassinputcontent").on('mousewheel', function () {
       debounce();
     });
-
-    $scope.intentionSlider = defaultSliderOptions();
-    $scope.likelihoodSlider = defaultSliderOptions();
-    $scope.likelihoodSlider.minValue = 2;
 
     $scope.onSelectConstituency = function () {
       resetErrors();
@@ -73,7 +24,7 @@ angular
     };
 
     function scrollToPrintSection() {
-      _.defer(function() {
+      _.defer(function () {
         $("html, body").animate({scrollTop: $('#printCards').offset().top - 75}, 500);
       });
     }
@@ -127,7 +78,7 @@ angular
       }
     };
 
-    $scope.onPrintLabels = function() {
+    $scope.onPrintLabels = function () {
       var selected = _.filter($scope.streets, function (s) {
         return s.selected;
       });
@@ -170,44 +121,18 @@ angular
         toastr.warning('Please select the streets you wish to generate labels for', 'No streets selected');
       }
 
-      $scope.validationErrors = validateFlagsRadios();
-      if (_.isEmpty($scope.validationErrors)) {
-        var data = buildRequest(streets);
-        gotvService.retrievePdfOfElectorsByStreets(wardCode, data, isLabels)
-          .success(function (response) {
-            var file = new Blob([response], {type: 'application/pdf'});
-            saveAs(file, $scope.ward.code + '.pdf');
-          })
-          .error(function(error) {
-            if (error && error.status === 404) {
-              toastr.info('We did not find any postal voters at the selected streets', 'No postal voters');
-            } else {
-              toastr.error('Failed to retrieve data from server', 'Error loading data');
-            }
-          });
-      }
-    }
-
-    function buildRequest(streets) {
-      var flags = getActiveOptionalFlags();
-      flags.intentionFrom = $scope.intentionSlider.minValue;
-      flags.intentionTo = $scope.intentionSlider.maxValue;
-      flags.likelihoodFrom = $scope.likelihoodSlider.minValue;
-      flags.likelihoodTo = $scope.likelihoodSlider.maxValue;
-      return {
-        streets: streets,
-        flags: flags
-      };
-    }
-
-    function getActiveOptionalFlags() {
-      var flags = {};
-      $scope.radios.map(function (radio) {
-        if (radio.enabled && radio.value !== null) {
-          flags[radio.name] = radio.value;
-        }
-      });
-      return flags;
+      gotvService.retrievePdfOfElectorsByStreets(wardCode, {streets: streets}, isLabels)
+        .success(function (response) {
+          var file = new Blob([response], {type: 'application/pdf'});
+          saveAs(file, $scope.ward.code + '.pdf');
+        })
+        .error(function (error) {
+          if (error && error.status === 404) {
+            toastr.info('We did not find any postal voters at the selected streets', 'No postal voters');
+          } else {
+            toastr.error('Failed to retrieve data from server', 'Error loading data');
+          }
+        });
     }
 
     $scope.getRatioPledged = function (numVoted, numPledged) {

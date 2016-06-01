@@ -3,13 +3,7 @@ package com.infinityworks.webapp.feature;
 import com.infinityworks.common.lang.Try;
 import com.infinityworks.webapp.common.RequestValidator;
 import com.infinityworks.webapp.error.RestErrorHandler;
-import com.infinityworks.webapp.pdf.CanvassTableConfig;
-import com.infinityworks.webapp.pdf.DocumentBuilder;
-import com.infinityworks.webapp.pdf.TableBuilder;
-import com.infinityworks.webapp.pdf.renderer.LogoRenderer;
 import com.infinityworks.webapp.rest.VoterController;
-import com.infinityworks.webapp.rest.dto.ElectorsByStreetsRequest;
-import com.infinityworks.webapp.rest.dto.StreetRequest;
 import com.infinityworks.webapp.service.RecordContactService;
 import com.infinityworks.webapp.service.RecordVotedService;
 import com.infinityworks.webapp.service.SessionService;
@@ -25,11 +19,7 @@ import org.springframework.web.util.UriComponents;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import java.security.Principal;
-import java.util.List;
 
-import static com.infinityworks.webapp.common.JsonUtil.objectMapper;
-import static com.infinityworks.webapp.testsupport.builder.downstream.ElectorsByStreetsRequestBuilder.electorsByStreets;
-import static java.util.Collections.emptyList;
 import static org.hamcrest.CoreMatchers.is;
 import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.mock;
@@ -61,49 +51,12 @@ public class VoterTest extends WebApplicationTest {
         RequestValidator requestValidator = getBean(RequestValidator.class);
         RecordVotedService recordVotedService = getBean(RecordVotedService.class);
         RecordContactService contactService = getBean(RecordContactService.class);
-        TableBuilder tableBuilder = new TableBuilder(new CanvassTableConfig());
-        DocumentBuilder documentBuilder = new DocumentBuilder(mock(LogoRenderer.class), new CanvassTableConfig());
-        VoterController wardController = new VoterController(tableBuilder, documentBuilder, voterService, requestValidator, recordVotedService, contactService, sessionService, new RestErrorHandler());
+        VoterController wardController = new VoterController(voterService, requestValidator, recordVotedService, contactService, sessionService, new RestErrorHandler());
 
         mockMvc = MockMvcBuilders
                 .standaloneSetup(wardController)
                 .build();
         pafApiStub.start();
-    }
-
-    @Test
-    public void returnsBadRequestIfStreetsIsEmpty() throws Exception {
-        String wardCode = "E05001221";
-        when(sessionService.extractUserFromPrincipal(any(Principal.class)))
-                .thenReturn(Try.success(earlsdon()));
-        pafApiStub.willReturnVotersByWardByTownAndByStreet(wardCode, "Coventry");
-
-        List<StreetRequest> townStreets = emptyList();
-        ElectorsByStreetsRequest request = electorsByStreets().withStreets(townStreets).build();
-        String url = "/elector/ward/" + wardCode + "/street/pdf";
-
-        mockMvc.perform(post(url)
-                .accept("application/pdf")
-                .contentType(APPLICATION_JSON)
-                .content(objectMapper.writeValueAsString(request)))
-                .andDo(print())
-                .andExpect(status().isBadRequest());
-    }
-
-    @Test
-    public void returnsBadRequestIfStreetsNull() throws Exception {
-        String wardCode = "E05001221";
-        when(sessionService.extractUserFromPrincipal(any(Principal.class)))
-                .thenReturn(Try.success(admin()));
-
-        List<StreetRequest> townStreets = null;
-        String url = "/elector/ward/" + wardCode + "/street/pdf";
-
-        mockMvc.perform(post(url)
-                .accept("application/pdf")
-                .contentType(APPLICATION_JSON)
-                .content(objectMapper.writeValueAsString(townStreets)))
-                .andDo(print()).andExpect(status().isBadRequest()).andReturn();
     }
 
     @Test

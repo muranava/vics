@@ -1,11 +1,12 @@
 package com.infinityworks.webapp.clients.paf.dto;
 
 import com.google.common.io.Resources;
+import com.infinityworks.pafclient.dto.RecordContactRequest;
 import org.junit.Test;
 
 import static com.infinityworks.webapp.common.JsonUtil.objectMapper;
 import static org.hamcrest.Matchers.is;
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertThat;
 
 public class RecordContactRequestTest {
     @Test

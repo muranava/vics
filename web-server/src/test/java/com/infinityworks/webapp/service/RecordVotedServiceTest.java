@@ -1,11 +1,11 @@
 package com.infinityworks.webapp.service;
 
 import com.infinityworks.common.lang.Try;
-import com.infinityworks.webapp.clients.paf.PafClient;
-import com.infinityworks.webapp.clients.paf.PafRequestExecutor;
-import com.infinityworks.webapp.clients.paf.dto.ImmutableRecordVotedResponse;
-import com.infinityworks.webapp.clients.paf.dto.ImmutableSuccess;
-import com.infinityworks.webapp.clients.paf.dto.RecordVotedResponse;
+import com.infinityworks.pafclient.PafClient;
+import com.infinityworks.pafclient.PafRequestExecutor;
+import com.infinityworks.pafclient.dto.ImmutableRecordVotedResponse;
+import com.infinityworks.pafclient.dto.ImmutableSuccess;
+import com.infinityworks.pafclient.dto.RecordVotedResponse;
 import com.infinityworks.webapp.converter.ErnShortFormToLongFormConverter;
 import com.infinityworks.webapp.domain.Ern;
 import com.infinityworks.webapp.domain.User;

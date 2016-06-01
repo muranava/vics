@@ -1,7 +1,7 @@
 package com.infinityworks.webapp.service.dto;
 
 import com.google.common.io.Resources;
-import com.infinityworks.webapp.clients.paf.dto.Property;
+import com.infinityworks.pafclient.dto.Property;
 import org.junit.Test;
 
 import static com.infinityworks.webapp.common.JsonUtil.objectMapper;

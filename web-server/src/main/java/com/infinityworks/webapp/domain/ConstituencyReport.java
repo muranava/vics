@@ -1,6 +1,6 @@
 package com.infinityworks.webapp.domain;
 
-import com.infinityworks.webapp.clients.paf.dto.ConstituencyStats;
+import com.infinityworks.pafclient.dto.ConstituencyStats;
 import org.immutables.value.Value.Immutable;
 import org.immutables.value.Value.Style;
 

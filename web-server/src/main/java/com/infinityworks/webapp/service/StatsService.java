@@ -2,10 +2,10 @@ package com.infinityworks.webapp.service;
 
 import com.google.common.collect.Maps;
 import com.infinityworks.common.lang.Try;
-import com.infinityworks.webapp.clients.paf.PafClient;
-import com.infinityworks.webapp.clients.paf.PafRequestExecutor;
-import com.infinityworks.webapp.clients.paf.dto.ConstituencyStats;
-import com.infinityworks.webapp.clients.paf.dto.WardStats;
+import com.infinityworks.pafclient.PafClient;
+import com.infinityworks.pafclient.PafRequestExecutor;
+import com.infinityworks.pafclient.dto.ConstituencyStats;
+import com.infinityworks.pafclient.dto.WardStats;
 import com.infinityworks.webapp.converter.MostCanvassedQueryConverter;
 import com.infinityworks.webapp.converter.TopCanvasserQueryConverter;
 import com.infinityworks.webapp.domain.User;

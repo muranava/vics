@@ -1,6 +1,8 @@
 package com.infinityworks.webapp.clients.paf.dto;
 
 import com.google.common.io.Resources;
+import com.infinityworks.pafclient.dto.PafStreetResponse;
+import com.infinityworks.pafclient.dto.StreetsResponse;
 import org.junit.Test;
 
 import static com.infinityworks.webapp.common.JsonUtil.objectMapper;

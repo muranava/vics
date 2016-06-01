@@ -24,6 +24,7 @@ canvass:
   cors:
     hosts: "*"
     methods:  "POST, GET, PUT, OPTIONS, DELETE"
+  pdfServerBaseUrl: http://localhost:18089/api/pdf
   pafApiBaseUrl: http://localhost:9002/v1/
   pafApiToken: token
   pafApiTimeout: 30000

@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-VERSION=48
+VERSION=31
 ELB_DEV="https://WebApp-57219498.eu-west-1.elb.amazonaws.com:18080/api/canvass"
 ELB_PDF_DEV="https://WebApp-57219498.eu-west-1.elb.amazonaws.com:18080/api/canvass"
 ELB_STAGING="https://WebApp-2103587711.eu-west-1.elb.amazonaws.com:18080/api/canvass"

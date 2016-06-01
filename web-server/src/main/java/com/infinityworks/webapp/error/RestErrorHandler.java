@@ -1,5 +1,7 @@
 package com.infinityworks.webapp.error;
 
+import com.infinityworks.pafclient.error.PafApiFailure;
+import com.infinityworks.pafclient.error.PafApiNotFoundFailure;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpHeaders;
@@ -10,8 +12,6 @@ import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.authentication.BadCredentialsException;
 
 import javax.validation.ValidationException;
-
-import static org.springframework.http.HttpStatus.*;
 
 /**
  * An application wide error handler.

@@ -1,5 +1,7 @@
 package com.infinityworks.webapp.error;
 
+import com.infinityworks.pafclient.error.PafApiFailure;
+import com.infinityworks.pafclient.error.PafApiNotFoundFailure;
 import org.junit.Test;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.AccessDeniedException;

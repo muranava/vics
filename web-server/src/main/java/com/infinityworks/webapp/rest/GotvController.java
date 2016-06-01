@@ -6,7 +6,6 @@ import com.infinityworks.webapp.rest.dto.ElectorsByStreetsRequest;
 import com.infinityworks.webapp.service.GotvService;
 import com.infinityworks.webapp.service.LabelService;
 import com.infinityworks.webapp.service.SessionService;
-import com.lowagie.text.DocumentException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -35,6 +34,11 @@ public class GotvController {
     private final LabelService labelService;
     private final RestErrorHandler errorHandler;
 
+    private static final HttpHeaders responseHeaders = new HttpHeaders();
+    static {
+        responseHeaders.setContentType(MediaType.valueOf("application/pdf"));
+    }
+
     @Autowired
     public GotvController(RequestValidator requestValidator,
                           SessionService sessionService,
@@ -49,32 +53,31 @@ public class GotvController {
     }
 
     @PreAuthorize("isAuthenticated()")
-    @RequestMapping(value = "/ward/{wardCode}/street/pdf", method = POST)
-    public ResponseEntity<?> getPdfOfElectorsByTownStreet(
-            @RequestBody @Valid ElectorsByStreetsRequest request,
-            @PathVariable("wardCode") String wardCode,
-            Principal principal) throws DocumentException {
+    @RequestMapping(value = "/ward/{wardCode}", method = POST)
+    public ResponseEntity<?> getPdfOfElectorsByTownStreet(Principal principal, @PathVariable("wardCode") String wardCode,
+            @RequestBody @Valid ElectorsByStreetsRequest request) {
         return requestValidator.validate(request)
                 .flatMap(req -> sessionService.extractUserFromPrincipal(principal))
-                .flatMap(user -> gotvService.generateElectorsByStreet(wardCode, user, request))
+                .flatMap(user -> gotvService.generateGotvCanvassCard(user, wardCode, request))
                 .fold(restErrorHandler::mapToResponseEntity,
                       pdfData -> {
                           HttpHeaders responseHeaders = new HttpHeaders();
                           responseHeaders.setContentType(MediaType.valueOf("application/pdf"));
-                          return new ResponseEntity<>(pdfData.toByteArray(), responseHeaders, HttpStatus.OK);
+                          return new ResponseEntity<>(pdfData, responseHeaders, HttpStatus.OK);
                       });
     }
 
     @PreAuthorize("isAuthenticated()")
-    @RequestMapping(value = "/ward/{wardCode}/street/labels", method = POST)
+    @RequestMapping(value = "/ward/{wardCode}/labels", method = POST)
     public ResponseEntity<?> getPostalVotersAddressLabelsPdf(
             @RequestBody @Valid ElectorsByStreetsRequest electorsByStreetsRequest,
             @PathVariable("wardCode") String wardCode,
-            Principal principal) throws DocumentException {
+            Principal principal) {
         return requestValidator.validate(electorsByStreetsRequest)
                 .flatMap(streets -> sessionService.extractUserFromPrincipal(principal))
                 .flatMap(user -> labelService.generateAddressLabelsForPostalVoters(electorsByStreetsRequest, wardCode, user))
-                .fold(errorHandler::mapToResponseEntity, this::handlePdfResponse);
+                .fold(errorHandler::mapToResponseEntity,
+                      content -> new ResponseEntity<>(content, responseHeaders, HttpStatus.OK));
     }
 
     private ResponseEntity<byte[]> handlePdfResponse(ByteArrayOutputStream outputStream) {

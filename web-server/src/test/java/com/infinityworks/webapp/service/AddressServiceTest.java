@@ -1,8 +1,8 @@
 package com.infinityworks.webapp.service;
 
 import com.infinityworks.common.lang.Try;
-import com.infinityworks.webapp.clients.paf.dto.ImmutableStats;
-import com.infinityworks.webapp.clients.paf.dto.Stats;
+import com.infinityworks.pafclient.dto.ImmutableStats;
+import com.infinityworks.pafclient.dto.Stats;
 import com.infinityworks.webapp.domain.User;
 import com.infinityworks.webapp.error.NotAuthorizedFailure;
 import com.infinityworks.webapp.error.NotFoundFailure;

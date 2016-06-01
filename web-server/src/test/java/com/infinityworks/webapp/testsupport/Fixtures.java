@@ -1,9 +1,9 @@
 package com.infinityworks.webapp.testsupport;
 
-import com.infinityworks.webapp.clients.paf.dto.ImmutableFlags;
-import com.infinityworks.webapp.clients.paf.dto.ImmutableIssues;
-import com.infinityworks.webapp.clients.paf.dto.ImmutableVoter;
-import com.infinityworks.webapp.clients.paf.dto.ImmutableVoting;
+import com.infinityworks.pafclient.dto.ImmutableFlags;
+import com.infinityworks.pafclient.dto.ImmutableIssues;
+import com.infinityworks.pafclient.dto.ImmutableVoter;
+import com.infinityworks.pafclient.dto.ImmutableVoting;
 import com.infinityworks.webapp.domain.PasswordResetToken;
 import com.infinityworks.webapp.domain.User;
 import com.infinityworks.webapp.rest.dto.ImmutableStreet;

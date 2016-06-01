@@ -39,8 +39,9 @@
             <version>${project.version}</version>
         </dependency>
         <dependency>
-            <groupId>com.lowagie</groupId>
-            <artifactId>itext</artifactId>
+            <groupId>com.infinityworks</groupId>
+            <artifactId>paf-client</artifactId>
+            <version>${project.version}</version>
         </dependency>
         <dependency>
             <groupId>com.sendgrid</groupId>
@@ -249,33 +250,6 @@
                         </configuration>
                         <goals>
                             <goal>run</goal>
-                        </goals>
-                    </execution>
-                </executions>
-            </plugin>
-            <plugin>
-                <groupId>org.scala-tools</groupId>
-                <artifactId>maven-scala-plugin</artifactId>
-                <version>2.15.2</version>
-                <executions>
-                    <execution>
-                        <id>compile</id>
-                        <goals>
-                            <goal>compile</goal>
-                        </goals>
-                        <phase>compile</phase>
-                    </execution>
-                    <execution>
-                        <id>test-compile</id>
-                        <goals>
-                            <goal>testCompile</goal>
-                        </goals>
-                        <phase>test-compile</phase>
-                    </execution>
-                    <execution>
-                        <phase>process-resources</phase>
-                        <goals>
-                            <goal>compile</goal>
                         </goals>
                     </execution>
                 </executions>

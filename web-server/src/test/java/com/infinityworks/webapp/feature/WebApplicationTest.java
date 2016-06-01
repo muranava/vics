@@ -9,6 +9,7 @@ import com.infinityworks.webapp.config.Config;
 import com.infinityworks.webapp.domain.User;
 import com.infinityworks.webapp.security.SecurityConfig;
 import com.infinityworks.webapp.service.UserService;
+import com.infinityworks.webapp.testsupport.mocks.PdfServerStub;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.runner.RunWith;
@@ -35,6 +36,7 @@ import javax.servlet.Filter;
 public abstract class WebApplicationTest {
     protected MockMvc mockMvc;
     protected final PafServerStub pafApiStub = new PafServerStub(9002);
+    protected final PdfServerStub pdfServerStub = new PdfServerStub(18089);
 
     @Autowired
     protected WebApplicationContext applicationContext;
@@ -64,11 +66,13 @@ public abstract class WebApplicationTest {
     @Before
     public void setUp() {
         pafApiStub.start();
+        pdfServerStub.start();
     }
 
     @After
     public void tearDown() throws Exception {
         pafApiStub.stop();
+        pdfServerStub.stop();
     }
 }
 

@@ -6,6 +6,7 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 @ConfigurationProperties(prefix="canvass")
 public class AppProperties {
+    private String pdfServerBaseUrl;
     private String pafApiBaseUrl;
     private String pafApiTimeout;
     private String pafApiToken;
@@ -95,5 +96,13 @@ public class AppProperties {
 
     public void setNewAccountEmailSubject(String newAccountEmailSubject) {
         this.newAccountEmailSubject = newAccountEmailSubject;
+    }
+
+    public String getPdfServerBaseUrl() {
+        return pdfServerBaseUrl;
+    }
+
+    public void setPdfServerBaseUrl(String pdfServerBaseUrl) {
+        this.pdfServerBaseUrl = pdfServerBaseUrl;
     }
 }

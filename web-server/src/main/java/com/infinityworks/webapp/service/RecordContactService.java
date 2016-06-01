@@ -1,11 +1,11 @@
 package com.infinityworks.webapp.service;
 
 import com.infinityworks.common.lang.Try;
-import com.infinityworks.webapp.clients.paf.PafClient;
-import com.infinityworks.webapp.clients.paf.PafRequestExecutor;
-import com.infinityworks.webapp.clients.paf.converter.RecordContactToPafConverter;
-import com.infinityworks.webapp.clients.paf.dto.DeleteContactResponse;
-import com.infinityworks.webapp.clients.paf.dto.RecordContactResponse;
+import com.infinityworks.pafclient.PafClient;
+import com.infinityworks.pafclient.PafRequestExecutor;
+import com.infinityworks.pafclient.dto.DeleteContactResponse;
+import com.infinityworks.pafclient.dto.RecordContactResponse;
+import com.infinityworks.webapp.converter.RecordContactToPafConverter;
 import com.infinityworks.webapp.domain.Ern;
 import com.infinityworks.webapp.domain.RecordContactLog;
 import com.infinityworks.webapp.domain.User;
@@ -60,7 +60,7 @@ public class RecordContactService {
             return wardService
                     .getByCode(ern.getWardCode(), user)
                     .flatMap(ward -> {
-                        com.infinityworks.webapp.clients.paf.dto.RecordContactRequest pafRequest = recordContactToPafConverter.apply(user, contactRequest);
+                        com.infinityworks.pafclient.dto.RecordContactRequest pafRequest = recordContactToPafConverter.apply(user, contactRequest);
                         Call<RecordContactResponse> call = pafClient.recordContact(ern.longForm(), pafRequest);
                         return pafRequestExecutor.execute(call).map(response -> {
                             RecordContactLog recordContactLog = new RecordContactLog(user, ward, ern.longForm());

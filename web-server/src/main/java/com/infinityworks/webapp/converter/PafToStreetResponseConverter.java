@@ -1,6 +1,6 @@
 package com.infinityworks.webapp.converter;
 
-import com.infinityworks.webapp.clients.paf.dto.PafStreetResponse;
+import com.infinityworks.pafclient.dto.PafStreetResponse;
 import com.infinityworks.webapp.rest.dto.ImmutableStreet;
 import com.infinityworks.webapp.rest.dto.Street;
 import org.springframework.stereotype.Component;

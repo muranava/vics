@@ -15,8 +15,9 @@
 
     <modules>
         <module>common</module>
+        <module>paf-client</module>
         <module>paf-stub</module>
-        <module>perf-tests</module>
+        <module>pdf-server</module>
         <module>tools</module>
         <module>web-client</module>
         <module>web-server</module>
@@ -31,6 +32,7 @@
 
         <apache-http-client.version>4.5.1</apache-http-client.version>
         <commons-csv.version>1.2</commons-csv.version>
+        <commons-io.version>2.5</commons-io.version>
         <commons-lang3.version>3.0</commons-lang3.version>
         <db-setup.version>1.6.0</db-setup.version>
         <equals-verifier.version>1.7.8</equals-verifier.version>
@@ -142,6 +144,11 @@
                 <groupId>com.squareup.retrofit2</groupId>
                 <artifactId>retrofit</artifactId>
                 <version>${retrofit.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>commons-io</groupId>
+                <artifactId>commons-io</artifactId>
+                <version>${commons-io.version}</version>
             </dependency>
             <dependency>
                 <groupId>javax.persistence</groupId>

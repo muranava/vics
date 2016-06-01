@@ -1,6 +1,6 @@
 package com.infinityworks.webapp.converter;
 
-import com.infinityworks.webapp.clients.paf.dto.ImmutablePafStreetResponse;
+import com.infinityworks.pafclient.dto.ImmutablePafStreetResponse;
 import com.infinityworks.webapp.rest.dto.Street;
 import org.junit.Test;
 

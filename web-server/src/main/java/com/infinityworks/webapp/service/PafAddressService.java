@@ -1,9 +1,9 @@
 package com.infinityworks.webapp.service;
 
 import com.infinityworks.common.lang.Try;
-import com.infinityworks.webapp.clients.paf.PafClient;
-import com.infinityworks.webapp.clients.paf.PafRequestExecutor;
-import com.infinityworks.webapp.clients.paf.dto.StreetsResponse;
+import com.infinityworks.pafclient.PafClient;
+import com.infinityworks.pafclient.PafRequestExecutor;
+import com.infinityworks.pafclient.dto.StreetsResponse;
 import com.infinityworks.webapp.converter.PafToStreetResponseConverter;
 import com.infinityworks.webapp.rest.dto.ImmutableStreetsByWardResponse;
 import com.infinityworks.webapp.rest.dto.Street;

@@ -9,16 +9,10 @@ import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.google.common.base.Charsets;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.io.Resources;
+import com.infinityworks.pafclient.PafRequestExecutor;
 import com.infinityworks.webapp.common.RequestValidator;
-import com.infinityworks.webapp.converter.PropertyToRowsConverter;
 import com.infinityworks.webapp.error.RestErrorHandler;
 import com.infinityworks.webapp.filter.CorsConfig;
-import com.infinityworks.webapp.pdf.CanvassTableConfig;
-import com.infinityworks.webapp.pdf.DocumentBuilder;
-import com.infinityworks.webapp.pdf.GotvTableConfig;
-import com.infinityworks.webapp.pdf.TableBuilder;
-import com.infinityworks.webapp.pdf.renderer.LogoRenderer;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.support.PropertySourcesPlaceholderConfigurer;
@@ -28,7 +22,6 @@ import org.springframework.scheduling.annotation.EnableAsync;
 import javax.validation.Validation;
 import javax.validation.ValidatorFactory;
 import java.io.IOException;
-import java.net.URL;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -73,6 +66,11 @@ public class Config {
     }
 
     @Bean
+    public PafRequestExecutor pafRequestExecutor() {
+        return new PafRequestExecutor();
+    }
+
+    @Bean
     public RequestValidator requestValidator(ObjectMapper mapper) {
         ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
         return new RequestValidator(factory.getValidator(), mapper);
@@ -84,40 +82,5 @@ public class Config {
         String methods = env.getRequiredProperty("canvass.cors.methods");
         Set<String> hosts = new HashSet<>(asList(allowedHosts.split(",")));
         return new CorsConfig(hosts, methods);
-    }
-
-    @Bean
-    @Qualifier("canvass")
-    public TableBuilder canvassTableBuilder() {
-        return new TableBuilder(new CanvassTableConfig());
-    }
-
-    @Bean
-    @Qualifier("gotv")
-    public TableBuilder gotvTableBuilder() {
-        return new TableBuilder(new GotvTableConfig());
-    }
-
-    @Bean
-    @Qualifier("canvass")
-    public DocumentBuilder canvassDocumentBuilder(LogoRenderer logoRenderer) {
-        return new DocumentBuilder(logoRenderer, new CanvassTableConfig());
-    }
-
-    @Bean
-    @Qualifier("gotv")
-    public DocumentBuilder gotvDocumentBuilder(LogoRenderer logoRenderer) {
-        return new DocumentBuilder(logoRenderer, new GotvTableConfig());
-    }
-
-    @Bean
-    public LogoRenderer logoRenderer() {
-        URL logo = Resources.getResource("logo.png");
-        return new LogoRenderer(logo);
-    }
-
-    @Bean
-    public PropertyToRowsConverter propertyToRowConverter() {
-        return new PropertyToRowsConverter();
     }
 }

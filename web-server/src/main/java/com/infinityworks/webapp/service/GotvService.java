@@ -1,35 +1,37 @@
 package com.infinityworks.webapp.service;
 
 import com.infinityworks.common.lang.Try;
+import com.infinityworks.webapp.clients.pdfserver.PdfClient;
+import com.infinityworks.webapp.clients.pdfserver.dto.GeneratePdfRequest;
+import com.infinityworks.webapp.clients.pdfserver.dto.RequestInfo;
 import com.infinityworks.webapp.domain.User;
-import com.infinityworks.webapp.pdf.DocumentBuilder;
-import com.infinityworks.webapp.pdf.TableBuilder;
 import com.infinityworks.webapp.rest.dto.ElectorsByStreetsRequest;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
-
-import java.io.ByteArrayOutputStream;
 
 @Service
 public class GotvService {
-
-    private final VoterService voterService;
-    private final TableBuilder tableBuilder;
-    private final DocumentBuilder documentBuilder;
+    private static final Logger log = LoggerFactory.getLogger(GotvService.class);
+    private final PdfClient pdfServerClient;
+    private final WardService wardService;
 
     @Autowired
-    public GotvService(VoterService voterService,
-                       @Qualifier("gotv") TableBuilder tableBuilder,
-                       @Qualifier("gotv") DocumentBuilder documentBuilder) {
-        this.voterService = voterService;
-        this.tableBuilder = tableBuilder;
-        this.documentBuilder = documentBuilder;
+    public GotvService(PdfClient pdfServerClient, WardService wardService) {
+        this.pdfServerClient = pdfServerClient;
+        this.wardService = wardService;
     }
 
-    public Try<ByteArrayOutputStream> generateElectorsByStreet(String wardCode,
-                                                               User user,
-                                                               ElectorsByStreetsRequest request) {
-        return voterService.getPdfOfFilteredElectorsByStreet(tableBuilder, documentBuilder, request, wardCode, user);
+    public Try<byte[]> generateGotvCanvassCard(User user, String wardCode, ElectorsByStreetsRequest request) {
+        return wardService.getByCode(wardCode, user)
+                .flatMap(ward -> {
+                    RequestInfo requestInfo = new RequestInfo(wardCode, ward.getName(), ward.getConstituency().getName());
+                    GeneratePdfRequest generatePdfRequest = new GeneratePdfRequest(request.getStreets(), request.getFlags(), requestInfo);
+                    return pdfServerClient.requestGotvCanvassCard(generatePdfRequest);
+                }).map(content -> {
+                    log.info("User={} generated address labels for GOTPV. ward={}", user, wardCode);
+                    return content;
+                });
     }
 }

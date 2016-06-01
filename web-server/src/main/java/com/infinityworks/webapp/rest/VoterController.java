@@ -3,27 +3,18 @@ package com.infinityworks.webapp.rest;
 import com.infinityworks.webapp.common.RequestValidator;
 import com.infinityworks.webapp.domain.Ern;
 import com.infinityworks.webapp.error.RestErrorHandler;
-import com.infinityworks.webapp.pdf.DocumentBuilder;
-import com.infinityworks.webapp.pdf.TableBuilder;
-import com.infinityworks.webapp.rest.dto.ElectorsByStreetsRequest;
 import com.infinityworks.webapp.rest.dto.RecordContactRequest;
 import com.infinityworks.webapp.rest.dto.SearchElectors;
 import com.infinityworks.webapp.service.RecordContactService;
 import com.infinityworks.webapp.service.RecordVotedService;
 import com.infinityworks.webapp.service.SessionService;
 import com.infinityworks.webapp.service.VoterService;
-import com.lowagie.text.DocumentException;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.io.ByteArrayOutputStream;
 import java.security.Principal;
 import java.util.UUID;
 
@@ -32,8 +23,6 @@ import static org.springframework.web.bind.annotation.RequestMethod.*;
 @RestController
 @RequestMapping("/elector")
 public class VoterController {
-    private final TableBuilder tableBuilder;
-    private final DocumentBuilder documentBuilder;
     private final VoterService voterService;
     private final RequestValidator requestValidator;
     private final RecordVotedService recordVotedService;
@@ -42,16 +31,12 @@ public class VoterController {
     private final RestErrorHandler errorHandler;
 
     @Autowired
-    public VoterController(@Qualifier("canvass") TableBuilder tableBuilder,
-                           @Qualifier("canvass") DocumentBuilder documentBuilder,
-                           VoterService voterService,
+    public VoterController(VoterService voterService,
                            RequestValidator requestValidator,
                            RecordVotedService recordVotedService,
                            RecordContactService contactService,
                            SessionService sessionService,
                            RestErrorHandler errorHandler) {
-        this.tableBuilder = tableBuilder;
-        this.documentBuilder = documentBuilder;
         this.voterService = voterService;
         this.requestValidator = requestValidator;
         this.recordVotedService = recordVotedService;
@@ -78,7 +63,7 @@ public class VoterController {
     @RequestMapping(value = "/{ern}/contact", method = POST)
     public ResponseEntity<?> recordContact(Principal principal,
                                            @PathVariable("ern") Ern ern,
-                                           @Valid @RequestBody RecordContactRequest recordContactRequest) throws DocumentException {
+                                           @Valid @RequestBody RecordContactRequest recordContactRequest) {
         return sessionService.extractUserFromPrincipal(principal)
                 .flatMap(user -> contactService.recordContact(user, ern, recordContactRequest))
                 .fold(errorHandler::mapToResponseEntity, ResponseEntity::ok);
@@ -89,7 +74,7 @@ public class VoterController {
     public ResponseEntity<?> deleteContact(Principal principal,
                                            @PathVariable("ern") Ern ern,
                                            @PathVariable("contactId") UUID contactId,
-                                           @PathVariable("localId") UUID localId) throws DocumentException {
+                                           @PathVariable("localId") UUID localId) {
         return sessionService.extractUserFromPrincipal(principal)
                 .flatMap(user -> contactService.deleteContact(user, ern, contactId, localId))
                 .fold(errorHandler::mapToResponseEntity, ResponseEntity::ok);
@@ -117,23 +102,5 @@ public class VoterController {
         return sessionService.extractUserFromPrincipal(principal)
                 .flatMap(user -> recordVotedService.undoVote(user, ern))
                 .fold(errorHandler::mapToResponseEntity, ResponseEntity::ok);
-    }
-
-    @PreAuthorize("isAuthenticated()")
-    @RequestMapping(value = "/ward/{wardCode}/street/pdf", method = POST)
-    public ResponseEntity<?> getPdfOfElectorsByTownStreet(
-            @RequestBody @Valid ElectorsByStreetsRequest electorsByStreetsRequest,
-            @PathVariable("wardCode") String wardCode,
-            Principal principal) throws DocumentException {
-        return requestValidator.validate(electorsByStreetsRequest)
-                .flatMap(streets -> sessionService.extractUserFromPrincipal(principal))
-                .flatMap(user -> voterService.getPdfOfElectorsByStreet(tableBuilder, documentBuilder, electorsByStreetsRequest, wardCode, user))
-                .fold(errorHandler::mapToResponseEntity, this::handlePdfResponse);
-    }
-
-    private ResponseEntity<byte[]> handlePdfResponse(ByteArrayOutputStream outputStream) {
-        HttpHeaders responseHeaders = new HttpHeaders();
-        responseHeaders.setContentType(MediaType.valueOf("application/pdf"));
-        return new ResponseEntity<>(outputStream.toByteArray(), responseHeaders, HttpStatus.OK);
     }
 }

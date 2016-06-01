@@ -1,11 +1,11 @@
 package com.infinityworks.webapp.service;
 
 import com.infinityworks.common.lang.Try;
-import com.infinityworks.webapp.clients.paf.PafClient;
-import com.infinityworks.webapp.clients.paf.PafRequestExecutor;
-import com.infinityworks.webapp.clients.paf.converter.RecordContactToPafConverter;
-import com.infinityworks.webapp.clients.paf.dto.ImmutableRecordContactResponse;
-import com.infinityworks.webapp.clients.paf.dto.RecordContactResponse;
+import com.infinityworks.pafclient.PafClient;
+import com.infinityworks.pafclient.PafRequestExecutor;
+import com.infinityworks.pafclient.dto.ImmutableRecordContactResponse;
+import com.infinityworks.pafclient.dto.RecordContactResponse;
+import com.infinityworks.webapp.converter.RecordContactToPafConverter;
 import com.infinityworks.webapp.domain.Ern;
 import com.infinityworks.webapp.domain.User;
 import com.infinityworks.webapp.domain.Ward;
@@ -55,7 +55,7 @@ public class ContactServiceTest {
                 .withWards(newHashSet(earlsdon))
                 .build();
         given(wardService.getByCode("E05001221", user)).willReturn(Try.success(earlsdon));
-        com.infinityworks.webapp.clients.paf.dto.RecordContactRequest contactRecord = recordContactToPafConverter.apply(user, request);
+        com.infinityworks.pafclient.dto.RecordContactRequest contactRecord = recordContactToPafConverter.apply(user, request);
         Call<RecordContactResponse> success = CallStub.success(ImmutableRecordContactResponse.builder().withId(UUID.randomUUID()).withErn("E05001221-PD-123-4").build());
         given(pafClient.recordContact("E05001221-PD-123-4", contactRecord)).willReturn(success);
 
