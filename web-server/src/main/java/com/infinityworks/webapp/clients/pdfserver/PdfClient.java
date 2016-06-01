@@ -5,14 +5,16 @@ import com.infinityworks.webapp.clients.pdfserver.dto.GeneratePdfRequest;
 import com.infinityworks.webapp.common.LambdaLogger;
 import com.infinityworks.webapp.config.AppProperties;
 import com.infinityworks.webapp.error.NotFoundFailure;
-import com.infinityworks.webapp.error.PdfServerFailure;
+import com.infinityworks.webapp.error.ServerFailure;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.*;
 import org.springframework.stereotype.Component;
+import org.springframework.web.client.HttpStatusCodeException;
 import org.springframework.web.client.RestTemplate;
 
-import java.util.Collections;
 import java.util.UUID;
+
+import static java.util.Arrays.asList;
 
 @Component
 public class PdfClient {
@@ -23,8 +25,9 @@ public class PdfClient {
     private final String gotpvLabelsUrl;
 
     private static final HttpHeaders requestHeaders = new HttpHeaders();
+
     static {
-        requestHeaders.setAccept(Collections.singletonList(MediaType.APPLICATION_OCTET_STREAM));
+        requestHeaders.setAccept(asList(MediaType.APPLICATION_OCTET_STREAM, MediaType.APPLICATION_JSON));
     }
 
     @Autowired
@@ -54,25 +57,25 @@ public class PdfClient {
         log.debug(() -> String.format("PDF Server Request[%s] %s", correlationKey, url));
 
         HttpEntity<GeneratePdfRequest> requestEntity = new HttpEntity<>(request, requestHeaders);
-        ResponseEntity<byte[]> responseEntity = template.exchange(url, HttpMethod.POST, requestEntity, byte[].class);
-        Try<byte[]> response = handleResponse(responseEntity);
+        try {
+            ResponseEntity<?> responseEntity = template.exchange(url, HttpMethod.POST, requestEntity, byte[].class);
 
-        log.debug(() -> {
-            long endTime = System.currentTimeMillis();
-            return String.format("PDF Server Response[%s] %s. pdf_server_response_time=%s", correlationKey, url, endTime - startTime);
-        });
+            log.debug(() -> {
+                long endTime = System.currentTimeMillis();
+                return String.format("PDF Server Response[%s] %s. pdf_server_response_time=%s", correlationKey, url, endTime - startTime);
+            });
 
-        return response;
+            return Try.success((byte[])responseEntity.getBody());
+        } catch (HttpStatusCodeException ex) {
+            return handleFailure(ex, ex.getStatusCode().value());
+        }
     }
 
-    private Try<byte[]> handleResponse(ResponseEntity<byte[]> responseEntity) {
-        if (responseEntity.getStatusCode().value() == 200) {
-            return Try.success(responseEntity.getBody());
-        } else if (responseEntity.getStatusCode().value() == 404) {
+    private Try<byte[]> handleFailure(Exception ex, int statusCode) {
+        if (statusCode == 404) {
             return Try.failure(new NotFoundFailure("No voters for given criteria"));
         } else {
-            log.error(() -> String.format("Failed to download pdf: status=%s", responseEntity.getStatusCode()));
-            return Try.failure(new PdfServerFailure("Error loading PDF"));
+            return Try.failure(new ServerFailure("Failed to retrieve voters", ex));
         }
     }
 }
