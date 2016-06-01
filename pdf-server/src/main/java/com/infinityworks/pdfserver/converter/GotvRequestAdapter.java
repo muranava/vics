@@ -11,11 +11,11 @@ import java.util.function.Function;
 import static java.util.stream.Collectors.toList;
 
 @Component
-public class GetFilteredVotersRequestBuilder implements Function<GeneratePdfRequest, GotvVoterRequest> {
+public class GotvRequestAdapter implements Function<GeneratePdfRequest, GotvVoterRequest> {
     private final PafStreetRequestConverter streetConverter;
 
     @Autowired
-    public GetFilteredVotersRequestBuilder(PafStreetRequestConverter streetConverter) {
+    public GotvRequestAdapter(PafStreetRequestConverter streetConverter) {
         this.streetConverter = streetConverter;
     }
 

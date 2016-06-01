@@ -3,6 +3,7 @@ package com.infinityworks.pdfserver.controller.dto;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.google.common.base.MoreObjects;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class RequestInfo {
@@ -29,5 +30,14 @@ public class RequestInfo {
 
     public String getConstituencyName() {
         return constituencyName;
+    }
+
+    @Override
+    public String toString() {
+        return MoreObjects.toStringHelper(this)
+                .add("wardCode", wardCode)
+                .add("wardName", wardName)
+                .add("constituencyName", constituencyName)
+                .toString();
     }
 }

@@ -4,6 +4,7 @@ import com.infinityworks.pdfserver.controller.dto.GeneratePdfRequest;
 import com.infinityworks.pdfserver.error.ErrorHandler;
 import com.infinityworks.pdfserver.service.AddressLabelGenerator;
 import com.infinityworks.pdfserver.service.CanvassCardGenerator;
+import com.infinityworks.pdfserver.service.GotvCanvassCardGenerator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -21,14 +22,17 @@ import static org.springframework.web.bind.annotation.RequestMethod.POST;
 @RequestMapping("/canvass")
 public class PdfController {
     private final CanvassCardGenerator canvassCardGenerator;
+    private final GotvCanvassCardGenerator gotvCanvassCardGenerator;
     private final AddressLabelGenerator addressLabelGenerator;
     private final ErrorHandler errorHandler;
 
     @Autowired
     public PdfController(CanvassCardGenerator canvassCardGenerator,
+                         GotvCanvassCardGenerator gotvCanvassCardGenerator,
                          AddressLabelGenerator addressLabelGenerator,
                          ErrorHandler errorHandler) {
         this.canvassCardGenerator = canvassCardGenerator;
+        this.gotvCanvassCardGenerator = gotvCanvassCardGenerator;
         this.addressLabelGenerator = addressLabelGenerator;
         this.errorHandler = errorHandler;
     }
@@ -42,7 +46,7 @@ public class PdfController {
 
     @RequestMapping(method = POST, value = "/gotv")
     public ResponseEntity<?> generateGotvCanvassCard(@RequestBody GeneratePdfRequest request) {
-        return canvassCardGenerator
+        return gotvCanvassCardGenerator
                 .generateCanvassCard(request)
                 .fold(errorHandler::mapToResponse, this::handlePdfResponse);
     }

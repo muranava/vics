@@ -231,14 +231,13 @@
         <div class="card">
           <div class="card-head">
             <header>Canvassing Stats &nbsp;&nbsp;
-              <span class="badge" ng-if="graphLabel !== ''">{{graphLabel}}</span>
-              <span class="badge" ng-if="graphLabel === ''">Overall</span>
+              <span class="badge cursor-hand" ng-click="onShowWeeklyStatsConfig()" ng-if="graphLabel !== '' && showCanvassedGraph">{{graphLabel}}</span>
             </header>
             <div class="tools">
               <div class="btn-group">
                 <a ng-show="!showCanvassedGraph" ng-click="onShowWeeklyStatsConfig()"
                    class="btn btn-icon-toggle btn-refresh"><i class="md md-undo"></i></a>
-                <a ng-show="showCanvassedGraph" ng-click="onShowWeeklyStatsConfig()"
+                <a ng-show="showCanvassedGraph" ng-click="onShowWeeklyStatsConfig()" uib-tooltip="Change District"
                    class="btn btn-icon-toggle btn-refresh"><i class="fa fa-gear"></i></a>
               </div>
             </div>

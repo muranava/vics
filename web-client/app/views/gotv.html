@@ -243,7 +243,7 @@
                         </th>
                         <th>Street</th>
                         <th class="stats-cell">Priority</th>
-                        <th class="hidden-xs stats-cell">Pledge Stats</th>
+                        <th class="hidden-xs stats-cell">Voted / Pledges</th>
                         <th class="stats-cell">Tools
                         </th>
                       </tr>
@@ -276,8 +276,8 @@
                           </span>
                         </td>
                         <td class="hidden-xs stats-cell">
-                          <span class="text-default text-xl"><span class="text-light" uib-tooltip="Voted Pledges">{{street.votedPledges}}</span> /
-                            <span uib-tooltip="Total Pledged">{{street.pledged}}</span>
+                          <span class="text-default text-xl"><span class="text-light" uib-tooltip="Voted">{{street.votedPledges}}</span> /
+                            <span uib-tooltip="Pledges">{{street.pledged}}</span>
                             <span class="text-default-light text-light">({{getRatioPledged(street.votedPledges, street.pledged)}}%)</span></span>
                         </td>
                         <td class="text-center">

@@ -35,13 +35,13 @@ public interface PafClient {
     /**
      * Gets the voters grouped by the given streets
      *
-     * @param wardCode the code of the electoral ward to restrict the search by
-     * @param streets  the streets to get the voters from
+     * @param wardCode         the code of the electoral ward to restrict the search by
+     * @param gotvVoterRequest the criteria to filter voters by
      * @return a collection of voters grouped by street
      */
     @POST("wards/{wardCode}/streets")
     Call<PropertyResponse> filteredVotersByStreets(@Path("wardCode") String wardCode,
-                                                   @Body GotvVoterRequest streets);
+                                                   @Body GotvVoterRequest gotvVoterRequest);
 
     /**
      * Searches a voter by attributes
