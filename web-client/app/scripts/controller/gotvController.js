@@ -8,7 +8,7 @@ angular
     $scope.flags = {
       hasPV: false,
       needsLift: false,
-      phone: false
+      telephone: false
     };
 
     function fire() {
@@ -148,8 +148,8 @@ angular
 
     function getActiveOptionalFlags() {
       var flags = {};
-      if ($scope.flags.phone) {
-        flags.phone = true;
+      if ($scope.flags.telephone) {
+        flags.telephone = true;
       }
       if ($scope.flags.hasPV) {
         flags.hasPV = true;

@@ -18,7 +18,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
-import java.io.ByteArrayOutputStream;
 import java.security.Principal;
 
 import static org.springframework.web.bind.annotation.RequestMethod.POST;
@@ -43,7 +42,9 @@ public class GotvController {
     public GotvController(RequestValidator requestValidator,
                           SessionService sessionService,
                           GotvService gotvService,
-                          RestErrorHandler restErrorHandler, LabelService labelService, RestErrorHandler errorHandler) {
+                          RestErrorHandler restErrorHandler,
+                          LabelService labelService,
+                          RestErrorHandler errorHandler) {
         this.requestValidator = requestValidator;
         this.sessionService = sessionService;
         this.gotvService = gotvService;
@@ -54,7 +55,7 @@ public class GotvController {
 
     @PreAuthorize("isAuthenticated()")
     @RequestMapping(value = "/ward/{wardCode}", method = POST)
-    public ResponseEntity<?> getPdfOfElectorsByTownStreet(Principal principal, @PathVariable("wardCode") String wardCode,
+    public ResponseEntity<?> generateGotvCanvassCard(Principal principal, @PathVariable("wardCode") String wardCode,
             @RequestBody @Valid ElectorsByStreetsRequest request) {
         return requestValidator.validate(request)
                 .flatMap(req -> sessionService.extractUserFromPrincipal(principal))
@@ -69,7 +70,7 @@ public class GotvController {
 
     @PreAuthorize("isAuthenticated()")
     @RequestMapping(value = "/ward/{wardCode}/labels", method = POST)
-    public ResponseEntity<?> getPostalVotersAddressLabelsPdf(
+    public ResponseEntity<?> generateGotpvCanvassCard(
             @RequestBody @Valid ElectorsByStreetsRequest electorsByStreetsRequest,
             @PathVariable("wardCode") String wardCode,
             Principal principal) {
@@ -78,11 +79,5 @@ public class GotvController {
                 .flatMap(user -> labelService.generateAddressLabelsForPostalVoters(electorsByStreetsRequest, wardCode, user))
                 .fold(errorHandler::mapToResponseEntity,
                       content -> new ResponseEntity<>(content, responseHeaders, HttpStatus.OK));
-    }
-
-    private ResponseEntity<byte[]> handlePdfResponse(ByteArrayOutputStream outputStream) {
-        HttpHeaders responseHeaders = new HttpHeaders();
-        responseHeaders.setContentType(MediaType.valueOf("application/pdf"));
-        return new ResponseEntity<>(outputStream.toByteArray(), responseHeaders, HttpStatus.OK);
     }
 }

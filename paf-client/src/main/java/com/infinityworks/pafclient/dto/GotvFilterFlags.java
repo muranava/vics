@@ -22,4 +22,5 @@ public interface GotvFilterFlags {
     @Nullable Boolean inaccessible();
     @Nullable @JsonProperty("wants_poster") Boolean poster();
     @Nullable @JsonProperty("deceased") Boolean deceased();
+    @Nullable @JsonProperty("phone") Boolean phone();
 }
