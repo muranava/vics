@@ -70,14 +70,18 @@ angular
     };
 
     $scope.onWontVote = function() {
+      var wardCode = $scope.formModel.selectedWard.code;
       var ern = $scope.formModel.ern.pollingDistrict + '-' +
         $scope.formModel.ern.number + '-' +
         $scope.formModel.ern.suffix;
-      voteService.wontVote($scope.formModel.selectedWard.code, ern)
+      voteService.wontVote(wardCode, ern)
         .success(function(response) {
           $scope.logs.push({
             ern: util.ernLongToShortFormConverter(response.ern),
-            reason: 'Won\'t vote',
+            reason: 'Wont vote',
+            fullErn: util.ernShortToLongFormConverter(wardCode, ern),
+            contactId: response.id,
+            success: true,
             result: 1
           });
         });
@@ -105,13 +109,24 @@ angular
       }
     }
 
-    $scope.onUndo = function (model) {
+    $scope.onUndoVoted = function (model) {
       voteService.undoVote(model.fullErn)
         .success(function () {
           model.reason = 'Undone';
         })
         .error(function () {
           toastr.error('Failed to undo vote', 'Error');
+        });
+    };
+
+    $scope.onUndoWontVote = function (model) {
+      voteService.undoWontVote(model.fullErn, model.contactId)
+        .success(function() {
+          model.reason = 'Undone';
+        })
+        .error(function() {
+          model.reason = 'Failed to undo';
+          model.success = false;
         });
     };
 

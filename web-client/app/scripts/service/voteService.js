@@ -30,5 +30,13 @@ angular
       });
     };
 
+    api.undoWontVote = function (ern, contactId) {
+      return $http({
+        url: apiUrl + '/elector/' + ern + '/wontvote/' + contactId,
+        method: 'DELETE',
+        withCredentials: true
+      });
+    };
+
     return api;
   });

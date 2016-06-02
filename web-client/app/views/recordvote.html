@@ -24,6 +24,7 @@
     </div>
     <div class="row" ng-if="!userHasNoAssociations">
       <div class="col-md-6 col-sm-12">
+
         <div class="card">
           <div class="card-head">
             <header>Enter the Elector ID</header>
@@ -96,7 +97,7 @@
               <thead>
               <tr>
                 <th>Elector ID</th>
-                <th>Reason</th>
+                <th>Comment</th>
                 <th>Result</th>
                 <th></th>
               </tr>
@@ -110,7 +111,8 @@
                 <td ng-show="log.result === 0">FAILED</td>
                 <td ng-show="log.result === -1">-</td>
                 <td>
-                  <button class="btn btn-sm btn-danger pull-right" ng-click="onUndo(log)" ng-show="log.reason === 'Voted'">UNDO</button>
+                  <button class="btn btn-sm btn-danger pull-right" ng-click="onUndoVoted(log)" ng-show="log.reason === 'Voted'">UNDO</button>
+                  <button class="btn btn-sm btn-danger pull-right" ng-click="onUndoWontVote(log)" ng-show="log.reason === 'Wont vote'">UNDO</button>
                 </td>
               </tr>
               </tbody>

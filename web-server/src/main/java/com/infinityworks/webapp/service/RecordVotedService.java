@@ -6,6 +6,7 @@ import com.infinityworks.pafclient.PafRequestExecutor;
 import com.infinityworks.pafclient.dto.*;
 import com.infinityworks.webapp.domain.Ern;
 import com.infinityworks.webapp.domain.User;
+import com.infinityworks.webapp.error.NotAuthorizedFailure;
 import com.infinityworks.webapp.rest.dto.ImmutableRecordVoteResponse;
 import com.infinityworks.webapp.rest.dto.RecordVoteResponse;
 import org.slf4j.Logger;
@@ -13,6 +14,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import retrofit2.Call;
+
+import java.util.UUID;
 
 /**
  * Service to record that a voter has voted
@@ -61,7 +64,8 @@ public class RecordVotedService {
     }
 
     /**
-     * Records that a voter wont vote
+     * Records that a voter wont vote.  We use the canvass input paf api for this, and set the VI/VL
+     * value to 0 (which means won't say in canvassing terms)
      *
      * @param user the activist entering the elector information
      * @param ern  the voter identifier
@@ -72,7 +76,7 @@ public class RecordVotedService {
                 .ensureWriteAccess()
                 .flatMap(resolvedUser -> wardService.getByCode(ern.getWardCode(), user)
                         .flatMap(ward -> {
-                            RecordContactRequest contactRequest = createWontVoteContactRequest(user, ern);
+                            RecordContactRequest contactRequest = createWontVoteContactRequest(user);
                             Call<RecordContactResponse> call = pafClient.recordContact(ern.longForm(), contactRequest);
                             return pafRequestExecutor.execute(call);
                         })
@@ -81,11 +85,12 @@ public class RecordVotedService {
                             return ImmutableRecordVoteResponse.builder()
                                     .withErn(ern.longForm())
                                     .withWardCode(ern.getWardCode())
+                                    .withId(success.id().toString())
                                     .build();
                         }));
     }
 
-    private RecordContactRequest createWontVoteContactRequest(User user, Ern ern) {
+    private RecordContactRequest createWontVoteContactRequest(User user) {
         return ImmutableRecordContactRequest.builder()
                 .withContactType(CONTACT_TYPE)
                 .withUserId(user.getId().toString())
@@ -117,5 +122,23 @@ public class RecordVotedService {
                                     .withWardCode(ern.getWardCode())
                                     .build();
                         }));
+    }
+
+    public Try<DeleteContactResponse> undoWontVote(User user, Ern ern, UUID contactId) {
+        if (!user.getWriteAccess()) {
+            log.warn("User={} tried to delete contact for ern={} but does not have write access", user, ern);
+            return Try.failure(new NotAuthorizedFailure("Forbidden"));
+        } else {
+            return wardService
+                    .getByCode(ern.getWardCode(), user)
+                    .flatMap(ward -> {
+                        Call<DeleteContactResponse> call = pafClient.deleteContact(ern.longForm(), contactId);
+                        return pafRequestExecutor.execute(call);
+                    }).map(deleteResponse -> {
+                        log.info("User={} deleted recorded contact for ern={} (won't vote)", user, ern);
+                        return deleteResponse;
+                    });
+        }
+
     }
 }

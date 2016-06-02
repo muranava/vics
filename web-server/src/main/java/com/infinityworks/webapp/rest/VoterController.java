@@ -97,6 +97,14 @@ public class VoterController {
     }
 
     @PreAuthorize("isAuthenticated()")
+    @RequestMapping(method = DELETE, value = "/{ern:" + Ern.REGEX + "}/wontvote/{contactId}")
+    public ResponseEntity<?> undoWontVote(@PathVariable Ern ern, @PathVariable UUID contactId, Principal principal) {
+        return sessionService.extractUserFromPrincipal(principal)
+                .flatMap(user -> recordVotedService.undoWontVote(user, ern, contactId))
+                .fold(errorHandler::mapToResponseEntity, ResponseEntity::ok);
+    }
+
+    @PreAuthorize("isAuthenticated()")
     @RequestMapping(method = DELETE, value = "/{ern:" + Ern.REGEX + "}/voted")
     public ResponseEntity<?> undoVote(@PathVariable Ern ern, Principal principal) {
         return sessionService.extractUserFromPrincipal(principal)
