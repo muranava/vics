@@ -3,10 +3,7 @@ package com.infinityworks.webapp.service;
 import com.infinityworks.common.lang.Try;
 import com.infinityworks.pafclient.PafClient;
 import com.infinityworks.pafclient.PafRequestExecutor;
-import com.infinityworks.pafclient.dto.ImmutableRecordVotedResponse;
-import com.infinityworks.pafclient.dto.ImmutableSuccess;
-import com.infinityworks.pafclient.dto.RecordVotedResponse;
-import com.infinityworks.webapp.converter.ErnShortFormToLongFormConverter;
+import com.infinityworks.pafclient.dto.*;
 import com.infinityworks.webapp.domain.Ern;
 import com.infinityworks.webapp.domain.User;
 import com.infinityworks.webapp.domain.Ward;
@@ -16,6 +13,8 @@ import com.infinityworks.webapp.testsupport.mocks.CallStub;
 import org.junit.Before;
 import org.junit.Test;
 import retrofit2.Call;
+
+import java.util.UUID;
 
 import static com.infinityworks.webapp.testsupport.builder.UserBuilder.user;
 import static com.infinityworks.webapp.testsupport.builder.WardBuilder.ward;
@@ -28,7 +27,6 @@ import static org.mockito.Mockito.mock;
 
 public class RecordVotedServiceTest {
 
-    private final ErnShortFormToLongFormConverter ernFormatEnricher = new ErnShortFormToLongFormConverter();
     private RecordVotedService underTest;
     private PafClient pafClient;
     private WardService wardService;
@@ -53,6 +51,24 @@ public class RecordVotedServiceTest {
         Try<RecordVoteResponse> recordVoteResponse = underTest.recordVote(user, recordVote);
 
         assertThat(recordVoteResponse.isSuccess(), is(true));
+    }
+
+    @Test
+    public void undosAWontVote() throws Exception {
+        User user = user().withWriteAccess(true).build();
+        Ern recordVote = Ern.valueOf("E05001221-PD-123-1");
+        Ward ward = ward().withWardCode("E05001221").build();
+        UUID contactId = UUID.randomUUID();
+        ImmutableSuccess success = ImmutableSuccess.builder().withCode("GEN-SUCCESS").withHttpCode(200).withMessage("Vote recorded").build();
+        Call<DeleteContactResponse> call = CallStub.success(ImmutableDeleteContactResponse.builder().withSuccess(
+                success).build());
+        given(pafClient.deleteContact("E05001221-PD-123-1", contactId)).willReturn(call);
+        given(wardService.getByCode(recordVote.getWardCode(), user)).willReturn(Try.success(ward));
+
+        Try<DeleteContactResponse> response = underTest.undoWontVote(user, recordVote, contactId);
+
+        assertThat(response.isSuccess(), is(true));
+        assertThat(response.get().success(), is(success));
     }
 
     @Test
