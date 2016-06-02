@@ -4,7 +4,7 @@ angular
 
     $scope.numStreetsSelected = 0;
     $scope.validationErrors = [];
-    $scope.currentSort = "Priority DESC";
+    $scope.currentSort = "Pledges Not Voted";
     $scope.flags = {
       hasPV: false,
       needsLift: false,
@@ -63,11 +63,12 @@ angular
     };
 
     $scope.onSelectWard = function (directiveModel) {
-      function removeStreetsWithoutVoters(streetsResponse) {
+      function addPledgesNotVoted(streetsResponse) {
         return {
           stats: streetsResponse.stats,
-          streets: _.filter(streetsResponse.streets, function (street) {
-            return street.numVoters !== 0;
+          streets: _.map(streetsResponse.streets, function (street) {
+            street.numPledgesNotVoted = street.pledged - street.votedPledges;
+            return street;
           })
         };
       }
@@ -78,8 +79,8 @@ angular
 
       wardService.findStreetsByWard($scope.ward.code)
         .success(function (streets) {
-          var streetsTx = removeStreetsWithoutVoters(streets);
-          $scope.streets = _.orderBy(streetsTx.streets, 'priority', 'desc');
+          var streetsTx = addPledgesNotVoted(streets);
+          $scope.streets = _.orderBy(streetsTx.streets, 'numPledgesNotVoted', 'desc');
           $scope.streetStats = streets.stats;
           scrollToPrintSection();
         });
