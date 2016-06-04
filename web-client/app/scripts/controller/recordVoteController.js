@@ -53,6 +53,8 @@ angular
             });
           })
           .error(function (error) {
+            console.log(error);
+
             var reason = "-";
             if (error.type === 'PafApiNotFoundFailure') {
               reason = 'Voter not found';
@@ -78,7 +80,7 @@ angular
         .success(function(response) {
           $scope.logs.push({
             ern: util.ernLongToShortFormConverter(response.ern),
-            reason: 'Wont vote',
+            reason: 'Won\'t vote',
             fullErn: util.ernShortToLongFormConverter(wardCode, ern),
             contactId: response.id,
             success: true,
@@ -112,20 +114,20 @@ angular
     $scope.onUndoVoted = function (model) {
       voteService.undoVote(model.fullErn)
         .success(function () {
-          model.reason = 'Undone';
+          model.reason = 'Voted Undone';
         })
         .error(function () {
-          toastr.error('Failed to undo vote', 'Error');
+          toastr.error('Failed to undo voted', 'Error');
         });
     };
 
     $scope.onUndoWontVote = function (model) {
       voteService.undoWontVote(model.fullErn, model.contactId)
         .success(function() {
-          model.reason = 'Undone';
+          model.reason = 'Won\'t vote Undone';
         })
         .error(function() {
-          model.reason = 'Failed to undo';
+          model.reason = 'Failed to undo won\'t vote';
           model.success = false;
         });
     };

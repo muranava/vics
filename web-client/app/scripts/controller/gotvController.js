@@ -83,14 +83,26 @@ angular
           $scope.streets = _.orderBy(streetsTx.streets, 'numPledgesNotVoted', 'desc');
           $scope.streetStats = streets.stats;
           scrollToPrintSection();
+        })
+        .error(function() {
+          toastr.error('Failed to download streets, please try again later', 'Error');
         });
     };
 
-    $scope.getNumStreetsSelected = function () {
+    $scope.onClearSelections = function () {
+      _.each($scope.streets, function (street) {
+        street.selected = false;
+      });
+      $scope.updateSelectedStreets();
+    };
+
+    $scope.updateSelectedStreets = function () {
       if ($scope.streets && $scope.streets.length) {
         $scope.numStreetsSelected = _.size(_.filter($scope.streets, function (s) {
           return s.selected;
         }));
+      } else {
+        $scope.numStreetsSelected = 0;
       }
     };
 
@@ -105,6 +117,27 @@ angular
     $scope.onPrintAll = function () {
       $scope.errorLoadingData = null;
       doPrint($scope.ward.code, $scope.streets, false);
+    };
+
+    $scope.onSelectAll = function () {
+      _.each($scope.streets, function (street) {
+        street.selected = true;
+      });
+      $scope.updateSelectedStreets();
+    };
+
+    $scope.onSelectPriority = function () {
+      _.each($scope.streets, function (street) {
+        street.selected = street.priority === 3;
+      });
+      $scope.updateSelectedStreets();
+    };
+
+    $scope.onSelectPledges = function () {
+      _.each($scope.streets, function (street) {
+        street.selected = street.pledged > 0 && street.votedPledges < street.pledged;
+      });
+      $scope.updateSelectedStreets();
     };
 
     $scope.onPrintLabels = function () {

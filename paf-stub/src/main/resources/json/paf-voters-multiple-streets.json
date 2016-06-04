@@ -1,5 +1,10 @@
 {
-  "stats": {},
+  "stats": {
+    "towns": 1,
+    "streets": 81,
+    "voters": 550,
+    "canvassed": 221
+  },
   "response": [
     [
       {
@@ -9,6 +14,8 @@
         "post_town": "Morpeth",
         "postcode": "NE61 6PG",
         "premise": "1",
+        "voted_pledges": 11,
+        "pledges": 123,
         "voters": [
           {
             "id": "2ddcc2b7-e3e7-414a-8ecf-8060fb1bf272",

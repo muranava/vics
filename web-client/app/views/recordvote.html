@@ -67,7 +67,7 @@
 
                   <div class="input-group-content">
                     <input id="electorSuffix" type="text" class="form-control" ng-model="formModel.ern.suffix" uppercased>
-                    <label for="electorSuffix">Elector Suffix</label>
+                    <label for="electorSuffix">Suffix</label>
                   </div>
 
                   <div class="input-group-btn">
@@ -112,7 +112,7 @@
                 <td ng-show="log.result === -1">-</td>
                 <td>
                   <button class="btn btn-sm btn-danger pull-right" ng-click="onUndoVoted(log)" ng-show="log.reason === 'Voted'">UNDO</button>
-                  <button class="btn btn-sm btn-danger pull-right" ng-click="onUndoWontVote(log)" ng-show="log.reason === 'Wont vote'">UNDO</button>
+                  <button class="btn btn-sm btn-danger pull-right" ng-click="onUndoWontVote(log)" ng-show="log.reason === 'Won\'t vote'">UNDO</button>
                 </td>
               </tr>
               </tbody>

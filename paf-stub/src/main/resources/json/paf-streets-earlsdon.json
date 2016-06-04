@@ -16,6 +16,8 @@
       "canvassed": 12,
       "postal": 10,
       "priority": 2,
+      "voted_pledges": 11,
+      "pledged": 123,
       "postcode": [
         "KT2 5BU",
         "KT2 6HR"

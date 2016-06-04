@@ -38,7 +38,7 @@ public class PafServerStub {
         files.put("voted,E05001221-ADD-1313-1", "json/paf-record-voted.json");
         files.put("search,McCall,KT25BU", "json/paf-search-voter.json");
         files.put("postContact,E05001221-PD-123-4", "json/paf-record-contact-response.json");
-        files.put("voterSearch", "json/");
+        files.put("voterSearch", "json/paf-search-voter.json");
     }
 
     public void start() {
@@ -193,7 +193,7 @@ public class PafServerStub {
         String jsonResponse = Resources.toString(getResource("json/paf-ward-stats.json"), UTF_8);
 
         String url = "/v1/wards/" + wardCode;
-        wireMock.register(get(urlPathMatching(url))
+        wireMock.register(get(urlPathEqualTo(url))
                 .willReturn(aResponse()
                         .withHeader(CONTENT_TYPE, "application/json")
                         .withStatus(200)

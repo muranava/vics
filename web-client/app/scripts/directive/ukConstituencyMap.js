@@ -90,8 +90,6 @@ angular
             });
 
             map.data.addListener('mouseover', function (event) {
-              console.log(response);
-
               scope.legend.constituency = event.feature.H.PCON13NM;
               scope.legend.canvassed = event.feature.H.count;
               if (!scope.$$phase) {
