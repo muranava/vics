@@ -19,8 +19,8 @@ import static org.junit.Assert.assertThat;
 import static com.infinityworks.pdfserver.pdf.TablePropertyAccessor.Column;
 
 public class PdfRendererTest {
-    private TableBuilder tableBuilder = new TableBuilder(new CanvassTableConfig());
-    private PDFTableGenerator underTest = new PdfJetTableGenerator(new PropertyToRowsConverter());
+    private CanvassTableBuilder tableBuilder = new CanvassTableBuilder(new CanvassTableConfig());
+    private PdfJetTableGenerator underTest = new PdfJetTableGenerator(new PropertyToRowsConverter());
 
     @Test
     public void generatesTablesFromVoters() throws Exception {

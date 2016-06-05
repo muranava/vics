@@ -37,7 +37,7 @@ public class PdfJetTableGenerator implements PDFTableGenerator {
      * a parallelStream since the number of streets is typically small.
      */
     @Override
-    public List<GeneratedPdfTable> generateTables(TableBuilder tableBuilder,
+    public List<GeneratedPdfTable> generateTables(TableBuilderTemplate tableBuilder,
                                                   List<List<Property>> votersByStreets,
                                                   String wardCode,
                                                   String wardName,
@@ -59,14 +59,14 @@ public class PdfJetTableGenerator implements PDFTableGenerator {
         }
     }
 
-    private GeneratedPdfTable createEmptyBackPageTable(TableBuilder tableBuilder,
+    private GeneratedPdfTable createEmptyBackPageTable(TableBuilderTemplate tableBuilder,
                                                        String wardName,
                                                        String wardCode,
                                                        String constituencyName) {
         return tableBuilder.generateTableRows(EMPTY_ROWS, "", wardName, wardCode, constituencyName).get();
     }
 
-    private Optional<GeneratedPdfTable> createTableFromStreet(TableBuilder tableBuilder,
+    private Optional<GeneratedPdfTable> createTableFromStreet(TableBuilderTemplate tableBuilder,
                                                               List<Property> properties,
                                                               String wardCode,
                                                               String wardName,

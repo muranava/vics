@@ -16,13 +16,13 @@ public final class ErrorHandler {
 
     public ResponseEntity<?> mapToResponse(Exception exception, HttpHeaders headers) {
         if (exception instanceof PafApiFailure) {
-            log.error(exception.getMessage(), exception);
+            log.debug("PafApiFailure: {}", exception.getMessage());
             ErrorResponse ErrorResponse = new ErrorResponse(PafApiFailure.class.getSimpleName(), ERROR_MESSAGE);
             return new ResponseEntity<>(ErrorResponse, headers, HttpStatus.INTERNAL_SERVER_ERROR);
         }
 
         if (exception instanceof NotFoundFailure) {
-            log.error(exception.getMessage(), exception);
+            log.debug("NotFoundFailure: {}", exception.getMessage());
             ErrorResponse ErrorResponse = new ErrorResponse(PafApiFailure.class.getSimpleName(), exception.getMessage());
             return new ResponseEntity<>(ErrorResponse, headers, HttpStatus.NOT_FOUND);
         }

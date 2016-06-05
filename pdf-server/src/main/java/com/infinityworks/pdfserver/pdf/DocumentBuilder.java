@@ -8,6 +8,7 @@ import com.infinityworks.pdfserver.pdf.renderer.PageInfoRenderer;
 import com.lowagie.text.Document;
 import com.lowagie.text.DocumentException;
 import com.lowagie.text.PageSize;
+import com.lowagie.text.Rectangle;
 import com.lowagie.text.pdf.PdfWriter;
 import org.apache.commons.io.IOUtils;
 import org.slf4j.Logger;
@@ -31,11 +32,11 @@ public class DocumentBuilder {
     private byte[] coverPage;
     private final FlagsKeyRenderer flagsKeyRenderer = new FlagsKeyRenderer();
 
-    public DocumentBuilder(LogoRenderer logoRenderer, PdfTableConfig tableConfig) {
+    public DocumentBuilder(LogoRenderer logoRenderer, PdfTableConfig tableConfig, String coverPageFile) {
         this.logoRenderer = logoRenderer;
         this.tableConfig = tableConfig;
 
-        InputStream resourceAsStream = getClass().getClassLoader().getResourceAsStream("pdf/canvass_cover.pdf");
+        InputStream resourceAsStream = getClass().getClassLoader().getResourceAsStream(coverPageFile);
         try {
             coverPage = IOUtils.toByteArray(resourceAsStream);
         } catch (IOException e) {
@@ -54,8 +55,8 @@ public class DocumentBuilder {
         ByteArrayOutputStream os = new ByteArrayOutputStream();
         Document document = createDocument();
 
-        PageInfoRenderer pageInfoRenderer = new PageInfoRenderer(flagsKeyRenderer, flags);
-        pageInfoRenderer.setRenderLikelihoodLegend(tableConfig.showLikelihoodLegend());
+
+        PageInfoRenderer pageInfoRenderer = new PageInfoRenderer(flagsKeyRenderer, flags, tableConfig);
 
         PdfWriter writer;
         try {
@@ -97,7 +98,8 @@ public class DocumentBuilder {
     }
 
     private Document createDocument() {
-        return new Document(PageSize.A4.rotate(),
+        Rectangle orientation = tableConfig.isGotv() ? PageSize.A4 : PageSize.A4.rotate();
+        return new Document(orientation,
                 TableProperties.PAGE_MARGIN_LEFT,
                 TableProperties.PAGE_MARGIN_RIGHT,
                 TableProperties.PAGE_MARGIN_TOP,

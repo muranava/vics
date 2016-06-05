@@ -36,7 +36,7 @@ canvass:
     hosts: "*"
     methods:  "POST, GET, PUT, OPTIONS, DELETE"
   pdfServerBaseUrl: http://localhost:18085/api/pdf
-  pafApiBaseUrl: http://localhost:9002/v1/
+  pafApiBaseUrl: https://PAF-894178311.eu-west-1.elb.amazonaws.com/v1/
   pafApiToken: 90f88caae35a5b863ae2450b55688a559b52a343
   pafApiTimeout: 60000
   addressLookupBaseUrl: https://maps.googleapis.com/maps/api/

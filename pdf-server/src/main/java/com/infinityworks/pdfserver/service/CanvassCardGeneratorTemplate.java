@@ -12,14 +12,14 @@ import com.infinityworks.pdfserver.converter.PafStreetRequestConverter;
 import com.infinityworks.pdfserver.error.NotFoundFailure;
 import com.infinityworks.pdfserver.pdf.DocumentBuilder;
 import com.infinityworks.pdfserver.pdf.PDFTableGenerator;
-import com.infinityworks.pdfserver.pdf.TableBuilder;
+import com.infinityworks.pdfserver.pdf.TableBuilderTemplate;
 import com.infinityworks.pdfserver.pdf.model.GeneratedPdfTable;
 
 import java.io.ByteArrayOutputStream;
 import java.util.List;
 
 abstract class CanvassCardGeneratorTemplate {
-    private final TableBuilder tableBuilder;
+    private final TableBuilderTemplate tableBuilder;
     private final DocumentBuilder documentBuilder;
     private final PDFTableGenerator pdfTableGenerator;
 
@@ -27,7 +27,7 @@ abstract class CanvassCardGeneratorTemplate {
     final PafRequestExecutor pafRequestExecutor;
     final PafStreetRequestConverter streetRequestConverter;
 
-    CanvassCardGeneratorTemplate(TableBuilder tableBuilder,
+    CanvassCardGeneratorTemplate(TableBuilderTemplate tableBuilder,
                                  DocumentBuilder documentBuilder,
                                  PafClient pafClient,
                                  PDFTableGenerator pdfTableGenerator,

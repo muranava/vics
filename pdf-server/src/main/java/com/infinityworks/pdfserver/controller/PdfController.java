@@ -3,8 +3,8 @@ package com.infinityworks.pdfserver.controller;
 import com.infinityworks.pdfserver.controller.dto.GeneratePdfRequest;
 import com.infinityworks.pdfserver.error.ErrorHandler;
 import com.infinityworks.pdfserver.service.AddressLabelGenerator;
-import com.infinityworks.pdfserver.service.CanvassCardGenerator;
-import com.infinityworks.pdfserver.service.GotvCanvassCardGenerator;
+import com.infinityworks.pdfserver.service.CanvassCardService;
+import com.infinityworks.pdfserver.service.GotvCanvassCardService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -21,32 +21,32 @@ import static org.springframework.web.bind.annotation.RequestMethod.POST;
 @RestController
 @RequestMapping("/canvass")
 public class PdfController {
-    private final CanvassCardGenerator canvassCardGenerator;
-    private final GotvCanvassCardGenerator gotvCanvassCardGenerator;
+    private final CanvassCardService canvassCardService;
+    private final GotvCanvassCardService gotvCanvassCardService;
     private final AddressLabelGenerator addressLabelGenerator;
     private final ErrorHandler errorHandler;
 
     @Autowired
-    public PdfController(CanvassCardGenerator canvassCardGenerator,
-                         GotvCanvassCardGenerator gotvCanvassCardGenerator,
+    public PdfController(CanvassCardService canvassCardService,
+                         GotvCanvassCardService gotvCanvassCardService,
                          AddressLabelGenerator addressLabelGenerator,
                          ErrorHandler errorHandler) {
-        this.canvassCardGenerator = canvassCardGenerator;
-        this.gotvCanvassCardGenerator = gotvCanvassCardGenerator;
+        this.canvassCardService = canvassCardService;
+        this.gotvCanvassCardService = gotvCanvassCardService;
         this.addressLabelGenerator = addressLabelGenerator;
         this.errorHandler = errorHandler;
     }
 
     @RequestMapping(method = POST)
     public ResponseEntity<?> generateCanvassCard(@RequestBody GeneratePdfRequest request) {
-        return canvassCardGenerator
+        return canvassCardService
                 .generateCanvassCard(request)
                 .fold(errorHandler::mapToResponse, this::handlePdfResponse);
     }
 
     @RequestMapping(method = POST, value = "/gotv")
     public ResponseEntity<?> generateGotvCanvassCard(@RequestBody GeneratePdfRequest request) {
-        return gotvCanvassCardGenerator
+        return gotvCanvassCardService
                 .generateCanvassCard(request)
                 .fold(errorHandler::mapToResponse, this::handlePdfResponse);
     }

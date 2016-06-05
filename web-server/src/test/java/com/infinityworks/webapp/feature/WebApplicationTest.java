@@ -2,7 +2,7 @@ package com.infinityworks.webapp.feature;
 
 import com.infinityworks.canvass.pafstub.PafServerStub;
 import com.infinityworks.common.lang.Try;
-import com.infinityworks.webapp.Application;
+import com.infinityworks.webapp.VicsWebApp;
 import com.infinityworks.webapp.clients.email.EmailClient;
 import com.infinityworks.webapp.clients.email.ImmutableEmailResponse;
 import com.infinityworks.webapp.config.Config;
@@ -28,7 +28,7 @@ import javax.servlet.Filter;
 @RunWith(SpringJUnit4ClassRunner.class)
 @WebAppConfiguration
 @SpringApplicationConfiguration(classes = {
-        Application.class,
+        VicsWebApp.class,
         RepositoryConfiguration.class,
         SecurityConfig.class,
         Config.class

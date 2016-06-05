@@ -8,13 +8,13 @@ import org.springframework.web.bind.annotation.RestController;
 
 @SpringBootApplication
 @RestController
-public class Application {
+public class PdfServerApp {
     @RequestMapping(method = RequestMethod.GET, value = "/ping")
     public String ping() {
         return "pong";
     }
 
     public static void main(String... args) {
-        SpringApplication.run(Application.class, args);
+        SpringApplication.run(PdfServerApp.class, args);
     }
 }

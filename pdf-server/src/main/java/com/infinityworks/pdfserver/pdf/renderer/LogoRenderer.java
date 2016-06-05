@@ -14,9 +14,14 @@ import java.net.URL;
 
 public class LogoRenderer extends PdfPageEventHelper {
     private final Logger log = LoggerFactory.getLogger(LogoRenderer.class);
+    private final int xPos;
+    private final int yPos;
     private Image logo;
 
-    public LogoRenderer(URL logoURL) {
+    public LogoRenderer(URL logoURL, int xPos, int yPos) {
+        this.xPos = xPos;
+        this.yPos = yPos;
+
         try {
             this.logo = Image.getInstance(logoURL);
             this.logo.scalePercent(8);
@@ -39,7 +44,7 @@ public class LogoRenderer extends PdfPageEventHelper {
     @Override
     public void onOpenDocument(PdfWriter writer, Document document) {
         if (logo != null) {
-            logo.setAbsolutePosition(33, 515);
+            logo.setAbsolutePosition(xPos, yPos);
         }
     }
 }

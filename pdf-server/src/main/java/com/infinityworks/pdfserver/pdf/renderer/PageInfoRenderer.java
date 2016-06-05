@@ -1,6 +1,9 @@
 package com.infinityworks.pdfserver.pdf.renderer;
 
 import com.infinityworks.pdfserver.controller.dto.Flags;
+import com.infinityworks.pdfserver.pdf.PdfTableConfig;
+import com.infinityworks.pdfserver.pdf.model.Point;
+import com.infinityworks.pdfserver.pdf.model.RectPoint;
 import com.lowagie.text.*;
 import com.lowagie.text.pdf.*;
 import org.slf4j.Logger;
@@ -18,8 +21,12 @@ public class PageInfoRenderer extends PdfPageEventHelper {
     private static final String FOOTER_TEXT_1 =
             "Promoted by Matthew Elliott on behalf of Vote Leave Limited, both of Westminster Tower, 3 Albert Embankment, London SE1 7SP." +
                     "  Printed by Vote Leave Limited.";
+    private static final String FOOTER_TEXT_GOTV_1 =
+            "Promoted by Matthew Elliott on behalf of Vote Leave Limited, both of Westminster Tower, 3 Albert Embankment, London SE1 7SP.";
     private static final String FOOTER_TEXT_2 = "All data is collected in accordance with our privacy policy which can be found at " +
             "http://www.voteleavetakecontrol.org/privacy  %s.";
+    private static final String FOOTER_TEXT_GOTV_2 = "All data is collected in accordance with our privacy policy which can be found at " +
+            "http://www.voteleavetakecontrol.org/privacy.";
     private static final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm:ss dd-MM-yyyy");
 
     private static final String LIKELIHOOD_KEY =
@@ -39,24 +46,25 @@ public class PageInfoRenderer extends PdfPageEventHelper {
     private static final String META_TEMPLATE = "Constituency: %s\nWard: %s \nAddress: %s";
     private final FlagsKeyRenderer flagsKeyRenderer;
     private final Flags flags;
+    private final PdfTableConfig config;
 
     private String constituencyName = "";
     private String wardName = "";
     private String street = "";
-    private boolean renderLikelihoodLegend = false;
 
-    public PageInfoRenderer(FlagsKeyRenderer flagsKeyRenderer, Flags flags) {
+    public PageInfoRenderer(FlagsKeyRenderer flagsKeyRenderer, Flags flags, PdfTableConfig config) {
         this.flagsKeyRenderer = flagsKeyRenderer;
         this.flags = flags;
+        this.config = config;
     }
 
     @Override
     public void onEndPage(PdfWriter writer, Document document) {
         PdfContentByte cb = writer.getDirectContent();
-        createFooter(cb, document);
+        createFooter(cb);
         createLogo(cb);
         createIntentionKey(cb);
-        if (renderLikelihoodLegend) {
+        if (!config.isGotv()) {
             createLikelihoodKey(cb);
         }
         if (flags != null) {
@@ -74,18 +82,22 @@ public class PageInfoRenderer extends PdfPageEventHelper {
                 document.bottom() - 15, 0);
     }
 
-    private void createFooter(PdfContentByte cb, Document document) {
-        Phrase footer1 = new Phrase(FOOTER_TEXT_1, font);
-        ColumnText.showTextAligned(cb, Element.ALIGN_LEFT,
-                footer1,
-                document.left() + 40,
-                document.bottom() - 14, 0);
+    private void createFooter(PdfContentByte cb) {
+        String line1 = config.isGotv() ? FOOTER_TEXT_GOTV_1 : FOOTER_TEXT_1;
+        Phrase footer1 = new Phrase(line1, font);
+        Point pointLine1 = config.footerTextPosition()[0];
+        ColumnText.showTextAligned(cb, Element.ALIGN_LEFT, footer1, pointLine1.getX(), pointLine1.getY(), 0);
 
-        Phrase footer2 = new Phrase(String.format(FOOTER_TEXT_2, LocalDateTime.now().format(formatter)), font);
-        ColumnText.showTextAligned(cb, Element.ALIGN_LEFT,
-                footer2,
-                document.left() + 40,
-                document.bottom() - 25, 0);
+        String line2 = config.isGotv() ? FOOTER_TEXT_GOTV_2 : FOOTER_TEXT_2;
+        Phrase footer2 = new Phrase(String.format(line2, LocalDateTime.now().format(formatter)), font);
+        Point pointLine2 = config.footerTextPosition()[1];
+        ColumnText.showTextAligned(cb, Element.ALIGN_LEFT, footer2, pointLine2.getX(), pointLine2.getY(), 0);
+
+        if (config.isGotv()) {
+            Phrase timestampPhrase = new Phrase(LocalDateTime.now().format(formatter), font);
+            Point timestampPoint = config.footerTextPosition()[1];
+            ColumnText.showTextAligned(cb, Element.ALIGN_LEFT, timestampPhrase, timestampPoint.getX(), 15, 0);
+        }
     }
 
     private void createLogo(PdfContentByte cb) {
@@ -93,7 +105,7 @@ public class PageInfoRenderer extends PdfPageEventHelper {
             BaseFont bf = BaseFont.createFont(BaseFont.HELVETICA, BaseFont.CP1252, BaseFont.NOT_EMBEDDED);
             cb.saveState();
             cb.beginText();
-            cb.moveText(100, 565);
+            cb.moveText(config.logoPosition().getX(), config.logoPosition().getY());
             cb.setFontAndSize(bf, 18);
             cb.showText("Vote Leave");
             cb.endText();
@@ -115,10 +127,10 @@ public class PageInfoRenderer extends PdfPageEventHelper {
     }
 
     private void createIntentionKey(PdfContentByte cb) {
-        int xOffset = renderLikelihoodLegend ? 560 : 530;
         ColumnText ct = new ColumnText(cb);
         ct.setText(new Phrase(INTENTION_KEY, font));
-        ct.setSimpleColumn(xOffset, 0, 700, 590);
+        RectPoint pos = config.intentionTextPosition();
+        ct.setSimpleColumn(pos.getLowerLeftX(), pos.getLowerLeftY(), pos.getUpperRightX(), pos.getUpperRightY());
         try {
             ct.go();
         } catch (DocumentException e) {
@@ -142,7 +154,8 @@ public class PageInfoRenderer extends PdfPageEventHelper {
         ColumnText ct = new ColumnText(cb);
         String format = String.format(META_TEMPLATE, constituencyName, wardName, street);
         ct.setText(new Phrase(format, font));
-        ct.setSimpleColumn(100, 50, 700, 557);
+        RectPoint pos = config.addressTextPosition();
+        ct.setSimpleColumn(pos.getLowerLeftX(), pos.getLowerLeftY(), pos.getUpperRightX(), pos.getUpperRightY());
         try {
             ct.go();
         } catch (DocumentException e) {
@@ -160,9 +173,5 @@ public class PageInfoRenderer extends PdfPageEventHelper {
 
     public void setStreet(String street) {
         this.street = street;
-    }
-
-    public void setRenderLikelihoodLegend(boolean renderLikelihoodLegend) {
-        this.renderLikelihoodLegend = renderLikelihoodLegend;
     }
 }

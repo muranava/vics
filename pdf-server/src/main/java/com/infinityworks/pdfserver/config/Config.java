@@ -2,47 +2,38 @@ package com.infinityworks.pdfserver.config;
 
 import com.google.common.io.Resources;
 import com.infinityworks.pafclient.PafRequestExecutor;
-import com.infinityworks.pdfserver.pdf.CanvassTableConfig;
-import com.infinityworks.pdfserver.pdf.DocumentBuilder;
-import com.infinityworks.pdfserver.pdf.GotvTableConfig;
-import com.infinityworks.pdfserver.pdf.TableBuilder;
+import com.infinityworks.pdfserver.pdf.*;
 import com.infinityworks.pdfserver.pdf.renderer.LogoRenderer;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
-import java.net.URL;
-
 @Configuration
 public class Config {
     @Bean
-    @Qualifier("canvass")
-    public TableBuilder canvassTableBuilder() {
-        return new TableBuilder(new CanvassTableConfig());
+    public CanvassTableBuilder canvassTableBuilder() {
+        return new CanvassTableBuilder(new CanvassTableConfig());
     }
 
     @Bean
-    @Qualifier("gotv")
-    public TableBuilder gotvTableBuilder() {
-        return new TableBuilder(new GotvTableConfig());
+    public GotvTableBuilder gotvTableBuilder() {
+        return new GotvTableBuilder(new GotvTableConfig());
     }
 
     @Bean
     @Qualifier("canvass")
-    public DocumentBuilder canvassDocumentBuilder(LogoRenderer logoRenderer) {
-        return new DocumentBuilder(logoRenderer, new CanvassTableConfig());
+    public DocumentBuilder canvassDocumentBuilder() {
+        LogoRenderer logoRenderer = new LogoRenderer(Resources.getResource("logo.png"), 33, 515);
+        String coverPageFile = "pdf/canvass_cover.pdf";
+        return new DocumentBuilder(logoRenderer, new CanvassTableConfig(), coverPageFile);
     }
 
     @Bean
     @Qualifier("gotv")
-    public DocumentBuilder gotvDocumentBuilder(LogoRenderer logoRenderer) {
-        return new DocumentBuilder(logoRenderer, new GotvTableConfig());
-    }
-
-    @Bean
-    public LogoRenderer logoRenderer() {
-        URL logo = Resources.getResource("logo.png");
-        return new LogoRenderer(logo);
+    public DocumentBuilder gotvDocumentBuilder() {
+        LogoRenderer logoRenderer = new LogoRenderer(Resources.getResource("logo.png"), 33, 760);
+        String coverPageFile = "pdf/gotv_cover.pdf";
+        return new DocumentBuilder(logoRenderer, new GotvTableConfig(), coverPageFile);
     }
 
     @Bean
