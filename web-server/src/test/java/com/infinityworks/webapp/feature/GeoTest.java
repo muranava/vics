@@ -14,6 +14,7 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import java.security.Principal;
 
 import static org.hamcrest.CoreMatchers.hasItem;
+import static org.hamcrest.CoreMatchers.is;
 import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
@@ -59,5 +60,33 @@ public class GeoTest extends WebApplicationTest {
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$..features[0].properties.PCON13NM", hasItem("Aldershot")))
                 .andExpect(jsonPath("$..features[0].properties.count", hasItem(0)));
+    }
+
+    @Test
+    public void returnsThePostcodeMetaData() throws Exception {
+        when(sessionService.extractUserFromPrincipal(any(Principal.class)))
+                .thenReturn(Try.success(covs()));
+        pafApiStub.willReturnThePostcodeMetaData("CV33GU");
+
+        String url = "/geo/postcode/CV33GU/meta";
+        mockMvc.perform(get(url)
+                .accept(APPLICATION_JSON))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.electoral_ward_name", is("Binley and Willenhall")))
+                .andExpect(jsonPath("$.electoral_ward_code", is("E05001219")))
+                .andExpect(jsonPath("$.latitude_etrs89", is("52.3775734242")))
+                .andExpect(jsonPath("$.longitude_etrs89", is("-1.4619960733")));
+    }
+
+    @Test
+    public void returnsNotFoundForNonExistentPostcode() throws Exception {
+        when(sessionService.extractUserFromPrincipal(any(Principal.class)))
+                .thenReturn(Try.success(covs()));
+
+        mockMvc.perform(get("/geo/postcode/S/meta")
+                .accept(APPLICATION_JSON))
+                .andDo(print())
+                .andExpect(status().isNotFound());
     }
 }

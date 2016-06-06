@@ -15,7 +15,8 @@ angular
     api.findWardFromPostCode = function (postCode) {
       return $http({
         method: 'GET',
-        url: 'https://mapit.mysociety.org/postcode/' + postCode
+        url: apiUrl + '/geo/postcode/' + postCode + '/meta',
+        withCredentials: true
       });
     };
 

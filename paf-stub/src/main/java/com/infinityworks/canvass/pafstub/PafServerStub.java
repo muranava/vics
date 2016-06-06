@@ -189,6 +189,17 @@ public class PafServerStub {
                         .withBody(jsonResponse)));
     }
 
+    public void willReturnThePostcodeMetaData(String postcode) throws IOException {
+        String jsonResponse = Resources.toString(getResource("json/paf-postcode-meta.json"), UTF_8);
+
+        String url = String.format("/v1/postcode/%s/meta", postcode);
+        wireMock.register(get(urlPathEqualTo(url))
+                .willReturn(aResponse()
+                        .withHeader(CONTENT_TYPE, "application/json")
+                        .withStatus(200)
+                        .withBody(jsonResponse)));
+    }
+
     public void willReturnWardStats(String wardCode) throws IOException {
         String jsonResponse = Resources.toString(getResource("json/paf-ward-stats.json"), UTF_8);
 

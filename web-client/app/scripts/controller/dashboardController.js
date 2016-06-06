@@ -1,4 +1,3 @@
-
 angular
   .module('canvass')
   .controller('dashboardController', function ($interval, $scope, statsService, toastr, geoService, calendar, $uibModal, wardService, constituencyService) {
@@ -83,23 +82,19 @@ angular
 
       geoService.findWardFromPostCode(postCode)
         .success(function (response) {
-          if (response && response.wgs84_lat) {
-            $scope.constituencyName = response.areas[response.shortcuts.WMC].name;
-            if (_.isObject(response.shortcuts.ward)) {
-              $scope.wardName = response.areas[response.shortcuts.ward.district].name;
-            } else {
-              $scope.wardName = response.areas[response.shortcuts.ward].name;
-            }
-
-            $scope.map = {
-              center: {
-                latitude: response.wgs84_lat,
-                longitude: response.wgs84_lon
-              },
-              zoom: 12
-            };
-            $scope.markers[0] = {id: 1, latitude: response.wgs84_lat, longitude: response.wgs84_lon};
+          if (response && response.electoral_ward_name) {
+            $scope.constituencyName = response.parliamentary_constituency_name;
+            $scope.wardName = response.electoral_ward_name;
           }
+
+          $scope.map = {
+            center: {
+              latitude: response.latitude_etrs89,
+              longitude: response.longitude_etrs89
+            },
+            zoom: 12
+          };
+          $scope.markers[0] = {id: 1, latitude: response.latitude_etrs89, longitude: response.longitude_etrs89};
         })
         .error(function () {
           if (!suppressError) {
@@ -129,6 +124,7 @@ angular
                 .success(function (response) {
                   var result = _.head(response.result);
                   if (result) {
+                    $scope.postCode = result.postcode;
                     $scope.findWard(result.postcode, true);
                   }
                 });

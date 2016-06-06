@@ -1,6 +1,9 @@
 package com.infinityworks.webapp.service;
 
 import com.infinityworks.common.lang.Try;
+import com.infinityworks.pafclient.PafClient;
+import com.infinityworks.pafclient.PafRequestExecutor;
+import com.infinityworks.pafclient.dto.PostcodeMetaData;
 import com.infinityworks.webapp.clients.gmaps.MapsClient;
 import com.infinityworks.webapp.clients.gmaps.MapsRequestExecutor;
 import com.infinityworks.webapp.config.AppProperties;
@@ -32,6 +35,8 @@ public class GeoService {
     private static final int MAX_CONSTITUENCIES = 1000;
 
     private final MapsClient mapsClient;
+    private final PafClient pafClient;
+    private final PafRequestExecutor pafRequestExecutor;
     private final MapsRequestExecutor mapsRequestExecutor;
     private final StatsRepository statsRepository;
     private final TopoJsonEnricher topoJsonEnricher;
@@ -42,12 +47,21 @@ public class GeoService {
                       MapsRequestExecutor mapsRequestExecutor,
                       StatsRepository statsRepository,
                       TopoJsonEnricher topoJsonEnricher,
-                      AppProperties appProperties) {
+                      AppProperties appProperties,
+                      PafClient pafClient,
+                      PafRequestExecutor pafRequestExecutor) {
         this.mapsClient = mapsClient;
         this.mapsRequestExecutor = mapsRequestExecutor;
         this.statsRepository = statsRepository;
         this.topoJsonEnricher = topoJsonEnricher;
         this.mapsApiKey = appProperties.getAddressLookupToken();
+        this.pafClient = pafClient;
+        this.pafRequestExecutor = pafRequestExecutor;
+    }
+
+    public Try<PostcodeMetaData> getPostcodeMetaData(String postcode) {
+        Call<PostcodeMetaData> metaDataCall = pafClient.postcodeMetaData(postcode);
+        return pafRequestExecutor.execute(metaDataCall);
     }
 
     /**

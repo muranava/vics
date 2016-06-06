@@ -4,13 +4,11 @@ import com.infinityworks.webapp.error.RestErrorHandler;
 import com.infinityworks.webapp.rest.dto.AddressLookupRequest;
 import com.infinityworks.webapp.service.GeoService;
 import com.infinityworks.webapp.service.SessionService;
+import org.hibernate.validator.constraints.NotEmpty;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
 
@@ -30,6 +28,14 @@ public class GeoController {
         this.geoService = geoService;
         this.errorHandler = errorHandler;
         this.sessionService = sessionService;
+    }
+
+    @PreAuthorize("isAuthenticated()")
+    @RequestMapping(value = "/postcode/{postcode}/meta", method = GET)
+    public ResponseEntity<?> postcodeMetaData(@PathVariable("postcode") @NotEmpty String postcode) {
+        return geoService
+                .getPostcodeMetaData(postcode)
+                .fold(errorHandler::mapToResponseEntity, ResponseEntity::ok);
     }
 
     @PreAuthorize("isAuthenticated()")
