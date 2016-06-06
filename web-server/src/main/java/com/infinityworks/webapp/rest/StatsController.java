@@ -58,6 +58,14 @@ public class StatsController {
     }
 
     @PreAuthorize("isAuthenticated()")
+    @RequestMapping(value = "/constituencies", method = RequestMethod.GET)
+    public ResponseEntity<?> constituencies(Principal principal) {
+        return sessionService.extractUserFromPrincipal(principal)
+                .flatMap(statsService::constituenciesStats)
+                .fold(restErrorHandler::mapToResponseEntity, ResponseEntity::ok);
+    }
+
+    @PreAuthorize("isAuthenticated()")
     @RequestMapping(method = RequestMethod.GET)
     public ResponseEntity<?> leaderboardStats() {
         return ResponseEntity.ok(statsService.leaderboardStats());
@@ -82,14 +90,6 @@ public class StatsController {
     @PreAuthorize("isAuthenticated()")
     @RequestMapping(method = RequestMethod.GET, value = "/constituency/{constituencyCode}")
     public ResponseEntity<?> constituencyStatsFromPaf(@PathVariable("constituencyCode") String constituencyCode, Principal principal) {
-        return sessionService.extractUserFromPrincipal(principal)
-                .flatMap(user -> statsService.constituencyStats(user, constituencyCode))
-                .fold(restErrorHandler::mapToResponseEntity, ResponseEntity::ok);
-    }
-
-    @PreAuthorize("isAuthenticated()")
-    @RequestMapping(method = RequestMethod.GET, value = "/contactinterval")
-    public ResponseEntity<?> contactsRecordedByDate(@PathVariable("constituencyCode") String constituencyCode, Principal principal) {
         return sessionService.extractUserFromPrincipal(principal)
                 .flatMap(user -> statsService.constituencyStats(user, constituencyCode))
                 .fold(restErrorHandler::mapToResponseEntity, ResponseEntity::ok);

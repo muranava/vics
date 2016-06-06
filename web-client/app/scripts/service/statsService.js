@@ -94,5 +94,13 @@ angular
       });
     };
 
+    api.constituenciesStats = function() {
+      return $http({
+        method: 'GET',
+        url: apiUrl + '/stats/constituencies',
+        withCredentials: true
+      });
+    };
+
     return api;
   });

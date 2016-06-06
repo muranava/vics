@@ -4,8 +4,10 @@ import com.google.common.collect.Maps;
 import com.infinityworks.common.lang.Try;
 import com.infinityworks.pafclient.PafClient;
 import com.infinityworks.pafclient.PafRequestExecutor;
+import com.infinityworks.pafclient.dto.ConstituenciesStats;
 import com.infinityworks.pafclient.dto.ConstituencyStats;
 import com.infinityworks.pafclient.dto.WardStats;
+import com.infinityworks.webapp.converter.ConstituenciesStatsConverter;
 import com.infinityworks.webapp.converter.MostCanvassedQueryConverter;
 import com.infinityworks.webapp.converter.TopCanvasserQueryConverter;
 import com.infinityworks.webapp.domain.User;
@@ -14,6 +16,7 @@ import com.infinityworks.webapp.repository.RecordContactLogRepository;
 import com.infinityworks.webapp.repository.StatsJdbcRepository;
 import com.infinityworks.webapp.repository.StatsRepository;
 import com.infinityworks.webapp.repository.UserRepository;
+import com.infinityworks.webapp.rest.dto.ConstituenciesStatsResponse;
 import com.infinityworks.webapp.rest.dto.ImmutableLeaderboardStatsResponse;
 import com.infinityworks.webapp.rest.dto.LeaderboardStatsResponse;
 import com.infinityworks.webapp.rest.dto.StatsResponse;
@@ -44,6 +47,7 @@ public class StatsService {
     private static final int LIMIT = 6;
     private final WardService wardService;
     private final ConstituencyService constituencyService;
+    private final ConstituenciesStatsConverter constituenciesStatsConverter;
     private final UserRepository userRepository;
 
     @Autowired
@@ -53,7 +57,9 @@ public class StatsService {
                         TopCanvasserQueryConverter topCanvasserQueryConverter,
                         MostCanvassedQueryConverter mostCanvassedQueryConverter,
                         PafRequestExecutor pafRequestExecutor, PafClient pafClient,
-                        WardService wardService, ConstituencyService constituencyService,
+                        WardService wardService,
+                        ConstituencyService constituencyService,
+                        ConstituenciesStatsConverter constituenciesStatsConverter,
                         UserRepository userRepository) {
         this.repository = repository;
         this.recordContactLogRepository = recordContactLogRepository;
@@ -64,6 +70,7 @@ public class StatsService {
         this.pafClient = pafClient;
         this.wardService = wardService;
         this.constituencyService = constituencyService;
+        this.constituenciesStatsConverter = constituenciesStatsConverter;
         this.userRepository = userRepository;
     }
 
@@ -130,6 +137,18 @@ public class StatsService {
                     Call<ConstituencyStats> call = pafClient.constituencyStats(constituencyCode);
                     return pafRequestExecutor.execute(call);
                 });
+    }
+
+    public Try<List<ConstituenciesStatsResponse>> constituenciesStats(User user) {
+        if (user.isAdmin()) {
+            Call<List<ConstituenciesStats>> call = pafClient.constituenciesStats();
+            return pafRequestExecutor.execute(call)
+                    .map(stats -> stats.stream()
+                            .map(constituenciesStatsConverter)
+                            .collect(toList()));
+        } else {
+            return Try.failure(new NotAuthorizedFailure("Forbidden"));
+        }
     }
 
     @Transactional(readOnly = true)

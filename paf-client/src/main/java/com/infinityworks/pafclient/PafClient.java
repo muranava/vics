@@ -86,6 +86,9 @@ public interface PafClient {
     @GET("constituencies/{constituencyCode}")
     Call<ConstituencyStats> constituencyStats(@Path("constituencyCode") String constituencyCode);
 
+    @GET("constituencies")
+    Call<List<ConstituenciesStats>> constituenciesStats();
+
     @GET("postcode/{postcode}/meta")
     Call<PostcodeMetaData> postcodeMetaData(@Path("postcode") String postcode);
 }

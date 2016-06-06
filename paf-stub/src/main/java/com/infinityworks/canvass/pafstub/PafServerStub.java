@@ -175,6 +175,17 @@ public class PafServerStub {
                         .withHeader(CONTENT_TYPE, "application/json")));
     }
 
+    public void willReturnTheConstituenciesStats() throws IOException {
+        String jsonResponse = Resources.toString(getResource("json/paf-constituencies-stats.json"), UTF_8);
+
+        String url = "/v1/constituencies";
+        wireMock.register(get(urlPathMatching(url))
+                .willReturn(aResponse()
+                        .withHeader(CONTENT_TYPE, "application/json")
+                        .withStatus(200)
+                        .withBody(jsonResponse)));
+    }
+
     public void willSearchVoters(String postCode, String lastName, String wardCode) throws IOException {
         String jsonResponse = Resources.toString(getResource("json/paf-search-voter.json"), UTF_8);
 

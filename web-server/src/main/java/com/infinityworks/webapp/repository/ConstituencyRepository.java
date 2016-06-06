@@ -28,4 +28,7 @@ public interface ConstituencyRepository extends JpaRepository<Constituency, UUID
     @Query(nativeQuery = true, value = "SELECT c.* FROM users_constituencies uc JOIN constituencies c ON c.id = uc.constituencies_id " +
             "JOIN users u ON u.id = uc.users_id WHERE CAST(u.id AS text) = :userId LIMIT :limit")
     Set<Constituency> findByUser(@Param("userId") String userId, @Param("limit") int limit);
+
+    @Query(nativeQuery = true, value = "SELECT c.code, r.name FROM constituencies c JOIN regions r ON c.regions_id = r.id")
+    List<Object[]> constituenciesByRegion();
 }

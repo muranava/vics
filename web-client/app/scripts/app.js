@@ -23,7 +23,9 @@ angular
     'ngCsvImport',
     'toastr',
     'uiGmapgoogle-maps',
-    'nvd3'
+    'nvd3',
+    'datatables',
+    'datatables.bootstrap'
   ])
   .constant('config', {
     apiUrl: 'http://localhost:18080/api/canvass',

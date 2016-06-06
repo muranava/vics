@@ -1,0 +1,74 @@
+[
+  {
+    "voters": 12345,
+    "canvassed": 100,
+    "pledged": 50,
+    "voted": {
+      "total": 10,
+      "pledged": 20
+    },
+    "intention": {
+      "1": 51,
+      "2": 41,
+      "3": 31,
+      "4": 21,
+      "5": 11
+    },
+    "name": "Coventry East",
+    "code": "E14000649"
+  },
+  {
+    "voters": 12521,
+    "canvassed": 4512,
+    "pledged": 2145,
+    "voted": {
+      "total": 135,
+      "pledged": 89
+    },
+    "intention": {
+      "1": 52,
+      "2": 42,
+      "3": 32,
+      "4": 22,
+      "5": 12
+    },
+    "name": "Rugby",
+    "code": "E14000633"
+  },
+  {
+    "voters": 23232,
+    "canvassed": 2341,
+    "pledged": 1678,
+    "voted": {
+      "total": 299,
+      "pledged": 219
+    },
+    "intention": {
+      "1": 53,
+      "2": 43,
+      "3": 33,
+      "4": 23,
+      "5": 13
+    },
+    "name": "Coventry South",
+    "code": "E14000651"
+  },
+  {
+    "voters": 66542,
+    "canvassed": 2984,
+    "pledged": 2102,
+    "voted": {
+      "total": 2461,
+      "pledged": 1876
+    },
+    "intention": {
+      "1": 54,
+      "2": 44,
+      "3": 34,
+      "4": 24,
+      "5": 14
+    },
+    "name": "Richmond Park",
+    "code": "E14000896"
+  }
+]

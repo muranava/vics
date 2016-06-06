@@ -14,6 +14,7 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 import java.security.Principal;
 
+import static org.hamcrest.CoreMatchers.hasItem;
 import static org.hamcrest.CoreMatchers.is;
 import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.mock;
@@ -31,8 +32,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
                         "classpath:sql/constituencies.sql",
                         "classpath:sql/wards.sql",
                         "classpath:sql/users.sql",
-                        "classpath:sql/record-contact-logs.sql"
-                })
+                        "classpath:sql/record-contact-logs.sql"})
 })
 public class StatsTest extends WebApplicationTest {
     private SessionService sessionService;
@@ -50,9 +50,31 @@ public class StatsTest extends WebApplicationTest {
     }
 
     @Test
+    public void returnsTheConstituencyStats() throws Exception {
+        when(sessionService.extractUserFromPrincipal(any(Principal.class))).thenReturn(Try.success(admin()));
+        pafApiStub.willReturnTheConstituenciesStats();
+
+        mockMvc.perform(get("/stats/constituencies")
+                .accept(MediaType.APPLICATION_JSON))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$..[?(@.name =~ /.*Rugby/i)].voters", hasItem(12521)))
+                .andExpect(jsonPath("$..[?(@.name =~ /.*Rugby/i)].canvassed", hasItem(4512)))
+                .andExpect(jsonPath("$..[?(@.name =~ /.*Rugby/i)].pledged", hasItem(2145)))
+                .andExpect(jsonPath("$..[?(@.name =~ /.*Rugby/i)].voted.total", hasItem(135)))
+                .andExpect(jsonPath("$..[?(@.name =~ /.*Rugby/i)].voted.pledged", hasItem(89)))
+                .andExpect(jsonPath("$..[?(@.name =~ /.*Rugby/i)].name", hasItem("Rugby")))
+                .andExpect(jsonPath("$..[?(@.name =~ /.*Rugby/i)].code", hasItem("E14000633")))
+                .andExpect(jsonPath("$..[?(@.name =~ /.*Rugby/i)].intention['1']", hasItem(52)))
+                .andExpect(jsonPath("$..[?(@.name =~ /.*Rugby/i)].intention['2']", hasItem(42)))
+                .andExpect(jsonPath("$..[?(@.name =~ /.*Rugby/i)].intention['3']", hasItem(32)))
+                .andExpect(jsonPath("$..[?(@.name =~ /.*Rugby/i)].intention['4']", hasItem(22)))
+                .andExpect(jsonPath("$..[?(@.name =~ /.*Rugby/i)].intention['5']", hasItem(12)));
+    }
+
+    @Test
     public void returnsTheTopCanvassers() throws Exception {
-        when(sessionService.extractUserFromPrincipal(any(Principal.class)))
-                .thenReturn(Try.success(covs()));
+        when(sessionService.extractUserFromPrincipal(any(Principal.class))).thenReturn(Try.success(covs()));
 
         mockMvc.perform(get("/stats/topcanvassers")
                 .accept(MediaType.APPLICATION_JSON))
