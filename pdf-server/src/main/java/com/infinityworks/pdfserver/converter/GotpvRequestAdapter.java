@@ -24,6 +24,7 @@ public class GotpvRequestAdapter implements Function<GeneratePdfRequest, GotvVot
         GotvFilterFlags flags = ImmutableGotvFilterFlags.builder()
                 .withHasPV(Boolean.TRUE)
                 .withDeceased(Boolean.FALSE)
+                .withVoted(Boolean.FALSE)
                 .build();
 
         List<PafStreetRequest> streets = request.getStreets().stream()

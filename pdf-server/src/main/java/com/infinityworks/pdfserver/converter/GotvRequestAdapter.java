@@ -33,6 +33,7 @@ public class GotvRequestAdapter implements Function<GeneratePdfRequest, GotvVote
                     .withPoster(flagsRequest.getPoster())
                     .withInaccessible(flagsRequest.getInaccessible())
                     .withPhone(flagsRequest.getTelephone())
+                    .withVoted(Boolean.FALSE)
                     .build();
 
             gotvFilter.withFlags(flags);
