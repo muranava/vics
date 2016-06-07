@@ -41,39 +41,39 @@ public class GotvTableBuilder extends TableBuilderTemplate {
      */
     @Override
     public String createRow(PdfPTable table, String prevHouse, ElectorRow row) {
-        boolean shouldAddHouseChangeRow = prevHouse != null && !Objects.equals(prevHouse, row.getHouse());
-        prevHouse = row.getHouse();
+        boolean shouldAddHouseChangeRow = prevHouse != null && !Objects.equals(prevHouse, row.house());
+        prevHouse = row.house();
 
         if (shouldAddHouseChangeRow) {
             addChangeRow(table);
         }
 
         // workaround to set row height for empty rows (relevant when creating empty pdf page)
-        if (isNullOrEmpty(row.getHouse())) {
+        if (isNullOrEmpty(row.house())) {
             table.addCell(EMPTY_CONTENT);
         } else {
-            addDataCell(table, row.getHouse(), Element.ALIGN_LEFT);
+            addDataCell(table, row.house(), Element.ALIGN_LEFT);
         }
 
-        addDataCell(table, row.getName(), Element.ALIGN_LEFT);
+        addDataCell(table, row.name(), Element.ALIGN_LEFT);
         addDataCell(table, formatContactInfo(row), Element.ALIGN_LEFT);
 
-        PdfPCell support = new PdfPCell(new Phrase(row.getSupport()));
+        PdfPCell support = new PdfPCell(new Phrase(row.support()));
         support.setBackgroundColor(LIGHT_GREY);
         support.setHorizontalAlignment(Element.ALIGN_CENTER);
         support.setVerticalAlignment(Element.ALIGN_MIDDLE);
         table.addCell(support);
 
-        addDataCell(table, row.getHasPV(), Element.ALIGN_CENTER);
-        addDataCell(table, row.getNeedsLift(), Element.ALIGN_CENTER);
-        addDataCell(table, row.getInaccessible(), Element.ALIGN_CENTER);
-        addDataCell(table, row.getDeceased(), Element.ALIGN_CENTER);
-        addDataCell(table, row.getErn(), Element.ALIGN_LEFT);
+        addDataCell(table, row.hasPV(), Element.ALIGN_CENTER);
+        addDataCell(table, row.needsLift(), Element.ALIGN_CENTER);
+        addDataCell(table, row.inaccessible(), Element.ALIGN_CENTER);
+        addDataCell(table, row.deceased(), Element.ALIGN_CENTER);
+        addDataCell(table, row.ern(), Element.ALIGN_LEFT);
         return prevHouse;
     }
 
     private String formatContactInfo(ElectorRow row) {
-        return Stream.of(row.getEmail(), row.getTelephone())
+        return Stream.of(row.email(), row.telephone())
                 .filter(e -> !isNullOrEmpty(e))
                 .collect(joining(", "));
     }

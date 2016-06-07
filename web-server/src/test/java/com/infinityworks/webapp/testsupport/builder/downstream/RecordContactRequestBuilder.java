@@ -9,6 +9,7 @@ public class RecordContactRequestBuilder {
     private Boolean sovereignty;
     private Boolean border;
     private Boolean lift;
+    private Boolean hasVoted;
     private Boolean hasPV;
     private Boolean wantsPV;
     private Boolean deceased;
@@ -28,6 +29,7 @@ public class RecordContactRequestBuilder {
                 .withSovereignty(false)
                 .withBorder(true)
                 .withLift(false)
+                .withHasVoted(true)
                 .withHasPV(true)
                 .withWantsPV(false)
                 .withDeceased(false)
@@ -68,6 +70,11 @@ public class RecordContactRequestBuilder {
         return this;
     }
 
+    public RecordContactRequestBuilder withHasVoted(Boolean hasVoted) {
+        this.hasVoted = hasVoted;
+        return this;
+    }
+
     public RecordContactRequestBuilder withHasPV(Boolean hasPV) {
         this.hasPV = hasPV;
         return this;
@@ -104,6 +111,6 @@ public class RecordContactRequestBuilder {
     }
 
     public RecordContactRequest build() {
-        return new RecordContactRequest(intention, likelihood, cost, sovereignty, border, lift, hasPV, wantsPV, deceased, poster, inaccessible, telephone, email);
+        return new RecordContactRequest(intention, likelihood, cost, sovereignty, border, lift, hasVoted, hasPV, wantsPV, deceased, poster, inaccessible, telephone, email);
     }
 }

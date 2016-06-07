@@ -31,6 +31,7 @@ angular
         cost: false,
         border: false,
         sovereignty: false,
+        hasVoted: false,
         hasPV: false,
         wantsPV: false,
         poster: false,

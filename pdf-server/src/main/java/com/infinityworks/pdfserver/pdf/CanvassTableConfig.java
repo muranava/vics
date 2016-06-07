@@ -6,13 +6,14 @@ import com.infinityworks.pdfserver.pdf.model.RectPoint;
 public class CanvassTableConfig implements PdfTableConfig {
     private static final int[] COLUMN_WIDTHS = new int[]{
             75, // house
-            85, // name
-            70, // tel
+            80, // name
+            60, // tel
             40, // likelihood
             24, // iss 1
             45, // iss 2
             28, // iss 3
             37, // intention
+            15, // has voted
             15, // has pv
             15, // wants pv
             15, // needs lift

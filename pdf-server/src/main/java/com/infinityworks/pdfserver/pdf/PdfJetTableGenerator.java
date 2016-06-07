@@ -5,6 +5,7 @@ import com.infinityworks.pafclient.dto.Property;
 import com.infinityworks.pdfserver.converter.PropertyToRowsConverter;
 import com.infinityworks.pdfserver.pdf.model.ElectorRow;
 import com.infinityworks.pdfserver.pdf.model.GeneratedPdfTable;
+import com.infinityworks.pdfserver.pdf.model.ImmutableElectorRow;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -24,7 +25,7 @@ public class PdfJetTableGenerator implements PDFTableGenerator {
     private static final List<ElectorRow> EMPTY_ROWS;
 
     static {
-        EMPTY_ROWS = ListExtras.times(() -> ElectorRow.EMPTY, NUM_EMPTY_ROWS);
+        EMPTY_ROWS = ListExtras.times(() -> ImmutableElectorRow.builder().build(), NUM_EMPTY_ROWS);
     }
 
     @Autowired

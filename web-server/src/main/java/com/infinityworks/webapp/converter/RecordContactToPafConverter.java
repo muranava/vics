@@ -18,6 +18,7 @@ public class RecordContactToPafConverter implements BiFunction<User, RecordConta
         Voting builder = ImmutableVoting.builder()
                 .withIntention(contactRequest.getIntention())
                 .withLikelihood(contactRequest.getLikelihood())
+                .withHasVoted(contactRequest.getHasVoted())
                 .build();
 
         Flags flags = ImmutableFlags.builder()

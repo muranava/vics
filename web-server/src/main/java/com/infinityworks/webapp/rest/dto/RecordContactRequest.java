@@ -30,6 +30,8 @@ public class RecordContactRequest {
     @NotNull
     private final Boolean lift;
     @NotNull
+    private final Boolean hasVoted;
+    @NotNull
     private final Boolean hasPV;
     @NotNull
     private final Boolean wantsPV;
@@ -50,6 +52,7 @@ public class RecordContactRequest {
                                 @JsonProperty("sovereignty") Boolean sovereignty,
                                 @JsonProperty("border") Boolean border,
                                 @JsonProperty("lift") Boolean lift,
+                                @JsonProperty("hasVoted") Boolean hasVoted,
                                 @JsonProperty("hasPV") Boolean hasPV,
                                 @JsonProperty("wantsPV") Boolean wantsPV,
                                 @JsonProperty("deceased") Boolean deceased,
@@ -63,6 +66,7 @@ public class RecordContactRequest {
         this.sovereignty = sovereignty;
         this.border = border;
         this.lift = lift;
+        this.hasVoted = hasVoted;
         this.hasPV = hasPV;
         this.wantsPV = wantsPV;
         this.deceased = deceased;
@@ -94,6 +98,10 @@ public class RecordContactRequest {
 
     public Boolean getLift() {
         return lift;
+    }
+
+    public Boolean getHasVoted() {
+        return hasVoted;
     }
 
     public Boolean getHasPV() {

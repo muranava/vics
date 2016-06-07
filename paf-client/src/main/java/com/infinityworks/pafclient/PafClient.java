@@ -74,21 +74,52 @@ public interface PafClient {
     Call<DeleteContactResponse> deleteContact(@Path("ern") String ern,
                                               @Path("contactId") UUID contactId);
 
+    /**
+     * Records the a voter has voted
+     *
+     * @param ern the unique identifier for the voter
+     * @return the general paf api success response (representing void)
+     */
     @POST("voters/{ern}/voted")
     Call<RecordVotedResponse> recordVote(@Path("ern") String ern);
 
+    /**
+     * Deletes the existing voter voted record
+     *
+     * @param ern the unique identifier for the voter
+     * @return the general paf api success response (representing void)
+     */
     @DELETE("voters/{ern}/voted")
     Call<RecordVotedResponse> undoVote(@Path("ern") String ern);
 
+    /**
+     * The stats (pledges, voters, voting intentions) for a given ward based
+     *
+     * @param wardCode the gss code of the ward to get the stats for
+     * @return the stats for the given ward
+     */
     @GET("wards/{wardCode}")
     Call<WardStats> wardStats(@Path("wardCode") String wardCode);
 
+    /**
+     * The stats (pledges, voters, voting intentions) for a given constituency
+     *
+     * @param constituencyCode the gss code of the constituency to get the stats for
+     * @return the stats for the given constituency
+     */
     @GET("constituencies/{constituencyCode}")
     Call<ConstituencyStats> constituencyStats(@Path("constituencyCode") String constituencyCode);
 
     @GET("constituencies")
     Call<List<ConstituenciesStats>> constituenciesStats();
 
+    /**
+     * Gets information about a postcode, including geolocation and electoral information, e.g.
+     * ward and constituency
+     *
+     * @param postcode the postcode to retrieve meta data for
+     * @return postcode related information
+     */
     @GET("postcode/{postcode}/meta")
     Call<PostcodeMetaData> postcodeMetaData(@Path("postcode") String postcode);
 }

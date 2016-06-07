@@ -3,17 +3,19 @@ package com.infinityworks.pdfserver.converter;
 import com.infinityworks.common.lang.StringExtras;
 import com.infinityworks.pafclient.dto.*;
 import com.infinityworks.pdfserver.pdf.model.ElectorRow;
-import com.infinityworks.pdfserver.pdf.model.ElectorRowBuilder;
+import com.infinityworks.pdfserver.pdf.model.ImmutableElectorRow;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
 import java.util.function.BiFunction;
 import java.util.stream.Stream;
 
-import static com.infinityworks.pdfserver.pdf.model.ElectorRowBuilder.electorRow;
 import static java.util.stream.Collectors.joining;
 import static java.util.stream.Collectors.toList;
 
+/**
+ * Maps a property (house) to a collection of voters
+ */
 @Component
 public class PropertyToRowsConverter implements BiFunction<String, Property, List<ElectorRow>> {
     @Override
@@ -25,40 +27,48 @@ public class PropertyToRowsConverter implements BiFunction<String, Property, Lis
                     Flags flags = voter.flags();
                     Info info = voter.info();
 
-                    ElectorRowBuilder row = electorRow()
+                    ImmutableElectorRow.Builder builder = ImmutableElectorRow.builder()
                             .withHouse(property.house())
                             .withName(voter.fullName());
+                    createVoterAttributes(issues, voting, flags, info, builder);
 
-                    if (voting != null) {
-                        row.withLikelihood(normalizeScore(voting.likelihood()))
-                                .withIntention(normalizeScore(voting.intention()));
-                    }
-
-                    if (issues != null) {
-                        row.withIssue1(createCheckBox(issues.cost()))
-                                .withIssue2(createCheckBox(issues.sovereignty()))
-                                .withIssue3(createCheckBox(issues.border()));
-                    }
-
-                    if (flags != null) {
-                        row.withHasPV(createCheckBox(flags.hasPV()))
-                                .withWantsPV(createCheckBox(flags.wantsPV()))
-                                .withPoster(createCheckBox(flags.poster()))
-                                .withNeedsLift(createCheckBox(flags.lift()))
-                                .withInaccessible(createCheckBox(flags.inaccessible()))
-                                .withDeceased(createCheckBox(flags.deceased()));
-                    }
-
-                    if (info != null) {
-                        row.withEmail(info.email());
-                        row.withTelephone(info.telephone());
-                    }
-
-                    return row.withStreet(property.street())
+                    return builder.withStreet(property.street())
                             .withErn(createRollNum(voter))
                             .build();
                 })
                 .collect(toList());
+    }
+
+    private void createVoterAttributes(Issues issues,
+                                       Voting voting,
+                                       Flags flags,
+                                       Info info,
+                                       ImmutableElectorRow.Builder builder) {
+        if (voting != null) {
+            builder.withLikelihood(normalizeScore(voting.likelihood()))
+                    .withSupport(normalizeScore(voting.intention()))
+                    .withHasVoted(createCheckBox(voting.hasVoted()));
+        }
+
+        if (issues != null) {
+            builder.withIssue1(createCheckBox(issues.cost()))
+                    .withIssue2(createCheckBox(issues.sovereignty()))
+                    .withIssue3(createCheckBox(issues.border()));
+        }
+
+        if (flags != null) {
+            builder.withHasPV(createCheckBox(flags.hasPV()))
+                    .withWantsPV(createCheckBox(flags.wantsPV()))
+                    .withPoster(createCheckBox(flags.poster()))
+                    .withNeedsLift(createCheckBox(flags.lift()))
+                    .withInaccessible(createCheckBox(flags.inaccessible()))
+                    .withDeceased(createCheckBox(flags.deceased()));
+        }
+
+        if (info != null) {
+            builder.withEmail(info.email());
+            builder.withTelephone(info.telephone());
+        }
     }
 
     private String normalizeScore(Integer value) {
