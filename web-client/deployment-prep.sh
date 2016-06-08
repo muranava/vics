@@ -3,7 +3,7 @@
 VERSION=31
 ELB_DEV="https://WebApp-57219498.eu-west-1.elb.amazonaws.com:18080/api/canvass"
 ELB_PDF_DEV="https://WebApp-57219498.eu-west-1.elb.amazonaws.com:18080/api/canvass"
-ELB_STAGING="https://WebApp-2103587711.eu-west-1.elb.amazonaws.com:18080/api/canvass"
+ELB_STAGING="https://vicsapistaging.voteleave.uk:18080/api/canvass"
 ELB_PDF_STAGING="https://WebPDF-1379073436.eu-west-1.elb.amazonaws.com:18080/api/canvass"
 ELB_PROD="https://vicsapi.voteleave.uk:18080/api/canvass"
 ELB_PDF_PROD="https://vicspdfapi.voteleave.uk:18080/api/canvass"

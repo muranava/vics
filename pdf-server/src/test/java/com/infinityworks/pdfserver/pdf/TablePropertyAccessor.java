@@ -11,8 +11,8 @@ import java.lang.reflect.Field;
  */
 public class TablePropertyAccessor {
     enum Column {
-        HOUSE(0), NAME(1), TEL(2), LIKELIHOOD(3), COST(4), SOVEREIGNTY(5), BORDER(6), INTENTION(7),
-        HAS_PV(8), WANTS_PV(9), LIFT(10), POSTER(11), NO_ACCESS(12), DEAD(13), ROLL_NUM(14);
+        HOUSE(0), NAME(1), TEL(2), LIKELIHOOD(3), COST(4), SOVEREIGNTY(5), BORDER(6), INTENTION(7), VOTED(8),
+        HAS_PV(9), WANTS_PV(10), LIFT(11), POSTER(12), NO_ACCESS(13), DEAD(14), ROLL_NUM(15);
 
         int column;
 
