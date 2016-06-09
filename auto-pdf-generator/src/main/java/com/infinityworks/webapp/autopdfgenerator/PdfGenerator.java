@@ -14,8 +14,10 @@ import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 import java.util.function.Function;
 
+import static java.util.UUID.randomUUID;
 import static java.util.stream.Collectors.toList;
 
 /**
@@ -23,7 +25,7 @@ import static java.util.stream.Collectors.toList;
  */
 public class PdfGenerator {
     private static final Logger log = LoggerFactory.getLogger(PdfGenerator.class);
-    private static final int HTTP_REQUEST_TIMEOUT_MS = 20_000;
+    private static final int HTTP_REQUEST_TIMEOUT_MS = 60_000;
 
     private static final Flags GOTV_FILER = ImmutableFlags.builder()
             .withIntentionFrom(4)
@@ -42,31 +44,38 @@ public class PdfGenerator {
                 conf.getString("pafApiToken"),
                 HTTP_REQUEST_TIMEOUT_MS);
 
-        CsvParser csvParser = new CsvParser(conf.getString("wardsCsv"));
-        List<DistrictRow> districtRows = csvParser.parseContent(WardCsvExtractor.INSTANCE);
+        CsvParser activeWardsCsvParser = new CsvParser(conf.getString("activeWardsCsv"));
+        Set<String> wardWhitelist = activeWardsCsvParser.parseContent(ActiveWardsExtractor.INSTANCE);
 
-        for (DistrictRow row : districtRows) {
-            try {
-                log.info(String.format("Generating GOTV pdf for ward %s (%s)", row.wardName(), row.wardCode()));
+        CsvParser allWardsCsvParser = new CsvParser(conf.getString("wardsCsv"));
+        Set<DistrictRow> districtRows = allWardsCsvParser.parseContent(WardCsvExtractor.INSTANCE);
 
-                List<Street> streets = pdfClient.streetsByWard(row.wardCode()).response()
-                        .stream()
-                        .map(StreetConverter.INSTANCE)
-                        .collect(toList());
+        districtRows.stream()
+                .filter(ward -> !wardWhitelist.isEmpty() && wardWhitelist.contains(ward.wardCode()))
+                .forEach(ward -> generateGotvPdfForWard(resultsDir, pdfClient, ward));
+    }
 
-                log.debug(String.format("Retrieved %s streets for ward %s (%s)", streets.size(), row.wardName(), row.wardCode()));
+    private static void generateGotvPdfForWard(String resultsDir, PdfClient pdfClient, DistrictRow row) {
+        try {
+            log.info(String.format("Generating GOTV pdf for ward %s (%s)", row.wardName(), row.wardCode()));
 
-                GeneratePdfRequest pdfRequest = createPdfRequest(row, streets);
-                Optional<byte[]> pdfContent = pdfClient.createGotvCard(pdfRequest);
-                if (pdfContent.isPresent() && pdfContent.get().length != 0) {
-                    log.debug("Retrieved voters PDF, content length: " + pdfContent.get().length);
-                    writePdfFile(row, pdfContent.get(), resultsDir);
-                } else {
-                    log.debug(String.format("No pledges for ward %s (%s)", row.wardName(), row.wardCode()));
-                }
-            } catch (Exception e) {
-                log.error(String.format("Failed to generate PDF for ward %s (%s)", row.wardName(), row.wardCode()), e);
+            List<Street> streets = pdfClient.streetsByWard(row.wardCode()).response()
+                    .stream()
+                    .map(StreetConverter.INSTANCE)
+                    .collect(toList());
+
+            log.debug(String.format("Retrieved %s streets for ward %s (%s)", streets.size(), row.wardName(), row.wardCode()));
+
+            GeneratePdfRequest pdfRequest = createPdfRequest(row, streets);
+            Optional<byte[]> pdfContent = pdfClient.createGotvCard(pdfRequest);
+            if (pdfContent.isPresent() && pdfContent.get().length != 0) {
+                log.debug("Retrieved voters PDF, content length: " + pdfContent.get().length);
+                writePdfFile(row, pdfContent.get(), resultsDir);
+            } else {
+                log.debug(String.format("No pledges for ward %s (%s)", row.wardName(), row.wardCode()));
             }
+        } catch (Exception e) {
+            log.error(String.format("Failed to generate PDF for ward %s (%s)", row.wardName(), row.wardCode()), e);
         }
     }
 
@@ -79,10 +88,11 @@ public class PdfGenerator {
     }
 
     private static void writePdfFile(DistrictRow row, byte[] pdfContent, String resultsDir) throws IOException {
-        String fileName = String.format("%s/%s/%s.pdf", resultsDir, row.constituencyName(), row.wardName());
-        Files.createParentDirs(new File(fileName));
+        String fileName = String.format("%s_%s", row.wardName(), randomUUID().toString().replace("-", "").substring(0, 18));
+        String relativePath = String.format("%s/%s/%s.pdf", resultsDir, row.constituencyName(), fileName);
+        Files.createParentDirs(new File(relativePath));
 
-        FileOutputStream fos = new FileOutputStream(fileName);
+        FileOutputStream fos = new FileOutputStream(relativePath);
         fos.write(pdfContent);
         fos.close();
     }
@@ -112,6 +122,15 @@ enum WardCsvExtractor implements Function<CSVRecord, DistrictRow> {
                 .withWardCode(record.get(2))
                 .withWardName(record.get(3))
                 .build();
+    }
+}
+
+enum ActiveWardsExtractor implements Function<CSVRecord, String> {
+    INSTANCE;
+
+    @Override
+    public String apply(CSVRecord record) {
+        return record.get(0);
     }
 }
 

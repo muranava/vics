@@ -8,10 +8,10 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.Reader;
 import java.net.URL;
-import java.util.List;
+import java.util.Set;
 import java.util.function.Function;
 
-import static java.util.stream.Collectors.toList;
+import static java.util.stream.Collectors.toSet;
 import static java.util.stream.StreamSupport.stream;
 
 class CsvParser {
@@ -21,13 +21,13 @@ class CsvParser {
         this.filePath = filePath;
     }
 
-    <T> List<T> parseContent(Function<CSVRecord, T> rowInterpreter) throws IOException {
+    <T> Set<T> parseContent(Function<CSVRecord, T> rowInterpreter) throws IOException {
         URL resource = Resources.getResource(filePath);
         Reader in = new InputStreamReader(resource.openStream());
         Iterable<CSVRecord> records = CSVFormat.DEFAULT.parse(in);
 
         return stream(records.spliterator(), false)
                 .map(rowInterpreter)
-                .collect(toList());
+                .collect(toSet());
     }
 }
