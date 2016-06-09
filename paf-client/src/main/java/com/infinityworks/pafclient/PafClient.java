@@ -110,7 +110,7 @@ public interface PafClient {
     @GET("constituencies/{constituencyCode}")
     Call<ConstituencyStats> constituencyStats(@Path("constituencyCode") String constituencyCode);
 
-    @GET("constituencies")
+    @GET("constituencies/stats")
     Call<List<ConstituenciesStats>> constituenciesStats();
 
     /**

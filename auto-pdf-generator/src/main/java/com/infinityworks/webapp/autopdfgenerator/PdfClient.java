@@ -9,6 +9,7 @@ import org.apache.http.HttpEntity;
 import org.apache.http.HttpHeaders;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
+import org.apache.http.client.config.RequestConfig;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.client.methods.HttpUriRequest;
 import org.apache.http.client.methods.RequestBuilder;
@@ -28,16 +29,24 @@ class PdfClient {
     private final String getStreetsUrl;
     private final String apiToken;
 
-    PdfClient(String pdfServerUrl, String pafApiUrl, String apiToken) {
+    private RequestConfig requestConfig;
+
+    PdfClient(String pdfServerUrl, String pafApiUrl, String apiToken, int timeout) {
         this.createGotvCardUrl = pdfServerUrl + "/canvass/gotv";
         this.getStreetsUrl = pafApiUrl + "/wards/%s/streets";
         this.apiToken = apiToken;
+        this.requestConfig = RequestConfig.custom()
+                .setConnectionRequestTimeout(timeout)
+                .setConnectTimeout(timeout)
+                .setSocketTimeout(timeout)
+                .build();
     }
 
     StreetsResponse streetsByWard(String wardCode) throws IOException {
         String url = String.format(getStreetsUrl, wardCode);
         HttpUriRequest request = RequestBuilder.get()
                 .setUri(url)
+                .setConfig(requestConfig)
                 .setHeader(HttpHeaders.ACCEPT, MediaType.JSON_UTF_8.toString())
                 .setHeader("X-Authorization", apiToken)
                 .build();
@@ -53,6 +62,7 @@ class PdfClient {
 
         HttpPost postRequest = new HttpPost(createGotvCardUrl);
         postRequest.setEntity(body);
+        postRequest.setConfig(requestConfig);
         postRequest.setHeader(HttpHeaders.ACCEPT, "application/pdf");
 
         HttpResponse response = client.execute(postRequest);

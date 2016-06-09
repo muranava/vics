@@ -23,6 +23,7 @@ import static java.util.stream.Collectors.toList;
  */
 public class PdfGenerator {
     private static final Logger log = LoggerFactory.getLogger(PdfGenerator.class);
+    private static final int HTTP_REQUEST_TIMEOUT_MS = 20_000;
 
     private static final Flags GOTV_FILER = ImmutableFlags.builder()
             .withIntentionFrom(4)
@@ -33,8 +34,13 @@ public class PdfGenerator {
 
     public static void main(String... args) throws IOException {
         String resultsDir = "gotv_" + LocalDateTime.now().toString();
-        Config conf = ConfigFactory.load();
-        PdfClient pdfClient = new PdfClient(conf.getString("pdfServerUrl"), conf.getString("pafApiUrl"), conf.getString("pafApiToken"));
+        Config conf = loadConfiguration();
+
+        PdfClient pdfClient = new PdfClient(
+                conf.getString("pdfServerUrl"),
+                conf.getString("pafApiUrl"),
+                conf.getString("pafApiToken"),
+                HTTP_REQUEST_TIMEOUT_MS);
 
         CsvParser csvParser = new CsvParser(conf.getString("wardsCsv"));
         List<DistrictRow> districtRows = csvParser.parseContent(WardCsvExtractor.INSTANCE);
@@ -62,6 +68,14 @@ public class PdfGenerator {
                 log.error(String.format("Failed to generate PDF for ward %s (%s)", row.wardName(), row.wardCode()), e);
             }
         }
+    }
+
+    private static Config loadConfiguration() {
+        Config config = ConfigFactory.load();
+        log.info("Config: pdfServerUrl=" + config.getString("pdfServerUrl"));
+        log.info("Config: pafApiUrl=" + config.getString("pafApiUrl"));
+        log.info("Config: pafApiToken=" + config.getString("pafApiToken"));
+        return config;
     }
 
     private static void writePdfFile(DistrictRow row, byte[] pdfContent, String resultsDir) throws IOException {

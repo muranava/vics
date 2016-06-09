@@ -12,6 +12,7 @@
 
     <artifactId>auto-pdf-generator</artifactId>
     <version>0.0.1</version>
+    <packaging>jar</packaging>
 
     <dependencies>
         <dependency>
@@ -65,4 +66,25 @@
             <scope>provided</scope>
         </dependency>
     </dependencies>
+
+    <build>
+        <plugins>
+            <plugin>
+                <artifactId>maven-assembly-plugin</artifactId>
+                <configuration>
+                    <archive>
+                        <manifest>
+                            <mainClass>com.infinityworks.webapp.autopdfgenerator.PdfGenerator</mainClass>
+                        </manifest>
+                    </archive>
+                    <appendAssemblyId>false</appendAssemblyId>
+                    <finalName>pdf-generator</finalName>
+                    <descriptorRefs>
+                        <descriptorRef>jar-with-dependencies</descriptorRef>
+                    </descriptorRefs>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+
 </project>
