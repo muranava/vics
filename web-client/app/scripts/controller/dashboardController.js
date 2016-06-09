@@ -6,6 +6,7 @@ angular
       secondsInHour = 3600;
     $scope.showCanvassedGraph = true;
     $scope.hideCharts = true;
+    $scope.stats = {};
 
     $scope.onWardInputKeypress = function() {
       wardService.searchRestricted($scope.wardSearchModel)
@@ -48,9 +49,10 @@ angular
       $("#postcodeMap .angular-google-map-container").height(250);
     });
 
-    statsService.allStats()
+    statsService
+      .topCanvassers()
       .success(function (response) {
-        $scope.stats = response;
+        $scope.stats.topCanvassers = response;
       });
 
     constituencyService.firstUserConstituency()
@@ -73,7 +75,28 @@ angular
 
     $scope.changeLeaderboardTab = function (tabName) {
       $scope.currentTab = tabName;
+      if (tabName === 'wards' && _.isUndefined($scope.stats.topWards)) {
+        loadTopWards();
+      } else if (tabName === 'constituencies' && _.isUndefined($scope.stats.topConstituencies)) {
+        loadTopConstituencies();
+      }
     };
+
+    function loadTopWards() {
+      statsService
+        .topWards()
+        .success(function (response) {
+          $scope.stats.topWards = response;
+        });
+    }
+
+    function loadTopConstituencies() {
+      statsService
+        .topConstituencies()
+        .success(function (response) {
+          $scope.stats.topConstituencies = response;
+        });
+    }
 
     $scope.findWard = function (postCode, suppressError) {
       if (_.isEmpty(postCode)) {
