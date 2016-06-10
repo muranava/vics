@@ -29,52 +29,6 @@
       <div class="col-md-12">
         <div class="card">
           <div class="card-head">
-            <header>Constituencies</header>
-          </div>
-          <div class="card-body">
-
-            <table datatable="ng" class="row-border hover">
-              <thead>
-              <tr>
-                <th>Constituency</th>
-                <th>Region</th>
-                <th>i1</th>
-                <th>i2</th>
-                <th>i3</th>
-                <th>i4</th>
-                <th>i5</th>
-                <th>Voters</th>
-                <th>Voted</th>
-                <th>Pledges</th>
-                <th>Pledges Voted</th>
-              </tr>
-              </thead>
-              <tbody>
-              <tr ng-repeat="c in constituencies">
-                <td>{{ c.stats.name }}</td>
-                <td>{{ c.region }}</td>
-                <td>{{ c.stats.intention['1'] }}</td>
-                <td>{{ c.stats.intention['2'] }}</td>
-                <td>{{ c.stats.intention['3'] }}</td>
-                <td>{{ c.stats.intention['4'] }}</td>
-                <td>{{ c.stats.intention['5'] }}</td>
-                <td>{{ c.stats.voters }}</td>
-                <td>{{ c.stats.voted.total }}</td>
-                <td>{{ c.stats.pledged }}</td>
-                <td>{{ c.stats.voted.pledged }}</td>
-              </tr>
-              </tbody>
-            </table>
-
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <div class="row">
-      <div class="col-md-12">
-        <div class="card">
-          <div class="card-head">
             <header>Users By Region</header>
           </div>
           <div class="card-body">

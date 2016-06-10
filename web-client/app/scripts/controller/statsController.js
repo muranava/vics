@@ -1,14 +1,6 @@
 angular
   .module('canvass')
-  .controller('statsController', function ($scope, statsService, toastr) {
-    statsService.constituenciesStats()
-      .success(function(response) {
-        console.log(response);
-        $scope.constituencies = response;
-      })
-      .error(function() {
-        toastr.error('Failed to load constituency stats', 'Error');
-      });
+  .controller('statsController', function ($scope, statsService) {
 
     statsService.userCounts()
       .success(function (stats) {
