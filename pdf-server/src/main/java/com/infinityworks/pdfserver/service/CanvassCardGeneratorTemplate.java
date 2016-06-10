@@ -14,14 +14,18 @@ import com.infinityworks.pdfserver.pdf.DocumentBuilder;
 import com.infinityworks.pdfserver.pdf.PDFTableGenerator;
 import com.infinityworks.pdfserver.pdf.TableBuilderTemplate;
 import com.infinityworks.pdfserver.pdf.model.GeneratedPdfTable;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.ByteArrayOutputStream;
 import java.util.List;
+import java.util.UUID;
 
 abstract class CanvassCardGeneratorTemplate {
     private final TableBuilderTemplate tableBuilder;
     private final DocumentBuilder documentBuilder;
     private final PDFTableGenerator pdfTableGenerator;
+    private static final Logger log = LoggerFactory.getLogger(CanvassCardGeneratorTemplate.class);
 
     final PafClient pafClient;
     final PafRequestExecutor pafRequestExecutor;
@@ -42,7 +46,15 @@ abstract class CanvassCardGeneratorTemplate {
     }
 
     protected Try<ByteArrayOutputStream> generateCanvassCard(GeneratePdfRequest request) {
+        UUID correlationKey = UUID.randomUUID();
+        long startTime = System.currentTimeMillis();
+        log.info("Paf Request[{}] getVotersByStreets", correlationKey);
+
         Try<PropertyResponse> voters = getVoters(request);
+
+        long endTime = System.currentTimeMillis();
+        log.info("Paf Response[{}] getVotersByStreets. paf_response_time={}", correlationKey, endTime - startTime);
+
         return voters.flatMap(properties -> generatePdf(request, properties.response()));
     }
 
@@ -57,7 +69,11 @@ abstract class CanvassCardGeneratorTemplate {
         if (generatedPdfTables.isEmpty()) {
             return Try.failure(new NotFoundFailure("No voters found"));
         } else {
+            long startTime = System.currentTimeMillis();
             ByteArrayOutputStream pdfContent = documentBuilder.buildPdfPages(generatedPdfTables, request.getFlags());
+            long endTime = System.currentTimeMillis();
+            log.info("Generated canvass card for ward={} numStreets={} pdf_rendering_time={}",
+                    request.getInfo().getWardCode(), request.getStreets().size(), endTime - startTime);
             return Try.success(pdfContent);
         }
     }
