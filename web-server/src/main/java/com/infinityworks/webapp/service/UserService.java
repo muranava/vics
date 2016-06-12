@@ -2,18 +2,18 @@ package com.infinityworks.webapp.service;
 
 import com.infinityworks.common.lang.Try;
 import com.infinityworks.webapp.converter.AllUsersQueryConverter;
+import com.infinityworks.webapp.domain.Role;
 import com.infinityworks.webapp.domain.User;
 import com.infinityworks.webapp.error.BadRequestFailure;
 import com.infinityworks.webapp.error.NotAuthorizedFailure;
 import com.infinityworks.webapp.error.NotFoundFailure;
 import com.infinityworks.webapp.notifications.NewAccountNotifier;
 import com.infinityworks.webapp.repository.UserRepository;
-import com.infinityworks.webapp.rest.dto.CreateUserRequest;
-import com.infinityworks.webapp.rest.dto.UpdateUserRequest;
-import com.infinityworks.webapp.rest.dto.UserSummary;
+import com.infinityworks.webapp.rest.dto.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -40,6 +40,18 @@ public class UserService {
         this.userRepository = userRepository;
         this.converter = converter;
         this.newAccountNotifier = newAccountNotifier;
+    }
+
+    public Try<CurrentUser> testRole(User user, String role) {
+        if (Role.hasRole(user.getRole(), Role.valueOf(role))) {
+            return Try.success(ImmutableCurrentUser.builder()
+                    .withRole(user.getRole())
+                    .withUsername(user.getUsername())
+                    .withPermissions(user.getPermissions())
+                    .build());
+        } else {
+            return Try.failure(new AccessDeniedException("Forbidden"));
+        }
     }
 
     @Transactional(readOnly = true)

@@ -6,11 +6,16 @@ import com.infinityworks.pafclient.dto.ImmutableVoter;
 import com.infinityworks.pafclient.dto.ImmutableVoting;
 import com.infinityworks.webapp.domain.PasswordResetToken;
 import com.infinityworks.webapp.domain.User;
+import com.infinityworks.webapp.rest.dto.ElectorsByStreetsRequest;
+import com.infinityworks.webapp.rest.dto.Flags;
 import com.infinityworks.webapp.rest.dto.ImmutableStreet;
+import com.infinityworks.webapp.rest.dto.StreetRequest;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 import static com.infinityworks.webapp.testsupport.builder.UserBuilder.user;
+import static java.util.Collections.singletonList;
 
 public class Fixtures {
 
@@ -21,6 +26,11 @@ public class Fixtures {
         token.setExpires(LocalDateTime.now().plusMinutes(30));
         token.setToken("12345");
         return token;
+    }
+
+    public static ElectorsByStreetsRequest streetsRequest() {
+        List<StreetRequest> streets = singletonList(new StreetRequest("mainStreet", "postTown", "dependentStreet", "dependentLocality"));
+        return  new ElectorsByStreetsRequest(streets, new Flags(1, 5, 1, 5, false, false, false, false, false, false, false));
     }
 
     public static ImmutableVoter.Builder voterWithDefaults() {

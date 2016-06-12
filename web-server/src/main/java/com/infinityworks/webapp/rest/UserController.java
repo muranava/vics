@@ -1,11 +1,12 @@
 package com.infinityworks.webapp.rest;
 
-import com.infinityworks.common.lang.Try;
 import com.infinityworks.webapp.common.RequestValidator;
-import com.infinityworks.webapp.domain.Role;
 import com.infinityworks.webapp.domain.User;
 import com.infinityworks.webapp.error.RestErrorHandler;
-import com.infinityworks.webapp.rest.dto.*;
+import com.infinityworks.webapp.rest.dto.CreateUserRequest;
+import com.infinityworks.webapp.rest.dto.GeneratePasswordFromTokenRequest;
+import com.infinityworks.webapp.rest.dto.PasswordResetRequest;
+import com.infinityworks.webapp.rest.dto.UpdateUserRequest;
 import com.infinityworks.webapp.security.SecurityUtils;
 import com.infinityworks.webapp.service.LoginService;
 import com.infinityworks.webapp.service.RequestPasswordResetService;
@@ -15,7 +16,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
@@ -139,16 +139,7 @@ public class UserController {
     @RequestMapping(value = "/login/test", method = GET)
     public ResponseEntity<?> testLoggedIn(Principal userPrincipal, @RequestParam(value = "role") String role) {
         return sessionService.extractUserFromPrincipal(userPrincipal)
-                .flatMap(user -> {
-                    if (Role.hasRole(user.getRole(), Role.valueOf(role))) {
-                        return Try.success(ImmutableCurrentUser.builder()
-                                .withRole(user.getRole())
-                                .withUsername(user.getUsername())
-                                .withPermissions(user.getPermissions())
-                                .build());
-                    } else {
-                        return Try.failure(new AccessDeniedException("Forbidden"));
-                    }
-                }).fold(errorHandler::mapToResponseEntity, ResponseEntity::ok);
+                .flatMap(user -> userService.testRole(user, role))
+                .fold(errorHandler::mapToResponseEntity, ResponseEntity::ok);
     }
 }

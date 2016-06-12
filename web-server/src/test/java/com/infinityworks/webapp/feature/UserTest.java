@@ -17,7 +17,7 @@ import org.junit.Test;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.context.jdbc.SqlGroup;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
-
+import java.util.Base64;
 import java.security.Principal;
 import java.util.Optional;
 
@@ -194,5 +194,27 @@ public class UserTest extends WebApplicationTest {
                 .andExpect(status().isBadRequest());
     }
 
+    @Test
+    public void logsInTheUser() throws Exception {
+        String encodedAuthHeader = Base64.getEncoder().encodeToString("me@admin.uk:admin".getBytes());
 
+        mockMvc.perform(post("/user/login")
+                .header("Authorization", String.format("Basic %s", encodedAuthHeader))
+                .accept(APPLICATION_JSON))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("username", is("me@admin.uk")));
+    }
+
+    @Test
+    public void returnsNotAuthorizationIfCredentialsInvalidOnLogin() throws Exception {
+        String encodedAuthHeader = Base64.getEncoder().encodeToString("me@admin.uk:wrongpassword".getBytes());
+
+        mockMvc.perform(post("/user/login")
+                .header("Authorization", String.format("Basic %s", encodedAuthHeader))
+                .accept(APPLICATION_JSON))
+                .andDo(print())
+                .andExpect(status().isUnauthorized())
+                .andExpect(jsonPath("message", is("Bad credentials")));
+    }
 }

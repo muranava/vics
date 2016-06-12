@@ -1,6 +1,8 @@
 package com.infinityworks.webapp.testsupport.mocks;
 
+import okhttp3.MediaType;
 import okhttp3.Request;
+import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -12,20 +14,23 @@ import java.io.IOException;
  */
 public class CallStub<T> implements Call<T> {
 
-    private final Request request;
     private final Response<T> response;
+    private final Request request = new Request.Builder().url("http://localhost:9002").build();
 
-    private CallStub(Request request, Response<T> response) {
-        this.request = request;
+    private CallStub(Response<T> response) {
         this.response = response;
     }
 
     public static <T> CallStub<T> success(T data) {
-        return new CallStub<>(new Request.Builder().url("http://localhost:9002").build(), Response.success(data));
+        return new CallStub<>(Response.success(data));
     }
 
-    public static <T> CallStub<T> serverError(Request.Builder reqBuilder, T data) {
-        return new CallStub<>(reqBuilder.build(), Response.success(data));
+    public static <T> CallStub<T> serverError() {
+        return new CallStub<>(Response.error(500, ResponseBody.create(MediaType.parse("application/json"), "")));
+    }
+
+    public static <T> CallStub<T> notFound() {
+        return new CallStub<>(Response.error(404, ResponseBody.create(MediaType.parse("application/json"), "")));
     }
 
     @Override
@@ -35,7 +40,6 @@ public class CallStub<T> implements Call<T> {
 
     @Override
     public void enqueue(Callback<T> callback) {
-
     }
 
     @Override
@@ -45,7 +49,6 @@ public class CallStub<T> implements Call<T> {
 
     @Override
     public void cancel() {
-
     }
 
     @Override

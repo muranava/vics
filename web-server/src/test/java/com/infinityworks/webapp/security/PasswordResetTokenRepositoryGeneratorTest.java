@@ -29,7 +29,7 @@ import static org.junit.Assert.assertTrue;
                         "classpath:sql/password-reset-token.sql"
                 })
 })
-public class PasswordResetTokenGeneratorTest extends RepositoryTest {
+public class PasswordResetTokenRepositoryGeneratorTest extends RepositoryTest {
 
     @Autowired
     private PasswordResetTokenRepository repository;
