@@ -99,10 +99,6 @@ public class StatsService {
     }
 
     @Transactional(readOnly = true)
-    public int canvassedPastNDays(int days) {
-        return statsJdbcRepository.countCanvassedPastDays(days);
-    }
-
     public List<Object[]> countRecordContactsByDateAndConstituency(String constituencyCode) {
         return repository.countRecordContactsByDateAndConstituency(constituencyCode);
     }
@@ -162,6 +158,10 @@ public class StatsService {
             counts.put("users", (int) userRepository.count());
             return Try.success(counts);
         }
+    }
+
+    private int canvassedPastNDays(int days) {
+        return statsJdbcRepository.countCanvassedPastDays(days);
     }
 
     public LeaderboardStatsResponse leaderboardStats() {
