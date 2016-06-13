@@ -15,8 +15,8 @@ public class SecurityUtilsTest {
         Try<Credentials> credentialsTry = SecurityUtils.credentialsFromAuthHeader(header);
 
         assertThat(credentialsTry.isSuccess(), is(true));
-        assertThat(credentialsTry.get().getUsername(), is("stein"));
-        assertThat(credentialsTry.get().getPassword(), is("password"));
+        assertThat(credentialsTry.get().username(), is("stein"));
+        assertThat(credentialsTry.get().password(), is("password"));
     }
 
     @Test

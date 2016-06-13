@@ -50,13 +50,12 @@ public class LoginService {
      */
     @Transactional
     public Try<AuthenticationToken> login(Credentials credentials, HttpSession session) {
-        UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(credentials.getUsername(), credentials.getPassword());
-        Try<AuthenticationToken> authenticationResult = authenticateCredentials(session, token, credentials.getUsername());
+        UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(credentials.username(), credentials.password());
+        Try<AuthenticationToken> authenticationResult = authenticateCredentials(session, token, credentials.username());
 
-        String result = authenticationResult.isSuccess() ? "Success" : "Failed";
-        log.info("Login attempt username={} {}", credentials.getUsername(), result);
+        log.info("Login attempt username={} {}", credentials.username(), authenticationResult.isSuccess() ? "Success" : "Failed");
         if (authenticationResult.isSuccess()) {
-            auditLogin(credentials.getUsername());
+            auditLogin(credentials.username());
         }
 
         return authenticationResult;

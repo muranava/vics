@@ -19,7 +19,6 @@ import org.springframework.stereotype.Service;
 import retrofit2.Call;
 
 import java.io.ByteArrayOutputStream;
-import java.util.UUID;
 
 /**
  * Searches for electorsByStreet within the given ward.
@@ -53,12 +52,7 @@ public class GotvCanvassCardService extends CanvassCardGeneratorTemplate {
 
     private Try<PropertyResponse> requestVoters(GeneratePdfRequest request, GotvVoterRequest voterRequest) {
         Call<PropertyResponse> call = pafClient.filteredVotersByStreets(request.getInfo().getWardCode(), voterRequest);
-
-        Try<PropertyResponse> properties = pafRequestExecutor.execute(call);
-
-
-
-        return properties;
+        return pafRequestExecutor.execute(call);
     }
 
     @Override
