@@ -34,7 +34,7 @@ public interface PafStreetResponse {
     @JsonProperty("voted_pledges") @Value.Default default int votedPledges() {
         return 0;
     }
-    @JsonProperty("pledged") @Value.Default default int pledged() {
+    @JsonProperty("pledges") @Value.Default default int pledged() {
         return 0;
     }
 }
