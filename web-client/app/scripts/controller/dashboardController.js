@@ -8,14 +8,14 @@ angular
     $scope.hideCharts = true;
     $scope.stats = {};
 
-    $scope.onWardInputKeypress = function() {
+    $scope.onWardInputKeypress = function () {
       wardService.searchRestricted($scope.wardSearchModel)
         .success(function (response) {
           $scope.wards = response;
         });
     };
 
-    $scope.onConstituencyInputKeypress = function() {
+    $scope.onConstituencyInputKeypress = function () {
       constituencyService.searchRestricted($scope.constituencySearchModel)
         .success(function (response) {
           $scope.constituencies = response;
@@ -56,14 +56,14 @@ angular
       });
 
     constituencyService.firstUserConstituency()
-      .success(function(response) {
+      .success(function (response) {
         if (!_.isEmpty(response.constituencies)) {
           $scope.constituencySearchModel = response.constituencies[0];
           $scope.onSetConstituency();
           $scope.hideCharts = false;
         } else {
           wardService.firstUserWard()
-            .success(function(response) {
+            .success(function (response) {
               if (!_.isEmpty(response.wards)) {
                 $scope.wardSearchModel = response.wards[0];
                 $scope.onSetWard();
@@ -158,9 +158,9 @@ angular
       }
     }
 
-    $scope.sumIntentions = function(intentions) {
+    $scope.sumIntentions = function (intentions) {
       var sum = 0;
-      _.forOwn(intentions, function(val) {
+      _.forOwn(intentions, function (val) {
         sum += val;
       });
       return sum;
@@ -170,9 +170,9 @@ angular
       if ($scope.wardSearchModel && $scope.wardSearchModel.id) {
 
         statsService.wardStats($scope.wardSearchModel.code)
-          .success(function(response) {
+          .success(function (response) {
             $scope.statsTable = response;
-            _.defer(function() {
+            _.defer(function () {
               var percentVoted = _.parseInt($scope.statsTable.voted.pledged / $scope.statsTable.pledged * 100);
               $scope.pieData = [
                 {
@@ -209,9 +209,9 @@ angular
       if ($scope.constituencySearchModel && $scope.constituencySearchModel.id) {
 
         statsService.constituencyStats($scope.constituencySearchModel.code)
-          .success(function(response) {
+          .success(function (response) {
             $scope.statsTable = response;
-            _.defer(function() {
+            _.defer(function () {
               var percentVoted = _.parseInt($scope.statsTable.voted.pledged / $scope.statsTable.pledged * 100);
               $scope.pieData = [
                 {
@@ -300,6 +300,11 @@ angular
     $scope.pieOptions = {
       chart: {
         type: 'pieChart',
+        donut: true,
+        donutRatio: ".4",
+        showLabels: true,
+        donutLabelsOutside: true,
+        labelType: "percent",
         color: [
           "#C5443B",
           "#e5e6e6"
@@ -311,7 +316,6 @@ angular
         y: function (d) {
           return d.y;
         },
-        showLabels: false,
         duration: 500,
         labelThreshold: 0.01,
         legend: {
