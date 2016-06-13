@@ -9,7 +9,9 @@ angular
             templateUrl: 'views/partials/stat-card.html',
             scope: {
               label: '@',
-              count: '@'
+              count: '@',
+              meta: '@',
+              metaTooltip: '@'
             },
             link: function() {
             }

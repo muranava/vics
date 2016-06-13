@@ -6,10 +6,7 @@ import com.infinityworks.webapp.service.StatsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
 
@@ -29,20 +26,20 @@ public class StatsController {
 
     @PreAuthorize("isAuthenticated()")
     @RequestMapping(value = "/topcanvassers", method = RequestMethod.GET)
-    public ResponseEntity<?> topCanvassers() {
-        return ResponseEntity.ok(statsService.topCanvassers());
+    public ResponseEntity<?> topCanvassers(@RequestParam(name = "limit", defaultValue = "6") int limit) {
+        return ResponseEntity.ok(statsService.topCanvassers(limit));
     }
 
     @PreAuthorize("isAuthenticated()")
     @RequestMapping(value = "/topconstituencies", method = RequestMethod.GET)
-    public ResponseEntity<?> mostCanvassedConstituencies() {
-        return ResponseEntity.ok(statsService.mostCanvassedConstituencies());
+    public ResponseEntity<?> mostCanvassedConstituencies(@RequestParam(name = "limit", defaultValue = "6") int limit) {
+        return ResponseEntity.ok(statsService.mostCanvassedConstituencies(limit));
     }
 
     @PreAuthorize("isAuthenticated()")
     @RequestMapping(value = "/topwards", method = RequestMethod.GET)
-    public ResponseEntity<?> mostCanavassedWards() {
-        return ResponseEntity.ok(statsService.mostCanvassedWards());
+    public ResponseEntity<?> mostCanavassedWards(@RequestParam(name = "limit", defaultValue = "6") int limit) {
+        return ResponseEntity.ok(statsService.mostCanvassedWards(limit));
     }
 
     @PreAuthorize("isAuthenticated()")

@@ -141,6 +141,7 @@
                   </a>
                 </li>
               </ul>
+              <span ng-show="stats.topCanvassers" class="text-caption cursor-hand pull-right more-leaderboard" ng-click="showTop50Activists()" data-toggle="modal" data-target="#simpleModal">More ...</span>
             </div>
             <div ng-if="currentTab === 'wards'" id="second4">
               <ul class="list divider-full-bleed">
@@ -159,6 +160,7 @@
                   </a>
                 </li>
               </ul>
+              <span ng-show="stats.topWards" class="text-caption cursor-hand pull-right more-leaderboard" ng-click="showTop50Wards()" data-toggle="modal" data-target="#simpleModal">More ...</span>
             </div>
             <div ng-if="currentTab === 'constituencies'" id="third4">
               <ul class="list divider-full-bleed">
@@ -177,6 +179,7 @@
                   </a>
                 </li>
               </ul>
+              <span ng-show="stats.topConstituencies" class="text-caption cursor-hand pull-right more-leaderboard" ng-click="showTop50Constituencies()" data-toggle="modal" data-target="#simpleModal">More ...</span>
             </div>
           </div><!--end .card-body -->
         </div><!--end .card -->
@@ -339,3 +342,34 @@
     </div>
   </div>
 </section>
+
+<!-- More lists -->
+<div class="modal fade" id="simpleModal" tabindex="-1" role="dialog" aria-labelledby="simpleModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        <h4 class="modal-title" id="simpleModalLabel">Top 50</h4>
+      </div>
+      <div class="modal-body">
+
+        <ul class="list divider-full-bleed">
+          <li ng-repeat="c in stats.topMore" class="tile">
+            <a class="tile-content ink-reaction">
+              <div class="tile-icon">
+                <i ng-if="$index === 0" class="fa fa-trophy gold-trophy"></i>
+                <i ng-if="$index === 1" class="fa fa-trophy silver-trophy"></i>
+                <i ng-if="$index === 2" class="fa fa-trophy bronze-trophy"></i>
+                <span class="text-center text-bold" ng-if="$index > 2">&nbsp;&nbsp;{{$index+1}}</span>
+              </div>
+              <div class="tile-text">{{c.key}}</div>
+              <div class="tile-text">{{c.count}}</div>
+            </a>
+          </li>
+        </ul>
+
+      </div>
+    </div>
+  </div>
+</div>

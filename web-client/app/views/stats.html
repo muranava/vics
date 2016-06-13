@@ -11,14 +11,18 @@
       <div class="col-md-12">
         <div class="row">
           <div>
-            <div class="col-sm-4">
-              <stat-card count="{{adminStats.totalCanvassed}}" label="Total Canvassed"></stat-card>
+            <div class="col-sm-3">
+              <stat-card count="{{totals.canvassed}}" label="Voting Intentions" meta="{{percentWithIntentions}}%" meta-tooltip="% of voters with intentions"></stat-card>
             </div>
-            <div class="col-sm-4">
-              <stat-card count="{{adminStats.canvassedThisWeek}}" label="Past 7 days"></stat-card>
+            <div class="col-sm-3">
+              <stat-card count="{{adminStats.totalCanvassed}}" label="Canvassed"></stat-card>
             </div>
-            <div class="col-sm-4">
-              <stat-card count="{{adminStats.users}}" label="Users"></stat-card>
+            <div class="col-sm-3">
+              <stat-card count="{{adminStats.canvassedThisWeek}}" label="Canvassed Past 7 days"></stat-card>
+            </div>
+            <div class="col-sm-3">
+              <stat-card count="{{totals.pledgesVoted}} / {{totals.pledges}}" label="Pledges Voted" meta="{{percentPledgesVoted}}%"
+                         meta-tooltip="% of pledges voted"></stat-card>
             </div>
           </div>
         </div>
@@ -36,7 +40,7 @@
             <table datatable="ng" class="row-border hover">
               <thead>
               <tr>
-                <th>Constituency</th>
+                <th>Const.</th>
                 <th>Region</th>
                 <th>i1</th>
                 <th>i2</th>
@@ -45,23 +49,25 @@
                 <th>i5</th>
                 <th>Voters</th>
                 <th>Voted</th>
-                <th>Pledges</th>
-                <th>Pledges Voted</th>
+                <th>Plg.</th>
+                <th>Plg. Voted %</th>
+                <th>Plg. Not Voted</th>
               </tr>
               </thead>
               <tbody>
               <tr ng-repeat="c in constituencies">
                 <td>{{ c.stats.name }}</td>
                 <td>{{ c.region }}</td>
-                <td>{{ c.stats.intention['1'] }}</td>
-                <td>{{ c.stats.intention['2'] }}</td>
-                <td>{{ c.stats.intention['3'] }}</td>
-                <td>{{ c.stats.intention['4'] }}</td>
-                <td>{{ c.stats.intention['5'] }}</td>
-                <td>{{ c.stats.voters }}</td>
-                <td>{{ c.stats.voted.total }}</td>
-                <td>{{ c.stats.pledged }}</td>
-                <td>{{ c.stats.voted.pledged }}</td>
+                <td class="tbl-cell-shaded tbl-cell-hover">{{ c.stats.intention['1'] }}</td>
+                <td class="tbl-cell-shaded tbl-cell-hover">{{ c.stats.intention['2'] }}</td>
+                <td class="tbl-cell-shaded tbl-cell-hover">{{ c.stats.intention['3'] }}</td>
+                <td class="tbl-cell-shaded tbl-cell-hover">{{ c.stats.intention['4'] }}</td>
+                <td class="tbl-cell-shaded tbl-cell-hover">{{ c.stats.intention['5'] }}</td>
+                <td class="text-center tbl-cell-hover">{{ c.stats.voters }}</td>
+                <td class="text-center tbl-cell-hover">{{ c.stats.voted.total }}</td>
+                <td class="tbl-cell-shaded tbl-cell-hover">{{ c.stats.pledged }}</td>
+                <td class="tbl-cell-shaded tbl-cell-hover">{{ percentOf(c.stats.pledged, c.stats.voted.pledged) }}</td>
+                <td class="tbl-cell-shaded tbl-cell-hover text-danger">{{ c.stats.pledged - c.stats.voted.pledged }}</td>
               </tr>
               </tbody>
             </table>
@@ -75,7 +81,7 @@
       <div class="col-md-12">
         <div class="card">
           <div class="card-head">
-            <header>Users By Region</header>
+            <header>Users</header>
           </div>
           <div class="card-body">
             <table class="table table-condensed no-margin">
@@ -89,6 +95,10 @@
               <tr ng-repeat="stat in usersByRegionStats">
                 <td>{{stat[0]}}</td>
                 <td>{{stat[1]}}</td>
+              </tr>
+              <tr>
+                <td class="text-bold">Total</td>
+                <td class="text-bold">{{adminStats.users}}</td>
               </tr>
               </tbody>
             </table>

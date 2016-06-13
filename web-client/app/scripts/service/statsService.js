@@ -2,7 +2,8 @@ angular
   .module('canvass')
   .service('statsService', function ($http, config) {
     var api = {},
-      apiUrl = config.apiUrl;
+      apiUrl = config.apiUrl,
+      defaultLeaderboardLimit = 6;
 
     api.allStats = function () {
       return $http({
@@ -13,19 +14,21 @@ angular
       });
     };
 
-    api.topCanvassers = function () {
+    api.topCanvassers = function (limit) {
+      var l = limit ? limit : defaultLeaderboardLimit;
       return $http({
         method: 'GET',
-        url: apiUrl + '/stats/topcanvassers',
+        url: apiUrl + '/stats/topcanvassers?limit=' + l,
         withCredentials: true,
         cache: true
       });
     };
 
-    api.topWards = function () {
+    api.topWards = function (limit) {
+      var l = limit ? limit : defaultLeaderboardLimit;
       return $http({
         method: 'GET',
-        url: apiUrl + '/stats/topwards',
+        url: apiUrl + '/stats/topwards?limit=' + l,
         withCredentials: true,
         cache: true
       });
@@ -40,10 +43,11 @@ angular
       });
     };
 
-    api.topConstituencies = function () {
+    api.topConstituencies = function (limit) {
+      var l = limit ? limit : defaultLeaderboardLimit;
       return $http({
         method: 'GET',
-        url: apiUrl + '/stats/topconstituencies',
+        url: apiUrl + '/stats/topconstituencies?limit=' + l,
         withCredentials: true,
         cache: true
       });

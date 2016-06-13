@@ -3,7 +3,8 @@ angular
   .controller('dashboardController', function ($interval, $scope, statsService, toastr, geoService, calendar, $uibModal, wardService, constituencyService) {
     var referendumDate = new Date(2016, 5, 23, 22, 0),
       secondsInDay = 86400,
-      secondsInHour = 3600;
+      secondsInHour = 3600,
+      leaderboardMoreLimit = 50;
     $scope.showCanvassedGraph = true;
     $scope.hideCharts = true;
     $scope.stats = {};
@@ -22,11 +23,41 @@ angular
         });
     };
 
+    $scope.showTop50Activists = function() {
+      $scope.topMore = [];
+
+      statsService
+        .topCanvassers(leaderboardMoreLimit)
+        .success(function (response) {
+          $scope.stats.topMore = response;
+        });
+    };
+
+    $scope.showTop50Constituencies = function() {
+      $scope.topMore = [];
+
+      statsService
+        .topConstituencies(leaderboardMoreLimit)
+        .success(function (response) {
+          $scope.stats.topMore = response;
+        });
+    };
+
+    $scope.showTop50Wards = function() {
+      $scope.topMore = [];
+
+      statsService
+        .topWards(leaderboardMoreLimit)
+        .success(function (response) {
+          $scope.stats.topMore = response;
+        });
+    };
+
     $scope.currentTab = 'activists';
     $scope.constituencyName = '';
     $scope.wardName = '';
     $scope.showPledgesPieChart = false;
-    $scope.graphLabel = "";
+    $scope.graphLabel = '';
 
     $scope.map = {
       center: {

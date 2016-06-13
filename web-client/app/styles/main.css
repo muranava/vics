@@ -366,3 +366,13 @@ li.key {
   opacity: .7;
   font-size: 12px;
 }
+
+.tbl-cell-shaded {
+  text-align: center;
+  background-color: #f1f1f1;
+}
+
+.more-leaderboard {
+  color: grey;
+  margin-bottom: 0 !important;
+}
