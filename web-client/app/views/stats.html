@@ -8,77 +8,7 @@
     <br>
 
     <div class="row">
-      <div class="col-md-12">
-        <div class="row">
-          <div>
-            <div class="col-sm-3">
-              <stat-card count="{{totals.canvassed}}" label="Voting Intentions" meta="{{percentWithIntentions}}%" meta-tooltip="% of voters with intentions"></stat-card>
-            </div>
-            <div class="col-sm-3">
-              <stat-card count="{{adminStats.totalCanvassed}}" label="Canvassed"></stat-card>
-            </div>
-            <div class="col-sm-3">
-              <stat-card count="{{adminStats.canvassedThisWeek}}" label="Canvassed Past 7 days"></stat-card>
-            </div>
-            <div class="col-sm-3">
-              <stat-card count="{{totals.pledgesVoted}} / {{totals.pledges}}" label="Pledges Voted" meta="{{percentPledgesVoted}}%"
-                         meta-tooltip="% of pledges voted"></stat-card>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <div class="row">
-      <div class="col-md-12">
-        <div class="card">
-          <div class="card-head">
-            <header>Constituencies</header>
-          </div>
-          <div class="card-body">
-
-            <table datatable="ng" class="row-border hover">
-              <thead>
-              <tr>
-                <th>Const.</th>
-                <th>Region</th>
-                <th>i1</th>
-                <th>i2</th>
-                <th>i3</th>
-                <th>i4</th>
-                <th>i5</th>
-                <th>Voters</th>
-                <th>Voted</th>
-                <th>Plg.</th>
-                <th>Plg. Voted %</th>
-                <th>Plg. Not Voted</th>
-              </tr>
-              </thead>
-              <tbody>
-              <tr ng-repeat="c in constituencies">
-                <td>{{ c.stats.name }}</td>
-                <td>{{ c.region }}</td>
-                <td class="tbl-cell-shaded tbl-cell-hover">{{ c.stats.intention['1'] }}</td>
-                <td class="tbl-cell-shaded tbl-cell-hover">{{ c.stats.intention['2'] }}</td>
-                <td class="tbl-cell-shaded tbl-cell-hover">{{ c.stats.intention['3'] }}</td>
-                <td class="tbl-cell-shaded tbl-cell-hover">{{ c.stats.intention['4'] }}</td>
-                <td class="tbl-cell-shaded tbl-cell-hover">{{ c.stats.intention['5'] }}</td>
-                <td class="text-center tbl-cell-hover">{{ c.stats.voters }}</td>
-                <td class="text-center tbl-cell-hover">{{ c.stats.voted.total }}</td>
-                <td class="tbl-cell-shaded tbl-cell-hover">{{ c.stats.pledged }}</td>
-                <td class="tbl-cell-shaded tbl-cell-hover">{{ percentOf(c.stats.pledged, c.stats.voted.pledged) }}</td>
-                <td class="tbl-cell-shaded tbl-cell-hover text-danger">{{ c.stats.pledged - c.stats.voted.pledged }}</td>
-              </tr>
-              </tbody>
-            </table>
-
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <div class="row">
-      <div class="col-md-12">
+      <div class="col-md-6">
         <div class="card">
           <div class="card-head">
             <header>Users</header>
@@ -105,6 +35,19 @@
           </div>
         </div>
       </div>
+      <div class="col-md-6">
+        <div class="row">
+          <div>
+            <div class="col-sm-6">
+              <stat-card count="{{adminStats.totalCanvassed}}" label="Canvassed"></stat-card>
+            </div>
+            <div class="col-sm-6">
+              <stat-card count="{{adminStats.canvassedThisWeek}}" label="Canvassed Past 7 days"></stat-card>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
+
   </div>
 </section>
