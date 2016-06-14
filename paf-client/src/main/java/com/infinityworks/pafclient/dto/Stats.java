@@ -14,6 +14,6 @@ import org.immutables.value.Value;
 public interface Stats {
     @JsonProperty("voters") int voters();
     @JsonProperty("canvassed") int canvassed();
-    @Value.Default @JsonProperty("pledged") default int pledged() {return 0;}
+    @Value.Default @JsonProperty("pledges") default int pledged() {return 0;}
     @Value.Default @JsonProperty("voted_pledges") default int votedPledges() {return 0;}
 }
