@@ -28,7 +28,7 @@ angular
       maxValue: 5
     };
     $scope.likelihoodRange = {
-      minValue: 1,
+      minValue: 0,
       maxValue: 5
     };
 
