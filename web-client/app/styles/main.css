@@ -376,3 +376,8 @@ li.key {
   color: grey;
   margin-bottom: 0 !important;
 }
+.text-faded {
+  color: grey !important;
+  opacity: 0.5 !important;
+  font-size: larger;
+}
