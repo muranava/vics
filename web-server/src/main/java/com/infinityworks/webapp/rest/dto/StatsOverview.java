@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import org.immutables.value.Value.Immutable;
 import org.immutables.value.Value.Style;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Immutable
@@ -12,4 +13,5 @@ import java.util.List;
 public interface StatsOverview {
     List<ConstituenciesStatsResponse> constituencies();
     OverallStats total();
+    LocalDateTime updated();
 }

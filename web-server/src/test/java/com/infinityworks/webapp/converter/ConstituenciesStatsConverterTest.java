@@ -7,6 +7,8 @@ import com.infinityworks.webapp.service.ConstituencyRegionMappingService;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.time.LocalDateTime;
+
 import static java.util.Collections.singletonList;
 import static org.hamcrest.CoreMatchers.hasItem;
 import static org.junit.Assert.assertThat;
@@ -49,7 +51,13 @@ public class ConstituenciesStatsConverterTest {
                 .withVoters(9)
                 .build();
 
-        StatsOverview statsOverview = underTest.apply(singletonList(stats));
+        LocalDateTime updated = LocalDateTime.now();
+        AllConstituenciesStatsResponse statsResponse = ImmutableAllConstituenciesStatsResponse.builder()
+                .withUpdated(updated)
+                .withConstituencies(singletonList(stats))
+                .build();
+
+        StatsOverview statsOverview = underTest.apply(statsResponse);
 
         assertThat(statsOverview.constituencies(), hasItem(ImmutableConstituenciesStatsResponse.builder()
                 .withRegion("West Midlands")

@@ -4,7 +4,7 @@ import com.google.common.collect.Maps;
 import com.infinityworks.common.lang.Try;
 import com.infinityworks.pafclient.PafClient;
 import com.infinityworks.pafclient.PafRequestExecutor;
-import com.infinityworks.pafclient.dto.ConstituenciesStats;
+import com.infinityworks.pafclient.dto.AllConstituenciesStatsResponse;
 import com.infinityworks.pafclient.dto.ConstituencyStats;
 import com.infinityworks.pafclient.dto.WardStats;
 import com.infinityworks.webapp.converter.ConstituenciesStatsConverter;
@@ -16,7 +16,10 @@ import com.infinityworks.webapp.repository.RecordContactLogRepository;
 import com.infinityworks.webapp.repository.StatsJdbcRepository;
 import com.infinityworks.webapp.repository.StatsRepository;
 import com.infinityworks.webapp.repository.UserRepository;
-import com.infinityworks.webapp.rest.dto.*;
+import com.infinityworks.webapp.rest.dto.ImmutableLeaderboardStatsResponse;
+import com.infinityworks.webapp.rest.dto.LeaderboardStatsResponse;
+import com.infinityworks.webapp.rest.dto.StatsOverview;
+import com.infinityworks.webapp.rest.dto.StatsResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -136,7 +139,7 @@ public class StatsService {
 
     public Try<StatsOverview> constituenciesStats(User user) {
         if (user.isAdmin()) {
-            Call<List<ConstituenciesStats>> call = pafClient.constituenciesStats();
+            Call<AllConstituenciesStatsResponse> call = pafClient.constituenciesStats();
             return pafRequestExecutor.execute(call).map(constituenciesStatsConverter);
         } else {
             return Try.failure(new NotAuthorizedFailure("Forbidden"));

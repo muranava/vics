@@ -147,6 +147,10 @@ input:-webkit-autofill, textarea:-webkit-autofill, select:-webkit-autofill {
 .cursor-hand:hover {
   cursor: pointer;
 }
+.pseudo-link:hover {
+  cursor: pointer;
+  text-decoration: underline;
+}
 
 .btn-separator {
   margin-left: 5px !important;
@@ -372,6 +376,11 @@ li.key {
   background-color: #f1f1f1;
 }
 
+.tbl-cell-alt-shaded {
+  text-align: center;
+  background-color: #ebf1ee;
+}
+
 .more-leaderboard {
   color: grey;
   margin-bottom: 0 !important;
@@ -380,4 +389,8 @@ li.key {
   color: grey !important;
   opacity: 0.5 !important;
   font-size: larger;
+}
+
+.tbl-cell-hover:hover {
+  background-color: #e2e2e2;
 }

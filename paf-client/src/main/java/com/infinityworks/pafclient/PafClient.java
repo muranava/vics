@@ -111,7 +111,7 @@ public interface PafClient {
     Call<ConstituencyStats> constituencyStats(@Path("constituencyCode") String constituencyCode);
 
     @GET("constituencies/stats")
-    Call<List<ConstituenciesStats>> constituenciesStats();
+    Call<AllConstituenciesStatsResponse> constituenciesStats();
 
     /**
      * Gets information about a postcode, including geolocation and electoral information, e.g.

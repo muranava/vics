@@ -1,5 +1,6 @@
 package com.infinityworks.webapp.converter;
 
+import com.infinityworks.pafclient.dto.AllConstituenciesStatsResponse;
 import com.infinityworks.pafclient.dto.ConstituenciesStats;
 import com.infinityworks.webapp.rest.dto.*;
 import com.infinityworks.webapp.service.ConstituencyRegionMappingService;
@@ -11,7 +12,7 @@ import java.util.List;
 import java.util.function.Function;
 
 @Component
-public class ConstituenciesStatsConverter implements Function<List<ConstituenciesStats>, StatsOverview> {
+public class ConstituenciesStatsConverter implements Function<AllConstituenciesStatsResponse, StatsOverview> {
 
     private final ConstituencyRegionMappingService regionMappingService;
 
@@ -21,7 +22,7 @@ public class ConstituenciesStatsConverter implements Function<List<Constituencie
     }
 
     @Override
-    public StatsOverview apply(List<ConstituenciesStats> constituenciesStats) {
+    public StatsOverview apply(AllConstituenciesStatsResponse constituenciesStats) {
         int voters = 0;
         int canvassed = 0;
         int pledges = 0;
@@ -29,7 +30,7 @@ public class ConstituenciesStatsConverter implements Function<List<Constituencie
         int votedPledges = 0;
         List<ConstituenciesStatsResponse> transformedStats = new ArrayList<>();
 
-        for (ConstituenciesStats stats : constituenciesStats) {
+        for (ConstituenciesStats stats : constituenciesStats.constituencies()) {
             voters += stats.voters();
             canvassed += stats.canvassed();
             pledges += stats.pledged();
@@ -55,6 +56,7 @@ public class ConstituenciesStatsConverter implements Function<List<Constituencie
                         .withVoted(voted)
                         .withPledgesVoted(votedPledges)
                         .build())
+                .withUpdated(constituenciesStats.updated())
                 .build();
     }
 }
