@@ -1,7 +1,7 @@
 angular
   .module('canvass')
   .controller('dashboardController', function ($interval, $scope, statsService, toastr, geoService, calendar, $uibModal, wardService, constituencyService) {
-    var referendumDate = new Date(2016, 5, 16, 17, 30),
+    var referendumDate = new Date(2016, 5, 23, 22, 0),
       secondsInDay = 86400,
       secondsInHour = 3600,
       leaderboardMoreLimit = 50,
