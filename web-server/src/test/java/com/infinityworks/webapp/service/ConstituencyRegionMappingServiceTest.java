@@ -29,12 +29,4 @@ public class ConstituencyRegionMappingServiceTest {
 
         assertThat(regionName, is("West Midlands"));
     }
-
-    @Test(expected = IllegalStateException.class)
-    public void abortsIfMappingNotFound() throws Exception {
-        given(repository.constituenciesByRegion()).willReturn(asList(new Object[][]{}));
-        underTest.loadRegions();
-
-        underTest.getRegionByConstituency("E123456");
-    }
 }

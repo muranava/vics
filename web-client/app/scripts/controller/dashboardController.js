@@ -1,10 +1,11 @@
 angular
   .module('canvass')
   .controller('dashboardController', function ($interval, $scope, statsService, toastr, geoService, calendar, $uibModal, wardService, constituencyService) {
-    var referendumDate = new Date(2016, 5, 23, 22, 0),
+    var referendumDate = new Date(2016, 5, 16, 17, 30),
       secondsInDay = 86400,
       secondsInHour = 3600,
-      leaderboardMoreLimit = 50;
+      leaderboardMoreLimit = 50,
+      countdownHandle;
     $scope.showCanvassedGraph = true;
     $scope.hideCharts = true;
     $scope.stats = {};
@@ -23,7 +24,7 @@ angular
         });
     };
 
-    $scope.showTop50Activists = function() {
+    $scope.showTop50Activists = function () {
       $scope.topMore = [];
 
       statsService
@@ -33,7 +34,7 @@ angular
         });
     };
 
-    $scope.showTop50Constituencies = function() {
+    $scope.showTop50Constituencies = function () {
       $scope.topMore = [];
 
       statsService
@@ -43,7 +44,7 @@ angular
         });
     };
 
-    $scope.showTop50Wards = function() {
+    $scope.showTop50Wards = function () {
       $scope.topMore = [];
 
       statsService
@@ -276,27 +277,43 @@ angular
     };
 
     function updateCountdown() {
-      // get total seconds between the times
-      var delta = Math.abs(referendumDate - new Date()) / 1000;
+      var now = new Date();
+      if (now.getTime() > referendumDate.getTime()) {
+        resetClock();
+      } else {
+        // get total seconds between the times
+        var delta = Math.abs(referendumDate - now) / 1000;
 
-      // calculate (and subtract) whole days
-      $scope.days = Math.floor(delta / secondsInDay);
-      delta -= $scope.days * secondsInDay;
+        // calculate (and subtract) whole days
+        $scope.days = Math.floor(delta / secondsInDay);
+        delta -= $scope.days * secondsInDay;
 
-      // calculate (and subtract) whole hours
-      $scope.hours = Math.floor(delta / secondsInHour) % 24;
-      delta -= $scope.hours * secondsInHour;
+        // calculate (and subtract) whole hours
+        $scope.hours = Math.floor(delta / secondsInHour) % 24;
+        delta -= $scope.hours * secondsInHour;
 
-      // calculate (and subtract) whole minutes
-      $scope.minutes = Math.floor(delta / 60) % 60;
-      delta -= $scope.minutes * 60;
+        // calculate (and subtract) whole minutes
+        $scope.minutes = Math.floor(delta / 60) % 60;
+        delta -= $scope.minutes * 60;
 
-      // what's left is seconds
-      $scope.seconds = delta % 60;
+        // what's left is seconds
+        $scope.seconds = delta % 60;
+      }
+    }
+
+    function resetClock() {
+      $scope.days = 0;
+      $scope.hours = 0;
+      $scope.minutes = 0;
+      $scope.seconds = 0;
+      $interval.cancel(countdownHandle);
     }
 
     updateCountdown();
-    $interval(updateCountdown, 250, 0, true);
+    countdownHandle = $interval(updateCountdown, 250, 0, true);
+    $scope.$on('$destroy', function () {
+      $interval.cancel(countdownHandle);
+    });
 
     getCurrentLocation();
 
