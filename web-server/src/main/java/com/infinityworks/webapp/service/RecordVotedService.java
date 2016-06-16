@@ -97,6 +97,7 @@ public class RecordVotedService {
                 .withVoting(ImmutableVoting.builder()
                         .withIntention(0)
                         .withLikelihood(0)
+                        .withHasVoted(false)
                         .build())
                 .build();
     }
