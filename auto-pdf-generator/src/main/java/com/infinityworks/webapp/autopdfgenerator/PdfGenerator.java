@@ -65,7 +65,7 @@ public class PdfGenerator {
 
     private static void writePdfFile(DistrictRow row, byte[] pdfContent, String resultsDir) throws IOException {
         String fileName = String.format("%s_%s", row.wardName(), randomUUID().toString().replace("-", "").substring(0, 18));
-        String relativePath = String.format("%s/%s/%s.pdf", resultsDir, row.constituencyName(), fileName);
+        String relativePath = String.format("%s/%s_%s/%s.pdf", resultsDir, row.constituencyName(), row.constituencyCode(), fileName);
         Files.createParentDirs(new File(relativePath));
 
         FileOutputStream fos = new FileOutputStream(relativePath);
