@@ -1,13 +1,16 @@
 angular
   .module('canvass')
-  .controller('dashboardController', function ($interval, $scope, statsService, toastr, geoService, calendar, $uibModal, wardService, constituencyService) {
-    var referendumDate = new Date(2016, 5, 23, 22, 0),
+.controller('dashboardController', function ($interval, $scope, statsService, toastr, geoService, calendar, $uibModal, wardService, constituencyService, $analytics) {
+  $analytics.pageTrack('/dashboard');
+
+  var referendumDate = new Date(2016, 5, 23, 22, 0),
       secondsInDay = 86400,
       secondsInHour = 3600,
       leaderboardMoreLimit = 50,
       countdownHandle;
     $scope.showCanvassedGraph = true;
     $scope.hideCharts = true;
+
     $scope.stats = {};
 
     $scope.onWardInputKeypress = function () {
@@ -351,7 +354,7 @@ angular
         donut: true,
         donutRatio: ".4",
         showLabels: true,
-        donutLabelsOutside: true,
+        labelsOutside: true,
         labelType: "percent",
         color: [
           "#C5443B",

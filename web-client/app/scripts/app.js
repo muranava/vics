@@ -25,7 +25,8 @@ angular
     'uiGmapgoogle-maps',
     'nvd3',
     'datatables',
-    'datatables.bootstrap'
+    'datatables.bootstrap',
+    'angulartics', 'angulartics.google.analytics'
   ])
   .constant('config', {
     apiUrl: 'http://localhost:18080/api/canvass',
@@ -34,7 +35,8 @@ angular
   .run(function ($rootScope, config) {
     $rootScope.supportEmail = config.supportEmail;
   })
-  .config(function ($routeProvider, $httpProvider) {
+  .config(function ($routeProvider, $httpProvider, $analyticsProvider) {
+    $analyticsProvider.virtualPageviews(false);
 
     var authByRoute = [
       {route: '/dashboard', role: 'USER'},

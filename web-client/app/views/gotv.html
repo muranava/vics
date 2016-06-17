@@ -14,7 +14,7 @@
       <div class="print-button-bar" style="margin: 13px 10px 13px 0;">
 
         <div class="btn-group pull-right">
-          <button type="button" ng-click="onPrintSelected()" class="btn ink-reaction btn-default-light">
+          <button analytics-on analytics-event="GenerateGotvCard" analytics-category="GOTV" analytics-label="User generated GOTV card" type="button" ng-click="onPrintSelected()" class="btn ink-reaction btn-default-light">
             Print Selected
           </button>
           <button type="button" class="btn ink-reaction btn-danger dropdown-toggle" data-toggle="dropdown">
@@ -197,7 +197,8 @@
                   <div class="card-body">
                     <br>
                     <div class="btn-group pull-left">
-                      <button type="button" ng-click="onPrintSelected()" class="btn ink-reaction btn-default-light">
+                      <button type="button" analytics-on analytics-event="GenerateGotvCard" analytics-category="GOTV" analytics-label="User generated GOTV card"
+                              ng-click="onPrintSelected()" class="btn ink-reaction btn-default-light">
                         Print Selected
                       </button>
                       <button type="button" class="btn ink-reaction btn-danger dropdown-toggle" data-toggle="dropdown">

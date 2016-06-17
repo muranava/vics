@@ -11,6 +11,7 @@ import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 
 import static com.lowagie.text.Font.HELVETICA;
@@ -89,12 +90,12 @@ public class PageInfoRenderer extends PdfPageEventHelper {
         ColumnText.showTextAligned(cb, Element.ALIGN_LEFT, footer1, pointLine1.getX(), pointLine1.getY(), 0);
 
         String line2 = config.isGotv() ? FOOTER_TEXT_GOTV_2 : FOOTER_TEXT_2;
-        Phrase footer2 = new Phrase(String.format(line2, LocalDateTime.now().format(formatter)), font);
+        Phrase footer2 = new Phrase(String.format(line2, LocalDateTime.now(ZoneId.of("GMT")).format(formatter)), font);
         Point pointLine2 = config.footerTextPosition()[1];
         ColumnText.showTextAligned(cb, Element.ALIGN_LEFT, footer2, pointLine2.getX(), pointLine2.getY(), 0);
 
         if (config.isGotv()) {
-            Phrase timestampPhrase = new Phrase(LocalDateTime.now().format(formatter), font);
+            Phrase timestampPhrase = new Phrase(LocalDateTime.now(ZoneId.of("GMT")).format(formatter), font);
             Point timestampPoint = config.footerTextPosition()[1];
             ColumnText.showTextAligned(cb, Element.ALIGN_LEFT, timestampPhrase, timestampPoint.getX(), 15, 0);
         }

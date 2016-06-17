@@ -58,18 +58,17 @@ public class StatsTest extends WebApplicationTest {
                 .accept(MediaType.APPLICATION_JSON))
                 .andDo(print())
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$..[?(@.name =~ /.*Rugby/i)].voters", hasItem(12521)))
-                .andExpect(jsonPath("$..[?(@.name =~ /.*Rugby/i)].canvassed", hasItem(4512)))
-                .andExpect(jsonPath("$..[?(@.name =~ /.*Rugby/i)].pledged", hasItem(2145)))
-                .andExpect(jsonPath("$..[?(@.name =~ /.*Rugby/i)].voted.total", hasItem(135)))
-                .andExpect(jsonPath("$..[?(@.name =~ /.*Rugby/i)].voted.pledged", hasItem(89)))
-                .andExpect(jsonPath("$..[?(@.name =~ /.*Rugby/i)].name", hasItem("Rugby")))
-                .andExpect(jsonPath("$..[?(@.name =~ /.*Rugby/i)].code", hasItem("E14000633")))
-                .andExpect(jsonPath("$..[?(@.name =~ /.*Rugby/i)].intention['1']", hasItem(52)))
-                .andExpect(jsonPath("$..[?(@.name =~ /.*Rugby/i)].intention['2']", hasItem(42)))
-                .andExpect(jsonPath("$..[?(@.name =~ /.*Rugby/i)].intention['3']", hasItem(32)))
-                .andExpect(jsonPath("$..[?(@.name =~ /.*Rugby/i)].intention['4']", hasItem(22)))
-                .andExpect(jsonPath("$..[?(@.name =~ /.*Rugby/i)].intention['5']", hasItem(12)));
+                .andExpect(jsonPath("$..[?(@.name =~ /.*Corby/i)].canvassed", hasItem(6821)))
+                .andExpect(jsonPath("$..[?(@.name =~ /.*Corby/i)].pledged", hasItem(4260)))
+                .andExpect(jsonPath("$..[?(@.name =~ /.*Corby/i)].voted.total", hasItem(1)))
+                .andExpect(jsonPath("$..[?(@.name =~ /.*Corby/i)].voted.pledged", hasItem(1)))
+                .andExpect(jsonPath("$..[?(@.name =~ /.*Corby/i)].name", hasItem("Corby")))
+                .andExpect(jsonPath("$..[?(@.name =~ /.*Corby/i)].code", hasItem("E14000648")))
+                .andExpect(jsonPath("$..[?(@.name =~ /.*Corby/i)].intention['1']", hasItem(1023)))
+                .andExpect(jsonPath("$..[?(@.name =~ /.*Corby/i)].intention['2']", hasItem(15)))
+                .andExpect(jsonPath("$..[?(@.name =~ /.*Corby/i)].intention['3']", hasItem(1174)))
+                .andExpect(jsonPath("$..[?(@.name =~ /.*Corby/i)].intention['4']", hasItem(41)))
+                .andExpect(jsonPath("$..[?(@.name =~ /.*Corby/i)].intention['5']", hasItem(4219)));
     }
 
     @Test
