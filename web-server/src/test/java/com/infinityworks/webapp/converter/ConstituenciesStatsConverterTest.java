@@ -48,7 +48,6 @@ public class ConstituenciesStatsConverterTest {
                 .withIntention(intention)
                 .withVoted(voted)
                 .withPledged(8)
-                .withVoters(9)
                 .build();
 
         LocalDateTime updated = LocalDateTime.now();
@@ -67,7 +66,6 @@ public class ConstituenciesStatsConverterTest {
                         .withName("Coventry North East")
                         .withCode("E14000649")
                         .withPledged(8)
-                        .withVoters(9)
                         .withCanvassed(1)
                         .build())
                 .build()));

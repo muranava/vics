@@ -12,7 +12,6 @@ import org.immutables.value.Value;
 @JsonDeserialize(as = ImmutableConstituenciesStats.class)
 @JsonSerialize(as = ImmutableConstituenciesStats.class)
 public interface ConstituenciesStats {
-    @JsonProperty("voters") int voters();
     @JsonProperty("canvassed") int canvassed();
     @JsonProperty("pledged") int pledged();
     @JsonProperty("voted") StatsVoted voted();

@@ -23,7 +23,6 @@ public class ConstituenciesStatsConverter implements Function<AllConstituenciesS
 
     @Override
     public StatsOverview apply(AllConstituenciesStatsResponse constituenciesStats) {
-        int voters = 0;
         int canvassed = 0;
         int pledges = 0;
         int voted = 0;
@@ -31,7 +30,6 @@ public class ConstituenciesStatsConverter implements Function<AllConstituenciesS
         List<ConstituenciesStatsResponse> transformedStats = new ArrayList<>();
 
         for (ConstituenciesStats stats : constituenciesStats.constituencies()) {
-            voters += stats.voters();
             canvassed += stats.canvassed();
             pledges += stats.pledged();
             voted += stats.voted().total();
@@ -50,7 +48,6 @@ public class ConstituenciesStatsConverter implements Function<AllConstituenciesS
         return ImmutableStatsOverview.builder()
                 .withConstituencies(transformedStats)
                 .withTotal(ImmutableOverallStats.builder()
-                        .withVoters(voters)
                         .withCanvassed(canvassed)
                         .withPledges(pledges)
                         .withVoted(voted)

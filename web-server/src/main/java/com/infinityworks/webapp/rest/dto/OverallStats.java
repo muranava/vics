@@ -8,10 +8,8 @@ import org.immutables.value.Value.Style;
 @Style(init = "with*")
 @JsonSerialize(as = ImmutableOverallStats.class)
 public interface OverallStats {
-    int voters();
     int canvassed();
     int voted();
     int pledges();
     int pledgesVoted();
 }
-

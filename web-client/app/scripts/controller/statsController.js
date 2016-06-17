@@ -7,7 +7,7 @@ angular
         .success(function(response) {
           $scope.constituencies = response.constituencies;
           $scope.totals = response.total;
-          $scope.lastUpdated = response.updated;
+          $scope.lastUpdated = new Date(response.updated);
           computePercentages();
         })
         .error(function() {
@@ -25,8 +25,11 @@ angular
         });
     }
 
-    $scope.percentOf = function(pledges, pledgesVoted) {
-      return _.parseInt(pledgesVoted / pledges * 100) + '%';
+    $scope.percentOf = function(pledgesVoted, totalPledges) {
+      if (totalPledges === 0) {
+        return '100%';
+      }
+      return _.parseInt(pledgesVoted / totalPledges * 100) + '%';
     };
 
     $scope.refreshConstituencyStats = function() {
