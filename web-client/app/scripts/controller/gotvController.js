@@ -157,7 +157,7 @@ angular
       gotvService.retrievePdfOfElectorsByStreets(wardCode, data, isLabels)
         .success(function (response) {
           var file = new Blob([response], {type: 'application/pdf'});
-          saveAs(file, $scope.ward.code + '.pdf');
+          saveAs(file, createPdfFileName() + '.pdf');
         })
         .error(function (error) {
           if (error && error.status === 404) {
@@ -166,6 +166,10 @@ angular
             toastr.error('Failed to request voters.', 'Error');
           }
         });
+    }
+
+    function createPdfFileName() {
+      return $scope.ward.name + ' in ' + $scope.constituency.name + ' ' + new Date().toISOString();
     }
 
     function buildRequest(streets) {
