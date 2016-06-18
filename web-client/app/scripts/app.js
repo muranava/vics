@@ -25,6 +25,7 @@ angular
     'uiGmapgoogle-maps',
     'nvd3',
     'datatables',
+    'datatables.columnfilter',
     'datatables.bootstrap',
     'angulartics', 'angulartics.google.analytics'
   ])

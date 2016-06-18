@@ -9,8 +9,7 @@ angular
       return $http({
         method: 'GET',
         url: apiUrl + '/stats',
-        withCredentials: true,
-        cache: true
+        withCredentials: true
       });
     };
 
@@ -19,8 +18,7 @@ angular
       return $http({
         method: 'GET',
         url: apiUrl + '/stats/topcanvassers?limit=' + l,
-        withCredentials: true,
-        cache: true
+        withCredentials: true
       });
     };
 
@@ -29,8 +27,7 @@ angular
       return $http({
         method: 'GET',
         url: apiUrl + '/stats/topwards?limit=' + l,
-        withCredentials: true,
-        cache: true
+        withCredentials: true
       });
     };
 
@@ -48,8 +45,7 @@ angular
       return $http({
         method: 'GET',
         url: apiUrl + '/stats/topconstituencies?limit=' + l,
-        withCredentials: true,
-        cache: true
+        withCredentials: true
       });
     };
 
@@ -75,8 +71,7 @@ angular
       return $http({
         method: 'GET',
         url: apiUrl + '/stats/ward/' + wardCode,
-        withCredentials: true,
-        cache: false
+        withCredentials: true
       });
     };
 
@@ -84,8 +79,7 @@ angular
       return $http({
         method: 'GET',
         url: apiUrl + '/stats/admin',
-        withCredentials: true,
-        cache: false
+        withCredentials: true
       });
     };
 
@@ -93,8 +87,7 @@ angular
       return $http({
         method: 'GET',
         url: apiUrl + '/stats/constituency/' + constituencyCode,
-        withCredentials: true,
-        cache: false
+        withCredentials: true
       });
     };
 

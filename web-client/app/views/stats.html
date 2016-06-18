@@ -12,7 +12,8 @@
         <div class="row">
           <div>
             <div class="col-sm-3">
-              <stat-card count="{{totals.pledgesVoted}} / {{totals.pledges}}" label="Pledges Voted" meta="{{percentPledgesVoted}}%"></stat-card>
+              <stat-card count="{{totals.pledgesVoted}} / {{totals.pledges}}" label="Pledges Voted"
+                         meta="{{percentPledgesVoted}}%"></stat-card>
             </div>
             <div class="col-sm-3">
               <stat-card count="{{totals.canvassed}}" label="Voting Intentions"></stat-card>
@@ -37,45 +38,15 @@
             <div class="tools">
               <span class="text-light">last updated: {{lastUpdated | date:'dd-MM-yyyy HH:mm:ss'}}</span>
               <div class="btn-group">
-                <a ng-click="refreshConstituencyStats()" class="btn btn-icon-toggle btn-refresh"><i class="md md-refresh"></i></a>
+                <a ng-click="refreshConstituencyStats()" class="btn btn-icon-toggle btn-refresh"><i
+                  class="md md-refresh"></i></a>
               </div>
             </div>
           </div>
           <div class="card-body">
 
-            <table datatable="ng" class="row-border hover">
-              <thead>
-              <tr>
-                <th>Constituency</th>
-                <th>Region</th>
-                <th>i1</th>
-                <th>i2</th>
-                <th>i3</th>
-                <th>i4</th>
-                <th>i5</th>
-                <th>Voted</th>
-                <th>Plg.</th>
-                <th>Plg. Voted</th>
-                <th>Plg. Not Voted</th>
-                <th>Plg. Voted %</th>
-              </tr>
-              </thead>
-              <tbody>
-              <tr ng-repeat="c in constituencies">
-                <td class="tbl-cell-hover">{{ c.stats.name }}</td>
-                <td class="tbl-cell-hover">{{ c.region }}</td>
-                <td class="tbl-cell-shaded tbl-cell-hover">{{ c.stats.intention['1'] }}</td>
-                <td class="tbl-cell-shaded tbl-cell-hover">{{ c.stats.intention['2'] }}</td>
-                <td class="tbl-cell-shaded tbl-cell-hover">{{ c.stats.intention['3'] }}</td>
-                <td class="tbl-cell-shaded tbl-cell-hover">{{ c.stats.intention['4'] }}</td>
-                <td class="tbl-cell-shaded tbl-cell-hover">{{ c.stats.intention['5'] }}</td>
-                <td class="text-center tbl-cell-hover">{{ c.stats.voted.total }}</td>
-                <td class="tbl-cell-alt-shaded tbl-cell-hover">{{ c.stats.pledged }}</td>
-                <td class="tbl-cell-alt-shaded tbl-cell-hover text-success">{{ c.stats.voted.pledged }}</td>
-                <td class="tbl-cell-alt-shaded tbl-cell-hover text-danger">{{ c.stats.pledged - c.stats.voted.pledged }}</td>
-                <td class="tbl-cell-alt-shaded tbl-cell-hover">{{ percentOf(c.stats.voted.pledged, c.stats.pledged) }}</td>
-              </tr>
-              </tbody>
+            <table datatable="" dt-options="dtOptions" dt-columns="dtColumns" class="row-border hover">
+
             </table>
 
           </div>

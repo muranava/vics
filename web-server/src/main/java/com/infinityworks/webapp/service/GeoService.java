@@ -16,6 +16,7 @@ import com.infinityworks.webapp.rest.dto.AddressLookupRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import retrofit2.Call;
 
@@ -100,6 +101,7 @@ public class GeoService {
                 .collect(toList());
     }
 
+    @Cacheable(value = "constituencyMap", cacheManager = "stats", unless = "#result.isFailure()")
     public Try<byte[]> constituencyStatsMap(User user, String regionName) {
         if (user.hasPermission(Permission.VIEW_MAPS)) {
 

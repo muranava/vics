@@ -23,6 +23,7 @@ import com.infinityworks.webapp.rest.dto.StatsResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import retrofit2.Call;
@@ -77,6 +78,7 @@ public class StatsService {
     }
 
     @Transactional(readOnly = true)
+    @Cacheable(value = "topActivists", cacheManager = "stats")
     public List<StatsResponse> topCanvassers(int limit) {
         return repository.countRecordContactByUser(limit)
                 .stream()
@@ -85,6 +87,7 @@ public class StatsService {
     }
 
     @Transactional(readOnly = true)
+    @Cacheable(value = "topWards", cacheManager = "stats")
     public List<StatsResponse> mostCanvassedWards(int limit) {
         return repository.countMostRecordContactByWard(limit)
                 .stream()
@@ -93,6 +96,7 @@ public class StatsService {
     }
 
     @Transactional(readOnly = true)
+    @Cacheable(value = "topConstituencies", cacheManager = "stats")
     public List<StatsResponse> mostCanvassedConstituencies(int limit) {
         return repository.countMostRecordContactByConstituency(limit)
                 .stream()

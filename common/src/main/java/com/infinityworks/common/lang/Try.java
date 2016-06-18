@@ -1,5 +1,6 @@
 package com.infinityworks.common.lang;
 
+import java.io.Serializable;
 import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.Supplier;
@@ -22,7 +23,7 @@ import java.util.function.Supplier;
  *
  * @param <S> the type of the success object
  */
-public interface Try<S> {
+public interface Try<S> extends Serializable {
 
     final class Success<S> implements Try<S> {
         private final S value;
