@@ -35,7 +35,7 @@ public class RecordVotedServiceTest {
     public void setUp() throws Exception {
         pafClient = mock(PafClient.class);
         wardService = mock(WardService.class);
-        underTest = new RecordVotedService(wardService, pafClient, new PafRequestExecutor());
+        underTest = new RecordVotedService(wardService, pafClient, new PafRequestExecutor(), mock(Auditor.class));
     }
 
     @Test

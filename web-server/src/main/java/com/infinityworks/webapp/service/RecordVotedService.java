@@ -17,6 +17,8 @@ import retrofit2.Call;
 
 import java.util.UUID;
 
+import static com.infinityworks.webapp.domain.AuditEntry.recordVoted;
+
 /**
  * Service to record that a voter has voted
  */
@@ -29,14 +31,17 @@ public class RecordVotedService {
     private final WardService wardService;
     private final PafClient pafClient;
     private final PafRequestExecutor pafRequestExecutor;
+    private final Auditor auditor;
 
     @Autowired
     public RecordVotedService(WardService wardService,
                               PafClient pafClient,
-                              PafRequestExecutor pafRequestExecutor) {
+                              PafRequestExecutor pafRequestExecutor,
+                              Auditor auditor) {
         this.wardService = wardService;
         this.pafClient = pafClient;
         this.pafRequestExecutor = pafRequestExecutor;
+        this.auditor = auditor;
     }
 
     /**
@@ -56,6 +61,8 @@ public class RecordVotedService {
                         })
                         .map(success -> {
                             log.debug("user={} recorded vote for ern={}", user, ern.longForm());
+                            auditor.audit(recordVoted(ern.longForm(), user.getUsername()));
+
                             return ImmutableRecordVoteResponse.builder()
                                     .withErn(ern.longForm())
                                     .withWardCode(ern.getWardCode())

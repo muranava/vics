@@ -22,12 +22,14 @@ public class CanvassCardServiceTest {
     private CanvassCardService underTest;
     private WardService wardService;
     private PdfClient pdfClient;
+    private Auditor auditor;
 
     @Before
     public void setUp() throws Exception {
         wardService = mock(WardService.class);
         pdfClient = mock(PdfClient.class);
-        underTest = new CanvassCardService(wardService, pdfClient);
+        auditor = mock(Auditor.class);
+        underTest = new CanvassCardService(wardService, pdfClient, auditor);
     }
 
     @Test

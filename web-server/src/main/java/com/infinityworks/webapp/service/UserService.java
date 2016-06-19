@@ -141,7 +141,7 @@ public class UserService {
     @Transactional
     public Try<User> create(User user, CreateUserRequest request) {
         if (!user.isAdmin()) {
-            log.warn("Non admin tried to create user!. User={}, request={}", user, request);
+            log.warn("Non admin tried to audit user!. User={}, request={}", user, request);
             return Try.failure(new NotAuthorizedFailure("Not authorized"));
         }
 

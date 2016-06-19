@@ -11,17 +11,21 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import static com.infinityworks.webapp.domain.AuditEntry.createCanvassCard;
+
 @Service
 public class CanvassCardService {
     private final Logger log = LoggerFactory.getLogger(CanvassCardService.class);
 
     private final WardService wardService;
     private final PdfClient pdfServerClient;
+    private final Auditor auditor;
 
     @Autowired
-    public CanvassCardService(WardService wardService, PdfClient pdfServerClient) {
+    public CanvassCardService(WardService wardService, PdfClient pdfServerClient, Auditor auditor) {
         this.wardService = wardService;
         this.pdfServerClient = pdfServerClient;
+        this.auditor = auditor;
     }
 
     public Try<byte[]> generateCanvassCard(ElectorsByStreetsRequest request, String wardCode, User user) {
@@ -32,7 +36,10 @@ public class CanvassCardService {
 
                     return pdfServerClient.requestCanvassCard(generatePdfRequest);
                 }).map(content -> {
-                    log.info("User={} generated canvass card for ward={}, numStreets={}", user, wardCode, request.getStreets().size());
+                    int streets = request.getStreets().size();
+                    log.info("User={} generated canvass card for ward={}, numStreets={}", user, wardCode, streets);
+
+                    auditor.audit(createCanvassCard(wardCode, user.getUsername(), String.valueOf(streets)));
                     return content;
                 });
     }

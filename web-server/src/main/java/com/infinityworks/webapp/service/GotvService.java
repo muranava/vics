@@ -11,16 +11,20 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import static com.infinityworks.webapp.domain.AuditEntry.createGotvCard;
+
 @Service
 public class GotvService {
     private static final Logger log = LoggerFactory.getLogger(GotvService.class);
     private final PdfClient pdfServerClient;
     private final WardService wardService;
+    private final Auditor auditor;
 
     @Autowired
-    public GotvService(PdfClient pdfServerClient, WardService wardService) {
+    public GotvService(PdfClient pdfServerClient, WardService wardService, Auditor auditor) {
         this.pdfServerClient = pdfServerClient;
         this.wardService = wardService;
+        this.auditor = auditor;
     }
 
     public Try<byte[]> generateGotvCanvassCard(User user, String wardCode, ElectorsByStreetsRequest request) {
@@ -30,7 +34,8 @@ public class GotvService {
                     GeneratePdfRequest generatePdfRequest = new GeneratePdfRequest(request.getStreets(), request.getFlags(), requestInfo);
                     return pdfServerClient.requestGotvCanvassCard(generatePdfRequest);
                 }).map(content -> {
-                    log.info("User={} generated address labels for GOTPV. ward={}", user, wardCode);
+                    log.info("User={} generated canvass card for GOTV. ward={}", user, wardCode);
+                    auditor.audit(createGotvCard(wardCode, user.getUsername(), String.valueOf(request.getStreets().size())));
                     return content;
                 });
     }

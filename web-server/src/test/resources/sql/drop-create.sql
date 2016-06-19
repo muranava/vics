@@ -1,3 +1,4 @@
+DROP TABLE IF EXISTS audit;
 DROP TABLE IF EXISTS password_reset_tokens;
 DROP TABLE IF EXISTS record_contact_log;
 DROP TABLE IF EXISTS users_privileges;
@@ -81,4 +82,14 @@ CREATE TABLE password_reset_tokens (
   users_id UUID REFERENCES users (id) ON DELETE CASCADE              NOT NULL,
   token    TEXT                                                      NOT NULL,
   expires  TIMESTAMP WITHOUT TIME ZONE                               NOT NULL
+);
+
+CREATE TABLE audit (
+  id       UUID PRIMARY KEY,
+  added    TIMESTAMP WITHOUT TIME ZONE NOT NULL,
+  event    TEXT                        NOT NULL,
+  category TEXT                        NOT NULL,
+  custom1  TEXT,
+  custom2  TEXT,
+  custom3  TEXT
 );
