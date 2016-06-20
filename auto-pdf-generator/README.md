@@ -1,13 +1,16 @@
 Purpose
 =======
 
-This project generates gotv PDFs of all electoral districts (wards) for backup
-purposes.
+This project generates gotv PDFs of all electoral districts (wards) for backup purposes.
 
-For performance, only the active wards (those with voting intentions recorded in the voter database)
-are queried, e.g.
+# Build executable jar
 
-select distinct v.ward_code from voters v
-join voting s on s.voter_id = v.id
-where s.intention >= 4
+The following command creates a fat jar that can be executed from the command line
 
+    mvn assembly:single
+
+creates `pdf-generator.jar`
+
+# Running the tool
+
+    nohup java -DpafApiUrl=http://paf-elb/v1 -DpafApiToken=apitoken -DpdfServerUrl=http://pdf-server:18080/api/pdf -DwardsCsv=all-wards.csv -jar pdf-generator.jar &
