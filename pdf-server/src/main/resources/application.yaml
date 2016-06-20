@@ -5,7 +5,7 @@ server:
 
 pdfserver:
    pafApiBaseUrl: https://PAF-935689129.eu-west-1.elb.amazonaws.com/v1/
-   pafApiToken: 90f88caae35a5b863ae2450b55688a559b52a343
+   pafApiToken: 54b2f52b860f40a4b9cb9d89061720c3e6d1bc14
    pafApiTimeout: 60000
 
 logging.level.: INFO

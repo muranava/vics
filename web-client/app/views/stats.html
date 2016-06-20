@@ -12,11 +12,20 @@
         <div class="row">
           <div>
             <div class="col-sm-3">
-              <stat-card count="{{totals.pledgesVoted}} / {{totals.pledges}}" label="Pledges Voted"
-                         meta="{{percentPledgesVoted}}%"></stat-card>
+              <div class="card">
+                <div class="card-body no-padding">
+                  <div class="alert alert-callout alert-danger no-margin">
+                    <strong class="pull-right text-danger text-lg">
+                      {{totals.pledgesVoted / totals.voted * 100 | number:0}}%
+                    </strong>
+                    <strong class="text-xl">{{totals.pledgesVoted}} / {{totals.voted}}</strong><br/>
+                    <span class="opacity-50">Voted (Pledges/Total)</span>
+                  </div>
+                </div>
+              </div>
             </div>
             <div class="col-sm-3">
-              <stat-card count="{{totals.canvassed}}" label="Voting Intentions"></stat-card>
+              <stat-card count="{{totals.pledges}}" label="Pledges"></stat-card>
             </div>
             <div class="col-sm-3">
               <stat-card count="{{adminStats.totalCanvassed}}" label="Canvassed"></stat-card>
@@ -45,9 +54,7 @@
           </div>
           <div class="card-body">
 
-            <table datatable="" dt-options="dtOptions" dt-columns="dtColumns" class="row-border hover">
-
-            </table>
+            <table datatable="" dt-options="dtOptions" dt-columns="dtColumns" class="row-border hover" width="100%"></table>
 
           </div>
         </div>
