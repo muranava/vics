@@ -124,6 +124,7 @@ public class StatsService {
         }
     }
 
+    @Cacheable(value = "wardStats", cacheManager = "stats", unless = "#result.isFailure()")
     public Try<WardStats> wardStats(User user, String wardCode) {
         return wardService.getByCode(wardCode, user)
                 .flatMap(ward -> {
@@ -133,6 +134,7 @@ public class StatsService {
     }
 
     @Transactional(readOnly = true)
+    @Cacheable(value = "constituencyStats", cacheManager = "stats", unless = "#result.isFailure()")
     public Try<ConstituencyStats> constituencyStats(User user, String constituencyCode) {
         return constituencyService.getByCodeRestrictedByAssociation(constituencyCode, user)
                 .flatMap(constituency -> {

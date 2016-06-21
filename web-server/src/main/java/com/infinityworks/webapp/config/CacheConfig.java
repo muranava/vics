@@ -13,7 +13,7 @@ import org.springframework.data.redis.core.RedisTemplate;
 @Configuration
 @EnableCaching
 public class CacheConfig extends CachingConfigurerSupport {
-    private static final int TEN_MINS_SECS = 10 * 60;
+    private static final int TWENTY_MINS_SECS = 20 * 60;
     private static final int TEN_HOURS_SECS = 10 * 60 * 60;
 
     @Bean
@@ -28,7 +28,7 @@ public class CacheConfig extends CachingConfigurerSupport {
     public CacheManager stats(RedisTemplate redisTemplate) {
         RedisCacheManager cacheManager = new RedisCacheManager(redisTemplate);
         cacheManager.setUsePrefix(true);
-        cacheManager.setDefaultExpiration(TEN_MINS_SECS);
+        cacheManager.setDefaultExpiration(TWENTY_MINS_SECS);
         return cacheManager;
     }
 
