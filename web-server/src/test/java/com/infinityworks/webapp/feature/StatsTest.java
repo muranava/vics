@@ -1,6 +1,7 @@
 package com.infinityworks.webapp.feature;
 
 import com.infinityworks.common.lang.Try;
+import com.infinityworks.webapp.common.JsonUtil;
 import com.infinityworks.webapp.error.RestErrorHandler;
 import com.infinityworks.webapp.rest.StatsController;
 import com.infinityworks.webapp.service.SessionService;
@@ -10,12 +11,14 @@ import org.junit.Test;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.context.jdbc.SqlGroup;
+import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 import java.security.Principal;
 
 import static org.hamcrest.CoreMatchers.hasItem;
 import static org.hamcrest.CoreMatchers.is;
+import static org.junit.Assert.assertThat;
 import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
@@ -151,5 +154,59 @@ public class StatsTest extends WebApplicationTest {
                 .andExpect(jsonPath("$.pledged", is(1223)))
                 .andExpect(jsonPath("$.voted.total", is(301)))
                 .andExpect(jsonPath("$.voted.pledged", is(128)));
+    }
+
+    @Test
+    public void countsUsersByRegionReturnsNotAuthorizedIfNonAdmin() throws Exception {
+        when(sessionService.extractUserFromPrincipal(any(Principal.class)))
+                .thenReturn(Try.success(covs()));
+
+        mockMvc.perform(get("/stats/users")
+                .accept(MediaType.APPLICATION_JSON))
+                .andDo(print())
+                .andExpect(status().isUnauthorized());
+    }
+
+    @Test
+    public void countsUsersByRegion() throws Exception {
+        when(sessionService.extractUserFromPrincipal(any(Principal.class)))
+                .thenReturn(Try.success(admin()));
+
+        MvcResult result = mockMvc.perform(get("/stats/users")
+                .accept(MediaType.APPLICATION_JSON))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andReturn();
+
+        Object[][] response = JsonUtil.objectMapper.readValue(result.getResponse().getContentAsString(), Object[][].class);
+        assertThat(response[0][0], is("London"));
+        assertThat(response[0][1], is(1));
+        assertThat(response[1][0], is("West Midlands"));
+        assertThat(response[1][1], is(2));
+    }
+
+    @Test
+    public void adminCountsReturnsNotAuthorizedIfNonAdmin() throws Exception {
+        when(sessionService.extractUserFromPrincipal(any(Principal.class)))
+                .thenReturn(Try.success(covs()));
+
+        mockMvc.perform(get("/stats/admin")
+                .accept(MediaType.APPLICATION_JSON))
+                .andDo(print())
+                .andExpect(status().isUnauthorized());
+    }
+
+    @Test
+    public void returnsTheAdminCounts() throws Exception {
+        when(sessionService.extractUserFromPrincipal(any(Principal.class)))
+                .thenReturn(Try.success(admin()));
+
+        mockMvc.perform(get("/stats/admin")
+                .accept(MediaType.APPLICATION_JSON))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.canvassedThisWeek", is(0)))
+                .andExpect(jsonPath("$.totalCanvassed", is(13)))
+                .andExpect(jsonPath("$.users", is(8)));
     }
 }

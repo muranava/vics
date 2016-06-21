@@ -5,7 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.LocalDateTime;
+import static java.time.LocalDateTime.now;
 
 @Service
 public class RemoveExpiredPasswordResetTokensService {
@@ -18,6 +18,6 @@ public class RemoveExpiredPasswordResetTokensService {
 
     @Transactional
     public Long removeExpiredTokens() {
-        return tokenRepository.deleteByExpiresLessThan(LocalDateTime.now());
+        return tokenRepository.deleteByExpiresLessThan(now());
     }
 }
