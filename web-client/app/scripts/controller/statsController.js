@@ -35,6 +35,7 @@ angular
       $scope.dtOptions = DTOptionsBuilder.newOptions()
         .withFnPromise(loadConstituencies)
         .withOption('responsive', true)
+        .withOption('order', [7, 'desc'])
         .withPaginationType('full_numbers')
         .withDisplayLength(25);
 
