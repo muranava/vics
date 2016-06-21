@@ -54,7 +54,6 @@ public class LabelServiceTest {
 
         Try<byte[]> labels = underTest.generateAddressLabelsForPostalVoters(request, wardCode, user);
 
-
         assertThat(labels.get(), is("content".getBytes()));
         assertThat(labels.isSuccess(), is(true));
 

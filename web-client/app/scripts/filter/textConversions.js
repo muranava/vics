@@ -25,12 +25,16 @@ angular
   })
   .filter('voterAddressFormat', function() {
     return function(voter) {
-      var address = voter.address;
-      var parts = [address.line_1, address.line_2, _.capitalize(address.post_town)];
-      var presentParts =_.filter(parts, function(part) {
-        return !_.isEmpty(part);
-      });
-      return presentParts.join(", ");
+      if (voter && voter.address) {
+        var address = voter.address;
+        var parts = [address.line_1, address.line_2, _.capitalize(address.post_town)];
+        var presentParts =_.filter(parts, function(part) {
+          return !_.isEmpty(part);
+        });
+        return presentParts.join(", ");
+      } else {
+        return '';
+      }
     };
   })
   .filter('ernToShortForm', function() {
