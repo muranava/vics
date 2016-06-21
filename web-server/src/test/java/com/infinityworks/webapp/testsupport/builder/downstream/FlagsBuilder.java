@@ -20,6 +20,17 @@ public class FlagsBuilder {
     }
 
     public FlagsBuilder withDefaults() {
+        intentionFrom = 1;
+        intentionTo = 5;
+        likelihoodFrom = 1;
+        likelihoodTo = 5;
+        hasPV = false;
+        wantsPv = false;
+        needsLift = false;
+        notCanvassedYet = false;
+        poster = false;
+        email = false;
+        telephone = false;
         return this;
     }
 
