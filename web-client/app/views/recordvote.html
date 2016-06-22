@@ -53,7 +53,7 @@
                 <div class="input-group">
                   <div class="input-group-content ern-spacing">
                     <input id="electorId" type="text" class="form-control" ng-model="formModel.ern.pollingDistrict" uppercased>
-                    <label for="electorId">Polling District</label>
+                    <label for="electorId"><span class="hidden-sm hidden-xs hidden-md">Polling </span>District</label>
                   </div>
 
                   <div class="input-group-content ern-spacing">&mdash;</div>
@@ -74,7 +74,7 @@
                     <button type="submit" class="btn btn-success btn-sm" tabindex="-1">VOTED</button>
                   </div>
                   <div class="input-group-btn">
-                    <button type="button" class="btn btn-danger btn-sm" ng-click="onWontVote()" tabindex="-1">WON'T VOTE</button>
+                    <button type="button" class="btn btn-danger btn-sm" ng-click="onWontVote()" tabindex="-1">WON'T<span class="hidden-xs"> VOTE</span></button>
                   </div>
                 </div>
                 <br>
