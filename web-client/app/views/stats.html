@@ -47,6 +47,8 @@
             <div class="tools">
               <span class="text-light">last updated: {{lastUpdated | date:'dd-MM-yyyy HH:mm:ss'}}</span>
               <div class="btn-group">
+                <a ng-click="export()" class="btn btn-icon-toggle btn-refresh"><i
+                  class="md md-save"></i></a>
                 <a ng-click="refreshConstituencyStats()" class="btn btn-icon-toggle btn-refresh"><i
                   class="md md-refresh"></i></a>
               </div>

@@ -21,6 +21,7 @@ angular
           $scope.percentPledgesVoted = _.parseInt($scope.totals.pledgesVoted / $scope.totals.pledges * 100);
           $scope.percentVoted = _.parseInt($scope.totals.voted / $scope.totals.voters * 100);
 
+          $scope.constituencies = result.constituencies;
           deferred.resolve(result.constituencies);
         })
         .error(function () {
@@ -87,6 +88,27 @@ angular
       $route.reload();
     };
 
+    $scope.export = function() {
+      var header = ['name,code,region,i1,i2,i3,i4,i5,voted,pledges,pledgesVoted,percentPledgeTurnout,percentVotedFor'];
+      var rows = $scope.constituencies.map(function(constituency) {
+        return constituencyToCsvRow(constituency);
+      });
+      rows.unshift(header);
+      var anchor = angular.element('<a/>');
+      anchor.attr({
+        href: 'data:attachment/csv;charset=utf-8,' + encodeURI(rows.join("\n")),
+        target: '_blank',
+        download: 'constituency_stats.csv'
+      })[0].click();
+    };
+
+    function constituencyToCsvRow(c) {
+      var stats = c.stats;
+      return [
+        stats.name.replace(/,/g, ''), stats.code, c.region, stats.intention['1'], stats.intention['2'], stats.intention['3'], stats.intention['4'], stats.intention['5'],
+        stats.voted.total, stats.pledged, stats.voted.pledged, c.percentPlgVoted, c.percentFor
+      ].join(',');
+    }
+
     loadStats();
   });
-
