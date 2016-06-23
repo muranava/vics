@@ -81,8 +81,9 @@ angular
             map.controls[google.maps.ControlPosition.RIGHT_TOP].push(legend);
 
             map.data.setStyle(function (feature) {
+              console.log(feature);
               return {
-                fillColor: mapCountToFillColour(feature.H.count),
+                fillColor: mapCountToFillColour(feature.f.count),
                 strokeColor: 'gray',
                 strokeWeight: 0.5,
                 fillOpacity: 1
@@ -90,8 +91,8 @@ angular
             });
 
             map.data.addListener('mouseover', function (event) {
-              scope.legend.constituency = event.feature.H.PCON13NM;
-              scope.legend.canvassed = event.feature.H.count;
+              scope.legend.constituency = event.feature.f.PCON13NM;
+              scope.legend.canvassed = event.feature.f.count;
               if (!scope.$$phase) {
                 scope.$apply();
               }
